@@ -1,0 +1,5 @@
+resources:
+  - 01-inspire-manager.viper.yaml
+  - 02-inspire-manager.yaml
+  - 03-strip-prefix.yaml
+  - 04-service-monitor.yaml

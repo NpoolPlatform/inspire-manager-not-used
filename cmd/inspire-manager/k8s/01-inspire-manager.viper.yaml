@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: inspire-manager-config
+  namespace: kube-system
+data:
+  service-conf: |
+    config:
+      hostname: "inspire-manager.npool.top"
+      http_port: 50540
+      grpc_port: 50541
+      healthz_port: 50542
+      prometheus_port: 50543
+      appid: "89089012783789789719823798127398"
+      serviceid: "89076316-4ebd-11ed-8300-b12398941ccf"
+      logdir: "./"
+      apolloAccessKey: "0147fb70b815403790e8634b899fac07"
