@@ -7,11 +7,11 @@ data:
   service-conf: |
     config:
       hostname: "inspire-manager.npool.top"
-      http_port: 50540
-      grpc_port: 50541
-      healthz_port: 50542
-      prometheus_port: 50543
+      http_port: 50670
+      grpc_port: 50671
+      healthz_port: 50672
+      prometheus_port: 50673
       appid: "89089012783789789719823798127398"
-      serviceid: "89076316-4ebd-11ed-8300-b12398941ccf"
+      serviceid: "e7c2f38e-84f3-11ed-a7d9-3e3fad7ca8b0"
       logdir: "./"
       apolloAccessKey: "0147fb70b815403790e8634b899fac07"

@@ -22,6 +22,7 @@ func client() (*ent.Client, error) {
 		return nil, err
 	}
 	drv := entsql.OpenDB(dialect.MySQL, conn)
+
 	return ent.NewClient(ent.Driver(drv)), nil
 }
 

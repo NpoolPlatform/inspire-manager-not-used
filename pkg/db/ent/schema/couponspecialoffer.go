@@ -53,10 +53,6 @@ func (CouponSpecialOffer) Fields() []ent.Field {
 			String("message").
 			Optional().
 			Default(""),
-		field.
-			String("name").
-			Optional().
-			Default(""),
 	}
 }
 

@@ -24,7 +24,7 @@ spec:
           - path: /api/inspire-manager
             backend:
               serviceName: inspire-manager
-              servicePort: 50540
+              servicePort: 50670
     - host: api.procyon.vip
       http: *http_rules
     - host: api.xpool.top
