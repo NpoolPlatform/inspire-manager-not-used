@@ -100,6 +100,19 @@ func (f InvitationCodeFunc) Mutate(ctx context.Context, m ent.Mutation) (ent.Val
 	return f(ctx, mv)
 }
 
+// The OrderPercentFunc type is an adapter to allow the use of ordinary
+// function as OrderPercent mutator.
+type OrderPercentFunc func(context.Context, *ent.OrderPercentMutation) (ent.Value, error)
+
+// Mutate calls f(ctx, m).
+func (f OrderPercentFunc) Mutate(ctx context.Context, m ent.Mutation) (ent.Value, error) {
+	mv, ok := m.(*ent.OrderPercentMutation)
+	if !ok {
+		return nil, fmt.Errorf("unexpected mutation type %T. expect *ent.OrderPercentMutation", m)
+	}
+	return f(ctx, mv)
+}
+
 // The RegistrationFunc type is an adapter to allow the use of ordinary
 // function as Registration mutator.
 type RegistrationFunc func(context.Context, *ent.RegistrationMutation) (ent.Value, error)

@@ -35,6 +35,7 @@ type hooks struct {
 	CouponFixAmount    []ent.Hook
 	CouponSpecialOffer []ent.Hook
 	InvitationCode     []ent.Hook
+	OrderPercent       []ent.Hook
 	Registration       []ent.Hook
 }
 

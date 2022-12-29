@@ -318,6 +318,30 @@ func (f InvitationCodeMutationRuleFunc) EvalMutation(ctx context.Context, m ent.
 	return Denyf("ent/privacy: unexpected mutation type %T, expect *ent.InvitationCodeMutation", m)
 }
 
+// The OrderPercentQueryRuleFunc type is an adapter to allow the use of ordinary
+// functions as a query rule.
+type OrderPercentQueryRuleFunc func(context.Context, *ent.OrderPercentQuery) error
+
+// EvalQuery return f(ctx, q).
+func (f OrderPercentQueryRuleFunc) EvalQuery(ctx context.Context, q ent.Query) error {
+	if q, ok := q.(*ent.OrderPercentQuery); ok {
+		return f(ctx, q)
+	}
+	return Denyf("ent/privacy: unexpected query type %T, expect *ent.OrderPercentQuery", q)
+}
+
+// The OrderPercentMutationRuleFunc type is an adapter to allow the use of ordinary
+// functions as a mutation rule.
+type OrderPercentMutationRuleFunc func(context.Context, *ent.OrderPercentMutation) error
+
+// EvalMutation calls f(ctx, m).
+func (f OrderPercentMutationRuleFunc) EvalMutation(ctx context.Context, m ent.Mutation) error {
+	if m, ok := m.(*ent.OrderPercentMutation); ok {
+		return f(ctx, m)
+	}
+	return Denyf("ent/privacy: unexpected mutation type %T, expect *ent.OrderPercentMutation", m)
+}
+
 // The RegistrationQueryRuleFunc type is an adapter to allow the use of ordinary
 // functions as a query rule.
 type RegistrationQueryRuleFunc func(context.Context, *ent.RegistrationQuery) error
@@ -391,6 +415,8 @@ func queryFilter(q ent.Query) (Filter, error) {
 		return q.Filter(), nil
 	case *ent.InvitationCodeQuery:
 		return q.Filter(), nil
+	case *ent.OrderPercentQuery:
+		return q.Filter(), nil
 	case *ent.RegistrationQuery:
 		return q.Filter(), nil
 	default:
@@ -413,6 +439,8 @@ func mutationFilter(m ent.Mutation) (Filter, error) {
 	case *ent.CouponSpecialOfferMutation:
 		return m.Filter(), nil
 	case *ent.InvitationCodeMutation:
+		return m.Filter(), nil
+	case *ent.OrderPercentMutation:
 		return m.Filter(), nil
 	case *ent.RegistrationMutation:
 		return m.Filter(), nil

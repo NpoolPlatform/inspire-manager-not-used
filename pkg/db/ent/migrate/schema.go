@@ -153,6 +153,28 @@ var (
 		Columns:    InvitationCodesColumns,
 		PrimaryKey: []*schema.Column{InvitationCodesColumns[0]},
 	}
+	// OrderPercentsColumns holds the columns for the "order_percents" table.
+	OrderPercentsColumns = []*schema.Column{
+		{Name: "id", Type: field.TypeUUID, Unique: true},
+		{Name: "created_at", Type: field.TypeUint32},
+		{Name: "updated_at", Type: field.TypeUint32},
+		{Name: "deleted_at", Type: field.TypeUint32},
+		{Name: "app_id", Type: field.TypeUUID, Nullable: true},
+		{Name: "user_id", Type: field.TypeUUID, Nullable: true},
+		{Name: "good_id", Type: field.TypeUUID, Nullable: true},
+		{Name: "title", Type: field.TypeString, Nullable: true, Default: ""},
+		{Name: "percent", Type: field.TypeOther, Nullable: true, SchemaType: map[string]string{"mysql": "decimal(37,18)"}},
+		{Name: "start_at", Type: field.TypeUint32},
+		{Name: "end_at", Type: field.TypeUint32},
+		{Name: "badge_large", Type: field.TypeString},
+		{Name: "badge_small", Type: field.TypeString},
+	}
+	// OrderPercentsTable holds the schema information for the "order_percents" table.
+	OrderPercentsTable = &schema.Table{
+		Name:       "order_percents",
+		Columns:    OrderPercentsColumns,
+		PrimaryKey: []*schema.Column{OrderPercentsColumns[0]},
+	}
 	// RegistrationsColumns holds the columns for the "registrations" table.
 	RegistrationsColumns = []*schema.Column{
 		{Name: "id", Type: field.TypeUUID, Unique: true},
@@ -178,6 +200,7 @@ var (
 		CouponFixAmountsTable,
 		CouponSpecialOffersTable,
 		InvitationCodesTable,
+		OrderPercentsTable,
 		RegistrationsTable,
 	}
 )

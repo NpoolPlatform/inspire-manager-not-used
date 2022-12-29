@@ -28,6 +28,8 @@ type Tx struct {
 	CouponSpecialOffer *CouponSpecialOfferClient
 	// InvitationCode is the client for interacting with the InvitationCode builders.
 	InvitationCode *InvitationCodeClient
+	// OrderPercent is the client for interacting with the OrderPercent builders.
+	OrderPercent *OrderPercentClient
 	// Registration is the client for interacting with the Registration builders.
 	Registration *RegistrationClient
 
@@ -172,6 +174,7 @@ func (tx *Tx) init() {
 	tx.CouponFixAmount = NewCouponFixAmountClient(tx.config)
 	tx.CouponSpecialOffer = NewCouponSpecialOfferClient(tx.config)
 	tx.InvitationCode = NewInvitationCodeClient(tx.config)
+	tx.OrderPercent = NewOrderPercentClient(tx.config)
 	tx.Registration = NewRegistrationClient(tx.config)
 }
 
