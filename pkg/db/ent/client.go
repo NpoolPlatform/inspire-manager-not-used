@@ -17,8 +17,8 @@ import (
 	"github.com/NpoolPlatform/inspire-manager/pkg/db/ent/coupondiscount"
 	"github.com/NpoolPlatform/inspire-manager/pkg/db/ent/couponfixamount"
 	"github.com/NpoolPlatform/inspire-manager/pkg/db/ent/couponspecialoffer"
+	"github.com/NpoolPlatform/inspire-manager/pkg/db/ent/goodorderpercent"
 	"github.com/NpoolPlatform/inspire-manager/pkg/db/ent/invitationcode"
-	"github.com/NpoolPlatform/inspire-manager/pkg/db/ent/orderpercent"
 	"github.com/NpoolPlatform/inspire-manager/pkg/db/ent/registration"
 
 	"entgo.io/ent/dialect"
@@ -42,10 +42,10 @@ type Client struct {
 	CouponFixAmount *CouponFixAmountClient
 	// CouponSpecialOffer is the client for interacting with the CouponSpecialOffer builders.
 	CouponSpecialOffer *CouponSpecialOfferClient
+	// GoodOrderPercent is the client for interacting with the GoodOrderPercent builders.
+	GoodOrderPercent *GoodOrderPercentClient
 	// InvitationCode is the client for interacting with the InvitationCode builders.
 	InvitationCode *InvitationCodeClient
-	// OrderPercent is the client for interacting with the OrderPercent builders.
-	OrderPercent *OrderPercentClient
 	// Registration is the client for interacting with the Registration builders.
 	Registration *RegistrationClient
 }
@@ -67,8 +67,8 @@ func (c *Client) init() {
 	c.CouponDiscount = NewCouponDiscountClient(c.config)
 	c.CouponFixAmount = NewCouponFixAmountClient(c.config)
 	c.CouponSpecialOffer = NewCouponSpecialOfferClient(c.config)
+	c.GoodOrderPercent = NewGoodOrderPercentClient(c.config)
 	c.InvitationCode = NewInvitationCodeClient(c.config)
-	c.OrderPercent = NewOrderPercentClient(c.config)
 	c.Registration = NewRegistrationClient(c.config)
 }
 
@@ -109,8 +109,8 @@ func (c *Client) Tx(ctx context.Context) (*Tx, error) {
 		CouponDiscount:     NewCouponDiscountClient(cfg),
 		CouponFixAmount:    NewCouponFixAmountClient(cfg),
 		CouponSpecialOffer: NewCouponSpecialOfferClient(cfg),
+		GoodOrderPercent:   NewGoodOrderPercentClient(cfg),
 		InvitationCode:     NewInvitationCodeClient(cfg),
-		OrderPercent:       NewOrderPercentClient(cfg),
 		Registration:       NewRegistrationClient(cfg),
 	}, nil
 }
@@ -137,8 +137,8 @@ func (c *Client) BeginTx(ctx context.Context, opts *sql.TxOptions) (*Tx, error) 
 		CouponDiscount:     NewCouponDiscountClient(cfg),
 		CouponFixAmount:    NewCouponFixAmountClient(cfg),
 		CouponSpecialOffer: NewCouponSpecialOfferClient(cfg),
+		GoodOrderPercent:   NewGoodOrderPercentClient(cfg),
 		InvitationCode:     NewInvitationCodeClient(cfg),
-		OrderPercent:       NewOrderPercentClient(cfg),
 		Registration:       NewRegistrationClient(cfg),
 	}, nil
 }
@@ -175,8 +175,8 @@ func (c *Client) Use(hooks ...Hook) {
 	c.CouponDiscount.Use(hooks...)
 	c.CouponFixAmount.Use(hooks...)
 	c.CouponSpecialOffer.Use(hooks...)
+	c.GoodOrderPercent.Use(hooks...)
 	c.InvitationCode.Use(hooks...)
-	c.OrderPercent.Use(hooks...)
 	c.Registration.Use(hooks...)
 }
 
@@ -726,6 +726,97 @@ func (c *CouponSpecialOfferClient) Hooks() []Hook {
 	return append(hooks[:len(hooks):len(hooks)], couponspecialoffer.Hooks[:]...)
 }
 
+// GoodOrderPercentClient is a client for the GoodOrderPercent schema.
+type GoodOrderPercentClient struct {
+	config
+}
+
+// NewGoodOrderPercentClient returns a client for the GoodOrderPercent from the given config.
+func NewGoodOrderPercentClient(c config) *GoodOrderPercentClient {
+	return &GoodOrderPercentClient{config: c}
+}
+
+// Use adds a list of mutation hooks to the hooks stack.
+// A call to `Use(f, g, h)` equals to `goodorderpercent.Hooks(f(g(h())))`.
+func (c *GoodOrderPercentClient) Use(hooks ...Hook) {
+	c.hooks.GoodOrderPercent = append(c.hooks.GoodOrderPercent, hooks...)
+}
+
+// Create returns a builder for creating a GoodOrderPercent entity.
+func (c *GoodOrderPercentClient) Create() *GoodOrderPercentCreate {
+	mutation := newGoodOrderPercentMutation(c.config, OpCreate)
+	return &GoodOrderPercentCreate{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// CreateBulk returns a builder for creating a bulk of GoodOrderPercent entities.
+func (c *GoodOrderPercentClient) CreateBulk(builders ...*GoodOrderPercentCreate) *GoodOrderPercentCreateBulk {
+	return &GoodOrderPercentCreateBulk{config: c.config, builders: builders}
+}
+
+// Update returns an update builder for GoodOrderPercent.
+func (c *GoodOrderPercentClient) Update() *GoodOrderPercentUpdate {
+	mutation := newGoodOrderPercentMutation(c.config, OpUpdate)
+	return &GoodOrderPercentUpdate{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// UpdateOne returns an update builder for the given entity.
+func (c *GoodOrderPercentClient) UpdateOne(gop *GoodOrderPercent) *GoodOrderPercentUpdateOne {
+	mutation := newGoodOrderPercentMutation(c.config, OpUpdateOne, withGoodOrderPercent(gop))
+	return &GoodOrderPercentUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// UpdateOneID returns an update builder for the given id.
+func (c *GoodOrderPercentClient) UpdateOneID(id uuid.UUID) *GoodOrderPercentUpdateOne {
+	mutation := newGoodOrderPercentMutation(c.config, OpUpdateOne, withGoodOrderPercentID(id))
+	return &GoodOrderPercentUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// Delete returns a delete builder for GoodOrderPercent.
+func (c *GoodOrderPercentClient) Delete() *GoodOrderPercentDelete {
+	mutation := newGoodOrderPercentMutation(c.config, OpDelete)
+	return &GoodOrderPercentDelete{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// DeleteOne returns a builder for deleting the given entity.
+func (c *GoodOrderPercentClient) DeleteOne(gop *GoodOrderPercent) *GoodOrderPercentDeleteOne {
+	return c.DeleteOneID(gop.ID)
+}
+
+// DeleteOne returns a builder for deleting the given entity by its id.
+func (c *GoodOrderPercentClient) DeleteOneID(id uuid.UUID) *GoodOrderPercentDeleteOne {
+	builder := c.Delete().Where(goodorderpercent.ID(id))
+	builder.mutation.id = &id
+	builder.mutation.op = OpDeleteOne
+	return &GoodOrderPercentDeleteOne{builder}
+}
+
+// Query returns a query builder for GoodOrderPercent.
+func (c *GoodOrderPercentClient) Query() *GoodOrderPercentQuery {
+	return &GoodOrderPercentQuery{
+		config: c.config,
+	}
+}
+
+// Get returns a GoodOrderPercent entity by its id.
+func (c *GoodOrderPercentClient) Get(ctx context.Context, id uuid.UUID) (*GoodOrderPercent, error) {
+	return c.Query().Where(goodorderpercent.ID(id)).Only(ctx)
+}
+
+// GetX is like Get, but panics if an error occurs.
+func (c *GoodOrderPercentClient) GetX(ctx context.Context, id uuid.UUID) *GoodOrderPercent {
+	obj, err := c.Get(ctx, id)
+	if err != nil {
+		panic(err)
+	}
+	return obj
+}
+
+// Hooks returns the client hooks.
+func (c *GoodOrderPercentClient) Hooks() []Hook {
+	hooks := c.hooks.GoodOrderPercent
+	return append(hooks[:len(hooks):len(hooks)], goodorderpercent.Hooks[:]...)
+}
+
 // InvitationCodeClient is a client for the InvitationCode schema.
 type InvitationCodeClient struct {
 	config
@@ -815,97 +906,6 @@ func (c *InvitationCodeClient) GetX(ctx context.Context, id uuid.UUID) *Invitati
 func (c *InvitationCodeClient) Hooks() []Hook {
 	hooks := c.hooks.InvitationCode
 	return append(hooks[:len(hooks):len(hooks)], invitationcode.Hooks[:]...)
-}
-
-// OrderPercentClient is a client for the OrderPercent schema.
-type OrderPercentClient struct {
-	config
-}
-
-// NewOrderPercentClient returns a client for the OrderPercent from the given config.
-func NewOrderPercentClient(c config) *OrderPercentClient {
-	return &OrderPercentClient{config: c}
-}
-
-// Use adds a list of mutation hooks to the hooks stack.
-// A call to `Use(f, g, h)` equals to `orderpercent.Hooks(f(g(h())))`.
-func (c *OrderPercentClient) Use(hooks ...Hook) {
-	c.hooks.OrderPercent = append(c.hooks.OrderPercent, hooks...)
-}
-
-// Create returns a builder for creating a OrderPercent entity.
-func (c *OrderPercentClient) Create() *OrderPercentCreate {
-	mutation := newOrderPercentMutation(c.config, OpCreate)
-	return &OrderPercentCreate{config: c.config, hooks: c.Hooks(), mutation: mutation}
-}
-
-// CreateBulk returns a builder for creating a bulk of OrderPercent entities.
-func (c *OrderPercentClient) CreateBulk(builders ...*OrderPercentCreate) *OrderPercentCreateBulk {
-	return &OrderPercentCreateBulk{config: c.config, builders: builders}
-}
-
-// Update returns an update builder for OrderPercent.
-func (c *OrderPercentClient) Update() *OrderPercentUpdate {
-	mutation := newOrderPercentMutation(c.config, OpUpdate)
-	return &OrderPercentUpdate{config: c.config, hooks: c.Hooks(), mutation: mutation}
-}
-
-// UpdateOne returns an update builder for the given entity.
-func (c *OrderPercentClient) UpdateOne(op *OrderPercent) *OrderPercentUpdateOne {
-	mutation := newOrderPercentMutation(c.config, OpUpdateOne, withOrderPercent(op))
-	return &OrderPercentUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
-}
-
-// UpdateOneID returns an update builder for the given id.
-func (c *OrderPercentClient) UpdateOneID(id uuid.UUID) *OrderPercentUpdateOne {
-	mutation := newOrderPercentMutation(c.config, OpUpdateOne, withOrderPercentID(id))
-	return &OrderPercentUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
-}
-
-// Delete returns a delete builder for OrderPercent.
-func (c *OrderPercentClient) Delete() *OrderPercentDelete {
-	mutation := newOrderPercentMutation(c.config, OpDelete)
-	return &OrderPercentDelete{config: c.config, hooks: c.Hooks(), mutation: mutation}
-}
-
-// DeleteOne returns a builder for deleting the given entity.
-func (c *OrderPercentClient) DeleteOne(op *OrderPercent) *OrderPercentDeleteOne {
-	return c.DeleteOneID(op.ID)
-}
-
-// DeleteOne returns a builder for deleting the given entity by its id.
-func (c *OrderPercentClient) DeleteOneID(id uuid.UUID) *OrderPercentDeleteOne {
-	builder := c.Delete().Where(orderpercent.ID(id))
-	builder.mutation.id = &id
-	builder.mutation.op = OpDeleteOne
-	return &OrderPercentDeleteOne{builder}
-}
-
-// Query returns a query builder for OrderPercent.
-func (c *OrderPercentClient) Query() *OrderPercentQuery {
-	return &OrderPercentQuery{
-		config: c.config,
-	}
-}
-
-// Get returns a OrderPercent entity by its id.
-func (c *OrderPercentClient) Get(ctx context.Context, id uuid.UUID) (*OrderPercent, error) {
-	return c.Query().Where(orderpercent.ID(id)).Only(ctx)
-}
-
-// GetX is like Get, but panics if an error occurs.
-func (c *OrderPercentClient) GetX(ctx context.Context, id uuid.UUID) *OrderPercent {
-	obj, err := c.Get(ctx, id)
-	if err != nil {
-		panic(err)
-	}
-	return obj
-}
-
-// Hooks returns the client hooks.
-func (c *OrderPercentClient) Hooks() []Hook {
-	hooks := c.hooks.OrderPercent
-	return append(hooks[:len(hooks):len(hooks)], orderpercent.Hooks[:]...)
 }
 
 // RegistrationClient is a client for the Registration schema.

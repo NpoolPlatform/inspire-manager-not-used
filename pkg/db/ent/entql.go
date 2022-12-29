@@ -9,8 +9,8 @@ import (
 	"github.com/NpoolPlatform/inspire-manager/pkg/db/ent/coupondiscount"
 	"github.com/NpoolPlatform/inspire-manager/pkg/db/ent/couponfixamount"
 	"github.com/NpoolPlatform/inspire-manager/pkg/db/ent/couponspecialoffer"
+	"github.com/NpoolPlatform/inspire-manager/pkg/db/ent/goodorderpercent"
 	"github.com/NpoolPlatform/inspire-manager/pkg/db/ent/invitationcode"
-	"github.com/NpoolPlatform/inspire-manager/pkg/db/ent/orderpercent"
 	"github.com/NpoolPlatform/inspire-manager/pkg/db/ent/registration"
 
 	"entgo.io/ent/dialect/sql"
@@ -170,6 +170,28 @@ var schemaGraph = func() *sqlgraph.Schema {
 	}
 	graph.Nodes[6] = &sqlgraph.Node{
 		NodeSpec: sqlgraph.NodeSpec{
+			Table:   goodorderpercent.Table,
+			Columns: goodorderpercent.Columns,
+			ID: &sqlgraph.FieldSpec{
+				Type:   field.TypeUUID,
+				Column: goodorderpercent.FieldID,
+			},
+		},
+		Type: "GoodOrderPercent",
+		Fields: map[string]*sqlgraph.FieldSpec{
+			goodorderpercent.FieldCreatedAt: {Type: field.TypeUint32, Column: goodorderpercent.FieldCreatedAt},
+			goodorderpercent.FieldUpdatedAt: {Type: field.TypeUint32, Column: goodorderpercent.FieldUpdatedAt},
+			goodorderpercent.FieldDeletedAt: {Type: field.TypeUint32, Column: goodorderpercent.FieldDeletedAt},
+			goodorderpercent.FieldAppID:     {Type: field.TypeUUID, Column: goodorderpercent.FieldAppID},
+			goodorderpercent.FieldUserID:    {Type: field.TypeUUID, Column: goodorderpercent.FieldUserID},
+			goodorderpercent.FieldGoodID:    {Type: field.TypeUUID, Column: goodorderpercent.FieldGoodID},
+			goodorderpercent.FieldPercent:   {Type: field.TypeOther, Column: goodorderpercent.FieldPercent},
+			goodorderpercent.FieldStartAt:   {Type: field.TypeUint32, Column: goodorderpercent.FieldStartAt},
+			goodorderpercent.FieldEndAt:     {Type: field.TypeUint32, Column: goodorderpercent.FieldEndAt},
+		},
+	}
+	graph.Nodes[7] = &sqlgraph.Node{
+		NodeSpec: sqlgraph.NodeSpec{
 			Table:   invitationcode.Table,
 			Columns: invitationcode.Columns,
 			ID: &sqlgraph.FieldSpec{
@@ -186,31 +208,6 @@ var schemaGraph = func() *sqlgraph.Schema {
 			invitationcode.FieldUserID:         {Type: field.TypeUUID, Column: invitationcode.FieldUserID},
 			invitationcode.FieldInvitationCode: {Type: field.TypeString, Column: invitationcode.FieldInvitationCode},
 			invitationcode.FieldConfirmed:      {Type: field.TypeBool, Column: invitationcode.FieldConfirmed},
-		},
-	}
-	graph.Nodes[7] = &sqlgraph.Node{
-		NodeSpec: sqlgraph.NodeSpec{
-			Table:   orderpercent.Table,
-			Columns: orderpercent.Columns,
-			ID: &sqlgraph.FieldSpec{
-				Type:   field.TypeUUID,
-				Column: orderpercent.FieldID,
-			},
-		},
-		Type: "OrderPercent",
-		Fields: map[string]*sqlgraph.FieldSpec{
-			orderpercent.FieldCreatedAt:  {Type: field.TypeUint32, Column: orderpercent.FieldCreatedAt},
-			orderpercent.FieldUpdatedAt:  {Type: field.TypeUint32, Column: orderpercent.FieldUpdatedAt},
-			orderpercent.FieldDeletedAt:  {Type: field.TypeUint32, Column: orderpercent.FieldDeletedAt},
-			orderpercent.FieldAppID:      {Type: field.TypeUUID, Column: orderpercent.FieldAppID},
-			orderpercent.FieldUserID:     {Type: field.TypeUUID, Column: orderpercent.FieldUserID},
-			orderpercent.FieldGoodID:     {Type: field.TypeUUID, Column: orderpercent.FieldGoodID},
-			orderpercent.FieldTitle:      {Type: field.TypeString, Column: orderpercent.FieldTitle},
-			orderpercent.FieldPercent:    {Type: field.TypeOther, Column: orderpercent.FieldPercent},
-			orderpercent.FieldStartAt:    {Type: field.TypeUint32, Column: orderpercent.FieldStartAt},
-			orderpercent.FieldEndAt:      {Type: field.TypeUint32, Column: orderpercent.FieldEndAt},
-			orderpercent.FieldBadgeLarge: {Type: field.TypeString, Column: orderpercent.FieldBadgeLarge},
-			orderpercent.FieldBadgeSmall: {Type: field.TypeString, Column: orderpercent.FieldBadgeSmall},
 		},
 	}
 	graph.Nodes[8] = &sqlgraph.Node{
@@ -822,6 +819,91 @@ func (f *CouponSpecialOfferFilter) WhereMessage(p entql.StringP) {
 }
 
 // addPredicate implements the predicateAdder interface.
+func (gopq *GoodOrderPercentQuery) addPredicate(pred func(s *sql.Selector)) {
+	gopq.predicates = append(gopq.predicates, pred)
+}
+
+// Filter returns a Filter implementation to apply filters on the GoodOrderPercentQuery builder.
+func (gopq *GoodOrderPercentQuery) Filter() *GoodOrderPercentFilter {
+	return &GoodOrderPercentFilter{config: gopq.config, predicateAdder: gopq}
+}
+
+// addPredicate implements the predicateAdder interface.
+func (m *GoodOrderPercentMutation) addPredicate(pred func(s *sql.Selector)) {
+	m.predicates = append(m.predicates, pred)
+}
+
+// Filter returns an entql.Where implementation to apply filters on the GoodOrderPercentMutation builder.
+func (m *GoodOrderPercentMutation) Filter() *GoodOrderPercentFilter {
+	return &GoodOrderPercentFilter{config: m.config, predicateAdder: m}
+}
+
+// GoodOrderPercentFilter provides a generic filtering capability at runtime for GoodOrderPercentQuery.
+type GoodOrderPercentFilter struct {
+	predicateAdder
+	config
+}
+
+// Where applies the entql predicate on the query filter.
+func (f *GoodOrderPercentFilter) Where(p entql.P) {
+	f.addPredicate(func(s *sql.Selector) {
+		if err := schemaGraph.EvalP(schemaGraph.Nodes[6].Type, p, s); err != nil {
+			s.AddError(err)
+		}
+	})
+}
+
+// WhereID applies the entql [16]byte predicate on the id field.
+func (f *GoodOrderPercentFilter) WhereID(p entql.ValueP) {
+	f.Where(p.Field(goodorderpercent.FieldID))
+}
+
+// WhereCreatedAt applies the entql uint32 predicate on the created_at field.
+func (f *GoodOrderPercentFilter) WhereCreatedAt(p entql.Uint32P) {
+	f.Where(p.Field(goodorderpercent.FieldCreatedAt))
+}
+
+// WhereUpdatedAt applies the entql uint32 predicate on the updated_at field.
+func (f *GoodOrderPercentFilter) WhereUpdatedAt(p entql.Uint32P) {
+	f.Where(p.Field(goodorderpercent.FieldUpdatedAt))
+}
+
+// WhereDeletedAt applies the entql uint32 predicate on the deleted_at field.
+func (f *GoodOrderPercentFilter) WhereDeletedAt(p entql.Uint32P) {
+	f.Where(p.Field(goodorderpercent.FieldDeletedAt))
+}
+
+// WhereAppID applies the entql [16]byte predicate on the app_id field.
+func (f *GoodOrderPercentFilter) WhereAppID(p entql.ValueP) {
+	f.Where(p.Field(goodorderpercent.FieldAppID))
+}
+
+// WhereUserID applies the entql [16]byte predicate on the user_id field.
+func (f *GoodOrderPercentFilter) WhereUserID(p entql.ValueP) {
+	f.Where(p.Field(goodorderpercent.FieldUserID))
+}
+
+// WhereGoodID applies the entql [16]byte predicate on the good_id field.
+func (f *GoodOrderPercentFilter) WhereGoodID(p entql.ValueP) {
+	f.Where(p.Field(goodorderpercent.FieldGoodID))
+}
+
+// WherePercent applies the entql other predicate on the percent field.
+func (f *GoodOrderPercentFilter) WherePercent(p entql.OtherP) {
+	f.Where(p.Field(goodorderpercent.FieldPercent))
+}
+
+// WhereStartAt applies the entql uint32 predicate on the start_at field.
+func (f *GoodOrderPercentFilter) WhereStartAt(p entql.Uint32P) {
+	f.Where(p.Field(goodorderpercent.FieldStartAt))
+}
+
+// WhereEndAt applies the entql uint32 predicate on the end_at field.
+func (f *GoodOrderPercentFilter) WhereEndAt(p entql.Uint32P) {
+	f.Where(p.Field(goodorderpercent.FieldEndAt))
+}
+
+// addPredicate implements the predicateAdder interface.
 func (icq *InvitationCodeQuery) addPredicate(pred func(s *sql.Selector)) {
 	icq.predicates = append(icq.predicates, pred)
 }
@@ -850,7 +932,7 @@ type InvitationCodeFilter struct {
 // Where applies the entql predicate on the query filter.
 func (f *InvitationCodeFilter) Where(p entql.P) {
 	f.addPredicate(func(s *sql.Selector) {
-		if err := schemaGraph.EvalP(schemaGraph.Nodes[6].Type, p, s); err != nil {
+		if err := schemaGraph.EvalP(schemaGraph.Nodes[7].Type, p, s); err != nil {
 			s.AddError(err)
 		}
 	})
@@ -894,106 +976,6 @@ func (f *InvitationCodeFilter) WhereInvitationCode(p entql.StringP) {
 // WhereConfirmed applies the entql bool predicate on the confirmed field.
 func (f *InvitationCodeFilter) WhereConfirmed(p entql.BoolP) {
 	f.Where(p.Field(invitationcode.FieldConfirmed))
-}
-
-// addPredicate implements the predicateAdder interface.
-func (opq *OrderPercentQuery) addPredicate(pred func(s *sql.Selector)) {
-	opq.predicates = append(opq.predicates, pred)
-}
-
-// Filter returns a Filter implementation to apply filters on the OrderPercentQuery builder.
-func (opq *OrderPercentQuery) Filter() *OrderPercentFilter {
-	return &OrderPercentFilter{config: opq.config, predicateAdder: opq}
-}
-
-// addPredicate implements the predicateAdder interface.
-func (m *OrderPercentMutation) addPredicate(pred func(s *sql.Selector)) {
-	m.predicates = append(m.predicates, pred)
-}
-
-// Filter returns an entql.Where implementation to apply filters on the OrderPercentMutation builder.
-func (m *OrderPercentMutation) Filter() *OrderPercentFilter {
-	return &OrderPercentFilter{config: m.config, predicateAdder: m}
-}
-
-// OrderPercentFilter provides a generic filtering capability at runtime for OrderPercentQuery.
-type OrderPercentFilter struct {
-	predicateAdder
-	config
-}
-
-// Where applies the entql predicate on the query filter.
-func (f *OrderPercentFilter) Where(p entql.P) {
-	f.addPredicate(func(s *sql.Selector) {
-		if err := schemaGraph.EvalP(schemaGraph.Nodes[7].Type, p, s); err != nil {
-			s.AddError(err)
-		}
-	})
-}
-
-// WhereID applies the entql [16]byte predicate on the id field.
-func (f *OrderPercentFilter) WhereID(p entql.ValueP) {
-	f.Where(p.Field(orderpercent.FieldID))
-}
-
-// WhereCreatedAt applies the entql uint32 predicate on the created_at field.
-func (f *OrderPercentFilter) WhereCreatedAt(p entql.Uint32P) {
-	f.Where(p.Field(orderpercent.FieldCreatedAt))
-}
-
-// WhereUpdatedAt applies the entql uint32 predicate on the updated_at field.
-func (f *OrderPercentFilter) WhereUpdatedAt(p entql.Uint32P) {
-	f.Where(p.Field(orderpercent.FieldUpdatedAt))
-}
-
-// WhereDeletedAt applies the entql uint32 predicate on the deleted_at field.
-func (f *OrderPercentFilter) WhereDeletedAt(p entql.Uint32P) {
-	f.Where(p.Field(orderpercent.FieldDeletedAt))
-}
-
-// WhereAppID applies the entql [16]byte predicate on the app_id field.
-func (f *OrderPercentFilter) WhereAppID(p entql.ValueP) {
-	f.Where(p.Field(orderpercent.FieldAppID))
-}
-
-// WhereUserID applies the entql [16]byte predicate on the user_id field.
-func (f *OrderPercentFilter) WhereUserID(p entql.ValueP) {
-	f.Where(p.Field(orderpercent.FieldUserID))
-}
-
-// WhereGoodID applies the entql [16]byte predicate on the good_id field.
-func (f *OrderPercentFilter) WhereGoodID(p entql.ValueP) {
-	f.Where(p.Field(orderpercent.FieldGoodID))
-}
-
-// WhereTitle applies the entql string predicate on the title field.
-func (f *OrderPercentFilter) WhereTitle(p entql.StringP) {
-	f.Where(p.Field(orderpercent.FieldTitle))
-}
-
-// WherePercent applies the entql other predicate on the percent field.
-func (f *OrderPercentFilter) WherePercent(p entql.OtherP) {
-	f.Where(p.Field(orderpercent.FieldPercent))
-}
-
-// WhereStartAt applies the entql uint32 predicate on the start_at field.
-func (f *OrderPercentFilter) WhereStartAt(p entql.Uint32P) {
-	f.Where(p.Field(orderpercent.FieldStartAt))
-}
-
-// WhereEndAt applies the entql uint32 predicate on the end_at field.
-func (f *OrderPercentFilter) WhereEndAt(p entql.Uint32P) {
-	f.Where(p.Field(orderpercent.FieldEndAt))
-}
-
-// WhereBadgeLarge applies the entql string predicate on the badge_large field.
-func (f *OrderPercentFilter) WhereBadgeLarge(p entql.StringP) {
-	f.Where(p.Field(orderpercent.FieldBadgeLarge))
-}
-
-// WhereBadgeSmall applies the entql string predicate on the badge_small field.
-func (f *OrderPercentFilter) WhereBadgeSmall(p entql.StringP) {
-	f.Where(p.Field(orderpercent.FieldBadgeSmall))
 }
 
 // addPredicate implements the predicateAdder interface.

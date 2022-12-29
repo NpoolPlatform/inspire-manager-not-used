@@ -11,8 +11,8 @@ import (
 	"github.com/NpoolPlatform/inspire-manager/pkg/db/ent/coupondiscount"
 	"github.com/NpoolPlatform/inspire-manager/pkg/db/ent/couponfixamount"
 	"github.com/NpoolPlatform/inspire-manager/pkg/db/ent/couponspecialoffer"
+	"github.com/NpoolPlatform/inspire-manager/pkg/db/ent/goodorderpercent"
 	"github.com/NpoolPlatform/inspire-manager/pkg/db/ent/invitationcode"
-	"github.com/NpoolPlatform/inspire-manager/pkg/db/ent/orderpercent"
 	"github.com/NpoolPlatform/inspire-manager/pkg/db/ent/registration"
 	"github.com/NpoolPlatform/inspire-manager/pkg/db/ent/schema"
 	"github.com/google/uuid"
@@ -378,6 +378,62 @@ func init() {
 	couponspecialofferDescID := couponspecialofferFields[0].Descriptor()
 	// couponspecialoffer.DefaultID holds the default value on creation for the id field.
 	couponspecialoffer.DefaultID = couponspecialofferDescID.Default.(func() uuid.UUID)
+	goodorderpercentMixin := schema.GoodOrderPercent{}.Mixin()
+	goodorderpercent.Policy = privacy.NewPolicies(goodorderpercentMixin[0], schema.GoodOrderPercent{})
+	goodorderpercent.Hooks[0] = func(next ent.Mutator) ent.Mutator {
+		return ent.MutateFunc(func(ctx context.Context, m ent.Mutation) (ent.Value, error) {
+			if err := goodorderpercent.Policy.EvalMutation(ctx, m); err != nil {
+				return nil, err
+			}
+			return next.Mutate(ctx, m)
+		})
+	}
+	goodorderpercentMixinFields0 := goodorderpercentMixin[0].Fields()
+	_ = goodorderpercentMixinFields0
+	goodorderpercentFields := schema.GoodOrderPercent{}.Fields()
+	_ = goodorderpercentFields
+	// goodorderpercentDescCreatedAt is the schema descriptor for created_at field.
+	goodorderpercentDescCreatedAt := goodorderpercentMixinFields0[0].Descriptor()
+	// goodorderpercent.DefaultCreatedAt holds the default value on creation for the created_at field.
+	goodorderpercent.DefaultCreatedAt = goodorderpercentDescCreatedAt.Default.(func() uint32)
+	// goodorderpercentDescUpdatedAt is the schema descriptor for updated_at field.
+	goodorderpercentDescUpdatedAt := goodorderpercentMixinFields0[1].Descriptor()
+	// goodorderpercent.DefaultUpdatedAt holds the default value on creation for the updated_at field.
+	goodorderpercent.DefaultUpdatedAt = goodorderpercentDescUpdatedAt.Default.(func() uint32)
+	// goodorderpercent.UpdateDefaultUpdatedAt holds the default value on update for the updated_at field.
+	goodorderpercent.UpdateDefaultUpdatedAt = goodorderpercentDescUpdatedAt.UpdateDefault.(func() uint32)
+	// goodorderpercentDescDeletedAt is the schema descriptor for deleted_at field.
+	goodorderpercentDescDeletedAt := goodorderpercentMixinFields0[2].Descriptor()
+	// goodorderpercent.DefaultDeletedAt holds the default value on creation for the deleted_at field.
+	goodorderpercent.DefaultDeletedAt = goodorderpercentDescDeletedAt.Default.(func() uint32)
+	// goodorderpercentDescAppID is the schema descriptor for app_id field.
+	goodorderpercentDescAppID := goodorderpercentFields[1].Descriptor()
+	// goodorderpercent.DefaultAppID holds the default value on creation for the app_id field.
+	goodorderpercent.DefaultAppID = goodorderpercentDescAppID.Default.(func() uuid.UUID)
+	// goodorderpercentDescUserID is the schema descriptor for user_id field.
+	goodorderpercentDescUserID := goodorderpercentFields[2].Descriptor()
+	// goodorderpercent.DefaultUserID holds the default value on creation for the user_id field.
+	goodorderpercent.DefaultUserID = goodorderpercentDescUserID.Default.(func() uuid.UUID)
+	// goodorderpercentDescGoodID is the schema descriptor for good_id field.
+	goodorderpercentDescGoodID := goodorderpercentFields[3].Descriptor()
+	// goodorderpercent.DefaultGoodID holds the default value on creation for the good_id field.
+	goodorderpercent.DefaultGoodID = goodorderpercentDescGoodID.Default.(func() uuid.UUID)
+	// goodorderpercentDescPercent is the schema descriptor for percent field.
+	goodorderpercentDescPercent := goodorderpercentFields[4].Descriptor()
+	// goodorderpercent.DefaultPercent holds the default value on creation for the percent field.
+	goodorderpercent.DefaultPercent = goodorderpercentDescPercent.Default.(decimal.Decimal)
+	// goodorderpercentDescStartAt is the schema descriptor for start_at field.
+	goodorderpercentDescStartAt := goodorderpercentFields[5].Descriptor()
+	// goodorderpercent.DefaultStartAt holds the default value on creation for the start_at field.
+	goodorderpercent.DefaultStartAt = goodorderpercentDescStartAt.Default.(uint32)
+	// goodorderpercentDescEndAt is the schema descriptor for end_at field.
+	goodorderpercentDescEndAt := goodorderpercentFields[6].Descriptor()
+	// goodorderpercent.DefaultEndAt holds the default value on creation for the end_at field.
+	goodorderpercent.DefaultEndAt = goodorderpercentDescEndAt.Default.(uint32)
+	// goodorderpercentDescID is the schema descriptor for id field.
+	goodorderpercentDescID := goodorderpercentFields[0].Descriptor()
+	// goodorderpercent.DefaultID holds the default value on creation for the id field.
+	goodorderpercent.DefaultID = goodorderpercentDescID.Default.(func() uuid.UUID)
 	invitationcodeMixin := schema.InvitationCode{}.Mixin()
 	invitationcode.Policy = privacy.NewPolicies(invitationcodeMixin[0], schema.InvitationCode{})
 	invitationcode.Hooks[0] = func(next ent.Mutator) ent.Mutator {
@@ -418,58 +474,6 @@ func init() {
 	invitationcodeDescID := invitationcodeFields[0].Descriptor()
 	// invitationcode.DefaultID holds the default value on creation for the id field.
 	invitationcode.DefaultID = invitationcodeDescID.Default.(func() uuid.UUID)
-	orderpercentMixin := schema.OrderPercent{}.Mixin()
-	orderpercent.Policy = privacy.NewPolicies(orderpercentMixin[0], schema.OrderPercent{})
-	orderpercent.Hooks[0] = func(next ent.Mutator) ent.Mutator {
-		return ent.MutateFunc(func(ctx context.Context, m ent.Mutation) (ent.Value, error) {
-			if err := orderpercent.Policy.EvalMutation(ctx, m); err != nil {
-				return nil, err
-			}
-			return next.Mutate(ctx, m)
-		})
-	}
-	orderpercentMixinFields0 := orderpercentMixin[0].Fields()
-	_ = orderpercentMixinFields0
-	orderpercentFields := schema.OrderPercent{}.Fields()
-	_ = orderpercentFields
-	// orderpercentDescCreatedAt is the schema descriptor for created_at field.
-	orderpercentDescCreatedAt := orderpercentMixinFields0[0].Descriptor()
-	// orderpercent.DefaultCreatedAt holds the default value on creation for the created_at field.
-	orderpercent.DefaultCreatedAt = orderpercentDescCreatedAt.Default.(func() uint32)
-	// orderpercentDescUpdatedAt is the schema descriptor for updated_at field.
-	orderpercentDescUpdatedAt := orderpercentMixinFields0[1].Descriptor()
-	// orderpercent.DefaultUpdatedAt holds the default value on creation for the updated_at field.
-	orderpercent.DefaultUpdatedAt = orderpercentDescUpdatedAt.Default.(func() uint32)
-	// orderpercent.UpdateDefaultUpdatedAt holds the default value on update for the updated_at field.
-	orderpercent.UpdateDefaultUpdatedAt = orderpercentDescUpdatedAt.UpdateDefault.(func() uint32)
-	// orderpercentDescDeletedAt is the schema descriptor for deleted_at field.
-	orderpercentDescDeletedAt := orderpercentMixinFields0[2].Descriptor()
-	// orderpercent.DefaultDeletedAt holds the default value on creation for the deleted_at field.
-	orderpercent.DefaultDeletedAt = orderpercentDescDeletedAt.Default.(func() uint32)
-	// orderpercentDescAppID is the schema descriptor for app_id field.
-	orderpercentDescAppID := orderpercentFields[1].Descriptor()
-	// orderpercent.DefaultAppID holds the default value on creation for the app_id field.
-	orderpercent.DefaultAppID = orderpercentDescAppID.Default.(func() uuid.UUID)
-	// orderpercentDescUserID is the schema descriptor for user_id field.
-	orderpercentDescUserID := orderpercentFields[2].Descriptor()
-	// orderpercent.DefaultUserID holds the default value on creation for the user_id field.
-	orderpercent.DefaultUserID = orderpercentDescUserID.Default.(func() uuid.UUID)
-	// orderpercentDescGoodID is the schema descriptor for good_id field.
-	orderpercentDescGoodID := orderpercentFields[3].Descriptor()
-	// orderpercent.DefaultGoodID holds the default value on creation for the good_id field.
-	orderpercent.DefaultGoodID = orderpercentDescGoodID.Default.(func() uuid.UUID)
-	// orderpercentDescTitle is the schema descriptor for title field.
-	orderpercentDescTitle := orderpercentFields[4].Descriptor()
-	// orderpercent.DefaultTitle holds the default value on creation for the title field.
-	orderpercent.DefaultTitle = orderpercentDescTitle.Default.(string)
-	// orderpercentDescPercent is the schema descriptor for percent field.
-	orderpercentDescPercent := orderpercentFields[5].Descriptor()
-	// orderpercent.DefaultPercent holds the default value on creation for the percent field.
-	orderpercent.DefaultPercent = orderpercentDescPercent.Default.(decimal.Decimal)
-	// orderpercentDescID is the schema descriptor for id field.
-	orderpercentDescID := orderpercentFields[0].Descriptor()
-	// orderpercent.DefaultID holds the default value on creation for the id field.
-	orderpercent.DefaultID = orderpercentDescID.Default.(func() uuid.UUID)
 	registrationMixin := schema.Registration{}.Mixin()
 	registration.Policy = privacy.NewPolicies(registrationMixin[0], schema.Registration{})
 	registration.Hooks[0] = func(next ent.Mutator) ent.Mutator {

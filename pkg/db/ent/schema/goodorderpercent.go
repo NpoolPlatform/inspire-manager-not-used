@@ -1,6 +1,8 @@
 package schema
 
 import (
+	"time"
+
 	"entgo.io/ent"
 	"entgo.io/ent/dialect"
 	"entgo.io/ent/schema/field"
@@ -10,19 +12,19 @@ import (
 	"github.com/google/uuid"
 )
 
-// OrderPercent holds the schema definition for the OrderPercent entity.
-type OrderPercent struct {
+// GoodOrderPercent holds the schema definition for the GoodOrderPercent entity.
+type GoodOrderPercent struct {
 	ent.Schema
 }
 
-func (OrderPercent) Mixin() []ent.Mixin {
+func (GoodOrderPercent) Mixin() []ent.Mixin {
 	return []ent.Mixin{
 		mixin.TimeMixin{},
 	}
 }
 
-// Fields of the OrderPercent.
-func (OrderPercent) Fields() []ent.Field {
+// Fields of the GoodOrderPercent.
+func (GoodOrderPercent) Fields() []ent.Field {
 	return []ent.Field{
 		field.
 			UUID("id", uuid.UUID{}).
@@ -41,10 +43,6 @@ func (OrderPercent) Fields() []ent.Field {
 			Optional().
 			Default(uuid.New),
 		field.
-			String("title").
-			Optional().
-			Default(""),
-		field.
 			Other("percent", decimal.Decimal{}).
 			SchemaType(map[string]string{
 				dialect.MySQL: "decimal(37,18)",
@@ -52,22 +50,22 @@ func (OrderPercent) Fields() []ent.Field {
 			Optional().
 			Default(decimal.Decimal{}),
 		field.
-			Uint32("start_at"),
+			Uint32("start_at").
+			Optional().
+			Default(uint32(time.Now().Unix())),
 		field.
-			Uint32("end_at"),
-		field.
-			String("badge_large"),
-		field.
-			String("badge_small"),
+			Uint32("end_at").
+			Optional().
+			Default(0),
 	}
 }
 
-// Edges of the OrderPercent.
-func (OrderPercent) Edges() []ent.Edge {
+// Edges of the GoodOrderPercent.
+func (GoodOrderPercent) Edges() []ent.Edge {
 	return nil
 }
 
-// Indexes of the OrderPercent.
-func (OrderPercent) Indexes() []ent.Index {
+// Indexes of the GoodOrderPercent.
+func (GoodOrderPercent) Indexes() []ent.Index {
 	return nil
 }

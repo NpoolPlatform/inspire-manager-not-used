@@ -294,6 +294,30 @@ func (f CouponSpecialOfferMutationRuleFunc) EvalMutation(ctx context.Context, m 
 	return Denyf("ent/privacy: unexpected mutation type %T, expect *ent.CouponSpecialOfferMutation", m)
 }
 
+// The GoodOrderPercentQueryRuleFunc type is an adapter to allow the use of ordinary
+// functions as a query rule.
+type GoodOrderPercentQueryRuleFunc func(context.Context, *ent.GoodOrderPercentQuery) error
+
+// EvalQuery return f(ctx, q).
+func (f GoodOrderPercentQueryRuleFunc) EvalQuery(ctx context.Context, q ent.Query) error {
+	if q, ok := q.(*ent.GoodOrderPercentQuery); ok {
+		return f(ctx, q)
+	}
+	return Denyf("ent/privacy: unexpected query type %T, expect *ent.GoodOrderPercentQuery", q)
+}
+
+// The GoodOrderPercentMutationRuleFunc type is an adapter to allow the use of ordinary
+// functions as a mutation rule.
+type GoodOrderPercentMutationRuleFunc func(context.Context, *ent.GoodOrderPercentMutation) error
+
+// EvalMutation calls f(ctx, m).
+func (f GoodOrderPercentMutationRuleFunc) EvalMutation(ctx context.Context, m ent.Mutation) error {
+	if m, ok := m.(*ent.GoodOrderPercentMutation); ok {
+		return f(ctx, m)
+	}
+	return Denyf("ent/privacy: unexpected mutation type %T, expect *ent.GoodOrderPercentMutation", m)
+}
+
 // The InvitationCodeQueryRuleFunc type is an adapter to allow the use of ordinary
 // functions as a query rule.
 type InvitationCodeQueryRuleFunc func(context.Context, *ent.InvitationCodeQuery) error
@@ -316,30 +340,6 @@ func (f InvitationCodeMutationRuleFunc) EvalMutation(ctx context.Context, m ent.
 		return f(ctx, m)
 	}
 	return Denyf("ent/privacy: unexpected mutation type %T, expect *ent.InvitationCodeMutation", m)
-}
-
-// The OrderPercentQueryRuleFunc type is an adapter to allow the use of ordinary
-// functions as a query rule.
-type OrderPercentQueryRuleFunc func(context.Context, *ent.OrderPercentQuery) error
-
-// EvalQuery return f(ctx, q).
-func (f OrderPercentQueryRuleFunc) EvalQuery(ctx context.Context, q ent.Query) error {
-	if q, ok := q.(*ent.OrderPercentQuery); ok {
-		return f(ctx, q)
-	}
-	return Denyf("ent/privacy: unexpected query type %T, expect *ent.OrderPercentQuery", q)
-}
-
-// The OrderPercentMutationRuleFunc type is an adapter to allow the use of ordinary
-// functions as a mutation rule.
-type OrderPercentMutationRuleFunc func(context.Context, *ent.OrderPercentMutation) error
-
-// EvalMutation calls f(ctx, m).
-func (f OrderPercentMutationRuleFunc) EvalMutation(ctx context.Context, m ent.Mutation) error {
-	if m, ok := m.(*ent.OrderPercentMutation); ok {
-		return f(ctx, m)
-	}
-	return Denyf("ent/privacy: unexpected mutation type %T, expect *ent.OrderPercentMutation", m)
 }
 
 // The RegistrationQueryRuleFunc type is an adapter to allow the use of ordinary
@@ -413,9 +413,9 @@ func queryFilter(q ent.Query) (Filter, error) {
 		return q.Filter(), nil
 	case *ent.CouponSpecialOfferQuery:
 		return q.Filter(), nil
-	case *ent.InvitationCodeQuery:
+	case *ent.GoodOrderPercentQuery:
 		return q.Filter(), nil
-	case *ent.OrderPercentQuery:
+	case *ent.InvitationCodeQuery:
 		return q.Filter(), nil
 	case *ent.RegistrationQuery:
 		return q.Filter(), nil
@@ -438,9 +438,9 @@ func mutationFilter(m ent.Mutation) (Filter, error) {
 		return m.Filter(), nil
 	case *ent.CouponSpecialOfferMutation:
 		return m.Filter(), nil
-	case *ent.InvitationCodeMutation:
+	case *ent.GoodOrderPercentMutation:
 		return m.Filter(), nil
-	case *ent.OrderPercentMutation:
+	case *ent.InvitationCodeMutation:
 		return m.Filter(), nil
 	case *ent.RegistrationMutation:
 		return m.Filter(), nil

@@ -87,6 +87,19 @@ func (f CouponSpecialOfferFunc) Mutate(ctx context.Context, m ent.Mutation) (ent
 	return f(ctx, mv)
 }
 
+// The GoodOrderPercentFunc type is an adapter to allow the use of ordinary
+// function as GoodOrderPercent mutator.
+type GoodOrderPercentFunc func(context.Context, *ent.GoodOrderPercentMutation) (ent.Value, error)
+
+// Mutate calls f(ctx, m).
+func (f GoodOrderPercentFunc) Mutate(ctx context.Context, m ent.Mutation) (ent.Value, error) {
+	mv, ok := m.(*ent.GoodOrderPercentMutation)
+	if !ok {
+		return nil, fmt.Errorf("unexpected mutation type %T. expect *ent.GoodOrderPercentMutation", m)
+	}
+	return f(ctx, mv)
+}
+
 // The InvitationCodeFunc type is an adapter to allow the use of ordinary
 // function as InvitationCode mutator.
 type InvitationCodeFunc func(context.Context, *ent.InvitationCodeMutation) (ent.Value, error)
@@ -96,19 +109,6 @@ func (f InvitationCodeFunc) Mutate(ctx context.Context, m ent.Mutation) (ent.Val
 	mv, ok := m.(*ent.InvitationCodeMutation)
 	if !ok {
 		return nil, fmt.Errorf("unexpected mutation type %T. expect *ent.InvitationCodeMutation", m)
-	}
-	return f(ctx, mv)
-}
-
-// The OrderPercentFunc type is an adapter to allow the use of ordinary
-// function as OrderPercent mutator.
-type OrderPercentFunc func(context.Context, *ent.OrderPercentMutation) (ent.Value, error)
-
-// Mutate calls f(ctx, m).
-func (f OrderPercentFunc) Mutate(ctx context.Context, m ent.Mutation) (ent.Value, error) {
-	mv, ok := m.(*ent.OrderPercentMutation)
-	if !ok {
-		return nil, fmt.Errorf("unexpected mutation type %T. expect *ent.OrderPercentMutation", m)
 	}
 	return f(ctx, mv)
 }

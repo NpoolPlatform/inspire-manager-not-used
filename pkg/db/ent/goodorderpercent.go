@@ -7,13 +7,13 @@ import (
 	"strings"
 
 	"entgo.io/ent/dialect/sql"
-	"github.com/NpoolPlatform/inspire-manager/pkg/db/ent/orderpercent"
+	"github.com/NpoolPlatform/inspire-manager/pkg/db/ent/goodorderpercent"
 	"github.com/google/uuid"
 	"github.com/shopspring/decimal"
 )
 
-// OrderPercent is the model entity for the OrderPercent schema.
-type OrderPercent struct {
+// GoodOrderPercent is the model entity for the GoodOrderPercent schema.
+type GoodOrderPercent struct {
 	config `json:"-"`
 	// ID of the ent.
 	ID uuid.UUID `json:"id,omitempty"`
@@ -29,198 +29,163 @@ type OrderPercent struct {
 	UserID uuid.UUID `json:"user_id,omitempty"`
 	// GoodID holds the value of the "good_id" field.
 	GoodID uuid.UUID `json:"good_id,omitempty"`
-	// Title holds the value of the "title" field.
-	Title string `json:"title,omitempty"`
 	// Percent holds the value of the "percent" field.
 	Percent decimal.Decimal `json:"percent,omitempty"`
 	// StartAt holds the value of the "start_at" field.
 	StartAt uint32 `json:"start_at,omitempty"`
 	// EndAt holds the value of the "end_at" field.
 	EndAt uint32 `json:"end_at,omitempty"`
-	// BadgeLarge holds the value of the "badge_large" field.
-	BadgeLarge string `json:"badge_large,omitempty"`
-	// BadgeSmall holds the value of the "badge_small" field.
-	BadgeSmall string `json:"badge_small,omitempty"`
 }
 
 // scanValues returns the types for scanning values from sql.Rows.
-func (*OrderPercent) scanValues(columns []string) ([]interface{}, error) {
+func (*GoodOrderPercent) scanValues(columns []string) ([]interface{}, error) {
 	values := make([]interface{}, len(columns))
 	for i := range columns {
 		switch columns[i] {
-		case orderpercent.FieldPercent:
+		case goodorderpercent.FieldPercent:
 			values[i] = new(decimal.Decimal)
-		case orderpercent.FieldCreatedAt, orderpercent.FieldUpdatedAt, orderpercent.FieldDeletedAt, orderpercent.FieldStartAt, orderpercent.FieldEndAt:
+		case goodorderpercent.FieldCreatedAt, goodorderpercent.FieldUpdatedAt, goodorderpercent.FieldDeletedAt, goodorderpercent.FieldStartAt, goodorderpercent.FieldEndAt:
 			values[i] = new(sql.NullInt64)
-		case orderpercent.FieldTitle, orderpercent.FieldBadgeLarge, orderpercent.FieldBadgeSmall:
-			values[i] = new(sql.NullString)
-		case orderpercent.FieldID, orderpercent.FieldAppID, orderpercent.FieldUserID, orderpercent.FieldGoodID:
+		case goodorderpercent.FieldID, goodorderpercent.FieldAppID, goodorderpercent.FieldUserID, goodorderpercent.FieldGoodID:
 			values[i] = new(uuid.UUID)
 		default:
-			return nil, fmt.Errorf("unexpected column %q for type OrderPercent", columns[i])
+			return nil, fmt.Errorf("unexpected column %q for type GoodOrderPercent", columns[i])
 		}
 	}
 	return values, nil
 }
 
 // assignValues assigns the values that were returned from sql.Rows (after scanning)
-// to the OrderPercent fields.
-func (op *OrderPercent) assignValues(columns []string, values []interface{}) error {
+// to the GoodOrderPercent fields.
+func (gop *GoodOrderPercent) assignValues(columns []string, values []interface{}) error {
 	if m, n := len(values), len(columns); m < n {
 		return fmt.Errorf("mismatch number of scan values: %d != %d", m, n)
 	}
 	for i := range columns {
 		switch columns[i] {
-		case orderpercent.FieldID:
+		case goodorderpercent.FieldID:
 			if value, ok := values[i].(*uuid.UUID); !ok {
 				return fmt.Errorf("unexpected type %T for field id", values[i])
 			} else if value != nil {
-				op.ID = *value
+				gop.ID = *value
 			}
-		case orderpercent.FieldCreatedAt:
+		case goodorderpercent.FieldCreatedAt:
 			if value, ok := values[i].(*sql.NullInt64); !ok {
 				return fmt.Errorf("unexpected type %T for field created_at", values[i])
 			} else if value.Valid {
-				op.CreatedAt = uint32(value.Int64)
+				gop.CreatedAt = uint32(value.Int64)
 			}
-		case orderpercent.FieldUpdatedAt:
+		case goodorderpercent.FieldUpdatedAt:
 			if value, ok := values[i].(*sql.NullInt64); !ok {
 				return fmt.Errorf("unexpected type %T for field updated_at", values[i])
 			} else if value.Valid {
-				op.UpdatedAt = uint32(value.Int64)
+				gop.UpdatedAt = uint32(value.Int64)
 			}
-		case orderpercent.FieldDeletedAt:
+		case goodorderpercent.FieldDeletedAt:
 			if value, ok := values[i].(*sql.NullInt64); !ok {
 				return fmt.Errorf("unexpected type %T for field deleted_at", values[i])
 			} else if value.Valid {
-				op.DeletedAt = uint32(value.Int64)
+				gop.DeletedAt = uint32(value.Int64)
 			}
-		case orderpercent.FieldAppID:
+		case goodorderpercent.FieldAppID:
 			if value, ok := values[i].(*uuid.UUID); !ok {
 				return fmt.Errorf("unexpected type %T for field app_id", values[i])
 			} else if value != nil {
-				op.AppID = *value
+				gop.AppID = *value
 			}
-		case orderpercent.FieldUserID:
+		case goodorderpercent.FieldUserID:
 			if value, ok := values[i].(*uuid.UUID); !ok {
 				return fmt.Errorf("unexpected type %T for field user_id", values[i])
 			} else if value != nil {
-				op.UserID = *value
+				gop.UserID = *value
 			}
-		case orderpercent.FieldGoodID:
+		case goodorderpercent.FieldGoodID:
 			if value, ok := values[i].(*uuid.UUID); !ok {
 				return fmt.Errorf("unexpected type %T for field good_id", values[i])
 			} else if value != nil {
-				op.GoodID = *value
+				gop.GoodID = *value
 			}
-		case orderpercent.FieldTitle:
-			if value, ok := values[i].(*sql.NullString); !ok {
-				return fmt.Errorf("unexpected type %T for field title", values[i])
-			} else if value.Valid {
-				op.Title = value.String
-			}
-		case orderpercent.FieldPercent:
+		case goodorderpercent.FieldPercent:
 			if value, ok := values[i].(*decimal.Decimal); !ok {
 				return fmt.Errorf("unexpected type %T for field percent", values[i])
 			} else if value != nil {
-				op.Percent = *value
+				gop.Percent = *value
 			}
-		case orderpercent.FieldStartAt:
+		case goodorderpercent.FieldStartAt:
 			if value, ok := values[i].(*sql.NullInt64); !ok {
 				return fmt.Errorf("unexpected type %T for field start_at", values[i])
 			} else if value.Valid {
-				op.StartAt = uint32(value.Int64)
+				gop.StartAt = uint32(value.Int64)
 			}
-		case orderpercent.FieldEndAt:
+		case goodorderpercent.FieldEndAt:
 			if value, ok := values[i].(*sql.NullInt64); !ok {
 				return fmt.Errorf("unexpected type %T for field end_at", values[i])
 			} else if value.Valid {
-				op.EndAt = uint32(value.Int64)
-			}
-		case orderpercent.FieldBadgeLarge:
-			if value, ok := values[i].(*sql.NullString); !ok {
-				return fmt.Errorf("unexpected type %T for field badge_large", values[i])
-			} else if value.Valid {
-				op.BadgeLarge = value.String
-			}
-		case orderpercent.FieldBadgeSmall:
-			if value, ok := values[i].(*sql.NullString); !ok {
-				return fmt.Errorf("unexpected type %T for field badge_small", values[i])
-			} else if value.Valid {
-				op.BadgeSmall = value.String
+				gop.EndAt = uint32(value.Int64)
 			}
 		}
 	}
 	return nil
 }
 
-// Update returns a builder for updating this OrderPercent.
-// Note that you need to call OrderPercent.Unwrap() before calling this method if this OrderPercent
+// Update returns a builder for updating this GoodOrderPercent.
+// Note that you need to call GoodOrderPercent.Unwrap() before calling this method if this GoodOrderPercent
 // was returned from a transaction, and the transaction was committed or rolled back.
-func (op *OrderPercent) Update() *OrderPercentUpdateOne {
-	return (&OrderPercentClient{config: op.config}).UpdateOne(op)
+func (gop *GoodOrderPercent) Update() *GoodOrderPercentUpdateOne {
+	return (&GoodOrderPercentClient{config: gop.config}).UpdateOne(gop)
 }
 
-// Unwrap unwraps the OrderPercent entity that was returned from a transaction after it was closed,
+// Unwrap unwraps the GoodOrderPercent entity that was returned from a transaction after it was closed,
 // so that all future queries will be executed through the driver which created the transaction.
-func (op *OrderPercent) Unwrap() *OrderPercent {
-	_tx, ok := op.config.driver.(*txDriver)
+func (gop *GoodOrderPercent) Unwrap() *GoodOrderPercent {
+	_tx, ok := gop.config.driver.(*txDriver)
 	if !ok {
-		panic("ent: OrderPercent is not a transactional entity")
+		panic("ent: GoodOrderPercent is not a transactional entity")
 	}
-	op.config.driver = _tx.drv
-	return op
+	gop.config.driver = _tx.drv
+	return gop
 }
 
 // String implements the fmt.Stringer.
-func (op *OrderPercent) String() string {
+func (gop *GoodOrderPercent) String() string {
 	var builder strings.Builder
-	builder.WriteString("OrderPercent(")
-	builder.WriteString(fmt.Sprintf("id=%v, ", op.ID))
+	builder.WriteString("GoodOrderPercent(")
+	builder.WriteString(fmt.Sprintf("id=%v, ", gop.ID))
 	builder.WriteString("created_at=")
-	builder.WriteString(fmt.Sprintf("%v", op.CreatedAt))
+	builder.WriteString(fmt.Sprintf("%v", gop.CreatedAt))
 	builder.WriteString(", ")
 	builder.WriteString("updated_at=")
-	builder.WriteString(fmt.Sprintf("%v", op.UpdatedAt))
+	builder.WriteString(fmt.Sprintf("%v", gop.UpdatedAt))
 	builder.WriteString(", ")
 	builder.WriteString("deleted_at=")
-	builder.WriteString(fmt.Sprintf("%v", op.DeletedAt))
+	builder.WriteString(fmt.Sprintf("%v", gop.DeletedAt))
 	builder.WriteString(", ")
 	builder.WriteString("app_id=")
-	builder.WriteString(fmt.Sprintf("%v", op.AppID))
+	builder.WriteString(fmt.Sprintf("%v", gop.AppID))
 	builder.WriteString(", ")
 	builder.WriteString("user_id=")
-	builder.WriteString(fmt.Sprintf("%v", op.UserID))
+	builder.WriteString(fmt.Sprintf("%v", gop.UserID))
 	builder.WriteString(", ")
 	builder.WriteString("good_id=")
-	builder.WriteString(fmt.Sprintf("%v", op.GoodID))
-	builder.WriteString(", ")
-	builder.WriteString("title=")
-	builder.WriteString(op.Title)
+	builder.WriteString(fmt.Sprintf("%v", gop.GoodID))
 	builder.WriteString(", ")
 	builder.WriteString("percent=")
-	builder.WriteString(fmt.Sprintf("%v", op.Percent))
+	builder.WriteString(fmt.Sprintf("%v", gop.Percent))
 	builder.WriteString(", ")
 	builder.WriteString("start_at=")
-	builder.WriteString(fmt.Sprintf("%v", op.StartAt))
+	builder.WriteString(fmt.Sprintf("%v", gop.StartAt))
 	builder.WriteString(", ")
 	builder.WriteString("end_at=")
-	builder.WriteString(fmt.Sprintf("%v", op.EndAt))
-	builder.WriteString(", ")
-	builder.WriteString("badge_large=")
-	builder.WriteString(op.BadgeLarge)
-	builder.WriteString(", ")
-	builder.WriteString("badge_small=")
-	builder.WriteString(op.BadgeSmall)
+	builder.WriteString(fmt.Sprintf("%v", gop.EndAt))
 	builder.WriteByte(')')
 	return builder.String()
 }
 
-// OrderPercents is a parsable slice of OrderPercent.
-type OrderPercents []*OrderPercent
+// GoodOrderPercents is a parsable slice of GoodOrderPercent.
+type GoodOrderPercents []*GoodOrderPercent
 
-func (op OrderPercents) config(cfg config) {
-	for _i := range op {
-		op[_i].config = cfg
+func (gop GoodOrderPercents) config(cfg config) {
+	for _i := range gop {
+		gop[_i].config = cfg
 	}
 }

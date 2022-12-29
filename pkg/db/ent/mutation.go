@@ -14,8 +14,8 @@ import (
 	"github.com/NpoolPlatform/inspire-manager/pkg/db/ent/coupondiscount"
 	"github.com/NpoolPlatform/inspire-manager/pkg/db/ent/couponfixamount"
 	"github.com/NpoolPlatform/inspire-manager/pkg/db/ent/couponspecialoffer"
+	"github.com/NpoolPlatform/inspire-manager/pkg/db/ent/goodorderpercent"
 	"github.com/NpoolPlatform/inspire-manager/pkg/db/ent/invitationcode"
-	"github.com/NpoolPlatform/inspire-manager/pkg/db/ent/orderpercent"
 	"github.com/NpoolPlatform/inspire-manager/pkg/db/ent/predicate"
 	"github.com/NpoolPlatform/inspire-manager/pkg/db/ent/registration"
 	"github.com/google/uuid"
@@ -39,8 +39,8 @@ const (
 	TypeCouponDiscount     = "CouponDiscount"
 	TypeCouponFixAmount    = "CouponFixAmount"
 	TypeCouponSpecialOffer = "CouponSpecialOffer"
+	TypeGoodOrderPercent   = "GoodOrderPercent"
 	TypeInvitationCode     = "InvitationCode"
-	TypeOrderPercent       = "OrderPercent"
 	TypeRegistration       = "Registration"
 )
 
@@ -6990,6 +6990,1042 @@ func (m *CouponSpecialOfferMutation) ResetEdge(name string) error {
 	return fmt.Errorf("unknown CouponSpecialOffer edge %s", name)
 }
 
+// GoodOrderPercentMutation represents an operation that mutates the GoodOrderPercent nodes in the graph.
+type GoodOrderPercentMutation struct {
+	config
+	op            Op
+	typ           string
+	id            *uuid.UUID
+	created_at    *uint32
+	addcreated_at *int32
+	updated_at    *uint32
+	addupdated_at *int32
+	deleted_at    *uint32
+	adddeleted_at *int32
+	app_id        *uuid.UUID
+	user_id       *uuid.UUID
+	good_id       *uuid.UUID
+	percent       *decimal.Decimal
+	start_at      *uint32
+	addstart_at   *int32
+	end_at        *uint32
+	addend_at     *int32
+	clearedFields map[string]struct{}
+	done          bool
+	oldValue      func(context.Context) (*GoodOrderPercent, error)
+	predicates    []predicate.GoodOrderPercent
+}
+
+var _ ent.Mutation = (*GoodOrderPercentMutation)(nil)
+
+// goodorderpercentOption allows management of the mutation configuration using functional options.
+type goodorderpercentOption func(*GoodOrderPercentMutation)
+
+// newGoodOrderPercentMutation creates new mutation for the GoodOrderPercent entity.
+func newGoodOrderPercentMutation(c config, op Op, opts ...goodorderpercentOption) *GoodOrderPercentMutation {
+	m := &GoodOrderPercentMutation{
+		config:        c,
+		op:            op,
+		typ:           TypeGoodOrderPercent,
+		clearedFields: make(map[string]struct{}),
+	}
+	for _, opt := range opts {
+		opt(m)
+	}
+	return m
+}
+
+// withGoodOrderPercentID sets the ID field of the mutation.
+func withGoodOrderPercentID(id uuid.UUID) goodorderpercentOption {
+	return func(m *GoodOrderPercentMutation) {
+		var (
+			err   error
+			once  sync.Once
+			value *GoodOrderPercent
+		)
+		m.oldValue = func(ctx context.Context) (*GoodOrderPercent, error) {
+			once.Do(func() {
+				if m.done {
+					err = errors.New("querying old values post mutation is not allowed")
+				} else {
+					value, err = m.Client().GoodOrderPercent.Get(ctx, id)
+				}
+			})
+			return value, err
+		}
+		m.id = &id
+	}
+}
+
+// withGoodOrderPercent sets the old GoodOrderPercent of the mutation.
+func withGoodOrderPercent(node *GoodOrderPercent) goodorderpercentOption {
+	return func(m *GoodOrderPercentMutation) {
+		m.oldValue = func(context.Context) (*GoodOrderPercent, error) {
+			return node, nil
+		}
+		m.id = &node.ID
+	}
+}
+
+// Client returns a new `ent.Client` from the mutation. If the mutation was
+// executed in a transaction (ent.Tx), a transactional client is returned.
+func (m GoodOrderPercentMutation) Client() *Client {
+	client := &Client{config: m.config}
+	client.init()
+	return client
+}
+
+// Tx returns an `ent.Tx` for mutations that were executed in transactions;
+// it returns an error otherwise.
+func (m GoodOrderPercentMutation) Tx() (*Tx, error) {
+	if _, ok := m.driver.(*txDriver); !ok {
+		return nil, errors.New("ent: mutation is not running in a transaction")
+	}
+	tx := &Tx{config: m.config}
+	tx.init()
+	return tx, nil
+}
+
+// SetID sets the value of the id field. Note that this
+// operation is only accepted on creation of GoodOrderPercent entities.
+func (m *GoodOrderPercentMutation) SetID(id uuid.UUID) {
+	m.id = &id
+}
+
+// ID returns the ID value in the mutation. Note that the ID is only available
+// if it was provided to the builder or after it was returned from the database.
+func (m *GoodOrderPercentMutation) ID() (id uuid.UUID, exists bool) {
+	if m.id == nil {
+		return
+	}
+	return *m.id, true
+}
+
+// IDs queries the database and returns the entity ids that match the mutation's predicate.
+// That means, if the mutation is applied within a transaction with an isolation level such
+// as sql.LevelSerializable, the returned ids match the ids of the rows that will be updated
+// or updated by the mutation.
+func (m *GoodOrderPercentMutation) IDs(ctx context.Context) ([]uuid.UUID, error) {
+	switch {
+	case m.op.Is(OpUpdateOne | OpDeleteOne):
+		id, exists := m.ID()
+		if exists {
+			return []uuid.UUID{id}, nil
+		}
+		fallthrough
+	case m.op.Is(OpUpdate | OpDelete):
+		return m.Client().GoodOrderPercent.Query().Where(m.predicates...).IDs(ctx)
+	default:
+		return nil, fmt.Errorf("IDs is not allowed on %s operations", m.op)
+	}
+}
+
+// SetCreatedAt sets the "created_at" field.
+func (m *GoodOrderPercentMutation) SetCreatedAt(u uint32) {
+	m.created_at = &u
+	m.addcreated_at = nil
+}
+
+// CreatedAt returns the value of the "created_at" field in the mutation.
+func (m *GoodOrderPercentMutation) CreatedAt() (r uint32, exists bool) {
+	v := m.created_at
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldCreatedAt returns the old "created_at" field's value of the GoodOrderPercent entity.
+// If the GoodOrderPercent object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *GoodOrderPercentMutation) OldCreatedAt(ctx context.Context) (v uint32, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldCreatedAt is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldCreatedAt requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldCreatedAt: %w", err)
+	}
+	return oldValue.CreatedAt, nil
+}
+
+// AddCreatedAt adds u to the "created_at" field.
+func (m *GoodOrderPercentMutation) AddCreatedAt(u int32) {
+	if m.addcreated_at != nil {
+		*m.addcreated_at += u
+	} else {
+		m.addcreated_at = &u
+	}
+}
+
+// AddedCreatedAt returns the value that was added to the "created_at" field in this mutation.
+func (m *GoodOrderPercentMutation) AddedCreatedAt() (r int32, exists bool) {
+	v := m.addcreated_at
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// ResetCreatedAt resets all changes to the "created_at" field.
+func (m *GoodOrderPercentMutation) ResetCreatedAt() {
+	m.created_at = nil
+	m.addcreated_at = nil
+}
+
+// SetUpdatedAt sets the "updated_at" field.
+func (m *GoodOrderPercentMutation) SetUpdatedAt(u uint32) {
+	m.updated_at = &u
+	m.addupdated_at = nil
+}
+
+// UpdatedAt returns the value of the "updated_at" field in the mutation.
+func (m *GoodOrderPercentMutation) UpdatedAt() (r uint32, exists bool) {
+	v := m.updated_at
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldUpdatedAt returns the old "updated_at" field's value of the GoodOrderPercent entity.
+// If the GoodOrderPercent object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *GoodOrderPercentMutation) OldUpdatedAt(ctx context.Context) (v uint32, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldUpdatedAt is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldUpdatedAt requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldUpdatedAt: %w", err)
+	}
+	return oldValue.UpdatedAt, nil
+}
+
+// AddUpdatedAt adds u to the "updated_at" field.
+func (m *GoodOrderPercentMutation) AddUpdatedAt(u int32) {
+	if m.addupdated_at != nil {
+		*m.addupdated_at += u
+	} else {
+		m.addupdated_at = &u
+	}
+}
+
+// AddedUpdatedAt returns the value that was added to the "updated_at" field in this mutation.
+func (m *GoodOrderPercentMutation) AddedUpdatedAt() (r int32, exists bool) {
+	v := m.addupdated_at
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// ResetUpdatedAt resets all changes to the "updated_at" field.
+func (m *GoodOrderPercentMutation) ResetUpdatedAt() {
+	m.updated_at = nil
+	m.addupdated_at = nil
+}
+
+// SetDeletedAt sets the "deleted_at" field.
+func (m *GoodOrderPercentMutation) SetDeletedAt(u uint32) {
+	m.deleted_at = &u
+	m.adddeleted_at = nil
+}
+
+// DeletedAt returns the value of the "deleted_at" field in the mutation.
+func (m *GoodOrderPercentMutation) DeletedAt() (r uint32, exists bool) {
+	v := m.deleted_at
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldDeletedAt returns the old "deleted_at" field's value of the GoodOrderPercent entity.
+// If the GoodOrderPercent object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *GoodOrderPercentMutation) OldDeletedAt(ctx context.Context) (v uint32, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldDeletedAt is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldDeletedAt requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldDeletedAt: %w", err)
+	}
+	return oldValue.DeletedAt, nil
+}
+
+// AddDeletedAt adds u to the "deleted_at" field.
+func (m *GoodOrderPercentMutation) AddDeletedAt(u int32) {
+	if m.adddeleted_at != nil {
+		*m.adddeleted_at += u
+	} else {
+		m.adddeleted_at = &u
+	}
+}
+
+// AddedDeletedAt returns the value that was added to the "deleted_at" field in this mutation.
+func (m *GoodOrderPercentMutation) AddedDeletedAt() (r int32, exists bool) {
+	v := m.adddeleted_at
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// ResetDeletedAt resets all changes to the "deleted_at" field.
+func (m *GoodOrderPercentMutation) ResetDeletedAt() {
+	m.deleted_at = nil
+	m.adddeleted_at = nil
+}
+
+// SetAppID sets the "app_id" field.
+func (m *GoodOrderPercentMutation) SetAppID(u uuid.UUID) {
+	m.app_id = &u
+}
+
+// AppID returns the value of the "app_id" field in the mutation.
+func (m *GoodOrderPercentMutation) AppID() (r uuid.UUID, exists bool) {
+	v := m.app_id
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldAppID returns the old "app_id" field's value of the GoodOrderPercent entity.
+// If the GoodOrderPercent object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *GoodOrderPercentMutation) OldAppID(ctx context.Context) (v uuid.UUID, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldAppID is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldAppID requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldAppID: %w", err)
+	}
+	return oldValue.AppID, nil
+}
+
+// ClearAppID clears the value of the "app_id" field.
+func (m *GoodOrderPercentMutation) ClearAppID() {
+	m.app_id = nil
+	m.clearedFields[goodorderpercent.FieldAppID] = struct{}{}
+}
+
+// AppIDCleared returns if the "app_id" field was cleared in this mutation.
+func (m *GoodOrderPercentMutation) AppIDCleared() bool {
+	_, ok := m.clearedFields[goodorderpercent.FieldAppID]
+	return ok
+}
+
+// ResetAppID resets all changes to the "app_id" field.
+func (m *GoodOrderPercentMutation) ResetAppID() {
+	m.app_id = nil
+	delete(m.clearedFields, goodorderpercent.FieldAppID)
+}
+
+// SetUserID sets the "user_id" field.
+func (m *GoodOrderPercentMutation) SetUserID(u uuid.UUID) {
+	m.user_id = &u
+}
+
+// UserID returns the value of the "user_id" field in the mutation.
+func (m *GoodOrderPercentMutation) UserID() (r uuid.UUID, exists bool) {
+	v := m.user_id
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldUserID returns the old "user_id" field's value of the GoodOrderPercent entity.
+// If the GoodOrderPercent object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *GoodOrderPercentMutation) OldUserID(ctx context.Context) (v uuid.UUID, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldUserID is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldUserID requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldUserID: %w", err)
+	}
+	return oldValue.UserID, nil
+}
+
+// ClearUserID clears the value of the "user_id" field.
+func (m *GoodOrderPercentMutation) ClearUserID() {
+	m.user_id = nil
+	m.clearedFields[goodorderpercent.FieldUserID] = struct{}{}
+}
+
+// UserIDCleared returns if the "user_id" field was cleared in this mutation.
+func (m *GoodOrderPercentMutation) UserIDCleared() bool {
+	_, ok := m.clearedFields[goodorderpercent.FieldUserID]
+	return ok
+}
+
+// ResetUserID resets all changes to the "user_id" field.
+func (m *GoodOrderPercentMutation) ResetUserID() {
+	m.user_id = nil
+	delete(m.clearedFields, goodorderpercent.FieldUserID)
+}
+
+// SetGoodID sets the "good_id" field.
+func (m *GoodOrderPercentMutation) SetGoodID(u uuid.UUID) {
+	m.good_id = &u
+}
+
+// GoodID returns the value of the "good_id" field in the mutation.
+func (m *GoodOrderPercentMutation) GoodID() (r uuid.UUID, exists bool) {
+	v := m.good_id
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldGoodID returns the old "good_id" field's value of the GoodOrderPercent entity.
+// If the GoodOrderPercent object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *GoodOrderPercentMutation) OldGoodID(ctx context.Context) (v uuid.UUID, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldGoodID is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldGoodID requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldGoodID: %w", err)
+	}
+	return oldValue.GoodID, nil
+}
+
+// ClearGoodID clears the value of the "good_id" field.
+func (m *GoodOrderPercentMutation) ClearGoodID() {
+	m.good_id = nil
+	m.clearedFields[goodorderpercent.FieldGoodID] = struct{}{}
+}
+
+// GoodIDCleared returns if the "good_id" field was cleared in this mutation.
+func (m *GoodOrderPercentMutation) GoodIDCleared() bool {
+	_, ok := m.clearedFields[goodorderpercent.FieldGoodID]
+	return ok
+}
+
+// ResetGoodID resets all changes to the "good_id" field.
+func (m *GoodOrderPercentMutation) ResetGoodID() {
+	m.good_id = nil
+	delete(m.clearedFields, goodorderpercent.FieldGoodID)
+}
+
+// SetPercent sets the "percent" field.
+func (m *GoodOrderPercentMutation) SetPercent(d decimal.Decimal) {
+	m.percent = &d
+}
+
+// Percent returns the value of the "percent" field in the mutation.
+func (m *GoodOrderPercentMutation) Percent() (r decimal.Decimal, exists bool) {
+	v := m.percent
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldPercent returns the old "percent" field's value of the GoodOrderPercent entity.
+// If the GoodOrderPercent object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *GoodOrderPercentMutation) OldPercent(ctx context.Context) (v decimal.Decimal, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldPercent is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldPercent requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldPercent: %w", err)
+	}
+	return oldValue.Percent, nil
+}
+
+// ClearPercent clears the value of the "percent" field.
+func (m *GoodOrderPercentMutation) ClearPercent() {
+	m.percent = nil
+	m.clearedFields[goodorderpercent.FieldPercent] = struct{}{}
+}
+
+// PercentCleared returns if the "percent" field was cleared in this mutation.
+func (m *GoodOrderPercentMutation) PercentCleared() bool {
+	_, ok := m.clearedFields[goodorderpercent.FieldPercent]
+	return ok
+}
+
+// ResetPercent resets all changes to the "percent" field.
+func (m *GoodOrderPercentMutation) ResetPercent() {
+	m.percent = nil
+	delete(m.clearedFields, goodorderpercent.FieldPercent)
+}
+
+// SetStartAt sets the "start_at" field.
+func (m *GoodOrderPercentMutation) SetStartAt(u uint32) {
+	m.start_at = &u
+	m.addstart_at = nil
+}
+
+// StartAt returns the value of the "start_at" field in the mutation.
+func (m *GoodOrderPercentMutation) StartAt() (r uint32, exists bool) {
+	v := m.start_at
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldStartAt returns the old "start_at" field's value of the GoodOrderPercent entity.
+// If the GoodOrderPercent object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *GoodOrderPercentMutation) OldStartAt(ctx context.Context) (v uint32, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldStartAt is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldStartAt requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldStartAt: %w", err)
+	}
+	return oldValue.StartAt, nil
+}
+
+// AddStartAt adds u to the "start_at" field.
+func (m *GoodOrderPercentMutation) AddStartAt(u int32) {
+	if m.addstart_at != nil {
+		*m.addstart_at += u
+	} else {
+		m.addstart_at = &u
+	}
+}
+
+// AddedStartAt returns the value that was added to the "start_at" field in this mutation.
+func (m *GoodOrderPercentMutation) AddedStartAt() (r int32, exists bool) {
+	v := m.addstart_at
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// ClearStartAt clears the value of the "start_at" field.
+func (m *GoodOrderPercentMutation) ClearStartAt() {
+	m.start_at = nil
+	m.addstart_at = nil
+	m.clearedFields[goodorderpercent.FieldStartAt] = struct{}{}
+}
+
+// StartAtCleared returns if the "start_at" field was cleared in this mutation.
+func (m *GoodOrderPercentMutation) StartAtCleared() bool {
+	_, ok := m.clearedFields[goodorderpercent.FieldStartAt]
+	return ok
+}
+
+// ResetStartAt resets all changes to the "start_at" field.
+func (m *GoodOrderPercentMutation) ResetStartAt() {
+	m.start_at = nil
+	m.addstart_at = nil
+	delete(m.clearedFields, goodorderpercent.FieldStartAt)
+}
+
+// SetEndAt sets the "end_at" field.
+func (m *GoodOrderPercentMutation) SetEndAt(u uint32) {
+	m.end_at = &u
+	m.addend_at = nil
+}
+
+// EndAt returns the value of the "end_at" field in the mutation.
+func (m *GoodOrderPercentMutation) EndAt() (r uint32, exists bool) {
+	v := m.end_at
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldEndAt returns the old "end_at" field's value of the GoodOrderPercent entity.
+// If the GoodOrderPercent object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *GoodOrderPercentMutation) OldEndAt(ctx context.Context) (v uint32, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldEndAt is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldEndAt requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldEndAt: %w", err)
+	}
+	return oldValue.EndAt, nil
+}
+
+// AddEndAt adds u to the "end_at" field.
+func (m *GoodOrderPercentMutation) AddEndAt(u int32) {
+	if m.addend_at != nil {
+		*m.addend_at += u
+	} else {
+		m.addend_at = &u
+	}
+}
+
+// AddedEndAt returns the value that was added to the "end_at" field in this mutation.
+func (m *GoodOrderPercentMutation) AddedEndAt() (r int32, exists bool) {
+	v := m.addend_at
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// ClearEndAt clears the value of the "end_at" field.
+func (m *GoodOrderPercentMutation) ClearEndAt() {
+	m.end_at = nil
+	m.addend_at = nil
+	m.clearedFields[goodorderpercent.FieldEndAt] = struct{}{}
+}
+
+// EndAtCleared returns if the "end_at" field was cleared in this mutation.
+func (m *GoodOrderPercentMutation) EndAtCleared() bool {
+	_, ok := m.clearedFields[goodorderpercent.FieldEndAt]
+	return ok
+}
+
+// ResetEndAt resets all changes to the "end_at" field.
+func (m *GoodOrderPercentMutation) ResetEndAt() {
+	m.end_at = nil
+	m.addend_at = nil
+	delete(m.clearedFields, goodorderpercent.FieldEndAt)
+}
+
+// Where appends a list predicates to the GoodOrderPercentMutation builder.
+func (m *GoodOrderPercentMutation) Where(ps ...predicate.GoodOrderPercent) {
+	m.predicates = append(m.predicates, ps...)
+}
+
+// Op returns the operation name.
+func (m *GoodOrderPercentMutation) Op() Op {
+	return m.op
+}
+
+// Type returns the node type of this mutation (GoodOrderPercent).
+func (m *GoodOrderPercentMutation) Type() string {
+	return m.typ
+}
+
+// Fields returns all fields that were changed during this mutation. Note that in
+// order to get all numeric fields that were incremented/decremented, call
+// AddedFields().
+func (m *GoodOrderPercentMutation) Fields() []string {
+	fields := make([]string, 0, 9)
+	if m.created_at != nil {
+		fields = append(fields, goodorderpercent.FieldCreatedAt)
+	}
+	if m.updated_at != nil {
+		fields = append(fields, goodorderpercent.FieldUpdatedAt)
+	}
+	if m.deleted_at != nil {
+		fields = append(fields, goodorderpercent.FieldDeletedAt)
+	}
+	if m.app_id != nil {
+		fields = append(fields, goodorderpercent.FieldAppID)
+	}
+	if m.user_id != nil {
+		fields = append(fields, goodorderpercent.FieldUserID)
+	}
+	if m.good_id != nil {
+		fields = append(fields, goodorderpercent.FieldGoodID)
+	}
+	if m.percent != nil {
+		fields = append(fields, goodorderpercent.FieldPercent)
+	}
+	if m.start_at != nil {
+		fields = append(fields, goodorderpercent.FieldStartAt)
+	}
+	if m.end_at != nil {
+		fields = append(fields, goodorderpercent.FieldEndAt)
+	}
+	return fields
+}
+
+// Field returns the value of a field with the given name. The second boolean
+// return value indicates that this field was not set, or was not defined in the
+// schema.
+func (m *GoodOrderPercentMutation) Field(name string) (ent.Value, bool) {
+	switch name {
+	case goodorderpercent.FieldCreatedAt:
+		return m.CreatedAt()
+	case goodorderpercent.FieldUpdatedAt:
+		return m.UpdatedAt()
+	case goodorderpercent.FieldDeletedAt:
+		return m.DeletedAt()
+	case goodorderpercent.FieldAppID:
+		return m.AppID()
+	case goodorderpercent.FieldUserID:
+		return m.UserID()
+	case goodorderpercent.FieldGoodID:
+		return m.GoodID()
+	case goodorderpercent.FieldPercent:
+		return m.Percent()
+	case goodorderpercent.FieldStartAt:
+		return m.StartAt()
+	case goodorderpercent.FieldEndAt:
+		return m.EndAt()
+	}
+	return nil, false
+}
+
+// OldField returns the old value of the field from the database. An error is
+// returned if the mutation operation is not UpdateOne, or the query to the
+// database failed.
+func (m *GoodOrderPercentMutation) OldField(ctx context.Context, name string) (ent.Value, error) {
+	switch name {
+	case goodorderpercent.FieldCreatedAt:
+		return m.OldCreatedAt(ctx)
+	case goodorderpercent.FieldUpdatedAt:
+		return m.OldUpdatedAt(ctx)
+	case goodorderpercent.FieldDeletedAt:
+		return m.OldDeletedAt(ctx)
+	case goodorderpercent.FieldAppID:
+		return m.OldAppID(ctx)
+	case goodorderpercent.FieldUserID:
+		return m.OldUserID(ctx)
+	case goodorderpercent.FieldGoodID:
+		return m.OldGoodID(ctx)
+	case goodorderpercent.FieldPercent:
+		return m.OldPercent(ctx)
+	case goodorderpercent.FieldStartAt:
+		return m.OldStartAt(ctx)
+	case goodorderpercent.FieldEndAt:
+		return m.OldEndAt(ctx)
+	}
+	return nil, fmt.Errorf("unknown GoodOrderPercent field %s", name)
+}
+
+// SetField sets the value of a field with the given name. It returns an error if
+// the field is not defined in the schema, or if the type mismatched the field
+// type.
+func (m *GoodOrderPercentMutation) SetField(name string, value ent.Value) error {
+	switch name {
+	case goodorderpercent.FieldCreatedAt:
+		v, ok := value.(uint32)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetCreatedAt(v)
+		return nil
+	case goodorderpercent.FieldUpdatedAt:
+		v, ok := value.(uint32)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetUpdatedAt(v)
+		return nil
+	case goodorderpercent.FieldDeletedAt:
+		v, ok := value.(uint32)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetDeletedAt(v)
+		return nil
+	case goodorderpercent.FieldAppID:
+		v, ok := value.(uuid.UUID)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetAppID(v)
+		return nil
+	case goodorderpercent.FieldUserID:
+		v, ok := value.(uuid.UUID)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetUserID(v)
+		return nil
+	case goodorderpercent.FieldGoodID:
+		v, ok := value.(uuid.UUID)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetGoodID(v)
+		return nil
+	case goodorderpercent.FieldPercent:
+		v, ok := value.(decimal.Decimal)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetPercent(v)
+		return nil
+	case goodorderpercent.FieldStartAt:
+		v, ok := value.(uint32)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetStartAt(v)
+		return nil
+	case goodorderpercent.FieldEndAt:
+		v, ok := value.(uint32)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetEndAt(v)
+		return nil
+	}
+	return fmt.Errorf("unknown GoodOrderPercent field %s", name)
+}
+
+// AddedFields returns all numeric fields that were incremented/decremented during
+// this mutation.
+func (m *GoodOrderPercentMutation) AddedFields() []string {
+	var fields []string
+	if m.addcreated_at != nil {
+		fields = append(fields, goodorderpercent.FieldCreatedAt)
+	}
+	if m.addupdated_at != nil {
+		fields = append(fields, goodorderpercent.FieldUpdatedAt)
+	}
+	if m.adddeleted_at != nil {
+		fields = append(fields, goodorderpercent.FieldDeletedAt)
+	}
+	if m.addstart_at != nil {
+		fields = append(fields, goodorderpercent.FieldStartAt)
+	}
+	if m.addend_at != nil {
+		fields = append(fields, goodorderpercent.FieldEndAt)
+	}
+	return fields
+}
+
+// AddedField returns the numeric value that was incremented/decremented on a field
+// with the given name. The second boolean return value indicates that this field
+// was not set, or was not defined in the schema.
+func (m *GoodOrderPercentMutation) AddedField(name string) (ent.Value, bool) {
+	switch name {
+	case goodorderpercent.FieldCreatedAt:
+		return m.AddedCreatedAt()
+	case goodorderpercent.FieldUpdatedAt:
+		return m.AddedUpdatedAt()
+	case goodorderpercent.FieldDeletedAt:
+		return m.AddedDeletedAt()
+	case goodorderpercent.FieldStartAt:
+		return m.AddedStartAt()
+	case goodorderpercent.FieldEndAt:
+		return m.AddedEndAt()
+	}
+	return nil, false
+}
+
+// AddField adds the value to the field with the given name. It returns an error if
+// the field is not defined in the schema, or if the type mismatched the field
+// type.
+func (m *GoodOrderPercentMutation) AddField(name string, value ent.Value) error {
+	switch name {
+	case goodorderpercent.FieldCreatedAt:
+		v, ok := value.(int32)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.AddCreatedAt(v)
+		return nil
+	case goodorderpercent.FieldUpdatedAt:
+		v, ok := value.(int32)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.AddUpdatedAt(v)
+		return nil
+	case goodorderpercent.FieldDeletedAt:
+		v, ok := value.(int32)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.AddDeletedAt(v)
+		return nil
+	case goodorderpercent.FieldStartAt:
+		v, ok := value.(int32)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.AddStartAt(v)
+		return nil
+	case goodorderpercent.FieldEndAt:
+		v, ok := value.(int32)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.AddEndAt(v)
+		return nil
+	}
+	return fmt.Errorf("unknown GoodOrderPercent numeric field %s", name)
+}
+
+// ClearedFields returns all nullable fields that were cleared during this
+// mutation.
+func (m *GoodOrderPercentMutation) ClearedFields() []string {
+	var fields []string
+	if m.FieldCleared(goodorderpercent.FieldAppID) {
+		fields = append(fields, goodorderpercent.FieldAppID)
+	}
+	if m.FieldCleared(goodorderpercent.FieldUserID) {
+		fields = append(fields, goodorderpercent.FieldUserID)
+	}
+	if m.FieldCleared(goodorderpercent.FieldGoodID) {
+		fields = append(fields, goodorderpercent.FieldGoodID)
+	}
+	if m.FieldCleared(goodorderpercent.FieldPercent) {
+		fields = append(fields, goodorderpercent.FieldPercent)
+	}
+	if m.FieldCleared(goodorderpercent.FieldStartAt) {
+		fields = append(fields, goodorderpercent.FieldStartAt)
+	}
+	if m.FieldCleared(goodorderpercent.FieldEndAt) {
+		fields = append(fields, goodorderpercent.FieldEndAt)
+	}
+	return fields
+}
+
+// FieldCleared returns a boolean indicating if a field with the given name was
+// cleared in this mutation.
+func (m *GoodOrderPercentMutation) FieldCleared(name string) bool {
+	_, ok := m.clearedFields[name]
+	return ok
+}
+
+// ClearField clears the value of the field with the given name. It returns an
+// error if the field is not defined in the schema.
+func (m *GoodOrderPercentMutation) ClearField(name string) error {
+	switch name {
+	case goodorderpercent.FieldAppID:
+		m.ClearAppID()
+		return nil
+	case goodorderpercent.FieldUserID:
+		m.ClearUserID()
+		return nil
+	case goodorderpercent.FieldGoodID:
+		m.ClearGoodID()
+		return nil
+	case goodorderpercent.FieldPercent:
+		m.ClearPercent()
+		return nil
+	case goodorderpercent.FieldStartAt:
+		m.ClearStartAt()
+		return nil
+	case goodorderpercent.FieldEndAt:
+		m.ClearEndAt()
+		return nil
+	}
+	return fmt.Errorf("unknown GoodOrderPercent nullable field %s", name)
+}
+
+// ResetField resets all changes in the mutation for the field with the given name.
+// It returns an error if the field is not defined in the schema.
+func (m *GoodOrderPercentMutation) ResetField(name string) error {
+	switch name {
+	case goodorderpercent.FieldCreatedAt:
+		m.ResetCreatedAt()
+		return nil
+	case goodorderpercent.FieldUpdatedAt:
+		m.ResetUpdatedAt()
+		return nil
+	case goodorderpercent.FieldDeletedAt:
+		m.ResetDeletedAt()
+		return nil
+	case goodorderpercent.FieldAppID:
+		m.ResetAppID()
+		return nil
+	case goodorderpercent.FieldUserID:
+		m.ResetUserID()
+		return nil
+	case goodorderpercent.FieldGoodID:
+		m.ResetGoodID()
+		return nil
+	case goodorderpercent.FieldPercent:
+		m.ResetPercent()
+		return nil
+	case goodorderpercent.FieldStartAt:
+		m.ResetStartAt()
+		return nil
+	case goodorderpercent.FieldEndAt:
+		m.ResetEndAt()
+		return nil
+	}
+	return fmt.Errorf("unknown GoodOrderPercent field %s", name)
+}
+
+// AddedEdges returns all edge names that were set/added in this mutation.
+func (m *GoodOrderPercentMutation) AddedEdges() []string {
+	edges := make([]string, 0, 0)
+	return edges
+}
+
+// AddedIDs returns all IDs (to other nodes) that were added for the given edge
+// name in this mutation.
+func (m *GoodOrderPercentMutation) AddedIDs(name string) []ent.Value {
+	return nil
+}
+
+// RemovedEdges returns all edge names that were removed in this mutation.
+func (m *GoodOrderPercentMutation) RemovedEdges() []string {
+	edges := make([]string, 0, 0)
+	return edges
+}
+
+// RemovedIDs returns all IDs (to other nodes) that were removed for the edge with
+// the given name in this mutation.
+func (m *GoodOrderPercentMutation) RemovedIDs(name string) []ent.Value {
+	return nil
+}
+
+// ClearedEdges returns all edge names that were cleared in this mutation.
+func (m *GoodOrderPercentMutation) ClearedEdges() []string {
+	edges := make([]string, 0, 0)
+	return edges
+}
+
+// EdgeCleared returns a boolean which indicates if the edge with the given name
+// was cleared in this mutation.
+func (m *GoodOrderPercentMutation) EdgeCleared(name string) bool {
+	return false
+}
+
+// ClearEdge clears the value of the edge with the given name. It returns an error
+// if that edge is not defined in the schema.
+func (m *GoodOrderPercentMutation) ClearEdge(name string) error {
+	return fmt.Errorf("unknown GoodOrderPercent unique edge %s", name)
+}
+
+// ResetEdge resets all changes to the edge with the given name in this mutation.
+// It returns an error if the edge is not defined in the schema.
+func (m *GoodOrderPercentMutation) ResetEdge(name string) error {
+	return fmt.Errorf("unknown GoodOrderPercent edge %s", name)
+}
+
 // InvitationCodeMutation represents an operation that mutates the InvitationCode nodes in the graph.
 type InvitationCodeMutation struct {
 	config
@@ -7772,1183 +8808,6 @@ func (m *InvitationCodeMutation) ClearEdge(name string) error {
 // It returns an error if the edge is not defined in the schema.
 func (m *InvitationCodeMutation) ResetEdge(name string) error {
 	return fmt.Errorf("unknown InvitationCode edge %s", name)
-}
-
-// OrderPercentMutation represents an operation that mutates the OrderPercent nodes in the graph.
-type OrderPercentMutation struct {
-	config
-	op            Op
-	typ           string
-	id            *uuid.UUID
-	created_at    *uint32
-	addcreated_at *int32
-	updated_at    *uint32
-	addupdated_at *int32
-	deleted_at    *uint32
-	adddeleted_at *int32
-	app_id        *uuid.UUID
-	user_id       *uuid.UUID
-	good_id       *uuid.UUID
-	title         *string
-	percent       *decimal.Decimal
-	start_at      *uint32
-	addstart_at   *int32
-	end_at        *uint32
-	addend_at     *int32
-	badge_large   *string
-	badge_small   *string
-	clearedFields map[string]struct{}
-	done          bool
-	oldValue      func(context.Context) (*OrderPercent, error)
-	predicates    []predicate.OrderPercent
-}
-
-var _ ent.Mutation = (*OrderPercentMutation)(nil)
-
-// orderpercentOption allows management of the mutation configuration using functional options.
-type orderpercentOption func(*OrderPercentMutation)
-
-// newOrderPercentMutation creates new mutation for the OrderPercent entity.
-func newOrderPercentMutation(c config, op Op, opts ...orderpercentOption) *OrderPercentMutation {
-	m := &OrderPercentMutation{
-		config:        c,
-		op:            op,
-		typ:           TypeOrderPercent,
-		clearedFields: make(map[string]struct{}),
-	}
-	for _, opt := range opts {
-		opt(m)
-	}
-	return m
-}
-
-// withOrderPercentID sets the ID field of the mutation.
-func withOrderPercentID(id uuid.UUID) orderpercentOption {
-	return func(m *OrderPercentMutation) {
-		var (
-			err   error
-			once  sync.Once
-			value *OrderPercent
-		)
-		m.oldValue = func(ctx context.Context) (*OrderPercent, error) {
-			once.Do(func() {
-				if m.done {
-					err = errors.New("querying old values post mutation is not allowed")
-				} else {
-					value, err = m.Client().OrderPercent.Get(ctx, id)
-				}
-			})
-			return value, err
-		}
-		m.id = &id
-	}
-}
-
-// withOrderPercent sets the old OrderPercent of the mutation.
-func withOrderPercent(node *OrderPercent) orderpercentOption {
-	return func(m *OrderPercentMutation) {
-		m.oldValue = func(context.Context) (*OrderPercent, error) {
-			return node, nil
-		}
-		m.id = &node.ID
-	}
-}
-
-// Client returns a new `ent.Client` from the mutation. If the mutation was
-// executed in a transaction (ent.Tx), a transactional client is returned.
-func (m OrderPercentMutation) Client() *Client {
-	client := &Client{config: m.config}
-	client.init()
-	return client
-}
-
-// Tx returns an `ent.Tx` for mutations that were executed in transactions;
-// it returns an error otherwise.
-func (m OrderPercentMutation) Tx() (*Tx, error) {
-	if _, ok := m.driver.(*txDriver); !ok {
-		return nil, errors.New("ent: mutation is not running in a transaction")
-	}
-	tx := &Tx{config: m.config}
-	tx.init()
-	return tx, nil
-}
-
-// SetID sets the value of the id field. Note that this
-// operation is only accepted on creation of OrderPercent entities.
-func (m *OrderPercentMutation) SetID(id uuid.UUID) {
-	m.id = &id
-}
-
-// ID returns the ID value in the mutation. Note that the ID is only available
-// if it was provided to the builder or after it was returned from the database.
-func (m *OrderPercentMutation) ID() (id uuid.UUID, exists bool) {
-	if m.id == nil {
-		return
-	}
-	return *m.id, true
-}
-
-// IDs queries the database and returns the entity ids that match the mutation's predicate.
-// That means, if the mutation is applied within a transaction with an isolation level such
-// as sql.LevelSerializable, the returned ids match the ids of the rows that will be updated
-// or updated by the mutation.
-func (m *OrderPercentMutation) IDs(ctx context.Context) ([]uuid.UUID, error) {
-	switch {
-	case m.op.Is(OpUpdateOne | OpDeleteOne):
-		id, exists := m.ID()
-		if exists {
-			return []uuid.UUID{id}, nil
-		}
-		fallthrough
-	case m.op.Is(OpUpdate | OpDelete):
-		return m.Client().OrderPercent.Query().Where(m.predicates...).IDs(ctx)
-	default:
-		return nil, fmt.Errorf("IDs is not allowed on %s operations", m.op)
-	}
-}
-
-// SetCreatedAt sets the "created_at" field.
-func (m *OrderPercentMutation) SetCreatedAt(u uint32) {
-	m.created_at = &u
-	m.addcreated_at = nil
-}
-
-// CreatedAt returns the value of the "created_at" field in the mutation.
-func (m *OrderPercentMutation) CreatedAt() (r uint32, exists bool) {
-	v := m.created_at
-	if v == nil {
-		return
-	}
-	return *v, true
-}
-
-// OldCreatedAt returns the old "created_at" field's value of the OrderPercent entity.
-// If the OrderPercent object wasn't provided to the builder, the object is fetched from the database.
-// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *OrderPercentMutation) OldCreatedAt(ctx context.Context) (v uint32, err error) {
-	if !m.op.Is(OpUpdateOne) {
-		return v, errors.New("OldCreatedAt is only allowed on UpdateOne operations")
-	}
-	if m.id == nil || m.oldValue == nil {
-		return v, errors.New("OldCreatedAt requires an ID field in the mutation")
-	}
-	oldValue, err := m.oldValue(ctx)
-	if err != nil {
-		return v, fmt.Errorf("querying old value for OldCreatedAt: %w", err)
-	}
-	return oldValue.CreatedAt, nil
-}
-
-// AddCreatedAt adds u to the "created_at" field.
-func (m *OrderPercentMutation) AddCreatedAt(u int32) {
-	if m.addcreated_at != nil {
-		*m.addcreated_at += u
-	} else {
-		m.addcreated_at = &u
-	}
-}
-
-// AddedCreatedAt returns the value that was added to the "created_at" field in this mutation.
-func (m *OrderPercentMutation) AddedCreatedAt() (r int32, exists bool) {
-	v := m.addcreated_at
-	if v == nil {
-		return
-	}
-	return *v, true
-}
-
-// ResetCreatedAt resets all changes to the "created_at" field.
-func (m *OrderPercentMutation) ResetCreatedAt() {
-	m.created_at = nil
-	m.addcreated_at = nil
-}
-
-// SetUpdatedAt sets the "updated_at" field.
-func (m *OrderPercentMutation) SetUpdatedAt(u uint32) {
-	m.updated_at = &u
-	m.addupdated_at = nil
-}
-
-// UpdatedAt returns the value of the "updated_at" field in the mutation.
-func (m *OrderPercentMutation) UpdatedAt() (r uint32, exists bool) {
-	v := m.updated_at
-	if v == nil {
-		return
-	}
-	return *v, true
-}
-
-// OldUpdatedAt returns the old "updated_at" field's value of the OrderPercent entity.
-// If the OrderPercent object wasn't provided to the builder, the object is fetched from the database.
-// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *OrderPercentMutation) OldUpdatedAt(ctx context.Context) (v uint32, err error) {
-	if !m.op.Is(OpUpdateOne) {
-		return v, errors.New("OldUpdatedAt is only allowed on UpdateOne operations")
-	}
-	if m.id == nil || m.oldValue == nil {
-		return v, errors.New("OldUpdatedAt requires an ID field in the mutation")
-	}
-	oldValue, err := m.oldValue(ctx)
-	if err != nil {
-		return v, fmt.Errorf("querying old value for OldUpdatedAt: %w", err)
-	}
-	return oldValue.UpdatedAt, nil
-}
-
-// AddUpdatedAt adds u to the "updated_at" field.
-func (m *OrderPercentMutation) AddUpdatedAt(u int32) {
-	if m.addupdated_at != nil {
-		*m.addupdated_at += u
-	} else {
-		m.addupdated_at = &u
-	}
-}
-
-// AddedUpdatedAt returns the value that was added to the "updated_at" field in this mutation.
-func (m *OrderPercentMutation) AddedUpdatedAt() (r int32, exists bool) {
-	v := m.addupdated_at
-	if v == nil {
-		return
-	}
-	return *v, true
-}
-
-// ResetUpdatedAt resets all changes to the "updated_at" field.
-func (m *OrderPercentMutation) ResetUpdatedAt() {
-	m.updated_at = nil
-	m.addupdated_at = nil
-}
-
-// SetDeletedAt sets the "deleted_at" field.
-func (m *OrderPercentMutation) SetDeletedAt(u uint32) {
-	m.deleted_at = &u
-	m.adddeleted_at = nil
-}
-
-// DeletedAt returns the value of the "deleted_at" field in the mutation.
-func (m *OrderPercentMutation) DeletedAt() (r uint32, exists bool) {
-	v := m.deleted_at
-	if v == nil {
-		return
-	}
-	return *v, true
-}
-
-// OldDeletedAt returns the old "deleted_at" field's value of the OrderPercent entity.
-// If the OrderPercent object wasn't provided to the builder, the object is fetched from the database.
-// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *OrderPercentMutation) OldDeletedAt(ctx context.Context) (v uint32, err error) {
-	if !m.op.Is(OpUpdateOne) {
-		return v, errors.New("OldDeletedAt is only allowed on UpdateOne operations")
-	}
-	if m.id == nil || m.oldValue == nil {
-		return v, errors.New("OldDeletedAt requires an ID field in the mutation")
-	}
-	oldValue, err := m.oldValue(ctx)
-	if err != nil {
-		return v, fmt.Errorf("querying old value for OldDeletedAt: %w", err)
-	}
-	return oldValue.DeletedAt, nil
-}
-
-// AddDeletedAt adds u to the "deleted_at" field.
-func (m *OrderPercentMutation) AddDeletedAt(u int32) {
-	if m.adddeleted_at != nil {
-		*m.adddeleted_at += u
-	} else {
-		m.adddeleted_at = &u
-	}
-}
-
-// AddedDeletedAt returns the value that was added to the "deleted_at" field in this mutation.
-func (m *OrderPercentMutation) AddedDeletedAt() (r int32, exists bool) {
-	v := m.adddeleted_at
-	if v == nil {
-		return
-	}
-	return *v, true
-}
-
-// ResetDeletedAt resets all changes to the "deleted_at" field.
-func (m *OrderPercentMutation) ResetDeletedAt() {
-	m.deleted_at = nil
-	m.adddeleted_at = nil
-}
-
-// SetAppID sets the "app_id" field.
-func (m *OrderPercentMutation) SetAppID(u uuid.UUID) {
-	m.app_id = &u
-}
-
-// AppID returns the value of the "app_id" field in the mutation.
-func (m *OrderPercentMutation) AppID() (r uuid.UUID, exists bool) {
-	v := m.app_id
-	if v == nil {
-		return
-	}
-	return *v, true
-}
-
-// OldAppID returns the old "app_id" field's value of the OrderPercent entity.
-// If the OrderPercent object wasn't provided to the builder, the object is fetched from the database.
-// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *OrderPercentMutation) OldAppID(ctx context.Context) (v uuid.UUID, err error) {
-	if !m.op.Is(OpUpdateOne) {
-		return v, errors.New("OldAppID is only allowed on UpdateOne operations")
-	}
-	if m.id == nil || m.oldValue == nil {
-		return v, errors.New("OldAppID requires an ID field in the mutation")
-	}
-	oldValue, err := m.oldValue(ctx)
-	if err != nil {
-		return v, fmt.Errorf("querying old value for OldAppID: %w", err)
-	}
-	return oldValue.AppID, nil
-}
-
-// ClearAppID clears the value of the "app_id" field.
-func (m *OrderPercentMutation) ClearAppID() {
-	m.app_id = nil
-	m.clearedFields[orderpercent.FieldAppID] = struct{}{}
-}
-
-// AppIDCleared returns if the "app_id" field was cleared in this mutation.
-func (m *OrderPercentMutation) AppIDCleared() bool {
-	_, ok := m.clearedFields[orderpercent.FieldAppID]
-	return ok
-}
-
-// ResetAppID resets all changes to the "app_id" field.
-func (m *OrderPercentMutation) ResetAppID() {
-	m.app_id = nil
-	delete(m.clearedFields, orderpercent.FieldAppID)
-}
-
-// SetUserID sets the "user_id" field.
-func (m *OrderPercentMutation) SetUserID(u uuid.UUID) {
-	m.user_id = &u
-}
-
-// UserID returns the value of the "user_id" field in the mutation.
-func (m *OrderPercentMutation) UserID() (r uuid.UUID, exists bool) {
-	v := m.user_id
-	if v == nil {
-		return
-	}
-	return *v, true
-}
-
-// OldUserID returns the old "user_id" field's value of the OrderPercent entity.
-// If the OrderPercent object wasn't provided to the builder, the object is fetched from the database.
-// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *OrderPercentMutation) OldUserID(ctx context.Context) (v uuid.UUID, err error) {
-	if !m.op.Is(OpUpdateOne) {
-		return v, errors.New("OldUserID is only allowed on UpdateOne operations")
-	}
-	if m.id == nil || m.oldValue == nil {
-		return v, errors.New("OldUserID requires an ID field in the mutation")
-	}
-	oldValue, err := m.oldValue(ctx)
-	if err != nil {
-		return v, fmt.Errorf("querying old value for OldUserID: %w", err)
-	}
-	return oldValue.UserID, nil
-}
-
-// ClearUserID clears the value of the "user_id" field.
-func (m *OrderPercentMutation) ClearUserID() {
-	m.user_id = nil
-	m.clearedFields[orderpercent.FieldUserID] = struct{}{}
-}
-
-// UserIDCleared returns if the "user_id" field was cleared in this mutation.
-func (m *OrderPercentMutation) UserIDCleared() bool {
-	_, ok := m.clearedFields[orderpercent.FieldUserID]
-	return ok
-}
-
-// ResetUserID resets all changes to the "user_id" field.
-func (m *OrderPercentMutation) ResetUserID() {
-	m.user_id = nil
-	delete(m.clearedFields, orderpercent.FieldUserID)
-}
-
-// SetGoodID sets the "good_id" field.
-func (m *OrderPercentMutation) SetGoodID(u uuid.UUID) {
-	m.good_id = &u
-}
-
-// GoodID returns the value of the "good_id" field in the mutation.
-func (m *OrderPercentMutation) GoodID() (r uuid.UUID, exists bool) {
-	v := m.good_id
-	if v == nil {
-		return
-	}
-	return *v, true
-}
-
-// OldGoodID returns the old "good_id" field's value of the OrderPercent entity.
-// If the OrderPercent object wasn't provided to the builder, the object is fetched from the database.
-// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *OrderPercentMutation) OldGoodID(ctx context.Context) (v uuid.UUID, err error) {
-	if !m.op.Is(OpUpdateOne) {
-		return v, errors.New("OldGoodID is only allowed on UpdateOne operations")
-	}
-	if m.id == nil || m.oldValue == nil {
-		return v, errors.New("OldGoodID requires an ID field in the mutation")
-	}
-	oldValue, err := m.oldValue(ctx)
-	if err != nil {
-		return v, fmt.Errorf("querying old value for OldGoodID: %w", err)
-	}
-	return oldValue.GoodID, nil
-}
-
-// ClearGoodID clears the value of the "good_id" field.
-func (m *OrderPercentMutation) ClearGoodID() {
-	m.good_id = nil
-	m.clearedFields[orderpercent.FieldGoodID] = struct{}{}
-}
-
-// GoodIDCleared returns if the "good_id" field was cleared in this mutation.
-func (m *OrderPercentMutation) GoodIDCleared() bool {
-	_, ok := m.clearedFields[orderpercent.FieldGoodID]
-	return ok
-}
-
-// ResetGoodID resets all changes to the "good_id" field.
-func (m *OrderPercentMutation) ResetGoodID() {
-	m.good_id = nil
-	delete(m.clearedFields, orderpercent.FieldGoodID)
-}
-
-// SetTitle sets the "title" field.
-func (m *OrderPercentMutation) SetTitle(s string) {
-	m.title = &s
-}
-
-// Title returns the value of the "title" field in the mutation.
-func (m *OrderPercentMutation) Title() (r string, exists bool) {
-	v := m.title
-	if v == nil {
-		return
-	}
-	return *v, true
-}
-
-// OldTitle returns the old "title" field's value of the OrderPercent entity.
-// If the OrderPercent object wasn't provided to the builder, the object is fetched from the database.
-// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *OrderPercentMutation) OldTitle(ctx context.Context) (v string, err error) {
-	if !m.op.Is(OpUpdateOne) {
-		return v, errors.New("OldTitle is only allowed on UpdateOne operations")
-	}
-	if m.id == nil || m.oldValue == nil {
-		return v, errors.New("OldTitle requires an ID field in the mutation")
-	}
-	oldValue, err := m.oldValue(ctx)
-	if err != nil {
-		return v, fmt.Errorf("querying old value for OldTitle: %w", err)
-	}
-	return oldValue.Title, nil
-}
-
-// ClearTitle clears the value of the "title" field.
-func (m *OrderPercentMutation) ClearTitle() {
-	m.title = nil
-	m.clearedFields[orderpercent.FieldTitle] = struct{}{}
-}
-
-// TitleCleared returns if the "title" field was cleared in this mutation.
-func (m *OrderPercentMutation) TitleCleared() bool {
-	_, ok := m.clearedFields[orderpercent.FieldTitle]
-	return ok
-}
-
-// ResetTitle resets all changes to the "title" field.
-func (m *OrderPercentMutation) ResetTitle() {
-	m.title = nil
-	delete(m.clearedFields, orderpercent.FieldTitle)
-}
-
-// SetPercent sets the "percent" field.
-func (m *OrderPercentMutation) SetPercent(d decimal.Decimal) {
-	m.percent = &d
-}
-
-// Percent returns the value of the "percent" field in the mutation.
-func (m *OrderPercentMutation) Percent() (r decimal.Decimal, exists bool) {
-	v := m.percent
-	if v == nil {
-		return
-	}
-	return *v, true
-}
-
-// OldPercent returns the old "percent" field's value of the OrderPercent entity.
-// If the OrderPercent object wasn't provided to the builder, the object is fetched from the database.
-// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *OrderPercentMutation) OldPercent(ctx context.Context) (v decimal.Decimal, err error) {
-	if !m.op.Is(OpUpdateOne) {
-		return v, errors.New("OldPercent is only allowed on UpdateOne operations")
-	}
-	if m.id == nil || m.oldValue == nil {
-		return v, errors.New("OldPercent requires an ID field in the mutation")
-	}
-	oldValue, err := m.oldValue(ctx)
-	if err != nil {
-		return v, fmt.Errorf("querying old value for OldPercent: %w", err)
-	}
-	return oldValue.Percent, nil
-}
-
-// ClearPercent clears the value of the "percent" field.
-func (m *OrderPercentMutation) ClearPercent() {
-	m.percent = nil
-	m.clearedFields[orderpercent.FieldPercent] = struct{}{}
-}
-
-// PercentCleared returns if the "percent" field was cleared in this mutation.
-func (m *OrderPercentMutation) PercentCleared() bool {
-	_, ok := m.clearedFields[orderpercent.FieldPercent]
-	return ok
-}
-
-// ResetPercent resets all changes to the "percent" field.
-func (m *OrderPercentMutation) ResetPercent() {
-	m.percent = nil
-	delete(m.clearedFields, orderpercent.FieldPercent)
-}
-
-// SetStartAt sets the "start_at" field.
-func (m *OrderPercentMutation) SetStartAt(u uint32) {
-	m.start_at = &u
-	m.addstart_at = nil
-}
-
-// StartAt returns the value of the "start_at" field in the mutation.
-func (m *OrderPercentMutation) StartAt() (r uint32, exists bool) {
-	v := m.start_at
-	if v == nil {
-		return
-	}
-	return *v, true
-}
-
-// OldStartAt returns the old "start_at" field's value of the OrderPercent entity.
-// If the OrderPercent object wasn't provided to the builder, the object is fetched from the database.
-// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *OrderPercentMutation) OldStartAt(ctx context.Context) (v uint32, err error) {
-	if !m.op.Is(OpUpdateOne) {
-		return v, errors.New("OldStartAt is only allowed on UpdateOne operations")
-	}
-	if m.id == nil || m.oldValue == nil {
-		return v, errors.New("OldStartAt requires an ID field in the mutation")
-	}
-	oldValue, err := m.oldValue(ctx)
-	if err != nil {
-		return v, fmt.Errorf("querying old value for OldStartAt: %w", err)
-	}
-	return oldValue.StartAt, nil
-}
-
-// AddStartAt adds u to the "start_at" field.
-func (m *OrderPercentMutation) AddStartAt(u int32) {
-	if m.addstart_at != nil {
-		*m.addstart_at += u
-	} else {
-		m.addstart_at = &u
-	}
-}
-
-// AddedStartAt returns the value that was added to the "start_at" field in this mutation.
-func (m *OrderPercentMutation) AddedStartAt() (r int32, exists bool) {
-	v := m.addstart_at
-	if v == nil {
-		return
-	}
-	return *v, true
-}
-
-// ResetStartAt resets all changes to the "start_at" field.
-func (m *OrderPercentMutation) ResetStartAt() {
-	m.start_at = nil
-	m.addstart_at = nil
-}
-
-// SetEndAt sets the "end_at" field.
-func (m *OrderPercentMutation) SetEndAt(u uint32) {
-	m.end_at = &u
-	m.addend_at = nil
-}
-
-// EndAt returns the value of the "end_at" field in the mutation.
-func (m *OrderPercentMutation) EndAt() (r uint32, exists bool) {
-	v := m.end_at
-	if v == nil {
-		return
-	}
-	return *v, true
-}
-
-// OldEndAt returns the old "end_at" field's value of the OrderPercent entity.
-// If the OrderPercent object wasn't provided to the builder, the object is fetched from the database.
-// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *OrderPercentMutation) OldEndAt(ctx context.Context) (v uint32, err error) {
-	if !m.op.Is(OpUpdateOne) {
-		return v, errors.New("OldEndAt is only allowed on UpdateOne operations")
-	}
-	if m.id == nil || m.oldValue == nil {
-		return v, errors.New("OldEndAt requires an ID field in the mutation")
-	}
-	oldValue, err := m.oldValue(ctx)
-	if err != nil {
-		return v, fmt.Errorf("querying old value for OldEndAt: %w", err)
-	}
-	return oldValue.EndAt, nil
-}
-
-// AddEndAt adds u to the "end_at" field.
-func (m *OrderPercentMutation) AddEndAt(u int32) {
-	if m.addend_at != nil {
-		*m.addend_at += u
-	} else {
-		m.addend_at = &u
-	}
-}
-
-// AddedEndAt returns the value that was added to the "end_at" field in this mutation.
-func (m *OrderPercentMutation) AddedEndAt() (r int32, exists bool) {
-	v := m.addend_at
-	if v == nil {
-		return
-	}
-	return *v, true
-}
-
-// ResetEndAt resets all changes to the "end_at" field.
-func (m *OrderPercentMutation) ResetEndAt() {
-	m.end_at = nil
-	m.addend_at = nil
-}
-
-// SetBadgeLarge sets the "badge_large" field.
-func (m *OrderPercentMutation) SetBadgeLarge(s string) {
-	m.badge_large = &s
-}
-
-// BadgeLarge returns the value of the "badge_large" field in the mutation.
-func (m *OrderPercentMutation) BadgeLarge() (r string, exists bool) {
-	v := m.badge_large
-	if v == nil {
-		return
-	}
-	return *v, true
-}
-
-// OldBadgeLarge returns the old "badge_large" field's value of the OrderPercent entity.
-// If the OrderPercent object wasn't provided to the builder, the object is fetched from the database.
-// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *OrderPercentMutation) OldBadgeLarge(ctx context.Context) (v string, err error) {
-	if !m.op.Is(OpUpdateOne) {
-		return v, errors.New("OldBadgeLarge is only allowed on UpdateOne operations")
-	}
-	if m.id == nil || m.oldValue == nil {
-		return v, errors.New("OldBadgeLarge requires an ID field in the mutation")
-	}
-	oldValue, err := m.oldValue(ctx)
-	if err != nil {
-		return v, fmt.Errorf("querying old value for OldBadgeLarge: %w", err)
-	}
-	return oldValue.BadgeLarge, nil
-}
-
-// ResetBadgeLarge resets all changes to the "badge_large" field.
-func (m *OrderPercentMutation) ResetBadgeLarge() {
-	m.badge_large = nil
-}
-
-// SetBadgeSmall sets the "badge_small" field.
-func (m *OrderPercentMutation) SetBadgeSmall(s string) {
-	m.badge_small = &s
-}
-
-// BadgeSmall returns the value of the "badge_small" field in the mutation.
-func (m *OrderPercentMutation) BadgeSmall() (r string, exists bool) {
-	v := m.badge_small
-	if v == nil {
-		return
-	}
-	return *v, true
-}
-
-// OldBadgeSmall returns the old "badge_small" field's value of the OrderPercent entity.
-// If the OrderPercent object wasn't provided to the builder, the object is fetched from the database.
-// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *OrderPercentMutation) OldBadgeSmall(ctx context.Context) (v string, err error) {
-	if !m.op.Is(OpUpdateOne) {
-		return v, errors.New("OldBadgeSmall is only allowed on UpdateOne operations")
-	}
-	if m.id == nil || m.oldValue == nil {
-		return v, errors.New("OldBadgeSmall requires an ID field in the mutation")
-	}
-	oldValue, err := m.oldValue(ctx)
-	if err != nil {
-		return v, fmt.Errorf("querying old value for OldBadgeSmall: %w", err)
-	}
-	return oldValue.BadgeSmall, nil
-}
-
-// ResetBadgeSmall resets all changes to the "badge_small" field.
-func (m *OrderPercentMutation) ResetBadgeSmall() {
-	m.badge_small = nil
-}
-
-// Where appends a list predicates to the OrderPercentMutation builder.
-func (m *OrderPercentMutation) Where(ps ...predicate.OrderPercent) {
-	m.predicates = append(m.predicates, ps...)
-}
-
-// Op returns the operation name.
-func (m *OrderPercentMutation) Op() Op {
-	return m.op
-}
-
-// Type returns the node type of this mutation (OrderPercent).
-func (m *OrderPercentMutation) Type() string {
-	return m.typ
-}
-
-// Fields returns all fields that were changed during this mutation. Note that in
-// order to get all numeric fields that were incremented/decremented, call
-// AddedFields().
-func (m *OrderPercentMutation) Fields() []string {
-	fields := make([]string, 0, 12)
-	if m.created_at != nil {
-		fields = append(fields, orderpercent.FieldCreatedAt)
-	}
-	if m.updated_at != nil {
-		fields = append(fields, orderpercent.FieldUpdatedAt)
-	}
-	if m.deleted_at != nil {
-		fields = append(fields, orderpercent.FieldDeletedAt)
-	}
-	if m.app_id != nil {
-		fields = append(fields, orderpercent.FieldAppID)
-	}
-	if m.user_id != nil {
-		fields = append(fields, orderpercent.FieldUserID)
-	}
-	if m.good_id != nil {
-		fields = append(fields, orderpercent.FieldGoodID)
-	}
-	if m.title != nil {
-		fields = append(fields, orderpercent.FieldTitle)
-	}
-	if m.percent != nil {
-		fields = append(fields, orderpercent.FieldPercent)
-	}
-	if m.start_at != nil {
-		fields = append(fields, orderpercent.FieldStartAt)
-	}
-	if m.end_at != nil {
-		fields = append(fields, orderpercent.FieldEndAt)
-	}
-	if m.badge_large != nil {
-		fields = append(fields, orderpercent.FieldBadgeLarge)
-	}
-	if m.badge_small != nil {
-		fields = append(fields, orderpercent.FieldBadgeSmall)
-	}
-	return fields
-}
-
-// Field returns the value of a field with the given name. The second boolean
-// return value indicates that this field was not set, or was not defined in the
-// schema.
-func (m *OrderPercentMutation) Field(name string) (ent.Value, bool) {
-	switch name {
-	case orderpercent.FieldCreatedAt:
-		return m.CreatedAt()
-	case orderpercent.FieldUpdatedAt:
-		return m.UpdatedAt()
-	case orderpercent.FieldDeletedAt:
-		return m.DeletedAt()
-	case orderpercent.FieldAppID:
-		return m.AppID()
-	case orderpercent.FieldUserID:
-		return m.UserID()
-	case orderpercent.FieldGoodID:
-		return m.GoodID()
-	case orderpercent.FieldTitle:
-		return m.Title()
-	case orderpercent.FieldPercent:
-		return m.Percent()
-	case orderpercent.FieldStartAt:
-		return m.StartAt()
-	case orderpercent.FieldEndAt:
-		return m.EndAt()
-	case orderpercent.FieldBadgeLarge:
-		return m.BadgeLarge()
-	case orderpercent.FieldBadgeSmall:
-		return m.BadgeSmall()
-	}
-	return nil, false
-}
-
-// OldField returns the old value of the field from the database. An error is
-// returned if the mutation operation is not UpdateOne, or the query to the
-// database failed.
-func (m *OrderPercentMutation) OldField(ctx context.Context, name string) (ent.Value, error) {
-	switch name {
-	case orderpercent.FieldCreatedAt:
-		return m.OldCreatedAt(ctx)
-	case orderpercent.FieldUpdatedAt:
-		return m.OldUpdatedAt(ctx)
-	case orderpercent.FieldDeletedAt:
-		return m.OldDeletedAt(ctx)
-	case orderpercent.FieldAppID:
-		return m.OldAppID(ctx)
-	case orderpercent.FieldUserID:
-		return m.OldUserID(ctx)
-	case orderpercent.FieldGoodID:
-		return m.OldGoodID(ctx)
-	case orderpercent.FieldTitle:
-		return m.OldTitle(ctx)
-	case orderpercent.FieldPercent:
-		return m.OldPercent(ctx)
-	case orderpercent.FieldStartAt:
-		return m.OldStartAt(ctx)
-	case orderpercent.FieldEndAt:
-		return m.OldEndAt(ctx)
-	case orderpercent.FieldBadgeLarge:
-		return m.OldBadgeLarge(ctx)
-	case orderpercent.FieldBadgeSmall:
-		return m.OldBadgeSmall(ctx)
-	}
-	return nil, fmt.Errorf("unknown OrderPercent field %s", name)
-}
-
-// SetField sets the value of a field with the given name. It returns an error if
-// the field is not defined in the schema, or if the type mismatched the field
-// type.
-func (m *OrderPercentMutation) SetField(name string, value ent.Value) error {
-	switch name {
-	case orderpercent.FieldCreatedAt:
-		v, ok := value.(uint32)
-		if !ok {
-			return fmt.Errorf("unexpected type %T for field %s", value, name)
-		}
-		m.SetCreatedAt(v)
-		return nil
-	case orderpercent.FieldUpdatedAt:
-		v, ok := value.(uint32)
-		if !ok {
-			return fmt.Errorf("unexpected type %T for field %s", value, name)
-		}
-		m.SetUpdatedAt(v)
-		return nil
-	case orderpercent.FieldDeletedAt:
-		v, ok := value.(uint32)
-		if !ok {
-			return fmt.Errorf("unexpected type %T for field %s", value, name)
-		}
-		m.SetDeletedAt(v)
-		return nil
-	case orderpercent.FieldAppID:
-		v, ok := value.(uuid.UUID)
-		if !ok {
-			return fmt.Errorf("unexpected type %T for field %s", value, name)
-		}
-		m.SetAppID(v)
-		return nil
-	case orderpercent.FieldUserID:
-		v, ok := value.(uuid.UUID)
-		if !ok {
-			return fmt.Errorf("unexpected type %T for field %s", value, name)
-		}
-		m.SetUserID(v)
-		return nil
-	case orderpercent.FieldGoodID:
-		v, ok := value.(uuid.UUID)
-		if !ok {
-			return fmt.Errorf("unexpected type %T for field %s", value, name)
-		}
-		m.SetGoodID(v)
-		return nil
-	case orderpercent.FieldTitle:
-		v, ok := value.(string)
-		if !ok {
-			return fmt.Errorf("unexpected type %T for field %s", value, name)
-		}
-		m.SetTitle(v)
-		return nil
-	case orderpercent.FieldPercent:
-		v, ok := value.(decimal.Decimal)
-		if !ok {
-			return fmt.Errorf("unexpected type %T for field %s", value, name)
-		}
-		m.SetPercent(v)
-		return nil
-	case orderpercent.FieldStartAt:
-		v, ok := value.(uint32)
-		if !ok {
-			return fmt.Errorf("unexpected type %T for field %s", value, name)
-		}
-		m.SetStartAt(v)
-		return nil
-	case orderpercent.FieldEndAt:
-		v, ok := value.(uint32)
-		if !ok {
-			return fmt.Errorf("unexpected type %T for field %s", value, name)
-		}
-		m.SetEndAt(v)
-		return nil
-	case orderpercent.FieldBadgeLarge:
-		v, ok := value.(string)
-		if !ok {
-			return fmt.Errorf("unexpected type %T for field %s", value, name)
-		}
-		m.SetBadgeLarge(v)
-		return nil
-	case orderpercent.FieldBadgeSmall:
-		v, ok := value.(string)
-		if !ok {
-			return fmt.Errorf("unexpected type %T for field %s", value, name)
-		}
-		m.SetBadgeSmall(v)
-		return nil
-	}
-	return fmt.Errorf("unknown OrderPercent field %s", name)
-}
-
-// AddedFields returns all numeric fields that were incremented/decremented during
-// this mutation.
-func (m *OrderPercentMutation) AddedFields() []string {
-	var fields []string
-	if m.addcreated_at != nil {
-		fields = append(fields, orderpercent.FieldCreatedAt)
-	}
-	if m.addupdated_at != nil {
-		fields = append(fields, orderpercent.FieldUpdatedAt)
-	}
-	if m.adddeleted_at != nil {
-		fields = append(fields, orderpercent.FieldDeletedAt)
-	}
-	if m.addstart_at != nil {
-		fields = append(fields, orderpercent.FieldStartAt)
-	}
-	if m.addend_at != nil {
-		fields = append(fields, orderpercent.FieldEndAt)
-	}
-	return fields
-}
-
-// AddedField returns the numeric value that was incremented/decremented on a field
-// with the given name. The second boolean return value indicates that this field
-// was not set, or was not defined in the schema.
-func (m *OrderPercentMutation) AddedField(name string) (ent.Value, bool) {
-	switch name {
-	case orderpercent.FieldCreatedAt:
-		return m.AddedCreatedAt()
-	case orderpercent.FieldUpdatedAt:
-		return m.AddedUpdatedAt()
-	case orderpercent.FieldDeletedAt:
-		return m.AddedDeletedAt()
-	case orderpercent.FieldStartAt:
-		return m.AddedStartAt()
-	case orderpercent.FieldEndAt:
-		return m.AddedEndAt()
-	}
-	return nil, false
-}
-
-// AddField adds the value to the field with the given name. It returns an error if
-// the field is not defined in the schema, or if the type mismatched the field
-// type.
-func (m *OrderPercentMutation) AddField(name string, value ent.Value) error {
-	switch name {
-	case orderpercent.FieldCreatedAt:
-		v, ok := value.(int32)
-		if !ok {
-			return fmt.Errorf("unexpected type %T for field %s", value, name)
-		}
-		m.AddCreatedAt(v)
-		return nil
-	case orderpercent.FieldUpdatedAt:
-		v, ok := value.(int32)
-		if !ok {
-			return fmt.Errorf("unexpected type %T for field %s", value, name)
-		}
-		m.AddUpdatedAt(v)
-		return nil
-	case orderpercent.FieldDeletedAt:
-		v, ok := value.(int32)
-		if !ok {
-			return fmt.Errorf("unexpected type %T for field %s", value, name)
-		}
-		m.AddDeletedAt(v)
-		return nil
-	case orderpercent.FieldStartAt:
-		v, ok := value.(int32)
-		if !ok {
-			return fmt.Errorf("unexpected type %T for field %s", value, name)
-		}
-		m.AddStartAt(v)
-		return nil
-	case orderpercent.FieldEndAt:
-		v, ok := value.(int32)
-		if !ok {
-			return fmt.Errorf("unexpected type %T for field %s", value, name)
-		}
-		m.AddEndAt(v)
-		return nil
-	}
-	return fmt.Errorf("unknown OrderPercent numeric field %s", name)
-}
-
-// ClearedFields returns all nullable fields that were cleared during this
-// mutation.
-func (m *OrderPercentMutation) ClearedFields() []string {
-	var fields []string
-	if m.FieldCleared(orderpercent.FieldAppID) {
-		fields = append(fields, orderpercent.FieldAppID)
-	}
-	if m.FieldCleared(orderpercent.FieldUserID) {
-		fields = append(fields, orderpercent.FieldUserID)
-	}
-	if m.FieldCleared(orderpercent.FieldGoodID) {
-		fields = append(fields, orderpercent.FieldGoodID)
-	}
-	if m.FieldCleared(orderpercent.FieldTitle) {
-		fields = append(fields, orderpercent.FieldTitle)
-	}
-	if m.FieldCleared(orderpercent.FieldPercent) {
-		fields = append(fields, orderpercent.FieldPercent)
-	}
-	return fields
-}
-
-// FieldCleared returns a boolean indicating if a field with the given name was
-// cleared in this mutation.
-func (m *OrderPercentMutation) FieldCleared(name string) bool {
-	_, ok := m.clearedFields[name]
-	return ok
-}
-
-// ClearField clears the value of the field with the given name. It returns an
-// error if the field is not defined in the schema.
-func (m *OrderPercentMutation) ClearField(name string) error {
-	switch name {
-	case orderpercent.FieldAppID:
-		m.ClearAppID()
-		return nil
-	case orderpercent.FieldUserID:
-		m.ClearUserID()
-		return nil
-	case orderpercent.FieldGoodID:
-		m.ClearGoodID()
-		return nil
-	case orderpercent.FieldTitle:
-		m.ClearTitle()
-		return nil
-	case orderpercent.FieldPercent:
-		m.ClearPercent()
-		return nil
-	}
-	return fmt.Errorf("unknown OrderPercent nullable field %s", name)
-}
-
-// ResetField resets all changes in the mutation for the field with the given name.
-// It returns an error if the field is not defined in the schema.
-func (m *OrderPercentMutation) ResetField(name string) error {
-	switch name {
-	case orderpercent.FieldCreatedAt:
-		m.ResetCreatedAt()
-		return nil
-	case orderpercent.FieldUpdatedAt:
-		m.ResetUpdatedAt()
-		return nil
-	case orderpercent.FieldDeletedAt:
-		m.ResetDeletedAt()
-		return nil
-	case orderpercent.FieldAppID:
-		m.ResetAppID()
-		return nil
-	case orderpercent.FieldUserID:
-		m.ResetUserID()
-		return nil
-	case orderpercent.FieldGoodID:
-		m.ResetGoodID()
-		return nil
-	case orderpercent.FieldTitle:
-		m.ResetTitle()
-		return nil
-	case orderpercent.FieldPercent:
-		m.ResetPercent()
-		return nil
-	case orderpercent.FieldStartAt:
-		m.ResetStartAt()
-		return nil
-	case orderpercent.FieldEndAt:
-		m.ResetEndAt()
-		return nil
-	case orderpercent.FieldBadgeLarge:
-		m.ResetBadgeLarge()
-		return nil
-	case orderpercent.FieldBadgeSmall:
-		m.ResetBadgeSmall()
-		return nil
-	}
-	return fmt.Errorf("unknown OrderPercent field %s", name)
-}
-
-// AddedEdges returns all edge names that were set/added in this mutation.
-func (m *OrderPercentMutation) AddedEdges() []string {
-	edges := make([]string, 0, 0)
-	return edges
-}
-
-// AddedIDs returns all IDs (to other nodes) that were added for the given edge
-// name in this mutation.
-func (m *OrderPercentMutation) AddedIDs(name string) []ent.Value {
-	return nil
-}
-
-// RemovedEdges returns all edge names that were removed in this mutation.
-func (m *OrderPercentMutation) RemovedEdges() []string {
-	edges := make([]string, 0, 0)
-	return edges
-}
-
-// RemovedIDs returns all IDs (to other nodes) that were removed for the edge with
-// the given name in this mutation.
-func (m *OrderPercentMutation) RemovedIDs(name string) []ent.Value {
-	return nil
-}
-
-// ClearedEdges returns all edge names that were cleared in this mutation.
-func (m *OrderPercentMutation) ClearedEdges() []string {
-	edges := make([]string, 0, 0)
-	return edges
-}
-
-// EdgeCleared returns a boolean which indicates if the edge with the given name
-// was cleared in this mutation.
-func (m *OrderPercentMutation) EdgeCleared(name string) bool {
-	return false
-}
-
-// ClearEdge clears the value of the edge with the given name. It returns an error
-// if that edge is not defined in the schema.
-func (m *OrderPercentMutation) ClearEdge(name string) error {
-	return fmt.Errorf("unknown OrderPercent unique edge %s", name)
-}
-
-// ResetEdge resets all changes to the edge with the given name in this mutation.
-// It returns an error if the edge is not defined in the schema.
-func (m *OrderPercentMutation) ResetEdge(name string) error {
-	return fmt.Errorf("unknown OrderPercent edge %s", name)
 }
 
 // RegistrationMutation represents an operation that mutates the Registration nodes in the graph.
