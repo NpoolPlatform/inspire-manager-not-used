@@ -24,6 +24,13 @@ import (
 )
 
 func ValidateCreate(info *npool.InvitationCodeReq) error {
+	if info.ID != nil {
+		if _, err := uuid.Parse(info.GetID()); err != nil {
+			logger.Sugar().Errorw("validate", "ID", info.ID, "error", err)
+			return status.Error(codes.InvalidArgument, fmt.Sprintf("ID is invalid: %v", err))
+		}
+	}
+
 	if _, err := uuid.Parse(info.GetAppID()); err != nil {
 		logger.Sugar().Errorw("validate", "AppID", info.AppID, "error", err)
 		return status.Error(codes.InvalidArgument, fmt.Sprintf("AppID is invalid: %v", err))
