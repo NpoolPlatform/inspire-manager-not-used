@@ -1,7 +1,7 @@
 package invitationcode
 
 import (
-	"github.com/NpoolPlatform/message/npool/inspire/mgr/v1/inspire/invitation/invitationcode"
+	"github.com/NpoolPlatform/message/npool/inspire/mgr/v1/invitation/invitationcode"
 
 	"github.com/grpc-ecosystem/grpc-gateway/v2/runtime"
 	"google.golang.org/grpc"

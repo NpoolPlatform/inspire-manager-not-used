@@ -1,7 +1,7 @@
 package fixamount
 
 import (
-	"github.com/NpoolPlatform/message/npool/inspire/mgr/v1/inspire/coupon/fixamount"
+	"github.com/NpoolPlatform/message/npool/inspire/mgr/v1/coupon/fixamount"
 
 	"github.com/grpc-ecosystem/grpc-gateway/v2/runtime"
 	"google.golang.org/grpc"

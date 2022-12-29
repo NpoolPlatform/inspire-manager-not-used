@@ -1,7 +1,7 @@
 package discount
 
 import (
-	"github.com/NpoolPlatform/message/npool/inspire/mgr/v1/inspire/coupon/discount"
+	"github.com/NpoolPlatform/message/npool/inspire/mgr/v1/coupon/discount"
 
 	"github.com/grpc-ecosystem/grpc-gateway/v2/runtime"
 	"google.golang.org/grpc"

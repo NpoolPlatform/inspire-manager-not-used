@@ -17,7 +17,7 @@ import (
 	"google.golang.org/grpc/status"
 
 	"github.com/NpoolPlatform/go-service-framework/pkg/logger"
-	npool "github.com/NpoolPlatform/message/npool/inspire/mgr/v1/inspire/coupon/fixamount"
+	npool "github.com/NpoolPlatform/message/npool/inspire/mgr/v1/coupon/fixamount"
 
 	"github.com/google/uuid"
 )

@@ -13,7 +13,7 @@ import (
 	"github.com/NpoolPlatform/libent-cruder/pkg/cruder"
 
 	valuedef "github.com/NpoolPlatform/message/npool"
-	npool "github.com/NpoolPlatform/message/npool/inspire/mgr/v1/inspire/coupon/fixamount"
+	npool "github.com/NpoolPlatform/message/npool/inspire/mgr/v1/coupon/fixamount"
 
 	testinit "github.com/NpoolPlatform/inspire-manager/pkg/testinit"
 	"github.com/google/uuid"

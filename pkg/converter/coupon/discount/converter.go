@@ -1,7 +1,7 @@
 package discount
 
 import (
-	npool "github.com/NpoolPlatform/message/npool/inspire/mgr/v1/inspire/coupon/discount"
+	npool "github.com/NpoolPlatform/message/npool/inspire/mgr/v1/coupon/discount"
 
 	"github.com/NpoolPlatform/inspire-manager/pkg/db/ent"
 )

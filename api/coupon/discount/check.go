@@ -9,7 +9,7 @@ import (
 	"google.golang.org/grpc/status"
 
 	"github.com/NpoolPlatform/go-service-framework/pkg/logger"
-	npool "github.com/NpoolPlatform/message/npool/inspire/mgr/v1/inspire/coupon/discount"
+	npool "github.com/NpoolPlatform/message/npool/inspire/mgr/v1/coupon/discount"
 
 	"github.com/google/uuid"
 )

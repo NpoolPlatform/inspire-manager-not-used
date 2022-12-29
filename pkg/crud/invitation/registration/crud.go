@@ -16,7 +16,7 @@ import (
 	"github.com/NpoolPlatform/inspire-manager/pkg/db/ent"
 	"github.com/NpoolPlatform/inspire-manager/pkg/db/ent/registration"
 	"github.com/NpoolPlatform/libent-cruder/pkg/cruder"
-	npool "github.com/NpoolPlatform/message/npool/inspire/mgr/v1/inspire/invitation/registration"
+	npool "github.com/NpoolPlatform/message/npool/inspire/mgr/v1/invitation/registration"
 
 	"github.com/google/uuid"
 )

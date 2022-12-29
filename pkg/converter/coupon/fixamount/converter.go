@@ -1,7 +1,7 @@
 package fixamount
 
 import (
-	npool "github.com/NpoolPlatform/message/npool/inspire/mgr/v1/inspire/coupon/fixamount"
+	npool "github.com/NpoolPlatform/message/npool/inspire/mgr/v1/coupon/fixamount"
 
 	"github.com/NpoolPlatform/inspire-manager/pkg/db/ent"
 )

@@ -8,7 +8,7 @@ import (
 	grpc2 "github.com/NpoolPlatform/go-service-framework/pkg/grpc"
 
 	"github.com/NpoolPlatform/libent-cruder/pkg/cruder"
-	npool "github.com/NpoolPlatform/message/npool/inspire/mgr/v1/inspire/coupon/fixamount"
+	npool "github.com/NpoolPlatform/message/npool/inspire/mgr/v1/coupon/fixamount"
 
 	constant "github.com/NpoolPlatform/inspire-manager/pkg/message/const"
 )

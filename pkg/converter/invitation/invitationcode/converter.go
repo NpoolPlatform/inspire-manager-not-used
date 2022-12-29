@@ -2,7 +2,7 @@ package invitationcode
 
 import (
 	"github.com/NpoolPlatform/inspire-manager/pkg/db/ent"
-	npool "github.com/NpoolPlatform/message/npool/inspire/mgr/v1/inspire/invitation/invitationcode"
+	npool "github.com/NpoolPlatform/message/npool/inspire/mgr/v1/invitation/invitationcode"
 )
 
 func Ent2Grpc(row *ent.InvitationCode) *npool.InvitationCode {

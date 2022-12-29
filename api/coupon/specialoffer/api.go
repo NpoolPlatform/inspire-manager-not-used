@@ -1,7 +1,7 @@
 package specialoffer
 
 import (
-	"github.com/NpoolPlatform/message/npool/inspire/mgr/v1/inspire/coupon/specialoffer"
+	"github.com/NpoolPlatform/message/npool/inspire/mgr/v1/coupon/specialoffer"
 
 	"github.com/grpc-ecosystem/grpc-gateway/v2/runtime"
 	"google.golang.org/grpc"

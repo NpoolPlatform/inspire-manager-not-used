@@ -1,7 +1,7 @@
 package specialoffer
 
 import (
-	npool "github.com/NpoolPlatform/message/npool/inspire/mgr/v1/inspire/coupon/specialoffer"
+	npool "github.com/NpoolPlatform/message/npool/inspire/mgr/v1/coupon/specialoffer"
 
 	"github.com/NpoolPlatform/inspire-manager/pkg/db/ent"
 )

@@ -18,7 +18,7 @@ import (
 	"github.com/NpoolPlatform/libent-cruder/pkg/cruder"
 	val "github.com/NpoolPlatform/message/npool"
 
-	npool "github.com/NpoolPlatform/message/npool/inspire/mgr/v1/inspire/coupon/discount"
+	npool "github.com/NpoolPlatform/message/npool/inspire/mgr/v1/coupon/discount"
 
 	testinit "github.com/NpoolPlatform/inspire-manager/pkg/testinit"
 	"github.com/google/uuid"

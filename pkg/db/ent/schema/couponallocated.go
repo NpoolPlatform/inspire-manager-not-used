@@ -7,7 +7,7 @@ import (
 
 	"github.com/google/uuid"
 
-	"github.com/NpoolPlatform/message/npool/inspire/mgr/v1/inspire/coupon/allocated"
+	"github.com/NpoolPlatform/message/npool/inspire/mgr/v1/coupon/allocated"
 )
 
 // CouponAllocated holds the schema definition for the CouponAllocated entity.

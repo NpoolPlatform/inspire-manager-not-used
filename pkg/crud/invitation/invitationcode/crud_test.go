@@ -13,7 +13,7 @@ import (
 
 	testinit "github.com/NpoolPlatform/inspire-manager/pkg/testinit"
 	valuedef "github.com/NpoolPlatform/message/npool"
-	npool "github.com/NpoolPlatform/message/npool/inspire/mgr/v1/inspire/invitation/invitationcode"
+	npool "github.com/NpoolPlatform/message/npool/inspire/mgr/v1/invitation/invitationcode"
 
 	"github.com/google/uuid"
 	"github.com/stretchr/testify/assert"
