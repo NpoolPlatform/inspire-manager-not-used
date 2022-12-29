@@ -26,6 +26,10 @@ type Tx struct {
 	CouponFixAmount *CouponFixAmountClient
 	// CouponSpecialOffer is the client for interacting with the CouponSpecialOffer builders.
 	CouponSpecialOffer *CouponSpecialOfferClient
+	// InvitationCode is the client for interacting with the InvitationCode builders.
+	InvitationCode *InvitationCodeClient
+	// Registration is the client for interacting with the Registration builders.
+	Registration *RegistrationClient
 
 	// lazily loaded.
 	client     *Client
@@ -167,6 +171,8 @@ func (tx *Tx) init() {
 	tx.CouponDiscount = NewCouponDiscountClient(tx.config)
 	tx.CouponFixAmount = NewCouponFixAmountClient(tx.config)
 	tx.CouponSpecialOffer = NewCouponSpecialOfferClient(tx.config)
+	tx.InvitationCode = NewInvitationCodeClient(tx.config)
+	tx.Registration = NewRegistrationClient(tx.config)
 }
 
 // txDriver wraps the given dialect.Tx with a nop dialect.Driver implementation.

@@ -34,6 +34,8 @@ type hooks struct {
 	CouponDiscount     []ent.Hook
 	CouponFixAmount    []ent.Hook
 	CouponSpecialOffer []ent.Hook
+	InvitationCode     []ent.Hook
+	Registration       []ent.Hook
 }
 
 // Options applies the options on the config object.

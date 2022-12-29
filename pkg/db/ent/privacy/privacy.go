@@ -294,6 +294,54 @@ func (f CouponSpecialOfferMutationRuleFunc) EvalMutation(ctx context.Context, m 
 	return Denyf("ent/privacy: unexpected mutation type %T, expect *ent.CouponSpecialOfferMutation", m)
 }
 
+// The InvitationCodeQueryRuleFunc type is an adapter to allow the use of ordinary
+// functions as a query rule.
+type InvitationCodeQueryRuleFunc func(context.Context, *ent.InvitationCodeQuery) error
+
+// EvalQuery return f(ctx, q).
+func (f InvitationCodeQueryRuleFunc) EvalQuery(ctx context.Context, q ent.Query) error {
+	if q, ok := q.(*ent.InvitationCodeQuery); ok {
+		return f(ctx, q)
+	}
+	return Denyf("ent/privacy: unexpected query type %T, expect *ent.InvitationCodeQuery", q)
+}
+
+// The InvitationCodeMutationRuleFunc type is an adapter to allow the use of ordinary
+// functions as a mutation rule.
+type InvitationCodeMutationRuleFunc func(context.Context, *ent.InvitationCodeMutation) error
+
+// EvalMutation calls f(ctx, m).
+func (f InvitationCodeMutationRuleFunc) EvalMutation(ctx context.Context, m ent.Mutation) error {
+	if m, ok := m.(*ent.InvitationCodeMutation); ok {
+		return f(ctx, m)
+	}
+	return Denyf("ent/privacy: unexpected mutation type %T, expect *ent.InvitationCodeMutation", m)
+}
+
+// The RegistrationQueryRuleFunc type is an adapter to allow the use of ordinary
+// functions as a query rule.
+type RegistrationQueryRuleFunc func(context.Context, *ent.RegistrationQuery) error
+
+// EvalQuery return f(ctx, q).
+func (f RegistrationQueryRuleFunc) EvalQuery(ctx context.Context, q ent.Query) error {
+	if q, ok := q.(*ent.RegistrationQuery); ok {
+		return f(ctx, q)
+	}
+	return Denyf("ent/privacy: unexpected query type %T, expect *ent.RegistrationQuery", q)
+}
+
+// The RegistrationMutationRuleFunc type is an adapter to allow the use of ordinary
+// functions as a mutation rule.
+type RegistrationMutationRuleFunc func(context.Context, *ent.RegistrationMutation) error
+
+// EvalMutation calls f(ctx, m).
+func (f RegistrationMutationRuleFunc) EvalMutation(ctx context.Context, m ent.Mutation) error {
+	if m, ok := m.(*ent.RegistrationMutation); ok {
+		return f(ctx, m)
+	}
+	return Denyf("ent/privacy: unexpected mutation type %T, expect *ent.RegistrationMutation", m)
+}
+
 type (
 	// Filter is the interface that wraps the Where function
 	// for filtering nodes in queries and mutations.
@@ -341,6 +389,10 @@ func queryFilter(q ent.Query) (Filter, error) {
 		return q.Filter(), nil
 	case *ent.CouponSpecialOfferQuery:
 		return q.Filter(), nil
+	case *ent.InvitationCodeQuery:
+		return q.Filter(), nil
+	case *ent.RegistrationQuery:
+		return q.Filter(), nil
 	default:
 		return nil, Denyf("ent/privacy: unexpected query type %T for query filter", q)
 	}
@@ -359,6 +411,10 @@ func mutationFilter(m ent.Mutation) (Filter, error) {
 	case *ent.CouponFixAmountMutation:
 		return m.Filter(), nil
 	case *ent.CouponSpecialOfferMutation:
+		return m.Filter(), nil
+	case *ent.InvitationCodeMutation:
+		return m.Filter(), nil
+	case *ent.RegistrationMutation:
 		return m.Filter(), nil
 	default:
 		return nil, Denyf("ent/privacy: unexpected mutation type %T for mutation filter", m)

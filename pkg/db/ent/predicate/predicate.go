@@ -23,3 +23,9 @@ type CouponFixAmount func(*sql.Selector)
 
 // CouponSpecialOffer is the predicate function for couponspecialoffer builders.
 type CouponSpecialOffer func(*sql.Selector)
+
+// InvitationCode is the predicate function for invitationcode builders.
+type InvitationCode func(*sql.Selector)
+
+// Registration is the predicate function for registration builders.
+type Registration func(*sql.Selector)

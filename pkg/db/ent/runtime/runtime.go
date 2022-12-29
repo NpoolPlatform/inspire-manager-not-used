@@ -11,6 +11,8 @@ import (
 	"github.com/NpoolPlatform/inspire-manager/pkg/db/ent/coupondiscount"
 	"github.com/NpoolPlatform/inspire-manager/pkg/db/ent/couponfixamount"
 	"github.com/NpoolPlatform/inspire-manager/pkg/db/ent/couponspecialoffer"
+	"github.com/NpoolPlatform/inspire-manager/pkg/db/ent/invitationcode"
+	"github.com/NpoolPlatform/inspire-manager/pkg/db/ent/registration"
 	"github.com/NpoolPlatform/inspire-manager/pkg/db/ent/schema"
 	"github.com/google/uuid"
 	"github.com/shopspring/decimal"
@@ -375,6 +377,78 @@ func init() {
 	couponspecialofferDescID := couponspecialofferFields[0].Descriptor()
 	// couponspecialoffer.DefaultID holds the default value on creation for the id field.
 	couponspecialoffer.DefaultID = couponspecialofferDescID.Default.(func() uuid.UUID)
+	invitationcodeMixin := schema.InvitationCode{}.Mixin()
+	invitationcode.Policy = privacy.NewPolicies(invitationcodeMixin[0], schema.InvitationCode{})
+	invitationcode.Hooks[0] = func(next ent.Mutator) ent.Mutator {
+		return ent.MutateFunc(func(ctx context.Context, m ent.Mutation) (ent.Value, error) {
+			if err := invitationcode.Policy.EvalMutation(ctx, m); err != nil {
+				return nil, err
+			}
+			return next.Mutate(ctx, m)
+		})
+	}
+	invitationcodeMixinFields0 := invitationcodeMixin[0].Fields()
+	_ = invitationcodeMixinFields0
+	invitationcodeFields := schema.InvitationCode{}.Fields()
+	_ = invitationcodeFields
+	// invitationcodeDescCreatedAt is the schema descriptor for created_at field.
+	invitationcodeDescCreatedAt := invitationcodeMixinFields0[0].Descriptor()
+	// invitationcode.DefaultCreatedAt holds the default value on creation for the created_at field.
+	invitationcode.DefaultCreatedAt = invitationcodeDescCreatedAt.Default.(func() uint32)
+	// invitationcodeDescUpdatedAt is the schema descriptor for updated_at field.
+	invitationcodeDescUpdatedAt := invitationcodeMixinFields0[1].Descriptor()
+	// invitationcode.DefaultUpdatedAt holds the default value on creation for the updated_at field.
+	invitationcode.DefaultUpdatedAt = invitationcodeDescUpdatedAt.Default.(func() uint32)
+	// invitationcode.UpdateDefaultUpdatedAt holds the default value on update for the updated_at field.
+	invitationcode.UpdateDefaultUpdatedAt = invitationcodeDescUpdatedAt.UpdateDefault.(func() uint32)
+	// invitationcodeDescDeletedAt is the schema descriptor for deleted_at field.
+	invitationcodeDescDeletedAt := invitationcodeMixinFields0[2].Descriptor()
+	// invitationcode.DefaultDeletedAt holds the default value on creation for the deleted_at field.
+	invitationcode.DefaultDeletedAt = invitationcodeDescDeletedAt.Default.(func() uint32)
+	// invitationcodeDescInvitationCode is the schema descriptor for invitation_code field.
+	invitationcodeDescInvitationCode := invitationcodeFields[3].Descriptor()
+	// invitationcode.DefaultInvitationCode holds the default value on creation for the invitation_code field.
+	invitationcode.DefaultInvitationCode = invitationcodeDescInvitationCode.Default.(string)
+	// invitationcodeDescConfirmed is the schema descriptor for confirmed field.
+	invitationcodeDescConfirmed := invitationcodeFields[4].Descriptor()
+	// invitationcode.DefaultConfirmed holds the default value on creation for the confirmed field.
+	invitationcode.DefaultConfirmed = invitationcodeDescConfirmed.Default.(bool)
+	// invitationcodeDescID is the schema descriptor for id field.
+	invitationcodeDescID := invitationcodeFields[0].Descriptor()
+	// invitationcode.DefaultID holds the default value on creation for the id field.
+	invitationcode.DefaultID = invitationcodeDescID.Default.(func() uuid.UUID)
+	registrationMixin := schema.Registration{}.Mixin()
+	registration.Policy = privacy.NewPolicies(registrationMixin[0], schema.Registration{})
+	registration.Hooks[0] = func(next ent.Mutator) ent.Mutator {
+		return ent.MutateFunc(func(ctx context.Context, m ent.Mutation) (ent.Value, error) {
+			if err := registration.Policy.EvalMutation(ctx, m); err != nil {
+				return nil, err
+			}
+			return next.Mutate(ctx, m)
+		})
+	}
+	registrationMixinFields0 := registrationMixin[0].Fields()
+	_ = registrationMixinFields0
+	registrationFields := schema.Registration{}.Fields()
+	_ = registrationFields
+	// registrationDescCreatedAt is the schema descriptor for created_at field.
+	registrationDescCreatedAt := registrationMixinFields0[0].Descriptor()
+	// registration.DefaultCreatedAt holds the default value on creation for the created_at field.
+	registration.DefaultCreatedAt = registrationDescCreatedAt.Default.(func() uint32)
+	// registrationDescUpdatedAt is the schema descriptor for updated_at field.
+	registrationDescUpdatedAt := registrationMixinFields0[1].Descriptor()
+	// registration.DefaultUpdatedAt holds the default value on creation for the updated_at field.
+	registration.DefaultUpdatedAt = registrationDescUpdatedAt.Default.(func() uint32)
+	// registration.UpdateDefaultUpdatedAt holds the default value on update for the updated_at field.
+	registration.UpdateDefaultUpdatedAt = registrationDescUpdatedAt.UpdateDefault.(func() uint32)
+	// registrationDescDeletedAt is the schema descriptor for deleted_at field.
+	registrationDescDeletedAt := registrationMixinFields0[2].Descriptor()
+	// registration.DefaultDeletedAt holds the default value on creation for the deleted_at field.
+	registration.DefaultDeletedAt = registrationDescDeletedAt.Default.(func() uint32)
+	// registrationDescID is the schema descriptor for id field.
+	registrationDescID := registrationFields[0].Descriptor()
+	// registration.DefaultID holds the default value on creation for the id field.
+	registration.DefaultID = registrationDescID.Default.(func() uuid.UUID)
 }
 
 const (

@@ -17,6 +17,8 @@ import (
 	"github.com/NpoolPlatform/inspire-manager/pkg/db/ent/coupondiscount"
 	"github.com/NpoolPlatform/inspire-manager/pkg/db/ent/couponfixamount"
 	"github.com/NpoolPlatform/inspire-manager/pkg/db/ent/couponspecialoffer"
+	"github.com/NpoolPlatform/inspire-manager/pkg/db/ent/invitationcode"
+	"github.com/NpoolPlatform/inspire-manager/pkg/db/ent/registration"
 
 	"entgo.io/ent/dialect"
 	"entgo.io/ent/dialect/sql"
@@ -39,6 +41,10 @@ type Client struct {
 	CouponFixAmount *CouponFixAmountClient
 	// CouponSpecialOffer is the client for interacting with the CouponSpecialOffer builders.
 	CouponSpecialOffer *CouponSpecialOfferClient
+	// InvitationCode is the client for interacting with the InvitationCode builders.
+	InvitationCode *InvitationCodeClient
+	// Registration is the client for interacting with the Registration builders.
+	Registration *RegistrationClient
 }
 
 // NewClient creates a new client configured with the given options.
@@ -58,6 +64,8 @@ func (c *Client) init() {
 	c.CouponDiscount = NewCouponDiscountClient(c.config)
 	c.CouponFixAmount = NewCouponFixAmountClient(c.config)
 	c.CouponSpecialOffer = NewCouponSpecialOfferClient(c.config)
+	c.InvitationCode = NewInvitationCodeClient(c.config)
+	c.Registration = NewRegistrationClient(c.config)
 }
 
 // Open opens a database/sql.DB specified by the driver name and
@@ -97,6 +105,8 @@ func (c *Client) Tx(ctx context.Context) (*Tx, error) {
 		CouponDiscount:     NewCouponDiscountClient(cfg),
 		CouponFixAmount:    NewCouponFixAmountClient(cfg),
 		CouponSpecialOffer: NewCouponSpecialOfferClient(cfg),
+		InvitationCode:     NewInvitationCodeClient(cfg),
+		Registration:       NewRegistrationClient(cfg),
 	}, nil
 }
 
@@ -122,6 +132,8 @@ func (c *Client) BeginTx(ctx context.Context, opts *sql.TxOptions) (*Tx, error) 
 		CouponDiscount:     NewCouponDiscountClient(cfg),
 		CouponFixAmount:    NewCouponFixAmountClient(cfg),
 		CouponSpecialOffer: NewCouponSpecialOfferClient(cfg),
+		InvitationCode:     NewInvitationCodeClient(cfg),
+		Registration:       NewRegistrationClient(cfg),
 	}, nil
 }
 
@@ -157,6 +169,8 @@ func (c *Client) Use(hooks ...Hook) {
 	c.CouponDiscount.Use(hooks...)
 	c.CouponFixAmount.Use(hooks...)
 	c.CouponSpecialOffer.Use(hooks...)
+	c.InvitationCode.Use(hooks...)
+	c.Registration.Use(hooks...)
 }
 
 // ArchivementDetailClient is a client for the ArchivementDetail schema.
@@ -703,4 +717,186 @@ func (c *CouponSpecialOfferClient) GetX(ctx context.Context, id uuid.UUID) *Coup
 func (c *CouponSpecialOfferClient) Hooks() []Hook {
 	hooks := c.hooks.CouponSpecialOffer
 	return append(hooks[:len(hooks):len(hooks)], couponspecialoffer.Hooks[:]...)
+}
+
+// InvitationCodeClient is a client for the InvitationCode schema.
+type InvitationCodeClient struct {
+	config
+}
+
+// NewInvitationCodeClient returns a client for the InvitationCode from the given config.
+func NewInvitationCodeClient(c config) *InvitationCodeClient {
+	return &InvitationCodeClient{config: c}
+}
+
+// Use adds a list of mutation hooks to the hooks stack.
+// A call to `Use(f, g, h)` equals to `invitationcode.Hooks(f(g(h())))`.
+func (c *InvitationCodeClient) Use(hooks ...Hook) {
+	c.hooks.InvitationCode = append(c.hooks.InvitationCode, hooks...)
+}
+
+// Create returns a builder for creating a InvitationCode entity.
+func (c *InvitationCodeClient) Create() *InvitationCodeCreate {
+	mutation := newInvitationCodeMutation(c.config, OpCreate)
+	return &InvitationCodeCreate{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// CreateBulk returns a builder for creating a bulk of InvitationCode entities.
+func (c *InvitationCodeClient) CreateBulk(builders ...*InvitationCodeCreate) *InvitationCodeCreateBulk {
+	return &InvitationCodeCreateBulk{config: c.config, builders: builders}
+}
+
+// Update returns an update builder for InvitationCode.
+func (c *InvitationCodeClient) Update() *InvitationCodeUpdate {
+	mutation := newInvitationCodeMutation(c.config, OpUpdate)
+	return &InvitationCodeUpdate{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// UpdateOne returns an update builder for the given entity.
+func (c *InvitationCodeClient) UpdateOne(ic *InvitationCode) *InvitationCodeUpdateOne {
+	mutation := newInvitationCodeMutation(c.config, OpUpdateOne, withInvitationCode(ic))
+	return &InvitationCodeUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// UpdateOneID returns an update builder for the given id.
+func (c *InvitationCodeClient) UpdateOneID(id uuid.UUID) *InvitationCodeUpdateOne {
+	mutation := newInvitationCodeMutation(c.config, OpUpdateOne, withInvitationCodeID(id))
+	return &InvitationCodeUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// Delete returns a delete builder for InvitationCode.
+func (c *InvitationCodeClient) Delete() *InvitationCodeDelete {
+	mutation := newInvitationCodeMutation(c.config, OpDelete)
+	return &InvitationCodeDelete{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// DeleteOne returns a builder for deleting the given entity.
+func (c *InvitationCodeClient) DeleteOne(ic *InvitationCode) *InvitationCodeDeleteOne {
+	return c.DeleteOneID(ic.ID)
+}
+
+// DeleteOne returns a builder for deleting the given entity by its id.
+func (c *InvitationCodeClient) DeleteOneID(id uuid.UUID) *InvitationCodeDeleteOne {
+	builder := c.Delete().Where(invitationcode.ID(id))
+	builder.mutation.id = &id
+	builder.mutation.op = OpDeleteOne
+	return &InvitationCodeDeleteOne{builder}
+}
+
+// Query returns a query builder for InvitationCode.
+func (c *InvitationCodeClient) Query() *InvitationCodeQuery {
+	return &InvitationCodeQuery{
+		config: c.config,
+	}
+}
+
+// Get returns a InvitationCode entity by its id.
+func (c *InvitationCodeClient) Get(ctx context.Context, id uuid.UUID) (*InvitationCode, error) {
+	return c.Query().Where(invitationcode.ID(id)).Only(ctx)
+}
+
+// GetX is like Get, but panics if an error occurs.
+func (c *InvitationCodeClient) GetX(ctx context.Context, id uuid.UUID) *InvitationCode {
+	obj, err := c.Get(ctx, id)
+	if err != nil {
+		panic(err)
+	}
+	return obj
+}
+
+// Hooks returns the client hooks.
+func (c *InvitationCodeClient) Hooks() []Hook {
+	hooks := c.hooks.InvitationCode
+	return append(hooks[:len(hooks):len(hooks)], invitationcode.Hooks[:]...)
+}
+
+// RegistrationClient is a client for the Registration schema.
+type RegistrationClient struct {
+	config
+}
+
+// NewRegistrationClient returns a client for the Registration from the given config.
+func NewRegistrationClient(c config) *RegistrationClient {
+	return &RegistrationClient{config: c}
+}
+
+// Use adds a list of mutation hooks to the hooks stack.
+// A call to `Use(f, g, h)` equals to `registration.Hooks(f(g(h())))`.
+func (c *RegistrationClient) Use(hooks ...Hook) {
+	c.hooks.Registration = append(c.hooks.Registration, hooks...)
+}
+
+// Create returns a builder for creating a Registration entity.
+func (c *RegistrationClient) Create() *RegistrationCreate {
+	mutation := newRegistrationMutation(c.config, OpCreate)
+	return &RegistrationCreate{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// CreateBulk returns a builder for creating a bulk of Registration entities.
+func (c *RegistrationClient) CreateBulk(builders ...*RegistrationCreate) *RegistrationCreateBulk {
+	return &RegistrationCreateBulk{config: c.config, builders: builders}
+}
+
+// Update returns an update builder for Registration.
+func (c *RegistrationClient) Update() *RegistrationUpdate {
+	mutation := newRegistrationMutation(c.config, OpUpdate)
+	return &RegistrationUpdate{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// UpdateOne returns an update builder for the given entity.
+func (c *RegistrationClient) UpdateOne(r *Registration) *RegistrationUpdateOne {
+	mutation := newRegistrationMutation(c.config, OpUpdateOne, withRegistration(r))
+	return &RegistrationUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// UpdateOneID returns an update builder for the given id.
+func (c *RegistrationClient) UpdateOneID(id uuid.UUID) *RegistrationUpdateOne {
+	mutation := newRegistrationMutation(c.config, OpUpdateOne, withRegistrationID(id))
+	return &RegistrationUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// Delete returns a delete builder for Registration.
+func (c *RegistrationClient) Delete() *RegistrationDelete {
+	mutation := newRegistrationMutation(c.config, OpDelete)
+	return &RegistrationDelete{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// DeleteOne returns a builder for deleting the given entity.
+func (c *RegistrationClient) DeleteOne(r *Registration) *RegistrationDeleteOne {
+	return c.DeleteOneID(r.ID)
+}
+
+// DeleteOne returns a builder for deleting the given entity by its id.
+func (c *RegistrationClient) DeleteOneID(id uuid.UUID) *RegistrationDeleteOne {
+	builder := c.Delete().Where(registration.ID(id))
+	builder.mutation.id = &id
+	builder.mutation.op = OpDeleteOne
+	return &RegistrationDeleteOne{builder}
+}
+
+// Query returns a query builder for Registration.
+func (c *RegistrationClient) Query() *RegistrationQuery {
+	return &RegistrationQuery{
+		config: c.config,
+	}
+}
+
+// Get returns a Registration entity by its id.
+func (c *RegistrationClient) Get(ctx context.Context, id uuid.UUID) (*Registration, error) {
+	return c.Query().Where(registration.ID(id)).Only(ctx)
+}
+
+// GetX is like Get, but panics if an error occurs.
+func (c *RegistrationClient) GetX(ctx context.Context, id uuid.UUID) *Registration {
+	obj, err := c.Get(ctx, id)
+	if err != nil {
+		panic(err)
+	}
+	return obj
+}
+
+// Hooks returns the client hooks.
+func (c *RegistrationClient) Hooks() []Hook {
+	hooks := c.hooks.Registration
+	return append(hooks[:len(hooks):len(hooks)], registration.Hooks[:]...)
 }

@@ -87,6 +87,32 @@ func (f CouponSpecialOfferFunc) Mutate(ctx context.Context, m ent.Mutation) (ent
 	return f(ctx, mv)
 }
 
+// The InvitationCodeFunc type is an adapter to allow the use of ordinary
+// function as InvitationCode mutator.
+type InvitationCodeFunc func(context.Context, *ent.InvitationCodeMutation) (ent.Value, error)
+
+// Mutate calls f(ctx, m).
+func (f InvitationCodeFunc) Mutate(ctx context.Context, m ent.Mutation) (ent.Value, error) {
+	mv, ok := m.(*ent.InvitationCodeMutation)
+	if !ok {
+		return nil, fmt.Errorf("unexpected mutation type %T. expect *ent.InvitationCodeMutation", m)
+	}
+	return f(ctx, mv)
+}
+
+// The RegistrationFunc type is an adapter to allow the use of ordinary
+// function as Registration mutator.
+type RegistrationFunc func(context.Context, *ent.RegistrationMutation) (ent.Value, error)
+
+// Mutate calls f(ctx, m).
+func (f RegistrationFunc) Mutate(ctx context.Context, m ent.Mutation) (ent.Value, error) {
+	mv, ok := m.(*ent.RegistrationMutation)
+	if !ok {
+		return nil, fmt.Errorf("unexpected mutation type %T. expect *ent.RegistrationMutation", m)
+	}
+	return f(ctx, mv)
+}
+
 // Condition is a hook condition function.
 type Condition func(context.Context, ent.Mutation) bool
 

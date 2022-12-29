@@ -9,6 +9,8 @@ import (
 	"github.com/NpoolPlatform/inspire-manager/pkg/db/ent/coupondiscount"
 	"github.com/NpoolPlatform/inspire-manager/pkg/db/ent/couponfixamount"
 	"github.com/NpoolPlatform/inspire-manager/pkg/db/ent/couponspecialoffer"
+	"github.com/NpoolPlatform/inspire-manager/pkg/db/ent/invitationcode"
+	"github.com/NpoolPlatform/inspire-manager/pkg/db/ent/registration"
 
 	"entgo.io/ent/dialect/sql"
 	"entgo.io/ent/dialect/sql/sqlgraph"
@@ -18,7 +20,7 @@ import (
 
 // schemaGraph holds a representation of ent/schema at runtime.
 var schemaGraph = func() *sqlgraph.Schema {
-	graph := &sqlgraph.Schema{Nodes: make([]*sqlgraph.Node, 6)}
+	graph := &sqlgraph.Schema{Nodes: make([]*sqlgraph.Node, 8)}
 	graph.Nodes[0] = &sqlgraph.Node{
 		NodeSpec: sqlgraph.NodeSpec{
 			Table:   archivementdetail.Table,
@@ -163,6 +165,45 @@ var schemaGraph = func() *sqlgraph.Schema {
 			couponspecialoffer.FieldStartAt:         {Type: field.TypeUint32, Column: couponspecialoffer.FieldStartAt},
 			couponspecialoffer.FieldDurationDays:    {Type: field.TypeUint32, Column: couponspecialoffer.FieldDurationDays},
 			couponspecialoffer.FieldMessage:         {Type: field.TypeString, Column: couponspecialoffer.FieldMessage},
+		},
+	}
+	graph.Nodes[6] = &sqlgraph.Node{
+		NodeSpec: sqlgraph.NodeSpec{
+			Table:   invitationcode.Table,
+			Columns: invitationcode.Columns,
+			ID: &sqlgraph.FieldSpec{
+				Type:   field.TypeUUID,
+				Column: invitationcode.FieldID,
+			},
+		},
+		Type: "InvitationCode",
+		Fields: map[string]*sqlgraph.FieldSpec{
+			invitationcode.FieldCreatedAt:      {Type: field.TypeUint32, Column: invitationcode.FieldCreatedAt},
+			invitationcode.FieldUpdatedAt:      {Type: field.TypeUint32, Column: invitationcode.FieldUpdatedAt},
+			invitationcode.FieldDeletedAt:      {Type: field.TypeUint32, Column: invitationcode.FieldDeletedAt},
+			invitationcode.FieldAppID:          {Type: field.TypeUUID, Column: invitationcode.FieldAppID},
+			invitationcode.FieldUserID:         {Type: field.TypeUUID, Column: invitationcode.FieldUserID},
+			invitationcode.FieldInvitationCode: {Type: field.TypeString, Column: invitationcode.FieldInvitationCode},
+			invitationcode.FieldConfirmed:      {Type: field.TypeBool, Column: invitationcode.FieldConfirmed},
+		},
+	}
+	graph.Nodes[7] = &sqlgraph.Node{
+		NodeSpec: sqlgraph.NodeSpec{
+			Table:   registration.Table,
+			Columns: registration.Columns,
+			ID: &sqlgraph.FieldSpec{
+				Type:   field.TypeUUID,
+				Column: registration.FieldID,
+			},
+		},
+		Type: "Registration",
+		Fields: map[string]*sqlgraph.FieldSpec{
+			registration.FieldCreatedAt: {Type: field.TypeUint32, Column: registration.FieldCreatedAt},
+			registration.FieldUpdatedAt: {Type: field.TypeUint32, Column: registration.FieldUpdatedAt},
+			registration.FieldDeletedAt: {Type: field.TypeUint32, Column: registration.FieldDeletedAt},
+			registration.FieldAppID:     {Type: field.TypeUUID, Column: registration.FieldAppID},
+			registration.FieldInviterID: {Type: field.TypeUUID, Column: registration.FieldInviterID},
+			registration.FieldInviteeID: {Type: field.TypeUUID, Column: registration.FieldInviteeID},
 		},
 	}
 	return graph
@@ -752,4 +793,149 @@ func (f *CouponSpecialOfferFilter) WhereDurationDays(p entql.Uint32P) {
 // WhereMessage applies the entql string predicate on the message field.
 func (f *CouponSpecialOfferFilter) WhereMessage(p entql.StringP) {
 	f.Where(p.Field(couponspecialoffer.FieldMessage))
+}
+
+// addPredicate implements the predicateAdder interface.
+func (icq *InvitationCodeQuery) addPredicate(pred func(s *sql.Selector)) {
+	icq.predicates = append(icq.predicates, pred)
+}
+
+// Filter returns a Filter implementation to apply filters on the InvitationCodeQuery builder.
+func (icq *InvitationCodeQuery) Filter() *InvitationCodeFilter {
+	return &InvitationCodeFilter{config: icq.config, predicateAdder: icq}
+}
+
+// addPredicate implements the predicateAdder interface.
+func (m *InvitationCodeMutation) addPredicate(pred func(s *sql.Selector)) {
+	m.predicates = append(m.predicates, pred)
+}
+
+// Filter returns an entql.Where implementation to apply filters on the InvitationCodeMutation builder.
+func (m *InvitationCodeMutation) Filter() *InvitationCodeFilter {
+	return &InvitationCodeFilter{config: m.config, predicateAdder: m}
+}
+
+// InvitationCodeFilter provides a generic filtering capability at runtime for InvitationCodeQuery.
+type InvitationCodeFilter struct {
+	predicateAdder
+	config
+}
+
+// Where applies the entql predicate on the query filter.
+func (f *InvitationCodeFilter) Where(p entql.P) {
+	f.addPredicate(func(s *sql.Selector) {
+		if err := schemaGraph.EvalP(schemaGraph.Nodes[6].Type, p, s); err != nil {
+			s.AddError(err)
+		}
+	})
+}
+
+// WhereID applies the entql [16]byte predicate on the id field.
+func (f *InvitationCodeFilter) WhereID(p entql.ValueP) {
+	f.Where(p.Field(invitationcode.FieldID))
+}
+
+// WhereCreatedAt applies the entql uint32 predicate on the created_at field.
+func (f *InvitationCodeFilter) WhereCreatedAt(p entql.Uint32P) {
+	f.Where(p.Field(invitationcode.FieldCreatedAt))
+}
+
+// WhereUpdatedAt applies the entql uint32 predicate on the updated_at field.
+func (f *InvitationCodeFilter) WhereUpdatedAt(p entql.Uint32P) {
+	f.Where(p.Field(invitationcode.FieldUpdatedAt))
+}
+
+// WhereDeletedAt applies the entql uint32 predicate on the deleted_at field.
+func (f *InvitationCodeFilter) WhereDeletedAt(p entql.Uint32P) {
+	f.Where(p.Field(invitationcode.FieldDeletedAt))
+}
+
+// WhereAppID applies the entql [16]byte predicate on the app_id field.
+func (f *InvitationCodeFilter) WhereAppID(p entql.ValueP) {
+	f.Where(p.Field(invitationcode.FieldAppID))
+}
+
+// WhereUserID applies the entql [16]byte predicate on the user_id field.
+func (f *InvitationCodeFilter) WhereUserID(p entql.ValueP) {
+	f.Where(p.Field(invitationcode.FieldUserID))
+}
+
+// WhereInvitationCode applies the entql string predicate on the invitation_code field.
+func (f *InvitationCodeFilter) WhereInvitationCode(p entql.StringP) {
+	f.Where(p.Field(invitationcode.FieldInvitationCode))
+}
+
+// WhereConfirmed applies the entql bool predicate on the confirmed field.
+func (f *InvitationCodeFilter) WhereConfirmed(p entql.BoolP) {
+	f.Where(p.Field(invitationcode.FieldConfirmed))
+}
+
+// addPredicate implements the predicateAdder interface.
+func (rq *RegistrationQuery) addPredicate(pred func(s *sql.Selector)) {
+	rq.predicates = append(rq.predicates, pred)
+}
+
+// Filter returns a Filter implementation to apply filters on the RegistrationQuery builder.
+func (rq *RegistrationQuery) Filter() *RegistrationFilter {
+	return &RegistrationFilter{config: rq.config, predicateAdder: rq}
+}
+
+// addPredicate implements the predicateAdder interface.
+func (m *RegistrationMutation) addPredicate(pred func(s *sql.Selector)) {
+	m.predicates = append(m.predicates, pred)
+}
+
+// Filter returns an entql.Where implementation to apply filters on the RegistrationMutation builder.
+func (m *RegistrationMutation) Filter() *RegistrationFilter {
+	return &RegistrationFilter{config: m.config, predicateAdder: m}
+}
+
+// RegistrationFilter provides a generic filtering capability at runtime for RegistrationQuery.
+type RegistrationFilter struct {
+	predicateAdder
+	config
+}
+
+// Where applies the entql predicate on the query filter.
+func (f *RegistrationFilter) Where(p entql.P) {
+	f.addPredicate(func(s *sql.Selector) {
+		if err := schemaGraph.EvalP(schemaGraph.Nodes[7].Type, p, s); err != nil {
+			s.AddError(err)
+		}
+	})
+}
+
+// WhereID applies the entql [16]byte predicate on the id field.
+func (f *RegistrationFilter) WhereID(p entql.ValueP) {
+	f.Where(p.Field(registration.FieldID))
+}
+
+// WhereCreatedAt applies the entql uint32 predicate on the created_at field.
+func (f *RegistrationFilter) WhereCreatedAt(p entql.Uint32P) {
+	f.Where(p.Field(registration.FieldCreatedAt))
+}
+
+// WhereUpdatedAt applies the entql uint32 predicate on the updated_at field.
+func (f *RegistrationFilter) WhereUpdatedAt(p entql.Uint32P) {
+	f.Where(p.Field(registration.FieldUpdatedAt))
+}
+
+// WhereDeletedAt applies the entql uint32 predicate on the deleted_at field.
+func (f *RegistrationFilter) WhereDeletedAt(p entql.Uint32P) {
+	f.Where(p.Field(registration.FieldDeletedAt))
+}
+
+// WhereAppID applies the entql [16]byte predicate on the app_id field.
+func (f *RegistrationFilter) WhereAppID(p entql.ValueP) {
+	f.Where(p.Field(registration.FieldAppID))
+}
+
+// WhereInviterID applies the entql [16]byte predicate on the inviter_id field.
+func (f *RegistrationFilter) WhereInviterID(p entql.ValueP) {
+	f.Where(p.Field(registration.FieldInviterID))
+}
+
+// WhereInviteeID applies the entql [16]byte predicate on the invitee_id field.
+func (f *RegistrationFilter) WhereInviteeID(p entql.ValueP) {
+	f.Where(p.Field(registration.FieldInviteeID))
 }

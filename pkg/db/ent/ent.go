@@ -16,6 +16,8 @@ import (
 	"github.com/NpoolPlatform/inspire-manager/pkg/db/ent/coupondiscount"
 	"github.com/NpoolPlatform/inspire-manager/pkg/db/ent/couponfixamount"
 	"github.com/NpoolPlatform/inspire-manager/pkg/db/ent/couponspecialoffer"
+	"github.com/NpoolPlatform/inspire-manager/pkg/db/ent/invitationcode"
+	"github.com/NpoolPlatform/inspire-manager/pkg/db/ent/registration"
 )
 
 // ent aliases to avoid import conflicts in user's code.
@@ -42,6 +44,8 @@ func columnChecker(table string) func(string) error {
 		coupondiscount.Table:     coupondiscount.ValidColumn,
 		couponfixamount.Table:    couponfixamount.ValidColumn,
 		couponspecialoffer.Table: couponspecialoffer.ValidColumn,
+		invitationcode.Table:     invitationcode.ValidColumn,
+		registration.Table:       registration.ValidColumn,
 	}
 	check, ok := checks[table]
 	if !ok {

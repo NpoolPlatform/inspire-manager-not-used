@@ -136,6 +136,39 @@ var (
 		Columns:    CouponSpecialOffersColumns,
 		PrimaryKey: []*schema.Column{CouponSpecialOffersColumns[0]},
 	}
+	// InvitationCodesColumns holds the columns for the "invitation_codes" table.
+	InvitationCodesColumns = []*schema.Column{
+		{Name: "id", Type: field.TypeUUID, Unique: true},
+		{Name: "created_at", Type: field.TypeUint32},
+		{Name: "updated_at", Type: field.TypeUint32},
+		{Name: "deleted_at", Type: field.TypeUint32},
+		{Name: "app_id", Type: field.TypeUUID},
+		{Name: "user_id", Type: field.TypeUUID},
+		{Name: "invitation_code", Type: field.TypeString, Nullable: true, Default: ""},
+		{Name: "confirmed", Type: field.TypeBool, Nullable: true, Default: false},
+	}
+	// InvitationCodesTable holds the schema information for the "invitation_codes" table.
+	InvitationCodesTable = &schema.Table{
+		Name:       "invitation_codes",
+		Columns:    InvitationCodesColumns,
+		PrimaryKey: []*schema.Column{InvitationCodesColumns[0]},
+	}
+	// RegistrationsColumns holds the columns for the "registrations" table.
+	RegistrationsColumns = []*schema.Column{
+		{Name: "id", Type: field.TypeUUID, Unique: true},
+		{Name: "created_at", Type: field.TypeUint32},
+		{Name: "updated_at", Type: field.TypeUint32},
+		{Name: "deleted_at", Type: field.TypeUint32},
+		{Name: "app_id", Type: field.TypeUUID},
+		{Name: "inviter_id", Type: field.TypeUUID},
+		{Name: "invitee_id", Type: field.TypeUUID},
+	}
+	// RegistrationsTable holds the schema information for the "registrations" table.
+	RegistrationsTable = &schema.Table{
+		Name:       "registrations",
+		Columns:    RegistrationsColumns,
+		PrimaryKey: []*schema.Column{RegistrationsColumns[0]},
+	}
 	// Tables holds all the tables in the schema.
 	Tables = []*schema.Table{
 		ArchivementDetailsTable,
@@ -144,6 +177,8 @@ var (
 		CouponDiscountsTable,
 		CouponFixAmountsTable,
 		CouponSpecialOffersTable,
+		InvitationCodesTable,
+		RegistrationsTable,
 	}
 )
 
