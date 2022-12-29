@@ -11,6 +11,8 @@ import (
 	"github.com/NpoolPlatform/inspire-manager/pkg/db/ent/migrate"
 	"github.com/google/uuid"
 
+	"github.com/NpoolPlatform/inspire-manager/pkg/db/ent/archivementdetail"
+	"github.com/NpoolPlatform/inspire-manager/pkg/db/ent/archivementgeneral"
 	"github.com/NpoolPlatform/inspire-manager/pkg/db/ent/couponallocated"
 	"github.com/NpoolPlatform/inspire-manager/pkg/db/ent/coupondiscount"
 	"github.com/NpoolPlatform/inspire-manager/pkg/db/ent/couponfixamount"
@@ -25,6 +27,10 @@ type Client struct {
 	config
 	// Schema is the client for creating, migrating and dropping schema.
 	Schema *migrate.Schema
+	// ArchivementDetail is the client for interacting with the ArchivementDetail builders.
+	ArchivementDetail *ArchivementDetailClient
+	// ArchivementGeneral is the client for interacting with the ArchivementGeneral builders.
+	ArchivementGeneral *ArchivementGeneralClient
 	// CouponAllocated is the client for interacting with the CouponAllocated builders.
 	CouponAllocated *CouponAllocatedClient
 	// CouponDiscount is the client for interacting with the CouponDiscount builders.
@@ -46,6 +52,8 @@ func NewClient(opts ...Option) *Client {
 
 func (c *Client) init() {
 	c.Schema = migrate.NewSchema(c.driver)
+	c.ArchivementDetail = NewArchivementDetailClient(c.config)
+	c.ArchivementGeneral = NewArchivementGeneralClient(c.config)
 	c.CouponAllocated = NewCouponAllocatedClient(c.config)
 	c.CouponDiscount = NewCouponDiscountClient(c.config)
 	c.CouponFixAmount = NewCouponFixAmountClient(c.config)
@@ -83,6 +91,8 @@ func (c *Client) Tx(ctx context.Context) (*Tx, error) {
 	return &Tx{
 		ctx:                ctx,
 		config:             cfg,
+		ArchivementDetail:  NewArchivementDetailClient(cfg),
+		ArchivementGeneral: NewArchivementGeneralClient(cfg),
 		CouponAllocated:    NewCouponAllocatedClient(cfg),
 		CouponDiscount:     NewCouponDiscountClient(cfg),
 		CouponFixAmount:    NewCouponFixAmountClient(cfg),
@@ -106,6 +116,8 @@ func (c *Client) BeginTx(ctx context.Context, opts *sql.TxOptions) (*Tx, error) 
 	return &Tx{
 		ctx:                ctx,
 		config:             cfg,
+		ArchivementDetail:  NewArchivementDetailClient(cfg),
+		ArchivementGeneral: NewArchivementGeneralClient(cfg),
 		CouponAllocated:    NewCouponAllocatedClient(cfg),
 		CouponDiscount:     NewCouponDiscountClient(cfg),
 		CouponFixAmount:    NewCouponFixAmountClient(cfg),
@@ -116,7 +128,7 @@ func (c *Client) BeginTx(ctx context.Context, opts *sql.TxOptions) (*Tx, error) 
 // Debug returns a new debug-client. It's used to get verbose logging on specific operations.
 //
 //	client.Debug().
-//		CouponAllocated.
+//		ArchivementDetail.
 //		Query().
 //		Count(ctx)
 //
@@ -139,10 +151,194 @@ func (c *Client) Close() error {
 // Use adds the mutation hooks to all the entity clients.
 // In order to add hooks to a specific client, call: `client.Node.Use(...)`.
 func (c *Client) Use(hooks ...Hook) {
+	c.ArchivementDetail.Use(hooks...)
+	c.ArchivementGeneral.Use(hooks...)
 	c.CouponAllocated.Use(hooks...)
 	c.CouponDiscount.Use(hooks...)
 	c.CouponFixAmount.Use(hooks...)
 	c.CouponSpecialOffer.Use(hooks...)
+}
+
+// ArchivementDetailClient is a client for the ArchivementDetail schema.
+type ArchivementDetailClient struct {
+	config
+}
+
+// NewArchivementDetailClient returns a client for the ArchivementDetail from the given config.
+func NewArchivementDetailClient(c config) *ArchivementDetailClient {
+	return &ArchivementDetailClient{config: c}
+}
+
+// Use adds a list of mutation hooks to the hooks stack.
+// A call to `Use(f, g, h)` equals to `archivementdetail.Hooks(f(g(h())))`.
+func (c *ArchivementDetailClient) Use(hooks ...Hook) {
+	c.hooks.ArchivementDetail = append(c.hooks.ArchivementDetail, hooks...)
+}
+
+// Create returns a builder for creating a ArchivementDetail entity.
+func (c *ArchivementDetailClient) Create() *ArchivementDetailCreate {
+	mutation := newArchivementDetailMutation(c.config, OpCreate)
+	return &ArchivementDetailCreate{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// CreateBulk returns a builder for creating a bulk of ArchivementDetail entities.
+func (c *ArchivementDetailClient) CreateBulk(builders ...*ArchivementDetailCreate) *ArchivementDetailCreateBulk {
+	return &ArchivementDetailCreateBulk{config: c.config, builders: builders}
+}
+
+// Update returns an update builder for ArchivementDetail.
+func (c *ArchivementDetailClient) Update() *ArchivementDetailUpdate {
+	mutation := newArchivementDetailMutation(c.config, OpUpdate)
+	return &ArchivementDetailUpdate{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// UpdateOne returns an update builder for the given entity.
+func (c *ArchivementDetailClient) UpdateOne(ad *ArchivementDetail) *ArchivementDetailUpdateOne {
+	mutation := newArchivementDetailMutation(c.config, OpUpdateOne, withArchivementDetail(ad))
+	return &ArchivementDetailUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// UpdateOneID returns an update builder for the given id.
+func (c *ArchivementDetailClient) UpdateOneID(id uuid.UUID) *ArchivementDetailUpdateOne {
+	mutation := newArchivementDetailMutation(c.config, OpUpdateOne, withArchivementDetailID(id))
+	return &ArchivementDetailUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// Delete returns a delete builder for ArchivementDetail.
+func (c *ArchivementDetailClient) Delete() *ArchivementDetailDelete {
+	mutation := newArchivementDetailMutation(c.config, OpDelete)
+	return &ArchivementDetailDelete{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// DeleteOne returns a builder for deleting the given entity.
+func (c *ArchivementDetailClient) DeleteOne(ad *ArchivementDetail) *ArchivementDetailDeleteOne {
+	return c.DeleteOneID(ad.ID)
+}
+
+// DeleteOne returns a builder for deleting the given entity by its id.
+func (c *ArchivementDetailClient) DeleteOneID(id uuid.UUID) *ArchivementDetailDeleteOne {
+	builder := c.Delete().Where(archivementdetail.ID(id))
+	builder.mutation.id = &id
+	builder.mutation.op = OpDeleteOne
+	return &ArchivementDetailDeleteOne{builder}
+}
+
+// Query returns a query builder for ArchivementDetail.
+func (c *ArchivementDetailClient) Query() *ArchivementDetailQuery {
+	return &ArchivementDetailQuery{
+		config: c.config,
+	}
+}
+
+// Get returns a ArchivementDetail entity by its id.
+func (c *ArchivementDetailClient) Get(ctx context.Context, id uuid.UUID) (*ArchivementDetail, error) {
+	return c.Query().Where(archivementdetail.ID(id)).Only(ctx)
+}
+
+// GetX is like Get, but panics if an error occurs.
+func (c *ArchivementDetailClient) GetX(ctx context.Context, id uuid.UUID) *ArchivementDetail {
+	obj, err := c.Get(ctx, id)
+	if err != nil {
+		panic(err)
+	}
+	return obj
+}
+
+// Hooks returns the client hooks.
+func (c *ArchivementDetailClient) Hooks() []Hook {
+	hooks := c.hooks.ArchivementDetail
+	return append(hooks[:len(hooks):len(hooks)], archivementdetail.Hooks[:]...)
+}
+
+// ArchivementGeneralClient is a client for the ArchivementGeneral schema.
+type ArchivementGeneralClient struct {
+	config
+}
+
+// NewArchivementGeneralClient returns a client for the ArchivementGeneral from the given config.
+func NewArchivementGeneralClient(c config) *ArchivementGeneralClient {
+	return &ArchivementGeneralClient{config: c}
+}
+
+// Use adds a list of mutation hooks to the hooks stack.
+// A call to `Use(f, g, h)` equals to `archivementgeneral.Hooks(f(g(h())))`.
+func (c *ArchivementGeneralClient) Use(hooks ...Hook) {
+	c.hooks.ArchivementGeneral = append(c.hooks.ArchivementGeneral, hooks...)
+}
+
+// Create returns a builder for creating a ArchivementGeneral entity.
+func (c *ArchivementGeneralClient) Create() *ArchivementGeneralCreate {
+	mutation := newArchivementGeneralMutation(c.config, OpCreate)
+	return &ArchivementGeneralCreate{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// CreateBulk returns a builder for creating a bulk of ArchivementGeneral entities.
+func (c *ArchivementGeneralClient) CreateBulk(builders ...*ArchivementGeneralCreate) *ArchivementGeneralCreateBulk {
+	return &ArchivementGeneralCreateBulk{config: c.config, builders: builders}
+}
+
+// Update returns an update builder for ArchivementGeneral.
+func (c *ArchivementGeneralClient) Update() *ArchivementGeneralUpdate {
+	mutation := newArchivementGeneralMutation(c.config, OpUpdate)
+	return &ArchivementGeneralUpdate{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// UpdateOne returns an update builder for the given entity.
+func (c *ArchivementGeneralClient) UpdateOne(ag *ArchivementGeneral) *ArchivementGeneralUpdateOne {
+	mutation := newArchivementGeneralMutation(c.config, OpUpdateOne, withArchivementGeneral(ag))
+	return &ArchivementGeneralUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// UpdateOneID returns an update builder for the given id.
+func (c *ArchivementGeneralClient) UpdateOneID(id uuid.UUID) *ArchivementGeneralUpdateOne {
+	mutation := newArchivementGeneralMutation(c.config, OpUpdateOne, withArchivementGeneralID(id))
+	return &ArchivementGeneralUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// Delete returns a delete builder for ArchivementGeneral.
+func (c *ArchivementGeneralClient) Delete() *ArchivementGeneralDelete {
+	mutation := newArchivementGeneralMutation(c.config, OpDelete)
+	return &ArchivementGeneralDelete{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// DeleteOne returns a builder for deleting the given entity.
+func (c *ArchivementGeneralClient) DeleteOne(ag *ArchivementGeneral) *ArchivementGeneralDeleteOne {
+	return c.DeleteOneID(ag.ID)
+}
+
+// DeleteOne returns a builder for deleting the given entity by its id.
+func (c *ArchivementGeneralClient) DeleteOneID(id uuid.UUID) *ArchivementGeneralDeleteOne {
+	builder := c.Delete().Where(archivementgeneral.ID(id))
+	builder.mutation.id = &id
+	builder.mutation.op = OpDeleteOne
+	return &ArchivementGeneralDeleteOne{builder}
+}
+
+// Query returns a query builder for ArchivementGeneral.
+func (c *ArchivementGeneralClient) Query() *ArchivementGeneralQuery {
+	return &ArchivementGeneralQuery{
+		config: c.config,
+	}
+}
+
+// Get returns a ArchivementGeneral entity by its id.
+func (c *ArchivementGeneralClient) Get(ctx context.Context, id uuid.UUID) (*ArchivementGeneral, error) {
+	return c.Query().Where(archivementgeneral.ID(id)).Only(ctx)
+}
+
+// GetX is like Get, but panics if an error occurs.
+func (c *ArchivementGeneralClient) GetX(ctx context.Context, id uuid.UUID) *ArchivementGeneral {
+	obj, err := c.Get(ctx, id)
+	if err != nil {
+		panic(err)
+	}
+	return obj
+}
+
+// Hooks returns the client hooks.
+func (c *ArchivementGeneralClient) Hooks() []Hook {
+	hooks := c.hooks.ArchivementGeneral
+	return append(hooks[:len(hooks):len(hooks)], archivementgeneral.Hooks[:]...)
 }
 
 // CouponAllocatedClient is a client for the CouponAllocated schema.

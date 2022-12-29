@@ -8,6 +8,8 @@ import (
 	"fmt"
 	"sync"
 
+	"github.com/NpoolPlatform/inspire-manager/pkg/db/ent/archivementdetail"
+	"github.com/NpoolPlatform/inspire-manager/pkg/db/ent/archivementgeneral"
 	"github.com/NpoolPlatform/inspire-manager/pkg/db/ent/couponallocated"
 	"github.com/NpoolPlatform/inspire-manager/pkg/db/ent/coupondiscount"
 	"github.com/NpoolPlatform/inspire-manager/pkg/db/ent/couponfixamount"
@@ -28,11 +30,2927 @@ const (
 	OpUpdateOne = ent.OpUpdateOne
 
 	// Node types.
+	TypeArchivementDetail  = "ArchivementDetail"
+	TypeArchivementGeneral = "ArchivementGeneral"
 	TypeCouponAllocated    = "CouponAllocated"
 	TypeCouponDiscount     = "CouponDiscount"
 	TypeCouponFixAmount    = "CouponFixAmount"
 	TypeCouponSpecialOffer = "CouponSpecialOffer"
 )
+
+// ArchivementDetailMutation represents an operation that mutates the ArchivementDetail nodes in the graph.
+type ArchivementDetailMutation struct {
+	config
+	op                        Op
+	typ                       string
+	id                        *uuid.UUID
+	created_at                *uint32
+	addcreated_at             *int32
+	updated_at                *uint32
+	addupdated_at             *int32
+	deleted_at                *uint32
+	adddeleted_at             *int32
+	app_id                    *uuid.UUID
+	user_id                   *uuid.UUID
+	direct_contributor_id     *uuid.UUID
+	good_id                   *uuid.UUID
+	order_id                  *uuid.UUID
+	self_order                *bool
+	payment_id                *uuid.UUID
+	coin_type_id              *uuid.UUID
+	payment_coin_type_id      *uuid.UUID
+	payment_coin_usd_currency *decimal.Decimal
+	units                     *uint32
+	addunits                  *int32
+	amount                    *decimal.Decimal
+	usd_amount                *decimal.Decimal
+	commission                *decimal.Decimal
+	clearedFields             map[string]struct{}
+	done                      bool
+	oldValue                  func(context.Context) (*ArchivementDetail, error)
+	predicates                []predicate.ArchivementDetail
+}
+
+var _ ent.Mutation = (*ArchivementDetailMutation)(nil)
+
+// archivementdetailOption allows management of the mutation configuration using functional options.
+type archivementdetailOption func(*ArchivementDetailMutation)
+
+// newArchivementDetailMutation creates new mutation for the ArchivementDetail entity.
+func newArchivementDetailMutation(c config, op Op, opts ...archivementdetailOption) *ArchivementDetailMutation {
+	m := &ArchivementDetailMutation{
+		config:        c,
+		op:            op,
+		typ:           TypeArchivementDetail,
+		clearedFields: make(map[string]struct{}),
+	}
+	for _, opt := range opts {
+		opt(m)
+	}
+	return m
+}
+
+// withArchivementDetailID sets the ID field of the mutation.
+func withArchivementDetailID(id uuid.UUID) archivementdetailOption {
+	return func(m *ArchivementDetailMutation) {
+		var (
+			err   error
+			once  sync.Once
+			value *ArchivementDetail
+		)
+		m.oldValue = func(ctx context.Context) (*ArchivementDetail, error) {
+			once.Do(func() {
+				if m.done {
+					err = errors.New("querying old values post mutation is not allowed")
+				} else {
+					value, err = m.Client().ArchivementDetail.Get(ctx, id)
+				}
+			})
+			return value, err
+		}
+		m.id = &id
+	}
+}
+
+// withArchivementDetail sets the old ArchivementDetail of the mutation.
+func withArchivementDetail(node *ArchivementDetail) archivementdetailOption {
+	return func(m *ArchivementDetailMutation) {
+		m.oldValue = func(context.Context) (*ArchivementDetail, error) {
+			return node, nil
+		}
+		m.id = &node.ID
+	}
+}
+
+// Client returns a new `ent.Client` from the mutation. If the mutation was
+// executed in a transaction (ent.Tx), a transactional client is returned.
+func (m ArchivementDetailMutation) Client() *Client {
+	client := &Client{config: m.config}
+	client.init()
+	return client
+}
+
+// Tx returns an `ent.Tx` for mutations that were executed in transactions;
+// it returns an error otherwise.
+func (m ArchivementDetailMutation) Tx() (*Tx, error) {
+	if _, ok := m.driver.(*txDriver); !ok {
+		return nil, errors.New("ent: mutation is not running in a transaction")
+	}
+	tx := &Tx{config: m.config}
+	tx.init()
+	return tx, nil
+}
+
+// SetID sets the value of the id field. Note that this
+// operation is only accepted on creation of ArchivementDetail entities.
+func (m *ArchivementDetailMutation) SetID(id uuid.UUID) {
+	m.id = &id
+}
+
+// ID returns the ID value in the mutation. Note that the ID is only available
+// if it was provided to the builder or after it was returned from the database.
+func (m *ArchivementDetailMutation) ID() (id uuid.UUID, exists bool) {
+	if m.id == nil {
+		return
+	}
+	return *m.id, true
+}
+
+// IDs queries the database and returns the entity ids that match the mutation's predicate.
+// That means, if the mutation is applied within a transaction with an isolation level such
+// as sql.LevelSerializable, the returned ids match the ids of the rows that will be updated
+// or updated by the mutation.
+func (m *ArchivementDetailMutation) IDs(ctx context.Context) ([]uuid.UUID, error) {
+	switch {
+	case m.op.Is(OpUpdateOne | OpDeleteOne):
+		id, exists := m.ID()
+		if exists {
+			return []uuid.UUID{id}, nil
+		}
+		fallthrough
+	case m.op.Is(OpUpdate | OpDelete):
+		return m.Client().ArchivementDetail.Query().Where(m.predicates...).IDs(ctx)
+	default:
+		return nil, fmt.Errorf("IDs is not allowed on %s operations", m.op)
+	}
+}
+
+// SetCreatedAt sets the "created_at" field.
+func (m *ArchivementDetailMutation) SetCreatedAt(u uint32) {
+	m.created_at = &u
+	m.addcreated_at = nil
+}
+
+// CreatedAt returns the value of the "created_at" field in the mutation.
+func (m *ArchivementDetailMutation) CreatedAt() (r uint32, exists bool) {
+	v := m.created_at
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldCreatedAt returns the old "created_at" field's value of the ArchivementDetail entity.
+// If the ArchivementDetail object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *ArchivementDetailMutation) OldCreatedAt(ctx context.Context) (v uint32, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldCreatedAt is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldCreatedAt requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldCreatedAt: %w", err)
+	}
+	return oldValue.CreatedAt, nil
+}
+
+// AddCreatedAt adds u to the "created_at" field.
+func (m *ArchivementDetailMutation) AddCreatedAt(u int32) {
+	if m.addcreated_at != nil {
+		*m.addcreated_at += u
+	} else {
+		m.addcreated_at = &u
+	}
+}
+
+// AddedCreatedAt returns the value that was added to the "created_at" field in this mutation.
+func (m *ArchivementDetailMutation) AddedCreatedAt() (r int32, exists bool) {
+	v := m.addcreated_at
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// ResetCreatedAt resets all changes to the "created_at" field.
+func (m *ArchivementDetailMutation) ResetCreatedAt() {
+	m.created_at = nil
+	m.addcreated_at = nil
+}
+
+// SetUpdatedAt sets the "updated_at" field.
+func (m *ArchivementDetailMutation) SetUpdatedAt(u uint32) {
+	m.updated_at = &u
+	m.addupdated_at = nil
+}
+
+// UpdatedAt returns the value of the "updated_at" field in the mutation.
+func (m *ArchivementDetailMutation) UpdatedAt() (r uint32, exists bool) {
+	v := m.updated_at
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldUpdatedAt returns the old "updated_at" field's value of the ArchivementDetail entity.
+// If the ArchivementDetail object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *ArchivementDetailMutation) OldUpdatedAt(ctx context.Context) (v uint32, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldUpdatedAt is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldUpdatedAt requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldUpdatedAt: %w", err)
+	}
+	return oldValue.UpdatedAt, nil
+}
+
+// AddUpdatedAt adds u to the "updated_at" field.
+func (m *ArchivementDetailMutation) AddUpdatedAt(u int32) {
+	if m.addupdated_at != nil {
+		*m.addupdated_at += u
+	} else {
+		m.addupdated_at = &u
+	}
+}
+
+// AddedUpdatedAt returns the value that was added to the "updated_at" field in this mutation.
+func (m *ArchivementDetailMutation) AddedUpdatedAt() (r int32, exists bool) {
+	v := m.addupdated_at
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// ResetUpdatedAt resets all changes to the "updated_at" field.
+func (m *ArchivementDetailMutation) ResetUpdatedAt() {
+	m.updated_at = nil
+	m.addupdated_at = nil
+}
+
+// SetDeletedAt sets the "deleted_at" field.
+func (m *ArchivementDetailMutation) SetDeletedAt(u uint32) {
+	m.deleted_at = &u
+	m.adddeleted_at = nil
+}
+
+// DeletedAt returns the value of the "deleted_at" field in the mutation.
+func (m *ArchivementDetailMutation) DeletedAt() (r uint32, exists bool) {
+	v := m.deleted_at
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldDeletedAt returns the old "deleted_at" field's value of the ArchivementDetail entity.
+// If the ArchivementDetail object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *ArchivementDetailMutation) OldDeletedAt(ctx context.Context) (v uint32, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldDeletedAt is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldDeletedAt requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldDeletedAt: %w", err)
+	}
+	return oldValue.DeletedAt, nil
+}
+
+// AddDeletedAt adds u to the "deleted_at" field.
+func (m *ArchivementDetailMutation) AddDeletedAt(u int32) {
+	if m.adddeleted_at != nil {
+		*m.adddeleted_at += u
+	} else {
+		m.adddeleted_at = &u
+	}
+}
+
+// AddedDeletedAt returns the value that was added to the "deleted_at" field in this mutation.
+func (m *ArchivementDetailMutation) AddedDeletedAt() (r int32, exists bool) {
+	v := m.adddeleted_at
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// ResetDeletedAt resets all changes to the "deleted_at" field.
+func (m *ArchivementDetailMutation) ResetDeletedAt() {
+	m.deleted_at = nil
+	m.adddeleted_at = nil
+}
+
+// SetAppID sets the "app_id" field.
+func (m *ArchivementDetailMutation) SetAppID(u uuid.UUID) {
+	m.app_id = &u
+}
+
+// AppID returns the value of the "app_id" field in the mutation.
+func (m *ArchivementDetailMutation) AppID() (r uuid.UUID, exists bool) {
+	v := m.app_id
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldAppID returns the old "app_id" field's value of the ArchivementDetail entity.
+// If the ArchivementDetail object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *ArchivementDetailMutation) OldAppID(ctx context.Context) (v uuid.UUID, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldAppID is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldAppID requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldAppID: %w", err)
+	}
+	return oldValue.AppID, nil
+}
+
+// ClearAppID clears the value of the "app_id" field.
+func (m *ArchivementDetailMutation) ClearAppID() {
+	m.app_id = nil
+	m.clearedFields[archivementdetail.FieldAppID] = struct{}{}
+}
+
+// AppIDCleared returns if the "app_id" field was cleared in this mutation.
+func (m *ArchivementDetailMutation) AppIDCleared() bool {
+	_, ok := m.clearedFields[archivementdetail.FieldAppID]
+	return ok
+}
+
+// ResetAppID resets all changes to the "app_id" field.
+func (m *ArchivementDetailMutation) ResetAppID() {
+	m.app_id = nil
+	delete(m.clearedFields, archivementdetail.FieldAppID)
+}
+
+// SetUserID sets the "user_id" field.
+func (m *ArchivementDetailMutation) SetUserID(u uuid.UUID) {
+	m.user_id = &u
+}
+
+// UserID returns the value of the "user_id" field in the mutation.
+func (m *ArchivementDetailMutation) UserID() (r uuid.UUID, exists bool) {
+	v := m.user_id
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldUserID returns the old "user_id" field's value of the ArchivementDetail entity.
+// If the ArchivementDetail object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *ArchivementDetailMutation) OldUserID(ctx context.Context) (v uuid.UUID, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldUserID is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldUserID requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldUserID: %w", err)
+	}
+	return oldValue.UserID, nil
+}
+
+// ClearUserID clears the value of the "user_id" field.
+func (m *ArchivementDetailMutation) ClearUserID() {
+	m.user_id = nil
+	m.clearedFields[archivementdetail.FieldUserID] = struct{}{}
+}
+
+// UserIDCleared returns if the "user_id" field was cleared in this mutation.
+func (m *ArchivementDetailMutation) UserIDCleared() bool {
+	_, ok := m.clearedFields[archivementdetail.FieldUserID]
+	return ok
+}
+
+// ResetUserID resets all changes to the "user_id" field.
+func (m *ArchivementDetailMutation) ResetUserID() {
+	m.user_id = nil
+	delete(m.clearedFields, archivementdetail.FieldUserID)
+}
+
+// SetDirectContributorID sets the "direct_contributor_id" field.
+func (m *ArchivementDetailMutation) SetDirectContributorID(u uuid.UUID) {
+	m.direct_contributor_id = &u
+}
+
+// DirectContributorID returns the value of the "direct_contributor_id" field in the mutation.
+func (m *ArchivementDetailMutation) DirectContributorID() (r uuid.UUID, exists bool) {
+	v := m.direct_contributor_id
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldDirectContributorID returns the old "direct_contributor_id" field's value of the ArchivementDetail entity.
+// If the ArchivementDetail object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *ArchivementDetailMutation) OldDirectContributorID(ctx context.Context) (v uuid.UUID, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldDirectContributorID is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldDirectContributorID requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldDirectContributorID: %w", err)
+	}
+	return oldValue.DirectContributorID, nil
+}
+
+// ClearDirectContributorID clears the value of the "direct_contributor_id" field.
+func (m *ArchivementDetailMutation) ClearDirectContributorID() {
+	m.direct_contributor_id = nil
+	m.clearedFields[archivementdetail.FieldDirectContributorID] = struct{}{}
+}
+
+// DirectContributorIDCleared returns if the "direct_contributor_id" field was cleared in this mutation.
+func (m *ArchivementDetailMutation) DirectContributorIDCleared() bool {
+	_, ok := m.clearedFields[archivementdetail.FieldDirectContributorID]
+	return ok
+}
+
+// ResetDirectContributorID resets all changes to the "direct_contributor_id" field.
+func (m *ArchivementDetailMutation) ResetDirectContributorID() {
+	m.direct_contributor_id = nil
+	delete(m.clearedFields, archivementdetail.FieldDirectContributorID)
+}
+
+// SetGoodID sets the "good_id" field.
+func (m *ArchivementDetailMutation) SetGoodID(u uuid.UUID) {
+	m.good_id = &u
+}
+
+// GoodID returns the value of the "good_id" field in the mutation.
+func (m *ArchivementDetailMutation) GoodID() (r uuid.UUID, exists bool) {
+	v := m.good_id
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldGoodID returns the old "good_id" field's value of the ArchivementDetail entity.
+// If the ArchivementDetail object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *ArchivementDetailMutation) OldGoodID(ctx context.Context) (v uuid.UUID, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldGoodID is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldGoodID requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldGoodID: %w", err)
+	}
+	return oldValue.GoodID, nil
+}
+
+// ClearGoodID clears the value of the "good_id" field.
+func (m *ArchivementDetailMutation) ClearGoodID() {
+	m.good_id = nil
+	m.clearedFields[archivementdetail.FieldGoodID] = struct{}{}
+}
+
+// GoodIDCleared returns if the "good_id" field was cleared in this mutation.
+func (m *ArchivementDetailMutation) GoodIDCleared() bool {
+	_, ok := m.clearedFields[archivementdetail.FieldGoodID]
+	return ok
+}
+
+// ResetGoodID resets all changes to the "good_id" field.
+func (m *ArchivementDetailMutation) ResetGoodID() {
+	m.good_id = nil
+	delete(m.clearedFields, archivementdetail.FieldGoodID)
+}
+
+// SetOrderID sets the "order_id" field.
+func (m *ArchivementDetailMutation) SetOrderID(u uuid.UUID) {
+	m.order_id = &u
+}
+
+// OrderID returns the value of the "order_id" field in the mutation.
+func (m *ArchivementDetailMutation) OrderID() (r uuid.UUID, exists bool) {
+	v := m.order_id
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldOrderID returns the old "order_id" field's value of the ArchivementDetail entity.
+// If the ArchivementDetail object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *ArchivementDetailMutation) OldOrderID(ctx context.Context) (v uuid.UUID, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldOrderID is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldOrderID requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldOrderID: %w", err)
+	}
+	return oldValue.OrderID, nil
+}
+
+// ClearOrderID clears the value of the "order_id" field.
+func (m *ArchivementDetailMutation) ClearOrderID() {
+	m.order_id = nil
+	m.clearedFields[archivementdetail.FieldOrderID] = struct{}{}
+}
+
+// OrderIDCleared returns if the "order_id" field was cleared in this mutation.
+func (m *ArchivementDetailMutation) OrderIDCleared() bool {
+	_, ok := m.clearedFields[archivementdetail.FieldOrderID]
+	return ok
+}
+
+// ResetOrderID resets all changes to the "order_id" field.
+func (m *ArchivementDetailMutation) ResetOrderID() {
+	m.order_id = nil
+	delete(m.clearedFields, archivementdetail.FieldOrderID)
+}
+
+// SetSelfOrder sets the "self_order" field.
+func (m *ArchivementDetailMutation) SetSelfOrder(b bool) {
+	m.self_order = &b
+}
+
+// SelfOrder returns the value of the "self_order" field in the mutation.
+func (m *ArchivementDetailMutation) SelfOrder() (r bool, exists bool) {
+	v := m.self_order
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldSelfOrder returns the old "self_order" field's value of the ArchivementDetail entity.
+// If the ArchivementDetail object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *ArchivementDetailMutation) OldSelfOrder(ctx context.Context) (v bool, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldSelfOrder is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldSelfOrder requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldSelfOrder: %w", err)
+	}
+	return oldValue.SelfOrder, nil
+}
+
+// ClearSelfOrder clears the value of the "self_order" field.
+func (m *ArchivementDetailMutation) ClearSelfOrder() {
+	m.self_order = nil
+	m.clearedFields[archivementdetail.FieldSelfOrder] = struct{}{}
+}
+
+// SelfOrderCleared returns if the "self_order" field was cleared in this mutation.
+func (m *ArchivementDetailMutation) SelfOrderCleared() bool {
+	_, ok := m.clearedFields[archivementdetail.FieldSelfOrder]
+	return ok
+}
+
+// ResetSelfOrder resets all changes to the "self_order" field.
+func (m *ArchivementDetailMutation) ResetSelfOrder() {
+	m.self_order = nil
+	delete(m.clearedFields, archivementdetail.FieldSelfOrder)
+}
+
+// SetPaymentID sets the "payment_id" field.
+func (m *ArchivementDetailMutation) SetPaymentID(u uuid.UUID) {
+	m.payment_id = &u
+}
+
+// PaymentID returns the value of the "payment_id" field in the mutation.
+func (m *ArchivementDetailMutation) PaymentID() (r uuid.UUID, exists bool) {
+	v := m.payment_id
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldPaymentID returns the old "payment_id" field's value of the ArchivementDetail entity.
+// If the ArchivementDetail object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *ArchivementDetailMutation) OldPaymentID(ctx context.Context) (v uuid.UUID, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldPaymentID is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldPaymentID requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldPaymentID: %w", err)
+	}
+	return oldValue.PaymentID, nil
+}
+
+// ClearPaymentID clears the value of the "payment_id" field.
+func (m *ArchivementDetailMutation) ClearPaymentID() {
+	m.payment_id = nil
+	m.clearedFields[archivementdetail.FieldPaymentID] = struct{}{}
+}
+
+// PaymentIDCleared returns if the "payment_id" field was cleared in this mutation.
+func (m *ArchivementDetailMutation) PaymentIDCleared() bool {
+	_, ok := m.clearedFields[archivementdetail.FieldPaymentID]
+	return ok
+}
+
+// ResetPaymentID resets all changes to the "payment_id" field.
+func (m *ArchivementDetailMutation) ResetPaymentID() {
+	m.payment_id = nil
+	delete(m.clearedFields, archivementdetail.FieldPaymentID)
+}
+
+// SetCoinTypeID sets the "coin_type_id" field.
+func (m *ArchivementDetailMutation) SetCoinTypeID(u uuid.UUID) {
+	m.coin_type_id = &u
+}
+
+// CoinTypeID returns the value of the "coin_type_id" field in the mutation.
+func (m *ArchivementDetailMutation) CoinTypeID() (r uuid.UUID, exists bool) {
+	v := m.coin_type_id
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldCoinTypeID returns the old "coin_type_id" field's value of the ArchivementDetail entity.
+// If the ArchivementDetail object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *ArchivementDetailMutation) OldCoinTypeID(ctx context.Context) (v uuid.UUID, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldCoinTypeID is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldCoinTypeID requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldCoinTypeID: %w", err)
+	}
+	return oldValue.CoinTypeID, nil
+}
+
+// ClearCoinTypeID clears the value of the "coin_type_id" field.
+func (m *ArchivementDetailMutation) ClearCoinTypeID() {
+	m.coin_type_id = nil
+	m.clearedFields[archivementdetail.FieldCoinTypeID] = struct{}{}
+}
+
+// CoinTypeIDCleared returns if the "coin_type_id" field was cleared in this mutation.
+func (m *ArchivementDetailMutation) CoinTypeIDCleared() bool {
+	_, ok := m.clearedFields[archivementdetail.FieldCoinTypeID]
+	return ok
+}
+
+// ResetCoinTypeID resets all changes to the "coin_type_id" field.
+func (m *ArchivementDetailMutation) ResetCoinTypeID() {
+	m.coin_type_id = nil
+	delete(m.clearedFields, archivementdetail.FieldCoinTypeID)
+}
+
+// SetPaymentCoinTypeID sets the "payment_coin_type_id" field.
+func (m *ArchivementDetailMutation) SetPaymentCoinTypeID(u uuid.UUID) {
+	m.payment_coin_type_id = &u
+}
+
+// PaymentCoinTypeID returns the value of the "payment_coin_type_id" field in the mutation.
+func (m *ArchivementDetailMutation) PaymentCoinTypeID() (r uuid.UUID, exists bool) {
+	v := m.payment_coin_type_id
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldPaymentCoinTypeID returns the old "payment_coin_type_id" field's value of the ArchivementDetail entity.
+// If the ArchivementDetail object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *ArchivementDetailMutation) OldPaymentCoinTypeID(ctx context.Context) (v uuid.UUID, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldPaymentCoinTypeID is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldPaymentCoinTypeID requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldPaymentCoinTypeID: %w", err)
+	}
+	return oldValue.PaymentCoinTypeID, nil
+}
+
+// ClearPaymentCoinTypeID clears the value of the "payment_coin_type_id" field.
+func (m *ArchivementDetailMutation) ClearPaymentCoinTypeID() {
+	m.payment_coin_type_id = nil
+	m.clearedFields[archivementdetail.FieldPaymentCoinTypeID] = struct{}{}
+}
+
+// PaymentCoinTypeIDCleared returns if the "payment_coin_type_id" field was cleared in this mutation.
+func (m *ArchivementDetailMutation) PaymentCoinTypeIDCleared() bool {
+	_, ok := m.clearedFields[archivementdetail.FieldPaymentCoinTypeID]
+	return ok
+}
+
+// ResetPaymentCoinTypeID resets all changes to the "payment_coin_type_id" field.
+func (m *ArchivementDetailMutation) ResetPaymentCoinTypeID() {
+	m.payment_coin_type_id = nil
+	delete(m.clearedFields, archivementdetail.FieldPaymentCoinTypeID)
+}
+
+// SetPaymentCoinUsdCurrency sets the "payment_coin_usd_currency" field.
+func (m *ArchivementDetailMutation) SetPaymentCoinUsdCurrency(d decimal.Decimal) {
+	m.payment_coin_usd_currency = &d
+}
+
+// PaymentCoinUsdCurrency returns the value of the "payment_coin_usd_currency" field in the mutation.
+func (m *ArchivementDetailMutation) PaymentCoinUsdCurrency() (r decimal.Decimal, exists bool) {
+	v := m.payment_coin_usd_currency
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldPaymentCoinUsdCurrency returns the old "payment_coin_usd_currency" field's value of the ArchivementDetail entity.
+// If the ArchivementDetail object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *ArchivementDetailMutation) OldPaymentCoinUsdCurrency(ctx context.Context) (v decimal.Decimal, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldPaymentCoinUsdCurrency is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldPaymentCoinUsdCurrency requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldPaymentCoinUsdCurrency: %w", err)
+	}
+	return oldValue.PaymentCoinUsdCurrency, nil
+}
+
+// ClearPaymentCoinUsdCurrency clears the value of the "payment_coin_usd_currency" field.
+func (m *ArchivementDetailMutation) ClearPaymentCoinUsdCurrency() {
+	m.payment_coin_usd_currency = nil
+	m.clearedFields[archivementdetail.FieldPaymentCoinUsdCurrency] = struct{}{}
+}
+
+// PaymentCoinUsdCurrencyCleared returns if the "payment_coin_usd_currency" field was cleared in this mutation.
+func (m *ArchivementDetailMutation) PaymentCoinUsdCurrencyCleared() bool {
+	_, ok := m.clearedFields[archivementdetail.FieldPaymentCoinUsdCurrency]
+	return ok
+}
+
+// ResetPaymentCoinUsdCurrency resets all changes to the "payment_coin_usd_currency" field.
+func (m *ArchivementDetailMutation) ResetPaymentCoinUsdCurrency() {
+	m.payment_coin_usd_currency = nil
+	delete(m.clearedFields, archivementdetail.FieldPaymentCoinUsdCurrency)
+}
+
+// SetUnits sets the "units" field.
+func (m *ArchivementDetailMutation) SetUnits(u uint32) {
+	m.units = &u
+	m.addunits = nil
+}
+
+// Units returns the value of the "units" field in the mutation.
+func (m *ArchivementDetailMutation) Units() (r uint32, exists bool) {
+	v := m.units
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldUnits returns the old "units" field's value of the ArchivementDetail entity.
+// If the ArchivementDetail object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *ArchivementDetailMutation) OldUnits(ctx context.Context) (v uint32, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldUnits is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldUnits requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldUnits: %w", err)
+	}
+	return oldValue.Units, nil
+}
+
+// AddUnits adds u to the "units" field.
+func (m *ArchivementDetailMutation) AddUnits(u int32) {
+	if m.addunits != nil {
+		*m.addunits += u
+	} else {
+		m.addunits = &u
+	}
+}
+
+// AddedUnits returns the value that was added to the "units" field in this mutation.
+func (m *ArchivementDetailMutation) AddedUnits() (r int32, exists bool) {
+	v := m.addunits
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// ClearUnits clears the value of the "units" field.
+func (m *ArchivementDetailMutation) ClearUnits() {
+	m.units = nil
+	m.addunits = nil
+	m.clearedFields[archivementdetail.FieldUnits] = struct{}{}
+}
+
+// UnitsCleared returns if the "units" field was cleared in this mutation.
+func (m *ArchivementDetailMutation) UnitsCleared() bool {
+	_, ok := m.clearedFields[archivementdetail.FieldUnits]
+	return ok
+}
+
+// ResetUnits resets all changes to the "units" field.
+func (m *ArchivementDetailMutation) ResetUnits() {
+	m.units = nil
+	m.addunits = nil
+	delete(m.clearedFields, archivementdetail.FieldUnits)
+}
+
+// SetAmount sets the "amount" field.
+func (m *ArchivementDetailMutation) SetAmount(d decimal.Decimal) {
+	m.amount = &d
+}
+
+// Amount returns the value of the "amount" field in the mutation.
+func (m *ArchivementDetailMutation) Amount() (r decimal.Decimal, exists bool) {
+	v := m.amount
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldAmount returns the old "amount" field's value of the ArchivementDetail entity.
+// If the ArchivementDetail object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *ArchivementDetailMutation) OldAmount(ctx context.Context) (v decimal.Decimal, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldAmount is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldAmount requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldAmount: %w", err)
+	}
+	return oldValue.Amount, nil
+}
+
+// ClearAmount clears the value of the "amount" field.
+func (m *ArchivementDetailMutation) ClearAmount() {
+	m.amount = nil
+	m.clearedFields[archivementdetail.FieldAmount] = struct{}{}
+}
+
+// AmountCleared returns if the "amount" field was cleared in this mutation.
+func (m *ArchivementDetailMutation) AmountCleared() bool {
+	_, ok := m.clearedFields[archivementdetail.FieldAmount]
+	return ok
+}
+
+// ResetAmount resets all changes to the "amount" field.
+func (m *ArchivementDetailMutation) ResetAmount() {
+	m.amount = nil
+	delete(m.clearedFields, archivementdetail.FieldAmount)
+}
+
+// SetUsdAmount sets the "usd_amount" field.
+func (m *ArchivementDetailMutation) SetUsdAmount(d decimal.Decimal) {
+	m.usd_amount = &d
+}
+
+// UsdAmount returns the value of the "usd_amount" field in the mutation.
+func (m *ArchivementDetailMutation) UsdAmount() (r decimal.Decimal, exists bool) {
+	v := m.usd_amount
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldUsdAmount returns the old "usd_amount" field's value of the ArchivementDetail entity.
+// If the ArchivementDetail object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *ArchivementDetailMutation) OldUsdAmount(ctx context.Context) (v decimal.Decimal, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldUsdAmount is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldUsdAmount requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldUsdAmount: %w", err)
+	}
+	return oldValue.UsdAmount, nil
+}
+
+// ClearUsdAmount clears the value of the "usd_amount" field.
+func (m *ArchivementDetailMutation) ClearUsdAmount() {
+	m.usd_amount = nil
+	m.clearedFields[archivementdetail.FieldUsdAmount] = struct{}{}
+}
+
+// UsdAmountCleared returns if the "usd_amount" field was cleared in this mutation.
+func (m *ArchivementDetailMutation) UsdAmountCleared() bool {
+	_, ok := m.clearedFields[archivementdetail.FieldUsdAmount]
+	return ok
+}
+
+// ResetUsdAmount resets all changes to the "usd_amount" field.
+func (m *ArchivementDetailMutation) ResetUsdAmount() {
+	m.usd_amount = nil
+	delete(m.clearedFields, archivementdetail.FieldUsdAmount)
+}
+
+// SetCommission sets the "commission" field.
+func (m *ArchivementDetailMutation) SetCommission(d decimal.Decimal) {
+	m.commission = &d
+}
+
+// Commission returns the value of the "commission" field in the mutation.
+func (m *ArchivementDetailMutation) Commission() (r decimal.Decimal, exists bool) {
+	v := m.commission
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldCommission returns the old "commission" field's value of the ArchivementDetail entity.
+// If the ArchivementDetail object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *ArchivementDetailMutation) OldCommission(ctx context.Context) (v decimal.Decimal, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldCommission is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldCommission requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldCommission: %w", err)
+	}
+	return oldValue.Commission, nil
+}
+
+// ClearCommission clears the value of the "commission" field.
+func (m *ArchivementDetailMutation) ClearCommission() {
+	m.commission = nil
+	m.clearedFields[archivementdetail.FieldCommission] = struct{}{}
+}
+
+// CommissionCleared returns if the "commission" field was cleared in this mutation.
+func (m *ArchivementDetailMutation) CommissionCleared() bool {
+	_, ok := m.clearedFields[archivementdetail.FieldCommission]
+	return ok
+}
+
+// ResetCommission resets all changes to the "commission" field.
+func (m *ArchivementDetailMutation) ResetCommission() {
+	m.commission = nil
+	delete(m.clearedFields, archivementdetail.FieldCommission)
+}
+
+// Where appends a list predicates to the ArchivementDetailMutation builder.
+func (m *ArchivementDetailMutation) Where(ps ...predicate.ArchivementDetail) {
+	m.predicates = append(m.predicates, ps...)
+}
+
+// Op returns the operation name.
+func (m *ArchivementDetailMutation) Op() Op {
+	return m.op
+}
+
+// Type returns the node type of this mutation (ArchivementDetail).
+func (m *ArchivementDetailMutation) Type() string {
+	return m.typ
+}
+
+// Fields returns all fields that were changed during this mutation. Note that in
+// order to get all numeric fields that were incremented/decremented, call
+// AddedFields().
+func (m *ArchivementDetailMutation) Fields() []string {
+	fields := make([]string, 0, 17)
+	if m.created_at != nil {
+		fields = append(fields, archivementdetail.FieldCreatedAt)
+	}
+	if m.updated_at != nil {
+		fields = append(fields, archivementdetail.FieldUpdatedAt)
+	}
+	if m.deleted_at != nil {
+		fields = append(fields, archivementdetail.FieldDeletedAt)
+	}
+	if m.app_id != nil {
+		fields = append(fields, archivementdetail.FieldAppID)
+	}
+	if m.user_id != nil {
+		fields = append(fields, archivementdetail.FieldUserID)
+	}
+	if m.direct_contributor_id != nil {
+		fields = append(fields, archivementdetail.FieldDirectContributorID)
+	}
+	if m.good_id != nil {
+		fields = append(fields, archivementdetail.FieldGoodID)
+	}
+	if m.order_id != nil {
+		fields = append(fields, archivementdetail.FieldOrderID)
+	}
+	if m.self_order != nil {
+		fields = append(fields, archivementdetail.FieldSelfOrder)
+	}
+	if m.payment_id != nil {
+		fields = append(fields, archivementdetail.FieldPaymentID)
+	}
+	if m.coin_type_id != nil {
+		fields = append(fields, archivementdetail.FieldCoinTypeID)
+	}
+	if m.payment_coin_type_id != nil {
+		fields = append(fields, archivementdetail.FieldPaymentCoinTypeID)
+	}
+	if m.payment_coin_usd_currency != nil {
+		fields = append(fields, archivementdetail.FieldPaymentCoinUsdCurrency)
+	}
+	if m.units != nil {
+		fields = append(fields, archivementdetail.FieldUnits)
+	}
+	if m.amount != nil {
+		fields = append(fields, archivementdetail.FieldAmount)
+	}
+	if m.usd_amount != nil {
+		fields = append(fields, archivementdetail.FieldUsdAmount)
+	}
+	if m.commission != nil {
+		fields = append(fields, archivementdetail.FieldCommission)
+	}
+	return fields
+}
+
+// Field returns the value of a field with the given name. The second boolean
+// return value indicates that this field was not set, or was not defined in the
+// schema.
+func (m *ArchivementDetailMutation) Field(name string) (ent.Value, bool) {
+	switch name {
+	case archivementdetail.FieldCreatedAt:
+		return m.CreatedAt()
+	case archivementdetail.FieldUpdatedAt:
+		return m.UpdatedAt()
+	case archivementdetail.FieldDeletedAt:
+		return m.DeletedAt()
+	case archivementdetail.FieldAppID:
+		return m.AppID()
+	case archivementdetail.FieldUserID:
+		return m.UserID()
+	case archivementdetail.FieldDirectContributorID:
+		return m.DirectContributorID()
+	case archivementdetail.FieldGoodID:
+		return m.GoodID()
+	case archivementdetail.FieldOrderID:
+		return m.OrderID()
+	case archivementdetail.FieldSelfOrder:
+		return m.SelfOrder()
+	case archivementdetail.FieldPaymentID:
+		return m.PaymentID()
+	case archivementdetail.FieldCoinTypeID:
+		return m.CoinTypeID()
+	case archivementdetail.FieldPaymentCoinTypeID:
+		return m.PaymentCoinTypeID()
+	case archivementdetail.FieldPaymentCoinUsdCurrency:
+		return m.PaymentCoinUsdCurrency()
+	case archivementdetail.FieldUnits:
+		return m.Units()
+	case archivementdetail.FieldAmount:
+		return m.Amount()
+	case archivementdetail.FieldUsdAmount:
+		return m.UsdAmount()
+	case archivementdetail.FieldCommission:
+		return m.Commission()
+	}
+	return nil, false
+}
+
+// OldField returns the old value of the field from the database. An error is
+// returned if the mutation operation is not UpdateOne, or the query to the
+// database failed.
+func (m *ArchivementDetailMutation) OldField(ctx context.Context, name string) (ent.Value, error) {
+	switch name {
+	case archivementdetail.FieldCreatedAt:
+		return m.OldCreatedAt(ctx)
+	case archivementdetail.FieldUpdatedAt:
+		return m.OldUpdatedAt(ctx)
+	case archivementdetail.FieldDeletedAt:
+		return m.OldDeletedAt(ctx)
+	case archivementdetail.FieldAppID:
+		return m.OldAppID(ctx)
+	case archivementdetail.FieldUserID:
+		return m.OldUserID(ctx)
+	case archivementdetail.FieldDirectContributorID:
+		return m.OldDirectContributorID(ctx)
+	case archivementdetail.FieldGoodID:
+		return m.OldGoodID(ctx)
+	case archivementdetail.FieldOrderID:
+		return m.OldOrderID(ctx)
+	case archivementdetail.FieldSelfOrder:
+		return m.OldSelfOrder(ctx)
+	case archivementdetail.FieldPaymentID:
+		return m.OldPaymentID(ctx)
+	case archivementdetail.FieldCoinTypeID:
+		return m.OldCoinTypeID(ctx)
+	case archivementdetail.FieldPaymentCoinTypeID:
+		return m.OldPaymentCoinTypeID(ctx)
+	case archivementdetail.FieldPaymentCoinUsdCurrency:
+		return m.OldPaymentCoinUsdCurrency(ctx)
+	case archivementdetail.FieldUnits:
+		return m.OldUnits(ctx)
+	case archivementdetail.FieldAmount:
+		return m.OldAmount(ctx)
+	case archivementdetail.FieldUsdAmount:
+		return m.OldUsdAmount(ctx)
+	case archivementdetail.FieldCommission:
+		return m.OldCommission(ctx)
+	}
+	return nil, fmt.Errorf("unknown ArchivementDetail field %s", name)
+}
+
+// SetField sets the value of a field with the given name. It returns an error if
+// the field is not defined in the schema, or if the type mismatched the field
+// type.
+func (m *ArchivementDetailMutation) SetField(name string, value ent.Value) error {
+	switch name {
+	case archivementdetail.FieldCreatedAt:
+		v, ok := value.(uint32)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetCreatedAt(v)
+		return nil
+	case archivementdetail.FieldUpdatedAt:
+		v, ok := value.(uint32)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetUpdatedAt(v)
+		return nil
+	case archivementdetail.FieldDeletedAt:
+		v, ok := value.(uint32)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetDeletedAt(v)
+		return nil
+	case archivementdetail.FieldAppID:
+		v, ok := value.(uuid.UUID)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetAppID(v)
+		return nil
+	case archivementdetail.FieldUserID:
+		v, ok := value.(uuid.UUID)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetUserID(v)
+		return nil
+	case archivementdetail.FieldDirectContributorID:
+		v, ok := value.(uuid.UUID)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetDirectContributorID(v)
+		return nil
+	case archivementdetail.FieldGoodID:
+		v, ok := value.(uuid.UUID)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetGoodID(v)
+		return nil
+	case archivementdetail.FieldOrderID:
+		v, ok := value.(uuid.UUID)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetOrderID(v)
+		return nil
+	case archivementdetail.FieldSelfOrder:
+		v, ok := value.(bool)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetSelfOrder(v)
+		return nil
+	case archivementdetail.FieldPaymentID:
+		v, ok := value.(uuid.UUID)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetPaymentID(v)
+		return nil
+	case archivementdetail.FieldCoinTypeID:
+		v, ok := value.(uuid.UUID)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetCoinTypeID(v)
+		return nil
+	case archivementdetail.FieldPaymentCoinTypeID:
+		v, ok := value.(uuid.UUID)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetPaymentCoinTypeID(v)
+		return nil
+	case archivementdetail.FieldPaymentCoinUsdCurrency:
+		v, ok := value.(decimal.Decimal)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetPaymentCoinUsdCurrency(v)
+		return nil
+	case archivementdetail.FieldUnits:
+		v, ok := value.(uint32)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetUnits(v)
+		return nil
+	case archivementdetail.FieldAmount:
+		v, ok := value.(decimal.Decimal)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetAmount(v)
+		return nil
+	case archivementdetail.FieldUsdAmount:
+		v, ok := value.(decimal.Decimal)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetUsdAmount(v)
+		return nil
+	case archivementdetail.FieldCommission:
+		v, ok := value.(decimal.Decimal)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetCommission(v)
+		return nil
+	}
+	return fmt.Errorf("unknown ArchivementDetail field %s", name)
+}
+
+// AddedFields returns all numeric fields that were incremented/decremented during
+// this mutation.
+func (m *ArchivementDetailMutation) AddedFields() []string {
+	var fields []string
+	if m.addcreated_at != nil {
+		fields = append(fields, archivementdetail.FieldCreatedAt)
+	}
+	if m.addupdated_at != nil {
+		fields = append(fields, archivementdetail.FieldUpdatedAt)
+	}
+	if m.adddeleted_at != nil {
+		fields = append(fields, archivementdetail.FieldDeletedAt)
+	}
+	if m.addunits != nil {
+		fields = append(fields, archivementdetail.FieldUnits)
+	}
+	return fields
+}
+
+// AddedField returns the numeric value that was incremented/decremented on a field
+// with the given name. The second boolean return value indicates that this field
+// was not set, or was not defined in the schema.
+func (m *ArchivementDetailMutation) AddedField(name string) (ent.Value, bool) {
+	switch name {
+	case archivementdetail.FieldCreatedAt:
+		return m.AddedCreatedAt()
+	case archivementdetail.FieldUpdatedAt:
+		return m.AddedUpdatedAt()
+	case archivementdetail.FieldDeletedAt:
+		return m.AddedDeletedAt()
+	case archivementdetail.FieldUnits:
+		return m.AddedUnits()
+	}
+	return nil, false
+}
+
+// AddField adds the value to the field with the given name. It returns an error if
+// the field is not defined in the schema, or if the type mismatched the field
+// type.
+func (m *ArchivementDetailMutation) AddField(name string, value ent.Value) error {
+	switch name {
+	case archivementdetail.FieldCreatedAt:
+		v, ok := value.(int32)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.AddCreatedAt(v)
+		return nil
+	case archivementdetail.FieldUpdatedAt:
+		v, ok := value.(int32)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.AddUpdatedAt(v)
+		return nil
+	case archivementdetail.FieldDeletedAt:
+		v, ok := value.(int32)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.AddDeletedAt(v)
+		return nil
+	case archivementdetail.FieldUnits:
+		v, ok := value.(int32)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.AddUnits(v)
+		return nil
+	}
+	return fmt.Errorf("unknown ArchivementDetail numeric field %s", name)
+}
+
+// ClearedFields returns all nullable fields that were cleared during this
+// mutation.
+func (m *ArchivementDetailMutation) ClearedFields() []string {
+	var fields []string
+	if m.FieldCleared(archivementdetail.FieldAppID) {
+		fields = append(fields, archivementdetail.FieldAppID)
+	}
+	if m.FieldCleared(archivementdetail.FieldUserID) {
+		fields = append(fields, archivementdetail.FieldUserID)
+	}
+	if m.FieldCleared(archivementdetail.FieldDirectContributorID) {
+		fields = append(fields, archivementdetail.FieldDirectContributorID)
+	}
+	if m.FieldCleared(archivementdetail.FieldGoodID) {
+		fields = append(fields, archivementdetail.FieldGoodID)
+	}
+	if m.FieldCleared(archivementdetail.FieldOrderID) {
+		fields = append(fields, archivementdetail.FieldOrderID)
+	}
+	if m.FieldCleared(archivementdetail.FieldSelfOrder) {
+		fields = append(fields, archivementdetail.FieldSelfOrder)
+	}
+	if m.FieldCleared(archivementdetail.FieldPaymentID) {
+		fields = append(fields, archivementdetail.FieldPaymentID)
+	}
+	if m.FieldCleared(archivementdetail.FieldCoinTypeID) {
+		fields = append(fields, archivementdetail.FieldCoinTypeID)
+	}
+	if m.FieldCleared(archivementdetail.FieldPaymentCoinTypeID) {
+		fields = append(fields, archivementdetail.FieldPaymentCoinTypeID)
+	}
+	if m.FieldCleared(archivementdetail.FieldPaymentCoinUsdCurrency) {
+		fields = append(fields, archivementdetail.FieldPaymentCoinUsdCurrency)
+	}
+	if m.FieldCleared(archivementdetail.FieldUnits) {
+		fields = append(fields, archivementdetail.FieldUnits)
+	}
+	if m.FieldCleared(archivementdetail.FieldAmount) {
+		fields = append(fields, archivementdetail.FieldAmount)
+	}
+	if m.FieldCleared(archivementdetail.FieldUsdAmount) {
+		fields = append(fields, archivementdetail.FieldUsdAmount)
+	}
+	if m.FieldCleared(archivementdetail.FieldCommission) {
+		fields = append(fields, archivementdetail.FieldCommission)
+	}
+	return fields
+}
+
+// FieldCleared returns a boolean indicating if a field with the given name was
+// cleared in this mutation.
+func (m *ArchivementDetailMutation) FieldCleared(name string) bool {
+	_, ok := m.clearedFields[name]
+	return ok
+}
+
+// ClearField clears the value of the field with the given name. It returns an
+// error if the field is not defined in the schema.
+func (m *ArchivementDetailMutation) ClearField(name string) error {
+	switch name {
+	case archivementdetail.FieldAppID:
+		m.ClearAppID()
+		return nil
+	case archivementdetail.FieldUserID:
+		m.ClearUserID()
+		return nil
+	case archivementdetail.FieldDirectContributorID:
+		m.ClearDirectContributorID()
+		return nil
+	case archivementdetail.FieldGoodID:
+		m.ClearGoodID()
+		return nil
+	case archivementdetail.FieldOrderID:
+		m.ClearOrderID()
+		return nil
+	case archivementdetail.FieldSelfOrder:
+		m.ClearSelfOrder()
+		return nil
+	case archivementdetail.FieldPaymentID:
+		m.ClearPaymentID()
+		return nil
+	case archivementdetail.FieldCoinTypeID:
+		m.ClearCoinTypeID()
+		return nil
+	case archivementdetail.FieldPaymentCoinTypeID:
+		m.ClearPaymentCoinTypeID()
+		return nil
+	case archivementdetail.FieldPaymentCoinUsdCurrency:
+		m.ClearPaymentCoinUsdCurrency()
+		return nil
+	case archivementdetail.FieldUnits:
+		m.ClearUnits()
+		return nil
+	case archivementdetail.FieldAmount:
+		m.ClearAmount()
+		return nil
+	case archivementdetail.FieldUsdAmount:
+		m.ClearUsdAmount()
+		return nil
+	case archivementdetail.FieldCommission:
+		m.ClearCommission()
+		return nil
+	}
+	return fmt.Errorf("unknown ArchivementDetail nullable field %s", name)
+}
+
+// ResetField resets all changes in the mutation for the field with the given name.
+// It returns an error if the field is not defined in the schema.
+func (m *ArchivementDetailMutation) ResetField(name string) error {
+	switch name {
+	case archivementdetail.FieldCreatedAt:
+		m.ResetCreatedAt()
+		return nil
+	case archivementdetail.FieldUpdatedAt:
+		m.ResetUpdatedAt()
+		return nil
+	case archivementdetail.FieldDeletedAt:
+		m.ResetDeletedAt()
+		return nil
+	case archivementdetail.FieldAppID:
+		m.ResetAppID()
+		return nil
+	case archivementdetail.FieldUserID:
+		m.ResetUserID()
+		return nil
+	case archivementdetail.FieldDirectContributorID:
+		m.ResetDirectContributorID()
+		return nil
+	case archivementdetail.FieldGoodID:
+		m.ResetGoodID()
+		return nil
+	case archivementdetail.FieldOrderID:
+		m.ResetOrderID()
+		return nil
+	case archivementdetail.FieldSelfOrder:
+		m.ResetSelfOrder()
+		return nil
+	case archivementdetail.FieldPaymentID:
+		m.ResetPaymentID()
+		return nil
+	case archivementdetail.FieldCoinTypeID:
+		m.ResetCoinTypeID()
+		return nil
+	case archivementdetail.FieldPaymentCoinTypeID:
+		m.ResetPaymentCoinTypeID()
+		return nil
+	case archivementdetail.FieldPaymentCoinUsdCurrency:
+		m.ResetPaymentCoinUsdCurrency()
+		return nil
+	case archivementdetail.FieldUnits:
+		m.ResetUnits()
+		return nil
+	case archivementdetail.FieldAmount:
+		m.ResetAmount()
+		return nil
+	case archivementdetail.FieldUsdAmount:
+		m.ResetUsdAmount()
+		return nil
+	case archivementdetail.FieldCommission:
+		m.ResetCommission()
+		return nil
+	}
+	return fmt.Errorf("unknown ArchivementDetail field %s", name)
+}
+
+// AddedEdges returns all edge names that were set/added in this mutation.
+func (m *ArchivementDetailMutation) AddedEdges() []string {
+	edges := make([]string, 0, 0)
+	return edges
+}
+
+// AddedIDs returns all IDs (to other nodes) that were added for the given edge
+// name in this mutation.
+func (m *ArchivementDetailMutation) AddedIDs(name string) []ent.Value {
+	return nil
+}
+
+// RemovedEdges returns all edge names that were removed in this mutation.
+func (m *ArchivementDetailMutation) RemovedEdges() []string {
+	edges := make([]string, 0, 0)
+	return edges
+}
+
+// RemovedIDs returns all IDs (to other nodes) that were removed for the edge with
+// the given name in this mutation.
+func (m *ArchivementDetailMutation) RemovedIDs(name string) []ent.Value {
+	return nil
+}
+
+// ClearedEdges returns all edge names that were cleared in this mutation.
+func (m *ArchivementDetailMutation) ClearedEdges() []string {
+	edges := make([]string, 0, 0)
+	return edges
+}
+
+// EdgeCleared returns a boolean which indicates if the edge with the given name
+// was cleared in this mutation.
+func (m *ArchivementDetailMutation) EdgeCleared(name string) bool {
+	return false
+}
+
+// ClearEdge clears the value of the edge with the given name. It returns an error
+// if that edge is not defined in the schema.
+func (m *ArchivementDetailMutation) ClearEdge(name string) error {
+	return fmt.Errorf("unknown ArchivementDetail unique edge %s", name)
+}
+
+// ResetEdge resets all changes to the edge with the given name in this mutation.
+// It returns an error if the edge is not defined in the schema.
+func (m *ArchivementDetailMutation) ResetEdge(name string) error {
+	return fmt.Errorf("unknown ArchivementDetail edge %s", name)
+}
+
+// ArchivementGeneralMutation represents an operation that mutates the ArchivementGeneral nodes in the graph.
+type ArchivementGeneralMutation struct {
+	config
+	op               Op
+	typ              string
+	id               *uuid.UUID
+	created_at       *uint32
+	addcreated_at    *int32
+	updated_at       *uint32
+	addupdated_at    *int32
+	deleted_at       *uint32
+	adddeleted_at    *int32
+	app_id           *uuid.UUID
+	user_id          *uuid.UUID
+	good_id          *uuid.UUID
+	coin_type_id     *uuid.UUID
+	total_units      *uint32
+	addtotal_units   *int32
+	self_units       *uint32
+	addself_units    *int32
+	total_amount     *decimal.Decimal
+	self_amount      *decimal.Decimal
+	total_commission *decimal.Decimal
+	self_commission  *decimal.Decimal
+	clearedFields    map[string]struct{}
+	done             bool
+	oldValue         func(context.Context) (*ArchivementGeneral, error)
+	predicates       []predicate.ArchivementGeneral
+}
+
+var _ ent.Mutation = (*ArchivementGeneralMutation)(nil)
+
+// archivementgeneralOption allows management of the mutation configuration using functional options.
+type archivementgeneralOption func(*ArchivementGeneralMutation)
+
+// newArchivementGeneralMutation creates new mutation for the ArchivementGeneral entity.
+func newArchivementGeneralMutation(c config, op Op, opts ...archivementgeneralOption) *ArchivementGeneralMutation {
+	m := &ArchivementGeneralMutation{
+		config:        c,
+		op:            op,
+		typ:           TypeArchivementGeneral,
+		clearedFields: make(map[string]struct{}),
+	}
+	for _, opt := range opts {
+		opt(m)
+	}
+	return m
+}
+
+// withArchivementGeneralID sets the ID field of the mutation.
+func withArchivementGeneralID(id uuid.UUID) archivementgeneralOption {
+	return func(m *ArchivementGeneralMutation) {
+		var (
+			err   error
+			once  sync.Once
+			value *ArchivementGeneral
+		)
+		m.oldValue = func(ctx context.Context) (*ArchivementGeneral, error) {
+			once.Do(func() {
+				if m.done {
+					err = errors.New("querying old values post mutation is not allowed")
+				} else {
+					value, err = m.Client().ArchivementGeneral.Get(ctx, id)
+				}
+			})
+			return value, err
+		}
+		m.id = &id
+	}
+}
+
+// withArchivementGeneral sets the old ArchivementGeneral of the mutation.
+func withArchivementGeneral(node *ArchivementGeneral) archivementgeneralOption {
+	return func(m *ArchivementGeneralMutation) {
+		m.oldValue = func(context.Context) (*ArchivementGeneral, error) {
+			return node, nil
+		}
+		m.id = &node.ID
+	}
+}
+
+// Client returns a new `ent.Client` from the mutation. If the mutation was
+// executed in a transaction (ent.Tx), a transactional client is returned.
+func (m ArchivementGeneralMutation) Client() *Client {
+	client := &Client{config: m.config}
+	client.init()
+	return client
+}
+
+// Tx returns an `ent.Tx` for mutations that were executed in transactions;
+// it returns an error otherwise.
+func (m ArchivementGeneralMutation) Tx() (*Tx, error) {
+	if _, ok := m.driver.(*txDriver); !ok {
+		return nil, errors.New("ent: mutation is not running in a transaction")
+	}
+	tx := &Tx{config: m.config}
+	tx.init()
+	return tx, nil
+}
+
+// SetID sets the value of the id field. Note that this
+// operation is only accepted on creation of ArchivementGeneral entities.
+func (m *ArchivementGeneralMutation) SetID(id uuid.UUID) {
+	m.id = &id
+}
+
+// ID returns the ID value in the mutation. Note that the ID is only available
+// if it was provided to the builder or after it was returned from the database.
+func (m *ArchivementGeneralMutation) ID() (id uuid.UUID, exists bool) {
+	if m.id == nil {
+		return
+	}
+	return *m.id, true
+}
+
+// IDs queries the database and returns the entity ids that match the mutation's predicate.
+// That means, if the mutation is applied within a transaction with an isolation level such
+// as sql.LevelSerializable, the returned ids match the ids of the rows that will be updated
+// or updated by the mutation.
+func (m *ArchivementGeneralMutation) IDs(ctx context.Context) ([]uuid.UUID, error) {
+	switch {
+	case m.op.Is(OpUpdateOne | OpDeleteOne):
+		id, exists := m.ID()
+		if exists {
+			return []uuid.UUID{id}, nil
+		}
+		fallthrough
+	case m.op.Is(OpUpdate | OpDelete):
+		return m.Client().ArchivementGeneral.Query().Where(m.predicates...).IDs(ctx)
+	default:
+		return nil, fmt.Errorf("IDs is not allowed on %s operations", m.op)
+	}
+}
+
+// SetCreatedAt sets the "created_at" field.
+func (m *ArchivementGeneralMutation) SetCreatedAt(u uint32) {
+	m.created_at = &u
+	m.addcreated_at = nil
+}
+
+// CreatedAt returns the value of the "created_at" field in the mutation.
+func (m *ArchivementGeneralMutation) CreatedAt() (r uint32, exists bool) {
+	v := m.created_at
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldCreatedAt returns the old "created_at" field's value of the ArchivementGeneral entity.
+// If the ArchivementGeneral object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *ArchivementGeneralMutation) OldCreatedAt(ctx context.Context) (v uint32, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldCreatedAt is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldCreatedAt requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldCreatedAt: %w", err)
+	}
+	return oldValue.CreatedAt, nil
+}
+
+// AddCreatedAt adds u to the "created_at" field.
+func (m *ArchivementGeneralMutation) AddCreatedAt(u int32) {
+	if m.addcreated_at != nil {
+		*m.addcreated_at += u
+	} else {
+		m.addcreated_at = &u
+	}
+}
+
+// AddedCreatedAt returns the value that was added to the "created_at" field in this mutation.
+func (m *ArchivementGeneralMutation) AddedCreatedAt() (r int32, exists bool) {
+	v := m.addcreated_at
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// ResetCreatedAt resets all changes to the "created_at" field.
+func (m *ArchivementGeneralMutation) ResetCreatedAt() {
+	m.created_at = nil
+	m.addcreated_at = nil
+}
+
+// SetUpdatedAt sets the "updated_at" field.
+func (m *ArchivementGeneralMutation) SetUpdatedAt(u uint32) {
+	m.updated_at = &u
+	m.addupdated_at = nil
+}
+
+// UpdatedAt returns the value of the "updated_at" field in the mutation.
+func (m *ArchivementGeneralMutation) UpdatedAt() (r uint32, exists bool) {
+	v := m.updated_at
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldUpdatedAt returns the old "updated_at" field's value of the ArchivementGeneral entity.
+// If the ArchivementGeneral object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *ArchivementGeneralMutation) OldUpdatedAt(ctx context.Context) (v uint32, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldUpdatedAt is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldUpdatedAt requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldUpdatedAt: %w", err)
+	}
+	return oldValue.UpdatedAt, nil
+}
+
+// AddUpdatedAt adds u to the "updated_at" field.
+func (m *ArchivementGeneralMutation) AddUpdatedAt(u int32) {
+	if m.addupdated_at != nil {
+		*m.addupdated_at += u
+	} else {
+		m.addupdated_at = &u
+	}
+}
+
+// AddedUpdatedAt returns the value that was added to the "updated_at" field in this mutation.
+func (m *ArchivementGeneralMutation) AddedUpdatedAt() (r int32, exists bool) {
+	v := m.addupdated_at
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// ResetUpdatedAt resets all changes to the "updated_at" field.
+func (m *ArchivementGeneralMutation) ResetUpdatedAt() {
+	m.updated_at = nil
+	m.addupdated_at = nil
+}
+
+// SetDeletedAt sets the "deleted_at" field.
+func (m *ArchivementGeneralMutation) SetDeletedAt(u uint32) {
+	m.deleted_at = &u
+	m.adddeleted_at = nil
+}
+
+// DeletedAt returns the value of the "deleted_at" field in the mutation.
+func (m *ArchivementGeneralMutation) DeletedAt() (r uint32, exists bool) {
+	v := m.deleted_at
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldDeletedAt returns the old "deleted_at" field's value of the ArchivementGeneral entity.
+// If the ArchivementGeneral object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *ArchivementGeneralMutation) OldDeletedAt(ctx context.Context) (v uint32, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldDeletedAt is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldDeletedAt requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldDeletedAt: %w", err)
+	}
+	return oldValue.DeletedAt, nil
+}
+
+// AddDeletedAt adds u to the "deleted_at" field.
+func (m *ArchivementGeneralMutation) AddDeletedAt(u int32) {
+	if m.adddeleted_at != nil {
+		*m.adddeleted_at += u
+	} else {
+		m.adddeleted_at = &u
+	}
+}
+
+// AddedDeletedAt returns the value that was added to the "deleted_at" field in this mutation.
+func (m *ArchivementGeneralMutation) AddedDeletedAt() (r int32, exists bool) {
+	v := m.adddeleted_at
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// ResetDeletedAt resets all changes to the "deleted_at" field.
+func (m *ArchivementGeneralMutation) ResetDeletedAt() {
+	m.deleted_at = nil
+	m.adddeleted_at = nil
+}
+
+// SetAppID sets the "app_id" field.
+func (m *ArchivementGeneralMutation) SetAppID(u uuid.UUID) {
+	m.app_id = &u
+}
+
+// AppID returns the value of the "app_id" field in the mutation.
+func (m *ArchivementGeneralMutation) AppID() (r uuid.UUID, exists bool) {
+	v := m.app_id
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldAppID returns the old "app_id" field's value of the ArchivementGeneral entity.
+// If the ArchivementGeneral object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *ArchivementGeneralMutation) OldAppID(ctx context.Context) (v uuid.UUID, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldAppID is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldAppID requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldAppID: %w", err)
+	}
+	return oldValue.AppID, nil
+}
+
+// ClearAppID clears the value of the "app_id" field.
+func (m *ArchivementGeneralMutation) ClearAppID() {
+	m.app_id = nil
+	m.clearedFields[archivementgeneral.FieldAppID] = struct{}{}
+}
+
+// AppIDCleared returns if the "app_id" field was cleared in this mutation.
+func (m *ArchivementGeneralMutation) AppIDCleared() bool {
+	_, ok := m.clearedFields[archivementgeneral.FieldAppID]
+	return ok
+}
+
+// ResetAppID resets all changes to the "app_id" field.
+func (m *ArchivementGeneralMutation) ResetAppID() {
+	m.app_id = nil
+	delete(m.clearedFields, archivementgeneral.FieldAppID)
+}
+
+// SetUserID sets the "user_id" field.
+func (m *ArchivementGeneralMutation) SetUserID(u uuid.UUID) {
+	m.user_id = &u
+}
+
+// UserID returns the value of the "user_id" field in the mutation.
+func (m *ArchivementGeneralMutation) UserID() (r uuid.UUID, exists bool) {
+	v := m.user_id
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldUserID returns the old "user_id" field's value of the ArchivementGeneral entity.
+// If the ArchivementGeneral object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *ArchivementGeneralMutation) OldUserID(ctx context.Context) (v uuid.UUID, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldUserID is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldUserID requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldUserID: %w", err)
+	}
+	return oldValue.UserID, nil
+}
+
+// ClearUserID clears the value of the "user_id" field.
+func (m *ArchivementGeneralMutation) ClearUserID() {
+	m.user_id = nil
+	m.clearedFields[archivementgeneral.FieldUserID] = struct{}{}
+}
+
+// UserIDCleared returns if the "user_id" field was cleared in this mutation.
+func (m *ArchivementGeneralMutation) UserIDCleared() bool {
+	_, ok := m.clearedFields[archivementgeneral.FieldUserID]
+	return ok
+}
+
+// ResetUserID resets all changes to the "user_id" field.
+func (m *ArchivementGeneralMutation) ResetUserID() {
+	m.user_id = nil
+	delete(m.clearedFields, archivementgeneral.FieldUserID)
+}
+
+// SetGoodID sets the "good_id" field.
+func (m *ArchivementGeneralMutation) SetGoodID(u uuid.UUID) {
+	m.good_id = &u
+}
+
+// GoodID returns the value of the "good_id" field in the mutation.
+func (m *ArchivementGeneralMutation) GoodID() (r uuid.UUID, exists bool) {
+	v := m.good_id
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldGoodID returns the old "good_id" field's value of the ArchivementGeneral entity.
+// If the ArchivementGeneral object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *ArchivementGeneralMutation) OldGoodID(ctx context.Context) (v uuid.UUID, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldGoodID is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldGoodID requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldGoodID: %w", err)
+	}
+	return oldValue.GoodID, nil
+}
+
+// ClearGoodID clears the value of the "good_id" field.
+func (m *ArchivementGeneralMutation) ClearGoodID() {
+	m.good_id = nil
+	m.clearedFields[archivementgeneral.FieldGoodID] = struct{}{}
+}
+
+// GoodIDCleared returns if the "good_id" field was cleared in this mutation.
+func (m *ArchivementGeneralMutation) GoodIDCleared() bool {
+	_, ok := m.clearedFields[archivementgeneral.FieldGoodID]
+	return ok
+}
+
+// ResetGoodID resets all changes to the "good_id" field.
+func (m *ArchivementGeneralMutation) ResetGoodID() {
+	m.good_id = nil
+	delete(m.clearedFields, archivementgeneral.FieldGoodID)
+}
+
+// SetCoinTypeID sets the "coin_type_id" field.
+func (m *ArchivementGeneralMutation) SetCoinTypeID(u uuid.UUID) {
+	m.coin_type_id = &u
+}
+
+// CoinTypeID returns the value of the "coin_type_id" field in the mutation.
+func (m *ArchivementGeneralMutation) CoinTypeID() (r uuid.UUID, exists bool) {
+	v := m.coin_type_id
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldCoinTypeID returns the old "coin_type_id" field's value of the ArchivementGeneral entity.
+// If the ArchivementGeneral object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *ArchivementGeneralMutation) OldCoinTypeID(ctx context.Context) (v uuid.UUID, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldCoinTypeID is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldCoinTypeID requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldCoinTypeID: %w", err)
+	}
+	return oldValue.CoinTypeID, nil
+}
+
+// ClearCoinTypeID clears the value of the "coin_type_id" field.
+func (m *ArchivementGeneralMutation) ClearCoinTypeID() {
+	m.coin_type_id = nil
+	m.clearedFields[archivementgeneral.FieldCoinTypeID] = struct{}{}
+}
+
+// CoinTypeIDCleared returns if the "coin_type_id" field was cleared in this mutation.
+func (m *ArchivementGeneralMutation) CoinTypeIDCleared() bool {
+	_, ok := m.clearedFields[archivementgeneral.FieldCoinTypeID]
+	return ok
+}
+
+// ResetCoinTypeID resets all changes to the "coin_type_id" field.
+func (m *ArchivementGeneralMutation) ResetCoinTypeID() {
+	m.coin_type_id = nil
+	delete(m.clearedFields, archivementgeneral.FieldCoinTypeID)
+}
+
+// SetTotalUnits sets the "total_units" field.
+func (m *ArchivementGeneralMutation) SetTotalUnits(u uint32) {
+	m.total_units = &u
+	m.addtotal_units = nil
+}
+
+// TotalUnits returns the value of the "total_units" field in the mutation.
+func (m *ArchivementGeneralMutation) TotalUnits() (r uint32, exists bool) {
+	v := m.total_units
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldTotalUnits returns the old "total_units" field's value of the ArchivementGeneral entity.
+// If the ArchivementGeneral object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *ArchivementGeneralMutation) OldTotalUnits(ctx context.Context) (v uint32, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldTotalUnits is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldTotalUnits requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldTotalUnits: %w", err)
+	}
+	return oldValue.TotalUnits, nil
+}
+
+// AddTotalUnits adds u to the "total_units" field.
+func (m *ArchivementGeneralMutation) AddTotalUnits(u int32) {
+	if m.addtotal_units != nil {
+		*m.addtotal_units += u
+	} else {
+		m.addtotal_units = &u
+	}
+}
+
+// AddedTotalUnits returns the value that was added to the "total_units" field in this mutation.
+func (m *ArchivementGeneralMutation) AddedTotalUnits() (r int32, exists bool) {
+	v := m.addtotal_units
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// ClearTotalUnits clears the value of the "total_units" field.
+func (m *ArchivementGeneralMutation) ClearTotalUnits() {
+	m.total_units = nil
+	m.addtotal_units = nil
+	m.clearedFields[archivementgeneral.FieldTotalUnits] = struct{}{}
+}
+
+// TotalUnitsCleared returns if the "total_units" field was cleared in this mutation.
+func (m *ArchivementGeneralMutation) TotalUnitsCleared() bool {
+	_, ok := m.clearedFields[archivementgeneral.FieldTotalUnits]
+	return ok
+}
+
+// ResetTotalUnits resets all changes to the "total_units" field.
+func (m *ArchivementGeneralMutation) ResetTotalUnits() {
+	m.total_units = nil
+	m.addtotal_units = nil
+	delete(m.clearedFields, archivementgeneral.FieldTotalUnits)
+}
+
+// SetSelfUnits sets the "self_units" field.
+func (m *ArchivementGeneralMutation) SetSelfUnits(u uint32) {
+	m.self_units = &u
+	m.addself_units = nil
+}
+
+// SelfUnits returns the value of the "self_units" field in the mutation.
+func (m *ArchivementGeneralMutation) SelfUnits() (r uint32, exists bool) {
+	v := m.self_units
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldSelfUnits returns the old "self_units" field's value of the ArchivementGeneral entity.
+// If the ArchivementGeneral object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *ArchivementGeneralMutation) OldSelfUnits(ctx context.Context) (v uint32, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldSelfUnits is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldSelfUnits requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldSelfUnits: %w", err)
+	}
+	return oldValue.SelfUnits, nil
+}
+
+// AddSelfUnits adds u to the "self_units" field.
+func (m *ArchivementGeneralMutation) AddSelfUnits(u int32) {
+	if m.addself_units != nil {
+		*m.addself_units += u
+	} else {
+		m.addself_units = &u
+	}
+}
+
+// AddedSelfUnits returns the value that was added to the "self_units" field in this mutation.
+func (m *ArchivementGeneralMutation) AddedSelfUnits() (r int32, exists bool) {
+	v := m.addself_units
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// ClearSelfUnits clears the value of the "self_units" field.
+func (m *ArchivementGeneralMutation) ClearSelfUnits() {
+	m.self_units = nil
+	m.addself_units = nil
+	m.clearedFields[archivementgeneral.FieldSelfUnits] = struct{}{}
+}
+
+// SelfUnitsCleared returns if the "self_units" field was cleared in this mutation.
+func (m *ArchivementGeneralMutation) SelfUnitsCleared() bool {
+	_, ok := m.clearedFields[archivementgeneral.FieldSelfUnits]
+	return ok
+}
+
+// ResetSelfUnits resets all changes to the "self_units" field.
+func (m *ArchivementGeneralMutation) ResetSelfUnits() {
+	m.self_units = nil
+	m.addself_units = nil
+	delete(m.clearedFields, archivementgeneral.FieldSelfUnits)
+}
+
+// SetTotalAmount sets the "total_amount" field.
+func (m *ArchivementGeneralMutation) SetTotalAmount(d decimal.Decimal) {
+	m.total_amount = &d
+}
+
+// TotalAmount returns the value of the "total_amount" field in the mutation.
+func (m *ArchivementGeneralMutation) TotalAmount() (r decimal.Decimal, exists bool) {
+	v := m.total_amount
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldTotalAmount returns the old "total_amount" field's value of the ArchivementGeneral entity.
+// If the ArchivementGeneral object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *ArchivementGeneralMutation) OldTotalAmount(ctx context.Context) (v decimal.Decimal, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldTotalAmount is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldTotalAmount requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldTotalAmount: %w", err)
+	}
+	return oldValue.TotalAmount, nil
+}
+
+// ClearTotalAmount clears the value of the "total_amount" field.
+func (m *ArchivementGeneralMutation) ClearTotalAmount() {
+	m.total_amount = nil
+	m.clearedFields[archivementgeneral.FieldTotalAmount] = struct{}{}
+}
+
+// TotalAmountCleared returns if the "total_amount" field was cleared in this mutation.
+func (m *ArchivementGeneralMutation) TotalAmountCleared() bool {
+	_, ok := m.clearedFields[archivementgeneral.FieldTotalAmount]
+	return ok
+}
+
+// ResetTotalAmount resets all changes to the "total_amount" field.
+func (m *ArchivementGeneralMutation) ResetTotalAmount() {
+	m.total_amount = nil
+	delete(m.clearedFields, archivementgeneral.FieldTotalAmount)
+}
+
+// SetSelfAmount sets the "self_amount" field.
+func (m *ArchivementGeneralMutation) SetSelfAmount(d decimal.Decimal) {
+	m.self_amount = &d
+}
+
+// SelfAmount returns the value of the "self_amount" field in the mutation.
+func (m *ArchivementGeneralMutation) SelfAmount() (r decimal.Decimal, exists bool) {
+	v := m.self_amount
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldSelfAmount returns the old "self_amount" field's value of the ArchivementGeneral entity.
+// If the ArchivementGeneral object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *ArchivementGeneralMutation) OldSelfAmount(ctx context.Context) (v decimal.Decimal, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldSelfAmount is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldSelfAmount requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldSelfAmount: %w", err)
+	}
+	return oldValue.SelfAmount, nil
+}
+
+// ClearSelfAmount clears the value of the "self_amount" field.
+func (m *ArchivementGeneralMutation) ClearSelfAmount() {
+	m.self_amount = nil
+	m.clearedFields[archivementgeneral.FieldSelfAmount] = struct{}{}
+}
+
+// SelfAmountCleared returns if the "self_amount" field was cleared in this mutation.
+func (m *ArchivementGeneralMutation) SelfAmountCleared() bool {
+	_, ok := m.clearedFields[archivementgeneral.FieldSelfAmount]
+	return ok
+}
+
+// ResetSelfAmount resets all changes to the "self_amount" field.
+func (m *ArchivementGeneralMutation) ResetSelfAmount() {
+	m.self_amount = nil
+	delete(m.clearedFields, archivementgeneral.FieldSelfAmount)
+}
+
+// SetTotalCommission sets the "total_commission" field.
+func (m *ArchivementGeneralMutation) SetTotalCommission(d decimal.Decimal) {
+	m.total_commission = &d
+}
+
+// TotalCommission returns the value of the "total_commission" field in the mutation.
+func (m *ArchivementGeneralMutation) TotalCommission() (r decimal.Decimal, exists bool) {
+	v := m.total_commission
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldTotalCommission returns the old "total_commission" field's value of the ArchivementGeneral entity.
+// If the ArchivementGeneral object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *ArchivementGeneralMutation) OldTotalCommission(ctx context.Context) (v decimal.Decimal, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldTotalCommission is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldTotalCommission requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldTotalCommission: %w", err)
+	}
+	return oldValue.TotalCommission, nil
+}
+
+// ClearTotalCommission clears the value of the "total_commission" field.
+func (m *ArchivementGeneralMutation) ClearTotalCommission() {
+	m.total_commission = nil
+	m.clearedFields[archivementgeneral.FieldTotalCommission] = struct{}{}
+}
+
+// TotalCommissionCleared returns if the "total_commission" field was cleared in this mutation.
+func (m *ArchivementGeneralMutation) TotalCommissionCleared() bool {
+	_, ok := m.clearedFields[archivementgeneral.FieldTotalCommission]
+	return ok
+}
+
+// ResetTotalCommission resets all changes to the "total_commission" field.
+func (m *ArchivementGeneralMutation) ResetTotalCommission() {
+	m.total_commission = nil
+	delete(m.clearedFields, archivementgeneral.FieldTotalCommission)
+}
+
+// SetSelfCommission sets the "self_commission" field.
+func (m *ArchivementGeneralMutation) SetSelfCommission(d decimal.Decimal) {
+	m.self_commission = &d
+}
+
+// SelfCommission returns the value of the "self_commission" field in the mutation.
+func (m *ArchivementGeneralMutation) SelfCommission() (r decimal.Decimal, exists bool) {
+	v := m.self_commission
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldSelfCommission returns the old "self_commission" field's value of the ArchivementGeneral entity.
+// If the ArchivementGeneral object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *ArchivementGeneralMutation) OldSelfCommission(ctx context.Context) (v decimal.Decimal, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldSelfCommission is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldSelfCommission requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldSelfCommission: %w", err)
+	}
+	return oldValue.SelfCommission, nil
+}
+
+// ClearSelfCommission clears the value of the "self_commission" field.
+func (m *ArchivementGeneralMutation) ClearSelfCommission() {
+	m.self_commission = nil
+	m.clearedFields[archivementgeneral.FieldSelfCommission] = struct{}{}
+}
+
+// SelfCommissionCleared returns if the "self_commission" field was cleared in this mutation.
+func (m *ArchivementGeneralMutation) SelfCommissionCleared() bool {
+	_, ok := m.clearedFields[archivementgeneral.FieldSelfCommission]
+	return ok
+}
+
+// ResetSelfCommission resets all changes to the "self_commission" field.
+func (m *ArchivementGeneralMutation) ResetSelfCommission() {
+	m.self_commission = nil
+	delete(m.clearedFields, archivementgeneral.FieldSelfCommission)
+}
+
+// Where appends a list predicates to the ArchivementGeneralMutation builder.
+func (m *ArchivementGeneralMutation) Where(ps ...predicate.ArchivementGeneral) {
+	m.predicates = append(m.predicates, ps...)
+}
+
+// Op returns the operation name.
+func (m *ArchivementGeneralMutation) Op() Op {
+	return m.op
+}
+
+// Type returns the node type of this mutation (ArchivementGeneral).
+func (m *ArchivementGeneralMutation) Type() string {
+	return m.typ
+}
+
+// Fields returns all fields that were changed during this mutation. Note that in
+// order to get all numeric fields that were incremented/decremented, call
+// AddedFields().
+func (m *ArchivementGeneralMutation) Fields() []string {
+	fields := make([]string, 0, 13)
+	if m.created_at != nil {
+		fields = append(fields, archivementgeneral.FieldCreatedAt)
+	}
+	if m.updated_at != nil {
+		fields = append(fields, archivementgeneral.FieldUpdatedAt)
+	}
+	if m.deleted_at != nil {
+		fields = append(fields, archivementgeneral.FieldDeletedAt)
+	}
+	if m.app_id != nil {
+		fields = append(fields, archivementgeneral.FieldAppID)
+	}
+	if m.user_id != nil {
+		fields = append(fields, archivementgeneral.FieldUserID)
+	}
+	if m.good_id != nil {
+		fields = append(fields, archivementgeneral.FieldGoodID)
+	}
+	if m.coin_type_id != nil {
+		fields = append(fields, archivementgeneral.FieldCoinTypeID)
+	}
+	if m.total_units != nil {
+		fields = append(fields, archivementgeneral.FieldTotalUnits)
+	}
+	if m.self_units != nil {
+		fields = append(fields, archivementgeneral.FieldSelfUnits)
+	}
+	if m.total_amount != nil {
+		fields = append(fields, archivementgeneral.FieldTotalAmount)
+	}
+	if m.self_amount != nil {
+		fields = append(fields, archivementgeneral.FieldSelfAmount)
+	}
+	if m.total_commission != nil {
+		fields = append(fields, archivementgeneral.FieldTotalCommission)
+	}
+	if m.self_commission != nil {
+		fields = append(fields, archivementgeneral.FieldSelfCommission)
+	}
+	return fields
+}
+
+// Field returns the value of a field with the given name. The second boolean
+// return value indicates that this field was not set, or was not defined in the
+// schema.
+func (m *ArchivementGeneralMutation) Field(name string) (ent.Value, bool) {
+	switch name {
+	case archivementgeneral.FieldCreatedAt:
+		return m.CreatedAt()
+	case archivementgeneral.FieldUpdatedAt:
+		return m.UpdatedAt()
+	case archivementgeneral.FieldDeletedAt:
+		return m.DeletedAt()
+	case archivementgeneral.FieldAppID:
+		return m.AppID()
+	case archivementgeneral.FieldUserID:
+		return m.UserID()
+	case archivementgeneral.FieldGoodID:
+		return m.GoodID()
+	case archivementgeneral.FieldCoinTypeID:
+		return m.CoinTypeID()
+	case archivementgeneral.FieldTotalUnits:
+		return m.TotalUnits()
+	case archivementgeneral.FieldSelfUnits:
+		return m.SelfUnits()
+	case archivementgeneral.FieldTotalAmount:
+		return m.TotalAmount()
+	case archivementgeneral.FieldSelfAmount:
+		return m.SelfAmount()
+	case archivementgeneral.FieldTotalCommission:
+		return m.TotalCommission()
+	case archivementgeneral.FieldSelfCommission:
+		return m.SelfCommission()
+	}
+	return nil, false
+}
+
+// OldField returns the old value of the field from the database. An error is
+// returned if the mutation operation is not UpdateOne, or the query to the
+// database failed.
+func (m *ArchivementGeneralMutation) OldField(ctx context.Context, name string) (ent.Value, error) {
+	switch name {
+	case archivementgeneral.FieldCreatedAt:
+		return m.OldCreatedAt(ctx)
+	case archivementgeneral.FieldUpdatedAt:
+		return m.OldUpdatedAt(ctx)
+	case archivementgeneral.FieldDeletedAt:
+		return m.OldDeletedAt(ctx)
+	case archivementgeneral.FieldAppID:
+		return m.OldAppID(ctx)
+	case archivementgeneral.FieldUserID:
+		return m.OldUserID(ctx)
+	case archivementgeneral.FieldGoodID:
+		return m.OldGoodID(ctx)
+	case archivementgeneral.FieldCoinTypeID:
+		return m.OldCoinTypeID(ctx)
+	case archivementgeneral.FieldTotalUnits:
+		return m.OldTotalUnits(ctx)
+	case archivementgeneral.FieldSelfUnits:
+		return m.OldSelfUnits(ctx)
+	case archivementgeneral.FieldTotalAmount:
+		return m.OldTotalAmount(ctx)
+	case archivementgeneral.FieldSelfAmount:
+		return m.OldSelfAmount(ctx)
+	case archivementgeneral.FieldTotalCommission:
+		return m.OldTotalCommission(ctx)
+	case archivementgeneral.FieldSelfCommission:
+		return m.OldSelfCommission(ctx)
+	}
+	return nil, fmt.Errorf("unknown ArchivementGeneral field %s", name)
+}
+
+// SetField sets the value of a field with the given name. It returns an error if
+// the field is not defined in the schema, or if the type mismatched the field
+// type.
+func (m *ArchivementGeneralMutation) SetField(name string, value ent.Value) error {
+	switch name {
+	case archivementgeneral.FieldCreatedAt:
+		v, ok := value.(uint32)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetCreatedAt(v)
+		return nil
+	case archivementgeneral.FieldUpdatedAt:
+		v, ok := value.(uint32)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetUpdatedAt(v)
+		return nil
+	case archivementgeneral.FieldDeletedAt:
+		v, ok := value.(uint32)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetDeletedAt(v)
+		return nil
+	case archivementgeneral.FieldAppID:
+		v, ok := value.(uuid.UUID)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetAppID(v)
+		return nil
+	case archivementgeneral.FieldUserID:
+		v, ok := value.(uuid.UUID)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetUserID(v)
+		return nil
+	case archivementgeneral.FieldGoodID:
+		v, ok := value.(uuid.UUID)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetGoodID(v)
+		return nil
+	case archivementgeneral.FieldCoinTypeID:
+		v, ok := value.(uuid.UUID)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetCoinTypeID(v)
+		return nil
+	case archivementgeneral.FieldTotalUnits:
+		v, ok := value.(uint32)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetTotalUnits(v)
+		return nil
+	case archivementgeneral.FieldSelfUnits:
+		v, ok := value.(uint32)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetSelfUnits(v)
+		return nil
+	case archivementgeneral.FieldTotalAmount:
+		v, ok := value.(decimal.Decimal)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetTotalAmount(v)
+		return nil
+	case archivementgeneral.FieldSelfAmount:
+		v, ok := value.(decimal.Decimal)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetSelfAmount(v)
+		return nil
+	case archivementgeneral.FieldTotalCommission:
+		v, ok := value.(decimal.Decimal)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetTotalCommission(v)
+		return nil
+	case archivementgeneral.FieldSelfCommission:
+		v, ok := value.(decimal.Decimal)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetSelfCommission(v)
+		return nil
+	}
+	return fmt.Errorf("unknown ArchivementGeneral field %s", name)
+}
+
+// AddedFields returns all numeric fields that were incremented/decremented during
+// this mutation.
+func (m *ArchivementGeneralMutation) AddedFields() []string {
+	var fields []string
+	if m.addcreated_at != nil {
+		fields = append(fields, archivementgeneral.FieldCreatedAt)
+	}
+	if m.addupdated_at != nil {
+		fields = append(fields, archivementgeneral.FieldUpdatedAt)
+	}
+	if m.adddeleted_at != nil {
+		fields = append(fields, archivementgeneral.FieldDeletedAt)
+	}
+	if m.addtotal_units != nil {
+		fields = append(fields, archivementgeneral.FieldTotalUnits)
+	}
+	if m.addself_units != nil {
+		fields = append(fields, archivementgeneral.FieldSelfUnits)
+	}
+	return fields
+}
+
+// AddedField returns the numeric value that was incremented/decremented on a field
+// with the given name. The second boolean return value indicates that this field
+// was not set, or was not defined in the schema.
+func (m *ArchivementGeneralMutation) AddedField(name string) (ent.Value, bool) {
+	switch name {
+	case archivementgeneral.FieldCreatedAt:
+		return m.AddedCreatedAt()
+	case archivementgeneral.FieldUpdatedAt:
+		return m.AddedUpdatedAt()
+	case archivementgeneral.FieldDeletedAt:
+		return m.AddedDeletedAt()
+	case archivementgeneral.FieldTotalUnits:
+		return m.AddedTotalUnits()
+	case archivementgeneral.FieldSelfUnits:
+		return m.AddedSelfUnits()
+	}
+	return nil, false
+}
+
+// AddField adds the value to the field with the given name. It returns an error if
+// the field is not defined in the schema, or if the type mismatched the field
+// type.
+func (m *ArchivementGeneralMutation) AddField(name string, value ent.Value) error {
+	switch name {
+	case archivementgeneral.FieldCreatedAt:
+		v, ok := value.(int32)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.AddCreatedAt(v)
+		return nil
+	case archivementgeneral.FieldUpdatedAt:
+		v, ok := value.(int32)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.AddUpdatedAt(v)
+		return nil
+	case archivementgeneral.FieldDeletedAt:
+		v, ok := value.(int32)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.AddDeletedAt(v)
+		return nil
+	case archivementgeneral.FieldTotalUnits:
+		v, ok := value.(int32)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.AddTotalUnits(v)
+		return nil
+	case archivementgeneral.FieldSelfUnits:
+		v, ok := value.(int32)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.AddSelfUnits(v)
+		return nil
+	}
+	return fmt.Errorf("unknown ArchivementGeneral numeric field %s", name)
+}
+
+// ClearedFields returns all nullable fields that were cleared during this
+// mutation.
+func (m *ArchivementGeneralMutation) ClearedFields() []string {
+	var fields []string
+	if m.FieldCleared(archivementgeneral.FieldAppID) {
+		fields = append(fields, archivementgeneral.FieldAppID)
+	}
+	if m.FieldCleared(archivementgeneral.FieldUserID) {
+		fields = append(fields, archivementgeneral.FieldUserID)
+	}
+	if m.FieldCleared(archivementgeneral.FieldGoodID) {
+		fields = append(fields, archivementgeneral.FieldGoodID)
+	}
+	if m.FieldCleared(archivementgeneral.FieldCoinTypeID) {
+		fields = append(fields, archivementgeneral.FieldCoinTypeID)
+	}
+	if m.FieldCleared(archivementgeneral.FieldTotalUnits) {
+		fields = append(fields, archivementgeneral.FieldTotalUnits)
+	}
+	if m.FieldCleared(archivementgeneral.FieldSelfUnits) {
+		fields = append(fields, archivementgeneral.FieldSelfUnits)
+	}
+	if m.FieldCleared(archivementgeneral.FieldTotalAmount) {
+		fields = append(fields, archivementgeneral.FieldTotalAmount)
+	}
+	if m.FieldCleared(archivementgeneral.FieldSelfAmount) {
+		fields = append(fields, archivementgeneral.FieldSelfAmount)
+	}
+	if m.FieldCleared(archivementgeneral.FieldTotalCommission) {
+		fields = append(fields, archivementgeneral.FieldTotalCommission)
+	}
+	if m.FieldCleared(archivementgeneral.FieldSelfCommission) {
+		fields = append(fields, archivementgeneral.FieldSelfCommission)
+	}
+	return fields
+}
+
+// FieldCleared returns a boolean indicating if a field with the given name was
+// cleared in this mutation.
+func (m *ArchivementGeneralMutation) FieldCleared(name string) bool {
+	_, ok := m.clearedFields[name]
+	return ok
+}
+
+// ClearField clears the value of the field with the given name. It returns an
+// error if the field is not defined in the schema.
+func (m *ArchivementGeneralMutation) ClearField(name string) error {
+	switch name {
+	case archivementgeneral.FieldAppID:
+		m.ClearAppID()
+		return nil
+	case archivementgeneral.FieldUserID:
+		m.ClearUserID()
+		return nil
+	case archivementgeneral.FieldGoodID:
+		m.ClearGoodID()
+		return nil
+	case archivementgeneral.FieldCoinTypeID:
+		m.ClearCoinTypeID()
+		return nil
+	case archivementgeneral.FieldTotalUnits:
+		m.ClearTotalUnits()
+		return nil
+	case archivementgeneral.FieldSelfUnits:
+		m.ClearSelfUnits()
+		return nil
+	case archivementgeneral.FieldTotalAmount:
+		m.ClearTotalAmount()
+		return nil
+	case archivementgeneral.FieldSelfAmount:
+		m.ClearSelfAmount()
+		return nil
+	case archivementgeneral.FieldTotalCommission:
+		m.ClearTotalCommission()
+		return nil
+	case archivementgeneral.FieldSelfCommission:
+		m.ClearSelfCommission()
+		return nil
+	}
+	return fmt.Errorf("unknown ArchivementGeneral nullable field %s", name)
+}
+
+// ResetField resets all changes in the mutation for the field with the given name.
+// It returns an error if the field is not defined in the schema.
+func (m *ArchivementGeneralMutation) ResetField(name string) error {
+	switch name {
+	case archivementgeneral.FieldCreatedAt:
+		m.ResetCreatedAt()
+		return nil
+	case archivementgeneral.FieldUpdatedAt:
+		m.ResetUpdatedAt()
+		return nil
+	case archivementgeneral.FieldDeletedAt:
+		m.ResetDeletedAt()
+		return nil
+	case archivementgeneral.FieldAppID:
+		m.ResetAppID()
+		return nil
+	case archivementgeneral.FieldUserID:
+		m.ResetUserID()
+		return nil
+	case archivementgeneral.FieldGoodID:
+		m.ResetGoodID()
+		return nil
+	case archivementgeneral.FieldCoinTypeID:
+		m.ResetCoinTypeID()
+		return nil
+	case archivementgeneral.FieldTotalUnits:
+		m.ResetTotalUnits()
+		return nil
+	case archivementgeneral.FieldSelfUnits:
+		m.ResetSelfUnits()
+		return nil
+	case archivementgeneral.FieldTotalAmount:
+		m.ResetTotalAmount()
+		return nil
+	case archivementgeneral.FieldSelfAmount:
+		m.ResetSelfAmount()
+		return nil
+	case archivementgeneral.FieldTotalCommission:
+		m.ResetTotalCommission()
+		return nil
+	case archivementgeneral.FieldSelfCommission:
+		m.ResetSelfCommission()
+		return nil
+	}
+	return fmt.Errorf("unknown ArchivementGeneral field %s", name)
+}
+
+// AddedEdges returns all edge names that were set/added in this mutation.
+func (m *ArchivementGeneralMutation) AddedEdges() []string {
+	edges := make([]string, 0, 0)
+	return edges
+}
+
+// AddedIDs returns all IDs (to other nodes) that were added for the given edge
+// name in this mutation.
+func (m *ArchivementGeneralMutation) AddedIDs(name string) []ent.Value {
+	return nil
+}
+
+// RemovedEdges returns all edge names that were removed in this mutation.
+func (m *ArchivementGeneralMutation) RemovedEdges() []string {
+	edges := make([]string, 0, 0)
+	return edges
+}
+
+// RemovedIDs returns all IDs (to other nodes) that were removed for the edge with
+// the given name in this mutation.
+func (m *ArchivementGeneralMutation) RemovedIDs(name string) []ent.Value {
+	return nil
+}
+
+// ClearedEdges returns all edge names that were cleared in this mutation.
+func (m *ArchivementGeneralMutation) ClearedEdges() []string {
+	edges := make([]string, 0, 0)
+	return edges
+}
+
+// EdgeCleared returns a boolean which indicates if the edge with the given name
+// was cleared in this mutation.
+func (m *ArchivementGeneralMutation) EdgeCleared(name string) bool {
+	return false
+}
+
+// ClearEdge clears the value of the edge with the given name. It returns an error
+// if that edge is not defined in the schema.
+func (m *ArchivementGeneralMutation) ClearEdge(name string) error {
+	return fmt.Errorf("unknown ArchivementGeneral unique edge %s", name)
+}
+
+// ResetEdge resets all changes to the edge with the given name in this mutation.
+// It returns an error if the edge is not defined in the schema.
+func (m *ArchivementGeneralMutation) ResetEdge(name string) error {
+	return fmt.Errorf("unknown ArchivementGeneral edge %s", name)
+}
 
 // CouponAllocatedMutation represents an operation that mutates the CouponAllocated nodes in the graph.
 type CouponAllocatedMutation struct {

@@ -10,6 +10,8 @@ import (
 	"entgo.io/ent"
 	"entgo.io/ent/dialect/sql"
 	"entgo.io/ent/dialect/sql/sqlgraph"
+	"github.com/NpoolPlatform/inspire-manager/pkg/db/ent/archivementdetail"
+	"github.com/NpoolPlatform/inspire-manager/pkg/db/ent/archivementgeneral"
 	"github.com/NpoolPlatform/inspire-manager/pkg/db/ent/couponallocated"
 	"github.com/NpoolPlatform/inspire-manager/pkg/db/ent/coupondiscount"
 	"github.com/NpoolPlatform/inspire-manager/pkg/db/ent/couponfixamount"
@@ -34,6 +36,8 @@ type OrderFunc func(*sql.Selector)
 // columnChecker returns a function indicates if the column exists in the given column.
 func columnChecker(table string) func(string) error {
 	checks := map[string]func(string) bool{
+		archivementdetail.Table:  archivementdetail.ValidColumn,
+		archivementgeneral.Table: archivementgeneral.ValidColumn,
 		couponallocated.Table:    couponallocated.ValidColumn,
 		coupondiscount.Table:     coupondiscount.ValidColumn,
 		couponfixamount.Table:    couponfixamount.ValidColumn,

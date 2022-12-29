@@ -28,6 +28,8 @@ type config struct {
 
 // hooks per client, for fast access.
 type hooks struct {
+	ArchivementDetail  []ent.Hook
+	ArchivementGeneral []ent.Hook
 	CouponAllocated    []ent.Hook
 	CouponDiscount     []ent.Hook
 	CouponFixAmount    []ent.Hook

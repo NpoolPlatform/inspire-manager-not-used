@@ -3,6 +3,8 @@
 package ent
 
 import (
+	"github.com/NpoolPlatform/inspire-manager/pkg/db/ent/archivementdetail"
+	"github.com/NpoolPlatform/inspire-manager/pkg/db/ent/archivementgeneral"
 	"github.com/NpoolPlatform/inspire-manager/pkg/db/ent/couponallocated"
 	"github.com/NpoolPlatform/inspire-manager/pkg/db/ent/coupondiscount"
 	"github.com/NpoolPlatform/inspire-manager/pkg/db/ent/couponfixamount"
@@ -16,8 +18,64 @@ import (
 
 // schemaGraph holds a representation of ent/schema at runtime.
 var schemaGraph = func() *sqlgraph.Schema {
-	graph := &sqlgraph.Schema{Nodes: make([]*sqlgraph.Node, 4)}
+	graph := &sqlgraph.Schema{Nodes: make([]*sqlgraph.Node, 6)}
 	graph.Nodes[0] = &sqlgraph.Node{
+		NodeSpec: sqlgraph.NodeSpec{
+			Table:   archivementdetail.Table,
+			Columns: archivementdetail.Columns,
+			ID: &sqlgraph.FieldSpec{
+				Type:   field.TypeUUID,
+				Column: archivementdetail.FieldID,
+			},
+		},
+		Type: "ArchivementDetail",
+		Fields: map[string]*sqlgraph.FieldSpec{
+			archivementdetail.FieldCreatedAt:              {Type: field.TypeUint32, Column: archivementdetail.FieldCreatedAt},
+			archivementdetail.FieldUpdatedAt:              {Type: field.TypeUint32, Column: archivementdetail.FieldUpdatedAt},
+			archivementdetail.FieldDeletedAt:              {Type: field.TypeUint32, Column: archivementdetail.FieldDeletedAt},
+			archivementdetail.FieldAppID:                  {Type: field.TypeUUID, Column: archivementdetail.FieldAppID},
+			archivementdetail.FieldUserID:                 {Type: field.TypeUUID, Column: archivementdetail.FieldUserID},
+			archivementdetail.FieldDirectContributorID:    {Type: field.TypeUUID, Column: archivementdetail.FieldDirectContributorID},
+			archivementdetail.FieldGoodID:                 {Type: field.TypeUUID, Column: archivementdetail.FieldGoodID},
+			archivementdetail.FieldOrderID:                {Type: field.TypeUUID, Column: archivementdetail.FieldOrderID},
+			archivementdetail.FieldSelfOrder:              {Type: field.TypeBool, Column: archivementdetail.FieldSelfOrder},
+			archivementdetail.FieldPaymentID:              {Type: field.TypeUUID, Column: archivementdetail.FieldPaymentID},
+			archivementdetail.FieldCoinTypeID:             {Type: field.TypeUUID, Column: archivementdetail.FieldCoinTypeID},
+			archivementdetail.FieldPaymentCoinTypeID:      {Type: field.TypeUUID, Column: archivementdetail.FieldPaymentCoinTypeID},
+			archivementdetail.FieldPaymentCoinUsdCurrency: {Type: field.TypeOther, Column: archivementdetail.FieldPaymentCoinUsdCurrency},
+			archivementdetail.FieldUnits:                  {Type: field.TypeUint32, Column: archivementdetail.FieldUnits},
+			archivementdetail.FieldAmount:                 {Type: field.TypeOther, Column: archivementdetail.FieldAmount},
+			archivementdetail.FieldUsdAmount:              {Type: field.TypeOther, Column: archivementdetail.FieldUsdAmount},
+			archivementdetail.FieldCommission:             {Type: field.TypeOther, Column: archivementdetail.FieldCommission},
+		},
+	}
+	graph.Nodes[1] = &sqlgraph.Node{
+		NodeSpec: sqlgraph.NodeSpec{
+			Table:   archivementgeneral.Table,
+			Columns: archivementgeneral.Columns,
+			ID: &sqlgraph.FieldSpec{
+				Type:   field.TypeUUID,
+				Column: archivementgeneral.FieldID,
+			},
+		},
+		Type: "ArchivementGeneral",
+		Fields: map[string]*sqlgraph.FieldSpec{
+			archivementgeneral.FieldCreatedAt:       {Type: field.TypeUint32, Column: archivementgeneral.FieldCreatedAt},
+			archivementgeneral.FieldUpdatedAt:       {Type: field.TypeUint32, Column: archivementgeneral.FieldUpdatedAt},
+			archivementgeneral.FieldDeletedAt:       {Type: field.TypeUint32, Column: archivementgeneral.FieldDeletedAt},
+			archivementgeneral.FieldAppID:           {Type: field.TypeUUID, Column: archivementgeneral.FieldAppID},
+			archivementgeneral.FieldUserID:          {Type: field.TypeUUID, Column: archivementgeneral.FieldUserID},
+			archivementgeneral.FieldGoodID:          {Type: field.TypeUUID, Column: archivementgeneral.FieldGoodID},
+			archivementgeneral.FieldCoinTypeID:      {Type: field.TypeUUID, Column: archivementgeneral.FieldCoinTypeID},
+			archivementgeneral.FieldTotalUnits:      {Type: field.TypeUint32, Column: archivementgeneral.FieldTotalUnits},
+			archivementgeneral.FieldSelfUnits:       {Type: field.TypeUint32, Column: archivementgeneral.FieldSelfUnits},
+			archivementgeneral.FieldTotalAmount:     {Type: field.TypeOther, Column: archivementgeneral.FieldTotalAmount},
+			archivementgeneral.FieldSelfAmount:      {Type: field.TypeOther, Column: archivementgeneral.FieldSelfAmount},
+			archivementgeneral.FieldTotalCommission: {Type: field.TypeOther, Column: archivementgeneral.FieldTotalCommission},
+			archivementgeneral.FieldSelfCommission:  {Type: field.TypeOther, Column: archivementgeneral.FieldSelfCommission},
+		},
+	}
+	graph.Nodes[2] = &sqlgraph.Node{
 		NodeSpec: sqlgraph.NodeSpec{
 			Table:   couponallocated.Table,
 			Columns: couponallocated.Columns,
@@ -37,7 +95,7 @@ var schemaGraph = func() *sqlgraph.Schema {
 			couponallocated.FieldCouponID:  {Type: field.TypeUUID, Column: couponallocated.FieldCouponID},
 		},
 	}
-	graph.Nodes[1] = &sqlgraph.Node{
+	graph.Nodes[3] = &sqlgraph.Node{
 		NodeSpec: sqlgraph.NodeSpec{
 			Table:   coupondiscount.Table,
 			Columns: coupondiscount.Columns,
@@ -60,7 +118,7 @@ var schemaGraph = func() *sqlgraph.Schema {
 			coupondiscount.FieldName:            {Type: field.TypeString, Column: coupondiscount.FieldName},
 		},
 	}
-	graph.Nodes[2] = &sqlgraph.Node{
+	graph.Nodes[4] = &sqlgraph.Node{
 		NodeSpec: sqlgraph.NodeSpec{
 			Table:   couponfixamount.Table,
 			Columns: couponfixamount.Columns,
@@ -84,7 +142,7 @@ var schemaGraph = func() *sqlgraph.Schema {
 			couponfixamount.FieldName:            {Type: field.TypeString, Column: couponfixamount.FieldName},
 		},
 	}
-	graph.Nodes[3] = &sqlgraph.Node{
+	graph.Nodes[5] = &sqlgraph.Node{
 		NodeSpec: sqlgraph.NodeSpec{
 			Table:   couponspecialoffer.Table,
 			Columns: couponspecialoffer.Columns,
@@ -117,6 +175,236 @@ type predicateAdder interface {
 }
 
 // addPredicate implements the predicateAdder interface.
+func (adq *ArchivementDetailQuery) addPredicate(pred func(s *sql.Selector)) {
+	adq.predicates = append(adq.predicates, pred)
+}
+
+// Filter returns a Filter implementation to apply filters on the ArchivementDetailQuery builder.
+func (adq *ArchivementDetailQuery) Filter() *ArchivementDetailFilter {
+	return &ArchivementDetailFilter{config: adq.config, predicateAdder: adq}
+}
+
+// addPredicate implements the predicateAdder interface.
+func (m *ArchivementDetailMutation) addPredicate(pred func(s *sql.Selector)) {
+	m.predicates = append(m.predicates, pred)
+}
+
+// Filter returns an entql.Where implementation to apply filters on the ArchivementDetailMutation builder.
+func (m *ArchivementDetailMutation) Filter() *ArchivementDetailFilter {
+	return &ArchivementDetailFilter{config: m.config, predicateAdder: m}
+}
+
+// ArchivementDetailFilter provides a generic filtering capability at runtime for ArchivementDetailQuery.
+type ArchivementDetailFilter struct {
+	predicateAdder
+	config
+}
+
+// Where applies the entql predicate on the query filter.
+func (f *ArchivementDetailFilter) Where(p entql.P) {
+	f.addPredicate(func(s *sql.Selector) {
+		if err := schemaGraph.EvalP(schemaGraph.Nodes[0].Type, p, s); err != nil {
+			s.AddError(err)
+		}
+	})
+}
+
+// WhereID applies the entql [16]byte predicate on the id field.
+func (f *ArchivementDetailFilter) WhereID(p entql.ValueP) {
+	f.Where(p.Field(archivementdetail.FieldID))
+}
+
+// WhereCreatedAt applies the entql uint32 predicate on the created_at field.
+func (f *ArchivementDetailFilter) WhereCreatedAt(p entql.Uint32P) {
+	f.Where(p.Field(archivementdetail.FieldCreatedAt))
+}
+
+// WhereUpdatedAt applies the entql uint32 predicate on the updated_at field.
+func (f *ArchivementDetailFilter) WhereUpdatedAt(p entql.Uint32P) {
+	f.Where(p.Field(archivementdetail.FieldUpdatedAt))
+}
+
+// WhereDeletedAt applies the entql uint32 predicate on the deleted_at field.
+func (f *ArchivementDetailFilter) WhereDeletedAt(p entql.Uint32P) {
+	f.Where(p.Field(archivementdetail.FieldDeletedAt))
+}
+
+// WhereAppID applies the entql [16]byte predicate on the app_id field.
+func (f *ArchivementDetailFilter) WhereAppID(p entql.ValueP) {
+	f.Where(p.Field(archivementdetail.FieldAppID))
+}
+
+// WhereUserID applies the entql [16]byte predicate on the user_id field.
+func (f *ArchivementDetailFilter) WhereUserID(p entql.ValueP) {
+	f.Where(p.Field(archivementdetail.FieldUserID))
+}
+
+// WhereDirectContributorID applies the entql [16]byte predicate on the direct_contributor_id field.
+func (f *ArchivementDetailFilter) WhereDirectContributorID(p entql.ValueP) {
+	f.Where(p.Field(archivementdetail.FieldDirectContributorID))
+}
+
+// WhereGoodID applies the entql [16]byte predicate on the good_id field.
+func (f *ArchivementDetailFilter) WhereGoodID(p entql.ValueP) {
+	f.Where(p.Field(archivementdetail.FieldGoodID))
+}
+
+// WhereOrderID applies the entql [16]byte predicate on the order_id field.
+func (f *ArchivementDetailFilter) WhereOrderID(p entql.ValueP) {
+	f.Where(p.Field(archivementdetail.FieldOrderID))
+}
+
+// WhereSelfOrder applies the entql bool predicate on the self_order field.
+func (f *ArchivementDetailFilter) WhereSelfOrder(p entql.BoolP) {
+	f.Where(p.Field(archivementdetail.FieldSelfOrder))
+}
+
+// WherePaymentID applies the entql [16]byte predicate on the payment_id field.
+func (f *ArchivementDetailFilter) WherePaymentID(p entql.ValueP) {
+	f.Where(p.Field(archivementdetail.FieldPaymentID))
+}
+
+// WhereCoinTypeID applies the entql [16]byte predicate on the coin_type_id field.
+func (f *ArchivementDetailFilter) WhereCoinTypeID(p entql.ValueP) {
+	f.Where(p.Field(archivementdetail.FieldCoinTypeID))
+}
+
+// WherePaymentCoinTypeID applies the entql [16]byte predicate on the payment_coin_type_id field.
+func (f *ArchivementDetailFilter) WherePaymentCoinTypeID(p entql.ValueP) {
+	f.Where(p.Field(archivementdetail.FieldPaymentCoinTypeID))
+}
+
+// WherePaymentCoinUsdCurrency applies the entql other predicate on the payment_coin_usd_currency field.
+func (f *ArchivementDetailFilter) WherePaymentCoinUsdCurrency(p entql.OtherP) {
+	f.Where(p.Field(archivementdetail.FieldPaymentCoinUsdCurrency))
+}
+
+// WhereUnits applies the entql uint32 predicate on the units field.
+func (f *ArchivementDetailFilter) WhereUnits(p entql.Uint32P) {
+	f.Where(p.Field(archivementdetail.FieldUnits))
+}
+
+// WhereAmount applies the entql other predicate on the amount field.
+func (f *ArchivementDetailFilter) WhereAmount(p entql.OtherP) {
+	f.Where(p.Field(archivementdetail.FieldAmount))
+}
+
+// WhereUsdAmount applies the entql other predicate on the usd_amount field.
+func (f *ArchivementDetailFilter) WhereUsdAmount(p entql.OtherP) {
+	f.Where(p.Field(archivementdetail.FieldUsdAmount))
+}
+
+// WhereCommission applies the entql other predicate on the commission field.
+func (f *ArchivementDetailFilter) WhereCommission(p entql.OtherP) {
+	f.Where(p.Field(archivementdetail.FieldCommission))
+}
+
+// addPredicate implements the predicateAdder interface.
+func (agq *ArchivementGeneralQuery) addPredicate(pred func(s *sql.Selector)) {
+	agq.predicates = append(agq.predicates, pred)
+}
+
+// Filter returns a Filter implementation to apply filters on the ArchivementGeneralQuery builder.
+func (agq *ArchivementGeneralQuery) Filter() *ArchivementGeneralFilter {
+	return &ArchivementGeneralFilter{config: agq.config, predicateAdder: agq}
+}
+
+// addPredicate implements the predicateAdder interface.
+func (m *ArchivementGeneralMutation) addPredicate(pred func(s *sql.Selector)) {
+	m.predicates = append(m.predicates, pred)
+}
+
+// Filter returns an entql.Where implementation to apply filters on the ArchivementGeneralMutation builder.
+func (m *ArchivementGeneralMutation) Filter() *ArchivementGeneralFilter {
+	return &ArchivementGeneralFilter{config: m.config, predicateAdder: m}
+}
+
+// ArchivementGeneralFilter provides a generic filtering capability at runtime for ArchivementGeneralQuery.
+type ArchivementGeneralFilter struct {
+	predicateAdder
+	config
+}
+
+// Where applies the entql predicate on the query filter.
+func (f *ArchivementGeneralFilter) Where(p entql.P) {
+	f.addPredicate(func(s *sql.Selector) {
+		if err := schemaGraph.EvalP(schemaGraph.Nodes[1].Type, p, s); err != nil {
+			s.AddError(err)
+		}
+	})
+}
+
+// WhereID applies the entql [16]byte predicate on the id field.
+func (f *ArchivementGeneralFilter) WhereID(p entql.ValueP) {
+	f.Where(p.Field(archivementgeneral.FieldID))
+}
+
+// WhereCreatedAt applies the entql uint32 predicate on the created_at field.
+func (f *ArchivementGeneralFilter) WhereCreatedAt(p entql.Uint32P) {
+	f.Where(p.Field(archivementgeneral.FieldCreatedAt))
+}
+
+// WhereUpdatedAt applies the entql uint32 predicate on the updated_at field.
+func (f *ArchivementGeneralFilter) WhereUpdatedAt(p entql.Uint32P) {
+	f.Where(p.Field(archivementgeneral.FieldUpdatedAt))
+}
+
+// WhereDeletedAt applies the entql uint32 predicate on the deleted_at field.
+func (f *ArchivementGeneralFilter) WhereDeletedAt(p entql.Uint32P) {
+	f.Where(p.Field(archivementgeneral.FieldDeletedAt))
+}
+
+// WhereAppID applies the entql [16]byte predicate on the app_id field.
+func (f *ArchivementGeneralFilter) WhereAppID(p entql.ValueP) {
+	f.Where(p.Field(archivementgeneral.FieldAppID))
+}
+
+// WhereUserID applies the entql [16]byte predicate on the user_id field.
+func (f *ArchivementGeneralFilter) WhereUserID(p entql.ValueP) {
+	f.Where(p.Field(archivementgeneral.FieldUserID))
+}
+
+// WhereGoodID applies the entql [16]byte predicate on the good_id field.
+func (f *ArchivementGeneralFilter) WhereGoodID(p entql.ValueP) {
+	f.Where(p.Field(archivementgeneral.FieldGoodID))
+}
+
+// WhereCoinTypeID applies the entql [16]byte predicate on the coin_type_id field.
+func (f *ArchivementGeneralFilter) WhereCoinTypeID(p entql.ValueP) {
+	f.Where(p.Field(archivementgeneral.FieldCoinTypeID))
+}
+
+// WhereTotalUnits applies the entql uint32 predicate on the total_units field.
+func (f *ArchivementGeneralFilter) WhereTotalUnits(p entql.Uint32P) {
+	f.Where(p.Field(archivementgeneral.FieldTotalUnits))
+}
+
+// WhereSelfUnits applies the entql uint32 predicate on the self_units field.
+func (f *ArchivementGeneralFilter) WhereSelfUnits(p entql.Uint32P) {
+	f.Where(p.Field(archivementgeneral.FieldSelfUnits))
+}
+
+// WhereTotalAmount applies the entql other predicate on the total_amount field.
+func (f *ArchivementGeneralFilter) WhereTotalAmount(p entql.OtherP) {
+	f.Where(p.Field(archivementgeneral.FieldTotalAmount))
+}
+
+// WhereSelfAmount applies the entql other predicate on the self_amount field.
+func (f *ArchivementGeneralFilter) WhereSelfAmount(p entql.OtherP) {
+	f.Where(p.Field(archivementgeneral.FieldSelfAmount))
+}
+
+// WhereTotalCommission applies the entql other predicate on the total_commission field.
+func (f *ArchivementGeneralFilter) WhereTotalCommission(p entql.OtherP) {
+	f.Where(p.Field(archivementgeneral.FieldTotalCommission))
+}
+
+// WhereSelfCommission applies the entql other predicate on the self_commission field.
+func (f *ArchivementGeneralFilter) WhereSelfCommission(p entql.OtherP) {
+	f.Where(p.Field(archivementgeneral.FieldSelfCommission))
+}
+
+// addPredicate implements the predicateAdder interface.
 func (caq *CouponAllocatedQuery) addPredicate(pred func(s *sql.Selector)) {
 	caq.predicates = append(caq.predicates, pred)
 }
@@ -145,7 +433,7 @@ type CouponAllocatedFilter struct {
 // Where applies the entql predicate on the query filter.
 func (f *CouponAllocatedFilter) Where(p entql.P) {
 	f.addPredicate(func(s *sql.Selector) {
-		if err := schemaGraph.EvalP(schemaGraph.Nodes[0].Type, p, s); err != nil {
+		if err := schemaGraph.EvalP(schemaGraph.Nodes[2].Type, p, s); err != nil {
 			s.AddError(err)
 		}
 	})
@@ -220,7 +508,7 @@ type CouponDiscountFilter struct {
 // Where applies the entql predicate on the query filter.
 func (f *CouponDiscountFilter) Where(p entql.P) {
 	f.addPredicate(func(s *sql.Selector) {
-		if err := schemaGraph.EvalP(schemaGraph.Nodes[1].Type, p, s); err != nil {
+		if err := schemaGraph.EvalP(schemaGraph.Nodes[3].Type, p, s); err != nil {
 			s.AddError(err)
 		}
 	})
@@ -310,7 +598,7 @@ type CouponFixAmountFilter struct {
 // Where applies the entql predicate on the query filter.
 func (f *CouponFixAmountFilter) Where(p entql.P) {
 	f.addPredicate(func(s *sql.Selector) {
-		if err := schemaGraph.EvalP(schemaGraph.Nodes[2].Type, p, s); err != nil {
+		if err := schemaGraph.EvalP(schemaGraph.Nodes[4].Type, p, s); err != nil {
 			s.AddError(err)
 		}
 	})
@@ -405,7 +693,7 @@ type CouponSpecialOfferFilter struct {
 // Where applies the entql predicate on the query filter.
 func (f *CouponSpecialOfferFilter) Where(p entql.P) {
 	f.addPredicate(func(s *sql.Selector) {
-		if err := schemaGraph.EvalP(schemaGraph.Nodes[3].Type, p, s); err != nil {
+		if err := schemaGraph.EvalP(schemaGraph.Nodes[5].Type, p, s); err != nil {
 			s.AddError(err)
 		}
 	})

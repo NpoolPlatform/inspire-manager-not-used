@@ -8,6 +8,56 @@ import (
 )
 
 var (
+	// ArchivementDetailsColumns holds the columns for the "archivement_details" table.
+	ArchivementDetailsColumns = []*schema.Column{
+		{Name: "id", Type: field.TypeUUID, Unique: true},
+		{Name: "created_at", Type: field.TypeUint32},
+		{Name: "updated_at", Type: field.TypeUint32},
+		{Name: "deleted_at", Type: field.TypeUint32},
+		{Name: "app_id", Type: field.TypeUUID, Nullable: true},
+		{Name: "user_id", Type: field.TypeUUID, Nullable: true},
+		{Name: "direct_contributor_id", Type: field.TypeUUID, Nullable: true},
+		{Name: "good_id", Type: field.TypeUUID, Nullable: true},
+		{Name: "order_id", Type: field.TypeUUID, Nullable: true},
+		{Name: "self_order", Type: field.TypeBool, Nullable: true, Default: false},
+		{Name: "payment_id", Type: field.TypeUUID, Nullable: true},
+		{Name: "coin_type_id", Type: field.TypeUUID, Nullable: true},
+		{Name: "payment_coin_type_id", Type: field.TypeUUID, Nullable: true},
+		{Name: "payment_coin_usd_currency", Type: field.TypeOther, Nullable: true, SchemaType: map[string]string{"mysql": "decimal(37,18)"}},
+		{Name: "units", Type: field.TypeUint32, Nullable: true, Default: 0},
+		{Name: "amount", Type: field.TypeOther, Nullable: true, SchemaType: map[string]string{"mysql": "decimal(37,18)"}},
+		{Name: "usd_amount", Type: field.TypeOther, Nullable: true, SchemaType: map[string]string{"mysql": "decimal(37,18)"}},
+		{Name: "commission", Type: field.TypeOther, Nullable: true, SchemaType: map[string]string{"mysql": "decimal(37,18)"}},
+	}
+	// ArchivementDetailsTable holds the schema information for the "archivement_details" table.
+	ArchivementDetailsTable = &schema.Table{
+		Name:       "archivement_details",
+		Columns:    ArchivementDetailsColumns,
+		PrimaryKey: []*schema.Column{ArchivementDetailsColumns[0]},
+	}
+	// ArchivementGeneralsColumns holds the columns for the "archivement_generals" table.
+	ArchivementGeneralsColumns = []*schema.Column{
+		{Name: "id", Type: field.TypeUUID, Unique: true},
+		{Name: "created_at", Type: field.TypeUint32},
+		{Name: "updated_at", Type: field.TypeUint32},
+		{Name: "deleted_at", Type: field.TypeUint32},
+		{Name: "app_id", Type: field.TypeUUID, Nullable: true},
+		{Name: "user_id", Type: field.TypeUUID, Nullable: true},
+		{Name: "good_id", Type: field.TypeUUID, Nullable: true},
+		{Name: "coin_type_id", Type: field.TypeUUID, Nullable: true},
+		{Name: "total_units", Type: field.TypeUint32, Nullable: true, Default: 0},
+		{Name: "self_units", Type: field.TypeUint32, Nullable: true, Default: 0},
+		{Name: "total_amount", Type: field.TypeOther, Nullable: true, SchemaType: map[string]string{"mysql": "decimal(37,18)"}},
+		{Name: "self_amount", Type: field.TypeOther, Nullable: true, SchemaType: map[string]string{"mysql": "decimal(37,18)"}},
+		{Name: "total_commission", Type: field.TypeOther, Nullable: true, SchemaType: map[string]string{"mysql": "decimal(37,18)"}},
+		{Name: "self_commission", Type: field.TypeOther, Nullable: true, SchemaType: map[string]string{"mysql": "decimal(37,18)"}},
+	}
+	// ArchivementGeneralsTable holds the schema information for the "archivement_generals" table.
+	ArchivementGeneralsTable = &schema.Table{
+		Name:       "archivement_generals",
+		Columns:    ArchivementGeneralsColumns,
+		PrimaryKey: []*schema.Column{ArchivementGeneralsColumns[0]},
+	}
 	// CouponAllocatedsColumns holds the columns for the "coupon_allocateds" table.
 	CouponAllocatedsColumns = []*schema.Column{
 		{Name: "id", Type: field.TypeUUID, Unique: true},
@@ -88,6 +138,8 @@ var (
 	}
 	// Tables holds all the tables in the schema.
 	Tables = []*schema.Table{
+		ArchivementDetailsTable,
+		ArchivementGeneralsTable,
 		CouponAllocatedsTable,
 		CouponDiscountsTable,
 		CouponFixAmountsTable,

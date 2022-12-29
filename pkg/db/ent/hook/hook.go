@@ -9,6 +9,32 @@ import (
 	"github.com/NpoolPlatform/inspire-manager/pkg/db/ent"
 )
 
+// The ArchivementDetailFunc type is an adapter to allow the use of ordinary
+// function as ArchivementDetail mutator.
+type ArchivementDetailFunc func(context.Context, *ent.ArchivementDetailMutation) (ent.Value, error)
+
+// Mutate calls f(ctx, m).
+func (f ArchivementDetailFunc) Mutate(ctx context.Context, m ent.Mutation) (ent.Value, error) {
+	mv, ok := m.(*ent.ArchivementDetailMutation)
+	if !ok {
+		return nil, fmt.Errorf("unexpected mutation type %T. expect *ent.ArchivementDetailMutation", m)
+	}
+	return f(ctx, mv)
+}
+
+// The ArchivementGeneralFunc type is an adapter to allow the use of ordinary
+// function as ArchivementGeneral mutator.
+type ArchivementGeneralFunc func(context.Context, *ent.ArchivementGeneralMutation) (ent.Value, error)
+
+// Mutate calls f(ctx, m).
+func (f ArchivementGeneralFunc) Mutate(ctx context.Context, m ent.Mutation) (ent.Value, error) {
+	mv, ok := m.(*ent.ArchivementGeneralMutation)
+	if !ok {
+		return nil, fmt.Errorf("unexpected mutation type %T. expect *ent.ArchivementGeneralMutation", m)
+	}
+	return f(ctx, mv)
+}
+
 // The CouponAllocatedFunc type is an adapter to allow the use of ordinary
 // function as CouponAllocated mutator.
 type CouponAllocatedFunc func(context.Context, *ent.CouponAllocatedMutation) (ent.Value, error)
