@@ -20,6 +20,8 @@ import (
 	"github.com/NpoolPlatform/go-service-framework/pkg/logger"
 	npool "github.com/NpoolPlatform/message/npool/inspire/mgr/v1/invitation/invitationcode"
 
+	cg "github.com/NpoolPlatform/inspire-manager/pkg/generator"
+
 	"github.com/google/uuid"
 )
 
@@ -70,9 +72,17 @@ func (s *Server) CreateInvitationCode(
 		return &npool.CreateInvitationCodeResponse{}, err
 	}
 
+	code, err := cg.Generate()
+	if err != nil {
+		return &npool.CreateInvitationCodeResponse{}, status.Error(codes.Internal, err.Error())
+	}
+
+	req := in.GetInfo()
+	req.InvitationCode = &code
+
 	span = commontracer.TraceInvoker(span, "invitationcode", "crud", "Create")
 
-	info, err := crud.Create(ctx, in.GetInfo())
+	info, err := crud.Create(ctx, req)
 	if err != nil {
 		logger.Sugar().Errorf("fail create invitationcode: %v", err.Error())
 		return &npool.CreateInvitationCodeResponse{}, status.Error(codes.Internal, err.Error())
