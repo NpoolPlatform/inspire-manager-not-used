@@ -227,6 +227,16 @@ func SetQueryConds(conds *npool.Conds, cli *ent.Client) (*ent.GoodOrderPercentQu
 			return nil, fmt.Errorf("invalid goodorderpercent field")
 		}
 	}
+	if conds.EndAt != nil {
+		switch conds.GetEndAt().GetOp() {
+		case cruder.EQ:
+			stm.Where(goodorderpercent.EndAt(conds.GetEndAt().GetValue()))
+		case cruder.NEQ:
+			stm.Where(goodorderpercent.EndAtNEQ(conds.GetEndAt().GetValue()))
+		default:
+			return nil, fmt.Errorf("invalid goodorderpercent field")
+		}
+	}
 	return stm, nil
 }
 
