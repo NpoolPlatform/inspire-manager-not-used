@@ -115,10 +115,10 @@ func Discount(v decimal.Decimal) predicate.CouponDiscount {
 	})
 }
 
-// ReleaseByUserID applies equality check predicate on the "release_by_user_id" field. It's identical to ReleaseByUserIDEQ.
-func ReleaseByUserID(v uuid.UUID) predicate.CouponDiscount {
+// ReleasedByUserID applies equality check predicate on the "released_by_user_id" field. It's identical to ReleasedByUserIDEQ.
+func ReleasedByUserID(v uuid.UUID) predicate.CouponDiscount {
 	return predicate.CouponDiscount(func(s *sql.Selector) {
-		s.Where(sql.EQ(s.C(FieldReleaseByUserID), v))
+		s.Where(sql.EQ(s.C(FieldReleasedByUserID), v))
 	})
 }
 
@@ -484,67 +484,67 @@ func DiscountNotNil() predicate.CouponDiscount {
 	})
 }
 
-// ReleaseByUserIDEQ applies the EQ predicate on the "release_by_user_id" field.
-func ReleaseByUserIDEQ(v uuid.UUID) predicate.CouponDiscount {
+// ReleasedByUserIDEQ applies the EQ predicate on the "released_by_user_id" field.
+func ReleasedByUserIDEQ(v uuid.UUID) predicate.CouponDiscount {
 	return predicate.CouponDiscount(func(s *sql.Selector) {
-		s.Where(sql.EQ(s.C(FieldReleaseByUserID), v))
+		s.Where(sql.EQ(s.C(FieldReleasedByUserID), v))
 	})
 }
 
-// ReleaseByUserIDNEQ applies the NEQ predicate on the "release_by_user_id" field.
-func ReleaseByUserIDNEQ(v uuid.UUID) predicate.CouponDiscount {
+// ReleasedByUserIDNEQ applies the NEQ predicate on the "released_by_user_id" field.
+func ReleasedByUserIDNEQ(v uuid.UUID) predicate.CouponDiscount {
 	return predicate.CouponDiscount(func(s *sql.Selector) {
-		s.Where(sql.NEQ(s.C(FieldReleaseByUserID), v))
+		s.Where(sql.NEQ(s.C(FieldReleasedByUserID), v))
 	})
 }
 
-// ReleaseByUserIDIn applies the In predicate on the "release_by_user_id" field.
-func ReleaseByUserIDIn(vs ...uuid.UUID) predicate.CouponDiscount {
+// ReleasedByUserIDIn applies the In predicate on the "released_by_user_id" field.
+func ReleasedByUserIDIn(vs ...uuid.UUID) predicate.CouponDiscount {
 	v := make([]interface{}, len(vs))
 	for i := range v {
 		v[i] = vs[i]
 	}
 	return predicate.CouponDiscount(func(s *sql.Selector) {
-		s.Where(sql.In(s.C(FieldReleaseByUserID), v...))
+		s.Where(sql.In(s.C(FieldReleasedByUserID), v...))
 	})
 }
 
-// ReleaseByUserIDNotIn applies the NotIn predicate on the "release_by_user_id" field.
-func ReleaseByUserIDNotIn(vs ...uuid.UUID) predicate.CouponDiscount {
+// ReleasedByUserIDNotIn applies the NotIn predicate on the "released_by_user_id" field.
+func ReleasedByUserIDNotIn(vs ...uuid.UUID) predicate.CouponDiscount {
 	v := make([]interface{}, len(vs))
 	for i := range v {
 		v[i] = vs[i]
 	}
 	return predicate.CouponDiscount(func(s *sql.Selector) {
-		s.Where(sql.NotIn(s.C(FieldReleaseByUserID), v...))
+		s.Where(sql.NotIn(s.C(FieldReleasedByUserID), v...))
 	})
 }
 
-// ReleaseByUserIDGT applies the GT predicate on the "release_by_user_id" field.
-func ReleaseByUserIDGT(v uuid.UUID) predicate.CouponDiscount {
+// ReleasedByUserIDGT applies the GT predicate on the "released_by_user_id" field.
+func ReleasedByUserIDGT(v uuid.UUID) predicate.CouponDiscount {
 	return predicate.CouponDiscount(func(s *sql.Selector) {
-		s.Where(sql.GT(s.C(FieldReleaseByUserID), v))
+		s.Where(sql.GT(s.C(FieldReleasedByUserID), v))
 	})
 }
 
-// ReleaseByUserIDGTE applies the GTE predicate on the "release_by_user_id" field.
-func ReleaseByUserIDGTE(v uuid.UUID) predicate.CouponDiscount {
+// ReleasedByUserIDGTE applies the GTE predicate on the "released_by_user_id" field.
+func ReleasedByUserIDGTE(v uuid.UUID) predicate.CouponDiscount {
 	return predicate.CouponDiscount(func(s *sql.Selector) {
-		s.Where(sql.GTE(s.C(FieldReleaseByUserID), v))
+		s.Where(sql.GTE(s.C(FieldReleasedByUserID), v))
 	})
 }
 
-// ReleaseByUserIDLT applies the LT predicate on the "release_by_user_id" field.
-func ReleaseByUserIDLT(v uuid.UUID) predicate.CouponDiscount {
+// ReleasedByUserIDLT applies the LT predicate on the "released_by_user_id" field.
+func ReleasedByUserIDLT(v uuid.UUID) predicate.CouponDiscount {
 	return predicate.CouponDiscount(func(s *sql.Selector) {
-		s.Where(sql.LT(s.C(FieldReleaseByUserID), v))
+		s.Where(sql.LT(s.C(FieldReleasedByUserID), v))
 	})
 }
 
-// ReleaseByUserIDLTE applies the LTE predicate on the "release_by_user_id" field.
-func ReleaseByUserIDLTE(v uuid.UUID) predicate.CouponDiscount {
+// ReleasedByUserIDLTE applies the LTE predicate on the "released_by_user_id" field.
+func ReleasedByUserIDLTE(v uuid.UUID) predicate.CouponDiscount {
 	return predicate.CouponDiscount(func(s *sql.Selector) {
-		s.Where(sql.LTE(s.C(FieldReleaseByUserID), v))
+		s.Where(sql.LTE(s.C(FieldReleasedByUserID), v))
 	})
 }
 

@@ -40,8 +40,8 @@ func CreateSet(c *ent.CouponSpecialOfferCreate, in *npool.SpecialOfferReq) (*ent
 		}
 		c.SetAmount(val)
 	}
-	if in.ReleaseByUserID != nil {
-		c.SetReleaseByUserID(uuid.MustParse(in.GetReleaseByUserID()))
+	if in.ReleasedByUserID != nil {
+		c.SetReleasedByUserID(uuid.MustParse(in.GetReleasedByUserID()))
 	}
 	if in.StartAt != nil {
 		c.SetStartAt(in.GetStartAt())

@@ -35,13 +35,13 @@ func validate(info *npool.SpecialOfferReq) error {
 			return status.Error(codes.InvalidArgument, "Amount less than 0")
 		}
 	}
-	if info.ReleaseByUserID == nil {
-		logger.Sugar().Errorw("validate", "ReleaseByUserID", info.ReleaseByUserID)
-		return status.Error(codes.InvalidArgument, "ReleaseByUserID is empty")
+	if info.ReleasedByUserID == nil {
+		logger.Sugar().Errorw("validate", "ReleasedByUserID", info.ReleasedByUserID)
+		return status.Error(codes.InvalidArgument, "ReleasedByUserID is empty")
 	}
-	if _, err := uuid.Parse(info.GetReleaseByUserID()); err != nil {
-		logger.Sugar().Errorw("validate", "ReleaseByUserID", info.GetReleaseByUserID(), "error", err)
-		return status.Error(codes.InvalidArgument, fmt.Sprintf("ReleaseByUserID is invalid: %v", err))
+	if _, err := uuid.Parse(info.GetReleasedByUserID()); err != nil {
+		logger.Sugar().Errorw("validate", "ReleasedByUserID", info.GetReleasedByUserID(), "error", err)
+		return status.Error(codes.InvalidArgument, fmt.Sprintf("ReleasedByUserID is invalid: %v", err))
 	}
 	if info.GetStartAt() <= 0 {
 		logger.Sugar().Errorw("validate", "Circulation", info.GetStartAt(), "error", "StartAt less than 0")

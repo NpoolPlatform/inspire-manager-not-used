@@ -31,31 +31,31 @@ func init() {
 }
 
 var coupon = ent.CouponDiscount{
-	ID:              uuid.New(),
-	AppID:           uuid.New(),
-	Discount:        decimal.NewFromInt(999),
-	ReleaseByUserID: uuid.New(),
-	StartAt:         999999,
-	DurationDays:    999999,
-	Message:         uuid.NewString(),
-	Name:            uuid.NewString(),
+	ID:               uuid.New(),
+	AppID:            uuid.New(),
+	Discount:         decimal.NewFromInt(999),
+	ReleasedByUserID: uuid.New(),
+	StartAt:          999999,
+	DurationDays:     999999,
+	Message:          uuid.NewString(),
+	Name:             uuid.NewString(),
 }
 
 var (
-	id              = coupon.ID.String()
-	appID           = coupon.AppID.String()
-	discount        = coupon.Discount.String()
-	releaseByUserID = coupon.ReleaseByUserID.String()
+	id               = coupon.ID.String()
+	appID            = coupon.AppID.String()
+	discount         = coupon.Discount.String()
+	releasedByUserID = coupon.ReleasedByUserID.String()
 
 	req = npool.DiscountReq{
-		ID:              &id,
-		AppID:           &appID,
-		Discount:        &discount,
-		ReleaseByUserID: &releaseByUserID,
-		StartAt:         &coupon.StartAt,
-		DurationDays:    &coupon.DurationDays,
-		Message:         &coupon.Message,
-		Name:            &coupon.Name,
+		ID:               &id,
+		AppID:            &appID,
+		Discount:         &discount,
+		ReleasedByUserID: &releasedByUserID,
+		StartAt:          &coupon.StartAt,
+		DurationDays:     &coupon.DurationDays,
+		Message:          &coupon.Message,
+		Name:             &coupon.Name,
 	}
 )
 
@@ -74,24 +74,24 @@ func create(t *testing.T) {
 func createBulk(t *testing.T) {
 	entities := []*ent.CouponDiscount{
 		{
-			ID:              uuid.New(),
-			AppID:           uuid.New(),
-			Discount:        decimal.NewFromInt(999),
-			ReleaseByUserID: uuid.New(),
-			StartAt:         999999,
-			DurationDays:    999999,
-			Message:         uuid.NewString(),
-			Name:            uuid.NewString(),
+			ID:               uuid.New(),
+			AppID:            uuid.New(),
+			Discount:         decimal.NewFromInt(999),
+			ReleasedByUserID: uuid.New(),
+			StartAt:          999999,
+			DurationDays:     999999,
+			Message:          uuid.NewString(),
+			Name:             uuid.NewString(),
 		},
 		{
-			ID:              uuid.New(),
-			AppID:           uuid.New(),
-			Discount:        decimal.NewFromInt(999),
-			ReleaseByUserID: uuid.New(),
-			StartAt:         999999,
-			DurationDays:    999999,
-			Message:         uuid.NewString(),
-			Name:            uuid.NewString(),
+			ID:               uuid.New(),
+			AppID:            uuid.New(),
+			Discount:         decimal.NewFromInt(999),
+			ReleasedByUserID: uuid.New(),
+			StartAt:          999999,
+			DurationDays:     999999,
+			Message:          uuid.NewString(),
+			Name:             uuid.NewString(),
 		},
 	}
 
@@ -100,17 +100,17 @@ func createBulk(t *testing.T) {
 		_id := _coupon.ID.String()
 		_appID := _coupon.AppID.String()
 		_discount := _coupon.Discount.String()
-		_releaseByUserID := _coupon.ReleaseByUserID.String()
+		_releasedByUserID := _coupon.ReleasedByUserID.String()
 
 		reqs = append(reqs, &npool.DiscountReq{
-			ID:              &_id,
-			AppID:           &_appID,
-			Discount:        &_discount,
-			ReleaseByUserID: &_releaseByUserID,
-			StartAt:         &_coupon.StartAt,
-			DurationDays:    &_coupon.DurationDays,
-			Message:         &_coupon.Message,
-			Name:            &_coupon.Name,
+			ID:               &_id,
+			AppID:            &_appID,
+			Discount:         &_discount,
+			ReleasedByUserID: &_releasedByUserID,
+			StartAt:          &_coupon.StartAt,
+			DurationDays:     &_coupon.DurationDays,
+			Message:          &_coupon.Message,
+			Name:             &_coupon.Name,
 		})
 	}
 	infos, err := CreateBulk(context.Background(), reqs)

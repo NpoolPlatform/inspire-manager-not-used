@@ -36,26 +36,26 @@ func init() {
 }
 
 var appDate = npool.SpecialOffer{
-	ID:              uuid.NewString(),
-	AppID:           uuid.NewString(),
-	UserID:          uuid.NewString(),
-	Amount:          "99999",
-	ReleaseByUserID: uuid.NewString(),
-	StartAt:         999,
-	DurationDays:    999,
-	Message:         uuid.NewString(),
+	ID:               uuid.NewString(),
+	AppID:            uuid.NewString(),
+	UserID:           uuid.NewString(),
+	Amount:           "99999",
+	ReleasedByUserID: uuid.NewString(),
+	StartAt:          999,
+	DurationDays:     999,
+	Message:          uuid.NewString(),
 }
 
 var (
 	appInfo = npool.SpecialOfferReq{
-		ID:              &appDate.ID,
-		AppID:           &appDate.AppID,
-		UserID:          &appDate.UserID,
-		Amount:          &appDate.Amount,
-		ReleaseByUserID: &appDate.ReleaseByUserID,
-		StartAt:         &appDate.StartAt,
-		DurationDays:    &appDate.DurationDays,
-		Message:         &appDate.Message,
+		ID:               &appDate.ID,
+		AppID:            &appDate.AppID,
+		UserID:           &appDate.UserID,
+		Amount:           &appDate.Amount,
+		ReleasedByUserID: &appDate.ReleasedByUserID,
+		StartAt:          &appDate.StartAt,
+		DurationDays:     &appDate.DurationDays,
+		Message:          &appDate.Message,
 	}
 )
 
@@ -74,38 +74,38 @@ func createSpecialOffer(t *testing.T) {
 func createSpecialOffers(t *testing.T) {
 	appDates := []npool.SpecialOffer{
 		{
-			ID:              uuid.NewString(),
-			AppID:           uuid.NewString(),
-			UserID:          uuid.NewString(),
-			Amount:          "99999",
-			ReleaseByUserID: uuid.NewString(),
-			StartAt:         999,
-			DurationDays:    999,
-			Message:         uuid.NewString(),
+			ID:               uuid.NewString(),
+			AppID:            uuid.NewString(),
+			UserID:           uuid.NewString(),
+			Amount:           "99999",
+			ReleasedByUserID: uuid.NewString(),
+			StartAt:          999,
+			DurationDays:     999,
+			Message:          uuid.NewString(),
 		},
 		{
-			ID:              uuid.NewString(),
-			AppID:           uuid.NewString(),
-			UserID:          uuid.NewString(),
-			Amount:          "99999",
-			ReleaseByUserID: uuid.NewString(),
-			StartAt:         999,
-			DurationDays:    999,
-			Message:         uuid.NewString(),
+			ID:               uuid.NewString(),
+			AppID:            uuid.NewString(),
+			UserID:           uuid.NewString(),
+			Amount:           "99999",
+			ReleasedByUserID: uuid.NewString(),
+			StartAt:          999,
+			DurationDays:     999,
+			Message:          uuid.NewString(),
 		},
 	}
 
 	apps := []*npool.SpecialOfferReq{}
 	for key := range appDates {
 		apps = append(apps, &npool.SpecialOfferReq{
-			ID:              &appDates[key].ID,
-			AppID:           &appDates[key].AppID,
-			UserID:          &appDates[key].UserID,
-			Amount:          &appDates[key].Amount,
-			ReleaseByUserID: &appDates[key].ReleaseByUserID,
-			StartAt:         &appDates[key].StartAt,
-			DurationDays:    &appDates[key].DurationDays,
-			Message:         &appDates[key].Message,
+			ID:               &appDates[key].ID,
+			AppID:            &appDates[key].AppID,
+			UserID:           &appDates[key].UserID,
+			Amount:           &appDates[key].Amount,
+			ReleasedByUserID: &appDates[key].ReleasedByUserID,
+			StartAt:          &appDates[key].StartAt,
+			DurationDays:     &appDates[key].DurationDays,
+			Message:          &appDates[key].Message,
 		})
 	}
 

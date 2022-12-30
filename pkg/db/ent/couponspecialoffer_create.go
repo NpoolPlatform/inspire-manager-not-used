@@ -92,9 +92,9 @@ func (csoc *CouponSpecialOfferCreate) SetNillableAmount(d *decimal.Decimal) *Cou
 	return csoc
 }
 
-// SetReleaseByUserID sets the "release_by_user_id" field.
-func (csoc *CouponSpecialOfferCreate) SetReleaseByUserID(u uuid.UUID) *CouponSpecialOfferCreate {
-	csoc.mutation.SetReleaseByUserID(u)
+// SetReleasedByUserID sets the "released_by_user_id" field.
+func (csoc *CouponSpecialOfferCreate) SetReleasedByUserID(u uuid.UUID) *CouponSpecialOfferCreate {
+	csoc.mutation.SetReleasedByUserID(u)
 	return csoc
 }
 
@@ -297,8 +297,8 @@ func (csoc *CouponSpecialOfferCreate) check() error {
 	if _, ok := csoc.mutation.UserID(); !ok {
 		return &ValidationError{Name: "user_id", err: errors.New(`ent: missing required field "CouponSpecialOffer.user_id"`)}
 	}
-	if _, ok := csoc.mutation.ReleaseByUserID(); !ok {
-		return &ValidationError{Name: "release_by_user_id", err: errors.New(`ent: missing required field "CouponSpecialOffer.release_by_user_id"`)}
+	if _, ok := csoc.mutation.ReleasedByUserID(); !ok {
+		return &ValidationError{Name: "released_by_user_id", err: errors.New(`ent: missing required field "CouponSpecialOffer.released_by_user_id"`)}
 	}
 	return nil
 }
@@ -385,13 +385,13 @@ func (csoc *CouponSpecialOfferCreate) createSpec() (*CouponSpecialOffer, *sqlgra
 		})
 		_node.Amount = value
 	}
-	if value, ok := csoc.mutation.ReleaseByUserID(); ok {
+	if value, ok := csoc.mutation.ReleasedByUserID(); ok {
 		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
 			Type:   field.TypeUUID,
 			Value:  value,
-			Column: couponspecialoffer.FieldReleaseByUserID,
+			Column: couponspecialoffer.FieldReleasedByUserID,
 		})
-		_node.ReleaseByUserID = value
+		_node.ReleasedByUserID = value
 	}
 	if value, ok := csoc.mutation.StartAt(); ok {
 		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
@@ -567,15 +567,15 @@ func (u *CouponSpecialOfferUpsert) ClearAmount() *CouponSpecialOfferUpsert {
 	return u
 }
 
-// SetReleaseByUserID sets the "release_by_user_id" field.
-func (u *CouponSpecialOfferUpsert) SetReleaseByUserID(v uuid.UUID) *CouponSpecialOfferUpsert {
-	u.Set(couponspecialoffer.FieldReleaseByUserID, v)
+// SetReleasedByUserID sets the "released_by_user_id" field.
+func (u *CouponSpecialOfferUpsert) SetReleasedByUserID(v uuid.UUID) *CouponSpecialOfferUpsert {
+	u.Set(couponspecialoffer.FieldReleasedByUserID, v)
 	return u
 }
 
-// UpdateReleaseByUserID sets the "release_by_user_id" field to the value that was provided on create.
-func (u *CouponSpecialOfferUpsert) UpdateReleaseByUserID() *CouponSpecialOfferUpsert {
-	u.SetExcluded(couponspecialoffer.FieldReleaseByUserID)
+// UpdateReleasedByUserID sets the "released_by_user_id" field to the value that was provided on create.
+func (u *CouponSpecialOfferUpsert) UpdateReleasedByUserID() *CouponSpecialOfferUpsert {
+	u.SetExcluded(couponspecialoffer.FieldReleasedByUserID)
 	return u
 }
 
@@ -807,17 +807,17 @@ func (u *CouponSpecialOfferUpsertOne) ClearAmount() *CouponSpecialOfferUpsertOne
 	})
 }
 
-// SetReleaseByUserID sets the "release_by_user_id" field.
-func (u *CouponSpecialOfferUpsertOne) SetReleaseByUserID(v uuid.UUID) *CouponSpecialOfferUpsertOne {
+// SetReleasedByUserID sets the "released_by_user_id" field.
+func (u *CouponSpecialOfferUpsertOne) SetReleasedByUserID(v uuid.UUID) *CouponSpecialOfferUpsertOne {
 	return u.Update(func(s *CouponSpecialOfferUpsert) {
-		s.SetReleaseByUserID(v)
+		s.SetReleasedByUserID(v)
 	})
 }
 
-// UpdateReleaseByUserID sets the "release_by_user_id" field to the value that was provided on create.
-func (u *CouponSpecialOfferUpsertOne) UpdateReleaseByUserID() *CouponSpecialOfferUpsertOne {
+// UpdateReleasedByUserID sets the "released_by_user_id" field to the value that was provided on create.
+func (u *CouponSpecialOfferUpsertOne) UpdateReleasedByUserID() *CouponSpecialOfferUpsertOne {
 	return u.Update(func(s *CouponSpecialOfferUpsert) {
-		s.UpdateReleaseByUserID()
+		s.UpdateReleasedByUserID()
 	})
 }
 
@@ -1226,17 +1226,17 @@ func (u *CouponSpecialOfferUpsertBulk) ClearAmount() *CouponSpecialOfferUpsertBu
 	})
 }
 
-// SetReleaseByUserID sets the "release_by_user_id" field.
-func (u *CouponSpecialOfferUpsertBulk) SetReleaseByUserID(v uuid.UUID) *CouponSpecialOfferUpsertBulk {
+// SetReleasedByUserID sets the "released_by_user_id" field.
+func (u *CouponSpecialOfferUpsertBulk) SetReleasedByUserID(v uuid.UUID) *CouponSpecialOfferUpsertBulk {
 	return u.Update(func(s *CouponSpecialOfferUpsert) {
-		s.SetReleaseByUserID(v)
+		s.SetReleasedByUserID(v)
 	})
 }
 
-// UpdateReleaseByUserID sets the "release_by_user_id" field to the value that was provided on create.
-func (u *CouponSpecialOfferUpsertBulk) UpdateReleaseByUserID() *CouponSpecialOfferUpsertBulk {
+// UpdateReleasedByUserID sets the "released_by_user_id" field to the value that was provided on create.
+func (u *CouponSpecialOfferUpsertBulk) UpdateReleasedByUserID() *CouponSpecialOfferUpsertBulk {
 	return u.Update(func(s *CouponSpecialOfferUpsert) {
-		s.UpdateReleaseByUserID()
+		s.UpdateReleasedByUserID()
 	})
 }
 

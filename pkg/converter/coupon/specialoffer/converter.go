@@ -11,16 +11,16 @@ func Ent2Grpc(row *ent.CouponSpecialOffer) *npool.SpecialOffer {
 		return nil
 	}
 	return &npool.SpecialOffer{
-		ID:              row.ID.String(),
-		AppID:           row.AppID.String(),
-		UserID:          row.UserID.String(),
-		Amount:          row.Amount.String(),
-		ReleaseByUserID: row.ReleaseByUserID.String(),
-		StartAt:         row.StartAt,
-		DurationDays:    row.DurationDays,
-		Message:         row.Message,
-		CreatedAt:       row.CreatedAt,
-		UpdatedAt:       row.UpdatedAt,
+		ID:               row.ID.String(),
+		AppID:            row.AppID.String(),
+		UserID:           row.UserID.String(),
+		Amount:           row.Amount.String(),
+		ReleasedByUserID: row.ReleasedByUserID.String(),
+		StartAt:          row.StartAt,
+		DurationDays:     row.DurationDays,
+		Message:          row.Message,
+		CreatedAt:        row.CreatedAt,
+		UpdatedAt:        row.UpdatedAt,
 	}
 }
 

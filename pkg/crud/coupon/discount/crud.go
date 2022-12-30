@@ -38,8 +38,8 @@ func CreateSet(c *ent.CouponDiscountCreate, in *npool.DiscountReq) (*ent.CouponD
 		}
 		c.SetDiscount(val)
 	}
-	if in.ReleaseByUserID != nil {
-		c.SetReleaseByUserID(uuid.MustParse(in.GetReleaseByUserID()))
+	if in.ReleasedByUserID != nil {
+		c.SetReleasedByUserID(uuid.MustParse(in.GetReleasedByUserID()))
 	}
 	if in.StartAt != nil {
 		c.SetStartAt(in.GetStartAt())
@@ -230,10 +230,10 @@ func setQueryConds(conds *npool.Conds, cli *ent.Client) (*ent.CouponDiscountQuer
 			return nil, fmt.Errorf("invalid coupondiscount field")
 		}
 	}
-	if conds.ReleaseByUserID != nil {
-		switch conds.GetReleaseByUserID().GetOp() {
+	if conds.ReleasedByUserID != nil {
+		switch conds.GetReleasedByUserID().GetOp() {
 		case cruder.EQ:
-			stm.Where(coupondiscount.ReleaseByUserID(uuid.MustParse(conds.GetReleaseByUserID().GetValue())))
+			stm.Where(coupondiscount.ReleasedByUserID(uuid.MustParse(conds.GetReleasedByUserID().GetValue())))
 		default:
 			return nil, fmt.Errorf("invalid coupondiscount field")
 		}

@@ -31,34 +31,34 @@ func init() {
 }
 
 var coupon = ent.CouponFixAmount{
-	ID:              uuid.New(),
-	AppID:           uuid.New(),
-	Denomination:    decimal.NewFromInt(999),
-	Circulation:     decimal.NewFromInt(999),
-	ReleaseByUserID: uuid.New(),
-	StartAt:         999999,
-	DurationDays:    999999,
-	Message:         uuid.NewString(),
-	Name:            uuid.NewString(),
+	ID:               uuid.New(),
+	AppID:            uuid.New(),
+	Denomination:     decimal.NewFromInt(999),
+	Circulation:      decimal.NewFromInt(999),
+	ReleasedByUserID: uuid.New(),
+	StartAt:          999999,
+	DurationDays:     999999,
+	Message:          uuid.NewString(),
+	Name:             uuid.NewString(),
 }
 
 var (
-	id              = coupon.ID.String()
-	appID           = coupon.AppID.String()
-	denomination    = coupon.Denomination.String()
-	circulation     = coupon.Circulation.String()
-	releaseByUserID = coupon.ReleaseByUserID.String()
+	id               = coupon.ID.String()
+	appID            = coupon.AppID.String()
+	denomination     = coupon.Denomination.String()
+	circulation      = coupon.Circulation.String()
+	releasedByUserID = coupon.ReleasedByUserID.String()
 
 	req = npool.FixAmountReq{
-		ID:              &id,
-		AppID:           &appID,
-		Denomination:    &denomination,
-		Circulation:     &circulation,
-		ReleaseByUserID: &releaseByUserID,
-		StartAt:         &coupon.StartAt,
-		DurationDays:    &coupon.DurationDays,
-		Message:         &coupon.Message,
-		Name:            &coupon.Name,
+		ID:               &id,
+		AppID:            &appID,
+		Denomination:     &denomination,
+		Circulation:      &circulation,
+		ReleasedByUserID: &releasedByUserID,
+		StartAt:          &coupon.StartAt,
+		DurationDays:     &coupon.DurationDays,
+		Message:          &coupon.Message,
+		Name:             &coupon.Name,
 	}
 )
 
@@ -77,26 +77,26 @@ func create(t *testing.T) {
 func createBulk(t *testing.T) {
 	entities := []*ent.CouponFixAmount{
 		{
-			ID:              uuid.New(),
-			AppID:           uuid.New(),
-			Denomination:    decimal.NewFromInt(999),
-			Circulation:     decimal.NewFromInt(999),
-			ReleaseByUserID: uuid.New(),
-			StartAt:         999999,
-			DurationDays:    999999,
-			Message:         uuid.NewString(),
-			Name:            uuid.NewString(),
+			ID:               uuid.New(),
+			AppID:            uuid.New(),
+			Denomination:     decimal.NewFromInt(999),
+			Circulation:      decimal.NewFromInt(999),
+			ReleasedByUserID: uuid.New(),
+			StartAt:          999999,
+			DurationDays:     999999,
+			Message:          uuid.NewString(),
+			Name:             uuid.NewString(),
 		},
 		{
-			ID:              uuid.New(),
-			AppID:           uuid.New(),
-			Denomination:    decimal.NewFromInt(999),
-			Circulation:     decimal.NewFromInt(999),
-			ReleaseByUserID: uuid.New(),
-			StartAt:         999999,
-			DurationDays:    999999,
-			Message:         uuid.NewString(),
-			Name:            uuid.NewString(),
+			ID:               uuid.New(),
+			AppID:            uuid.New(),
+			Denomination:     decimal.NewFromInt(999),
+			Circulation:      decimal.NewFromInt(999),
+			ReleasedByUserID: uuid.New(),
+			StartAt:          999999,
+			DurationDays:     999999,
+			Message:          uuid.NewString(),
+			Name:             uuid.NewString(),
 		},
 	}
 
@@ -106,18 +106,18 @@ func createBulk(t *testing.T) {
 		_appID := _coupon.AppID.String()
 		_denomination := _coupon.Denomination.String()
 		_circulation := _coupon.Circulation.String()
-		_releaseByUserID := _coupon.ReleaseByUserID.String()
+		_releasedByUserID := _coupon.ReleasedByUserID.String()
 
 		reqs = append(reqs, &npool.FixAmountReq{
-			ID:              &_id,
-			AppID:           &_appID,
-			Denomination:    &_denomination,
-			Circulation:     &_circulation,
-			ReleaseByUserID: &_releaseByUserID,
-			StartAt:         &_coupon.StartAt,
-			DurationDays:    &_coupon.DurationDays,
-			Message:         &_coupon.Message,
-			Name:            &_coupon.Name,
+			ID:               &_id,
+			AppID:            &_appID,
+			Denomination:     &_denomination,
+			Circulation:      &_circulation,
+			ReleasedByUserID: &_releasedByUserID,
+			StartAt:          &_coupon.StartAt,
+			DurationDays:     &_coupon.DurationDays,
+			Message:          &_coupon.Message,
+			Name:             &_coupon.Name,
 		})
 	}
 	infos, err := CreateBulk(context.Background(), reqs)

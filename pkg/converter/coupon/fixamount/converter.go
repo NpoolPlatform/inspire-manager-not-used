@@ -11,17 +11,17 @@ func Ent2Grpc(row *ent.CouponFixAmount) *npool.FixAmount {
 		return nil
 	}
 	return &npool.FixAmount{
-		ID:              row.ID.String(),
-		AppID:           row.AppID.String(),
-		Denomination:    row.Denomination.String(),
-		Circulation:     row.Circulation.String(),
-		ReleaseByUserID: row.ReleaseByUserID.String(),
-		StartAt:         row.StartAt,
-		DurationDays:    row.DurationDays,
-		Message:         row.Message,
-		Name:            row.Name,
-		CreatedAt:       row.CreatedAt,
-		UpdatedAt:       row.UpdatedAt,
+		ID:               row.ID.String(),
+		AppID:            row.AppID.String(),
+		Denomination:     row.Denomination.String(),
+		Circulation:      row.Circulation.String(),
+		ReleasedByUserID: row.ReleasedByUserID.String(),
+		StartAt:          row.StartAt,
+		DurationDays:     row.DurationDays,
+		Message:          row.Message,
+		Name:             row.Name,
+		CreatedAt:        row.CreatedAt,
+		UpdatedAt:        row.UpdatedAt,
 	}
 }
 

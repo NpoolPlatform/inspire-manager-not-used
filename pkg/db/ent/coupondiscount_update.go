@@ -111,9 +111,9 @@ func (cdu *CouponDiscountUpdate) ClearDiscount() *CouponDiscountUpdate {
 	return cdu
 }
 
-// SetReleaseByUserID sets the "release_by_user_id" field.
-func (cdu *CouponDiscountUpdate) SetReleaseByUserID(u uuid.UUID) *CouponDiscountUpdate {
-	cdu.mutation.SetReleaseByUserID(u)
+// SetReleasedByUserID sets the "released_by_user_id" field.
+func (cdu *CouponDiscountUpdate) SetReleasedByUserID(u uuid.UUID) *CouponDiscountUpdate {
+	cdu.mutation.SetReleasedByUserID(u)
 	return cdu
 }
 
@@ -371,11 +371,11 @@ func (cdu *CouponDiscountUpdate) sqlSave(ctx context.Context) (n int, err error)
 			Column: coupondiscount.FieldDiscount,
 		})
 	}
-	if value, ok := cdu.mutation.ReleaseByUserID(); ok {
+	if value, ok := cdu.mutation.ReleasedByUserID(); ok {
 		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
 			Type:   field.TypeUUID,
 			Value:  value,
-			Column: coupondiscount.FieldReleaseByUserID,
+			Column: coupondiscount.FieldReleasedByUserID,
 		})
 	}
 	if value, ok := cdu.mutation.StartAt(); ok {
@@ -546,9 +546,9 @@ func (cduo *CouponDiscountUpdateOne) ClearDiscount() *CouponDiscountUpdateOne {
 	return cduo
 }
 
-// SetReleaseByUserID sets the "release_by_user_id" field.
-func (cduo *CouponDiscountUpdateOne) SetReleaseByUserID(u uuid.UUID) *CouponDiscountUpdateOne {
-	cduo.mutation.SetReleaseByUserID(u)
+// SetReleasedByUserID sets the "released_by_user_id" field.
+func (cduo *CouponDiscountUpdateOne) SetReleasedByUserID(u uuid.UUID) *CouponDiscountUpdateOne {
+	cduo.mutation.SetReleasedByUserID(u)
 	return cduo
 }
 
@@ -836,11 +836,11 @@ func (cduo *CouponDiscountUpdateOne) sqlSave(ctx context.Context) (_node *Coupon
 			Column: coupondiscount.FieldDiscount,
 		})
 	}
-	if value, ok := cduo.mutation.ReleaseByUserID(); ok {
+	if value, ok := cduo.mutation.ReleasedByUserID(); ok {
 		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
 			Type:   field.TypeUUID,
 			Value:  value,
-			Column: coupondiscount.FieldReleaseByUserID,
+			Column: coupondiscount.FieldReleasedByUserID,
 		})
 	}
 	if value, ok := cduo.mutation.StartAt(); ok {

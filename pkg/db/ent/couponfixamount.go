@@ -29,8 +29,8 @@ type CouponFixAmount struct {
 	Denomination decimal.Decimal `json:"denomination,omitempty"`
 	// Circulation holds the value of the "circulation" field.
 	Circulation decimal.Decimal `json:"circulation,omitempty"`
-	// ReleaseByUserID holds the value of the "release_by_user_id" field.
-	ReleaseByUserID uuid.UUID `json:"release_by_user_id,omitempty"`
+	// ReleasedByUserID holds the value of the "released_by_user_id" field.
+	ReleasedByUserID uuid.UUID `json:"released_by_user_id,omitempty"`
 	// StartAt holds the value of the "start_at" field.
 	StartAt uint32 `json:"start_at,omitempty"`
 	// DurationDays holds the value of the "duration_days" field.
@@ -52,7 +52,7 @@ func (*CouponFixAmount) scanValues(columns []string) ([]interface{}, error) {
 			values[i] = new(sql.NullInt64)
 		case couponfixamount.FieldMessage, couponfixamount.FieldName:
 			values[i] = new(sql.NullString)
-		case couponfixamount.FieldID, couponfixamount.FieldAppID, couponfixamount.FieldReleaseByUserID:
+		case couponfixamount.FieldID, couponfixamount.FieldAppID, couponfixamount.FieldReleasedByUserID:
 			values[i] = new(uuid.UUID)
 		default:
 			return nil, fmt.Errorf("unexpected column %q for type CouponFixAmount", columns[i])
@@ -111,11 +111,11 @@ func (cfa *CouponFixAmount) assignValues(columns []string, values []interface{})
 			} else if value != nil {
 				cfa.Circulation = *value
 			}
-		case couponfixamount.FieldReleaseByUserID:
+		case couponfixamount.FieldReleasedByUserID:
 			if value, ok := values[i].(*uuid.UUID); !ok {
-				return fmt.Errorf("unexpected type %T for field release_by_user_id", values[i])
+				return fmt.Errorf("unexpected type %T for field released_by_user_id", values[i])
 			} else if value != nil {
-				cfa.ReleaseByUserID = *value
+				cfa.ReleasedByUserID = *value
 			}
 		case couponfixamount.FieldStartAt:
 			if value, ok := values[i].(*sql.NullInt64); !ok {
@@ -187,8 +187,8 @@ func (cfa *CouponFixAmount) String() string {
 	builder.WriteString("circulation=")
 	builder.WriteString(fmt.Sprintf("%v", cfa.Circulation))
 	builder.WriteString(", ")
-	builder.WriteString("release_by_user_id=")
-	builder.WriteString(fmt.Sprintf("%v", cfa.ReleaseByUserID))
+	builder.WriteString("released_by_user_id=")
+	builder.WriteString(fmt.Sprintf("%v", cfa.ReleasedByUserID))
 	builder.WriteString(", ")
 	builder.WriteString("start_at=")
 	builder.WriteString(fmt.Sprintf("%v", cfa.StartAt))

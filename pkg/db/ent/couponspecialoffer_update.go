@@ -117,9 +117,9 @@ func (csou *CouponSpecialOfferUpdate) ClearAmount() *CouponSpecialOfferUpdate {
 	return csou
 }
 
-// SetReleaseByUserID sets the "release_by_user_id" field.
-func (csou *CouponSpecialOfferUpdate) SetReleaseByUserID(u uuid.UUID) *CouponSpecialOfferUpdate {
-	csou.mutation.SetReleaseByUserID(u)
+// SetReleasedByUserID sets the "released_by_user_id" field.
+func (csou *CouponSpecialOfferUpdate) SetReleasedByUserID(u uuid.UUID) *CouponSpecialOfferUpdate {
+	csou.mutation.SetReleasedByUserID(u)
 	return csou
 }
 
@@ -364,11 +364,11 @@ func (csou *CouponSpecialOfferUpdate) sqlSave(ctx context.Context) (n int, err e
 			Column: couponspecialoffer.FieldAmount,
 		})
 	}
-	if value, ok := csou.mutation.ReleaseByUserID(); ok {
+	if value, ok := csou.mutation.ReleasedByUserID(); ok {
 		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
 			Type:   field.TypeUUID,
 			Value:  value,
-			Column: couponspecialoffer.FieldReleaseByUserID,
+			Column: couponspecialoffer.FieldReleasedByUserID,
 		})
 	}
 	if value, ok := csou.mutation.StartAt(); ok {
@@ -532,9 +532,9 @@ func (csouo *CouponSpecialOfferUpdateOne) ClearAmount() *CouponSpecialOfferUpdat
 	return csouo
 }
 
-// SetReleaseByUserID sets the "release_by_user_id" field.
-func (csouo *CouponSpecialOfferUpdateOne) SetReleaseByUserID(u uuid.UUID) *CouponSpecialOfferUpdateOne {
-	csouo.mutation.SetReleaseByUserID(u)
+// SetReleasedByUserID sets the "released_by_user_id" field.
+func (csouo *CouponSpecialOfferUpdateOne) SetReleasedByUserID(u uuid.UUID) *CouponSpecialOfferUpdateOne {
+	csouo.mutation.SetReleasedByUserID(u)
 	return csouo
 }
 
@@ -809,11 +809,11 @@ func (csouo *CouponSpecialOfferUpdateOne) sqlSave(ctx context.Context) (_node *C
 			Column: couponspecialoffer.FieldAmount,
 		})
 	}
-	if value, ok := csouo.mutation.ReleaseByUserID(); ok {
+	if value, ok := csouo.mutation.ReleasedByUserID(); ok {
 		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
 			Type:   field.TypeUUID,
 			Value:  value,
-			Column: couponspecialoffer.FieldReleaseByUserID,
+			Column: couponspecialoffer.FieldReleasedByUserID,
 		})
 	}
 	if value, ok := csouo.mutation.StartAt(); ok {

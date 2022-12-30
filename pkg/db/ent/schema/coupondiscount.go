@@ -38,7 +38,7 @@ func (CouponDiscount) Fields() []ent.Field {
 			Optional().
 			Default(decimal.Decimal{}),
 		field.
-			UUID("release_by_user_id", uuid.UUID{}),
+			UUID("released_by_user_id", uuid.UUID{}),
 		field.
 			Uint32("start_at").
 			Optional().

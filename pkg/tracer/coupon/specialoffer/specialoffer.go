@@ -15,7 +15,7 @@ func trace(span trace1.Span, in *npool.SpecialOfferReq, index int) trace1.Span {
 		attribute.String(fmt.Sprintf("AppID.%v", index), in.GetAppID()),
 		attribute.String(fmt.Sprintf("UserID.%v", index), in.GetUserID()),
 		attribute.String(fmt.Sprintf("Amount.%v", index), in.GetAmount()),
-		attribute.String(fmt.Sprintf("ReleaseByUserID.%v", index), in.GetReleaseByUserID()),
+		attribute.String(fmt.Sprintf("ReleasedByUserID.%v", index), in.GetReleasedByUserID()),
 		attribute.Int(fmt.Sprintf("StartAt.%v", index), int(in.GetStartAt())),
 		attribute.Int(fmt.Sprintf("DurationDays.%v", index), int(in.GetDurationDays())),
 		attribute.String(fmt.Sprintf("Message.%v", index), in.GetMessage()),

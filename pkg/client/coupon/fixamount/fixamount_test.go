@@ -36,28 +36,28 @@ func init() {
 }
 
 var appDate = npool.FixAmount{
-	ID:              uuid.NewString(),
-	AppID:           uuid.NewString(),
-	Denomination:    "999999",
-	Circulation:     "999999",
-	ReleaseByUserID: uuid.NewString(),
-	StartAt:         999,
-	DurationDays:    999,
-	Message:         uuid.NewString(),
-	Name:            uuid.NewString(),
+	ID:               uuid.NewString(),
+	AppID:            uuid.NewString(),
+	Denomination:     "999999",
+	Circulation:      "999999",
+	ReleasedByUserID: uuid.NewString(),
+	StartAt:          999,
+	DurationDays:     999,
+	Message:          uuid.NewString(),
+	Name:             uuid.NewString(),
 }
 
 var (
 	appInfo = npool.FixAmountReq{
-		ID:              &appDate.ID,
-		AppID:           &appDate.AppID,
-		Denomination:    &appDate.Denomination,
-		Circulation:     &appDate.Circulation,
-		ReleaseByUserID: &appDate.ReleaseByUserID,
-		StartAt:         &appDate.StartAt,
-		DurationDays:    &appDate.DurationDays,
-		Message:         &appDate.Message,
-		Name:            &appDate.Name,
+		ID:               &appDate.ID,
+		AppID:            &appDate.AppID,
+		Denomination:     &appDate.Denomination,
+		Circulation:      &appDate.Circulation,
+		ReleasedByUserID: &appDate.ReleasedByUserID,
+		StartAt:          &appDate.StartAt,
+		DurationDays:     &appDate.DurationDays,
+		Message:          &appDate.Message,
+		Name:             &appDate.Name,
 	}
 )
 
@@ -76,41 +76,41 @@ func createFixAmount(t *testing.T) {
 func createFixAmounts(t *testing.T) {
 	appDates := []npool.FixAmount{
 		{
-			ID:              uuid.NewString(),
-			AppID:           uuid.NewString(),
-			Denomination:    "999999",
-			Circulation:     "999999",
-			ReleaseByUserID: uuid.NewString(),
-			StartAt:         999,
-			DurationDays:    999,
-			Message:         uuid.NewString(),
-			Name:            uuid.NewString(),
+			ID:               uuid.NewString(),
+			AppID:            uuid.NewString(),
+			Denomination:     "999999",
+			Circulation:      "999999",
+			ReleasedByUserID: uuid.NewString(),
+			StartAt:          999,
+			DurationDays:     999,
+			Message:          uuid.NewString(),
+			Name:             uuid.NewString(),
 		},
 		{
-			ID:              uuid.NewString(),
-			AppID:           uuid.NewString(),
-			Denomination:    "999999",
-			Circulation:     "999999",
-			ReleaseByUserID: uuid.NewString(),
-			StartAt:         999,
-			DurationDays:    999,
-			Message:         uuid.NewString(),
-			Name:            uuid.NewString(),
+			ID:               uuid.NewString(),
+			AppID:            uuid.NewString(),
+			Denomination:     "999999",
+			Circulation:      "999999",
+			ReleasedByUserID: uuid.NewString(),
+			StartAt:          999,
+			DurationDays:     999,
+			Message:          uuid.NewString(),
+			Name:             uuid.NewString(),
 		},
 	}
 
 	apps := []*npool.FixAmountReq{}
 	for key := range appDates {
 		apps = append(apps, &npool.FixAmountReq{
-			ID:              &appDates[key].ID,
-			AppID:           &appDates[key].AppID,
-			Denomination:    &appDates[key].Denomination,
-			Circulation:     &appDates[key].Circulation,
-			ReleaseByUserID: &appDates[key].ReleaseByUserID,
-			StartAt:         &appDates[key].StartAt,
-			DurationDays:    &appDates[key].DurationDays,
-			Message:         &appDates[key].Message,
-			Name:            &appDates[key].Name,
+			ID:               &appDates[key].ID,
+			AppID:            &appDates[key].AppID,
+			Denomination:     &appDates[key].Denomination,
+			Circulation:      &appDates[key].Circulation,
+			ReleasedByUserID: &appDates[key].ReleasedByUserID,
+			StartAt:          &appDates[key].StartAt,
+			DurationDays:     &appDates[key].DurationDays,
+			Message:          &appDates[key].Message,
+			Name:             &appDates[key].Name,
 		})
 	}
 

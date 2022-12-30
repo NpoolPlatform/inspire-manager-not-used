@@ -109,16 +109,16 @@ var schemaGraph = func() *sqlgraph.Schema {
 		},
 		Type: "CouponDiscount",
 		Fields: map[string]*sqlgraph.FieldSpec{
-			coupondiscount.FieldCreatedAt:       {Type: field.TypeUint32, Column: coupondiscount.FieldCreatedAt},
-			coupondiscount.FieldUpdatedAt:       {Type: field.TypeUint32, Column: coupondiscount.FieldUpdatedAt},
-			coupondiscount.FieldDeletedAt:       {Type: field.TypeUint32, Column: coupondiscount.FieldDeletedAt},
-			coupondiscount.FieldAppID:           {Type: field.TypeUUID, Column: coupondiscount.FieldAppID},
-			coupondiscount.FieldDiscount:        {Type: field.TypeOther, Column: coupondiscount.FieldDiscount},
-			coupondiscount.FieldReleaseByUserID: {Type: field.TypeUUID, Column: coupondiscount.FieldReleaseByUserID},
-			coupondiscount.FieldStartAt:         {Type: field.TypeUint32, Column: coupondiscount.FieldStartAt},
-			coupondiscount.FieldDurationDays:    {Type: field.TypeUint32, Column: coupondiscount.FieldDurationDays},
-			coupondiscount.FieldMessage:         {Type: field.TypeString, Column: coupondiscount.FieldMessage},
-			coupondiscount.FieldName:            {Type: field.TypeString, Column: coupondiscount.FieldName},
+			coupondiscount.FieldCreatedAt:        {Type: field.TypeUint32, Column: coupondiscount.FieldCreatedAt},
+			coupondiscount.FieldUpdatedAt:        {Type: field.TypeUint32, Column: coupondiscount.FieldUpdatedAt},
+			coupondiscount.FieldDeletedAt:        {Type: field.TypeUint32, Column: coupondiscount.FieldDeletedAt},
+			coupondiscount.FieldAppID:            {Type: field.TypeUUID, Column: coupondiscount.FieldAppID},
+			coupondiscount.FieldDiscount:         {Type: field.TypeOther, Column: coupondiscount.FieldDiscount},
+			coupondiscount.FieldReleasedByUserID: {Type: field.TypeUUID, Column: coupondiscount.FieldReleasedByUserID},
+			coupondiscount.FieldStartAt:          {Type: field.TypeUint32, Column: coupondiscount.FieldStartAt},
+			coupondiscount.FieldDurationDays:     {Type: field.TypeUint32, Column: coupondiscount.FieldDurationDays},
+			coupondiscount.FieldMessage:          {Type: field.TypeString, Column: coupondiscount.FieldMessage},
+			coupondiscount.FieldName:             {Type: field.TypeString, Column: coupondiscount.FieldName},
 		},
 	}
 	graph.Nodes[4] = &sqlgraph.Node{
@@ -132,17 +132,17 @@ var schemaGraph = func() *sqlgraph.Schema {
 		},
 		Type: "CouponFixAmount",
 		Fields: map[string]*sqlgraph.FieldSpec{
-			couponfixamount.FieldCreatedAt:       {Type: field.TypeUint32, Column: couponfixamount.FieldCreatedAt},
-			couponfixamount.FieldUpdatedAt:       {Type: field.TypeUint32, Column: couponfixamount.FieldUpdatedAt},
-			couponfixamount.FieldDeletedAt:       {Type: field.TypeUint32, Column: couponfixamount.FieldDeletedAt},
-			couponfixamount.FieldAppID:           {Type: field.TypeUUID, Column: couponfixamount.FieldAppID},
-			couponfixamount.FieldDenomination:    {Type: field.TypeOther, Column: couponfixamount.FieldDenomination},
-			couponfixamount.FieldCirculation:     {Type: field.TypeOther, Column: couponfixamount.FieldCirculation},
-			couponfixamount.FieldReleaseByUserID: {Type: field.TypeUUID, Column: couponfixamount.FieldReleaseByUserID},
-			couponfixamount.FieldStartAt:         {Type: field.TypeUint32, Column: couponfixamount.FieldStartAt},
-			couponfixamount.FieldDurationDays:    {Type: field.TypeUint32, Column: couponfixamount.FieldDurationDays},
-			couponfixamount.FieldMessage:         {Type: field.TypeString, Column: couponfixamount.FieldMessage},
-			couponfixamount.FieldName:            {Type: field.TypeString, Column: couponfixamount.FieldName},
+			couponfixamount.FieldCreatedAt:        {Type: field.TypeUint32, Column: couponfixamount.FieldCreatedAt},
+			couponfixamount.FieldUpdatedAt:        {Type: field.TypeUint32, Column: couponfixamount.FieldUpdatedAt},
+			couponfixamount.FieldDeletedAt:        {Type: field.TypeUint32, Column: couponfixamount.FieldDeletedAt},
+			couponfixamount.FieldAppID:            {Type: field.TypeUUID, Column: couponfixamount.FieldAppID},
+			couponfixamount.FieldDenomination:     {Type: field.TypeOther, Column: couponfixamount.FieldDenomination},
+			couponfixamount.FieldCirculation:      {Type: field.TypeOther, Column: couponfixamount.FieldCirculation},
+			couponfixamount.FieldReleasedByUserID: {Type: field.TypeUUID, Column: couponfixamount.FieldReleasedByUserID},
+			couponfixamount.FieldStartAt:          {Type: field.TypeUint32, Column: couponfixamount.FieldStartAt},
+			couponfixamount.FieldDurationDays:     {Type: field.TypeUint32, Column: couponfixamount.FieldDurationDays},
+			couponfixamount.FieldMessage:          {Type: field.TypeString, Column: couponfixamount.FieldMessage},
+			couponfixamount.FieldName:             {Type: field.TypeString, Column: couponfixamount.FieldName},
 		},
 	}
 	graph.Nodes[5] = &sqlgraph.Node{
@@ -156,16 +156,16 @@ var schemaGraph = func() *sqlgraph.Schema {
 		},
 		Type: "CouponSpecialOffer",
 		Fields: map[string]*sqlgraph.FieldSpec{
-			couponspecialoffer.FieldCreatedAt:       {Type: field.TypeUint32, Column: couponspecialoffer.FieldCreatedAt},
-			couponspecialoffer.FieldUpdatedAt:       {Type: field.TypeUint32, Column: couponspecialoffer.FieldUpdatedAt},
-			couponspecialoffer.FieldDeletedAt:       {Type: field.TypeUint32, Column: couponspecialoffer.FieldDeletedAt},
-			couponspecialoffer.FieldAppID:           {Type: field.TypeUUID, Column: couponspecialoffer.FieldAppID},
-			couponspecialoffer.FieldUserID:          {Type: field.TypeUUID, Column: couponspecialoffer.FieldUserID},
-			couponspecialoffer.FieldAmount:          {Type: field.TypeOther, Column: couponspecialoffer.FieldAmount},
-			couponspecialoffer.FieldReleaseByUserID: {Type: field.TypeUUID, Column: couponspecialoffer.FieldReleaseByUserID},
-			couponspecialoffer.FieldStartAt:         {Type: field.TypeUint32, Column: couponspecialoffer.FieldStartAt},
-			couponspecialoffer.FieldDurationDays:    {Type: field.TypeUint32, Column: couponspecialoffer.FieldDurationDays},
-			couponspecialoffer.FieldMessage:         {Type: field.TypeString, Column: couponspecialoffer.FieldMessage},
+			couponspecialoffer.FieldCreatedAt:        {Type: field.TypeUint32, Column: couponspecialoffer.FieldCreatedAt},
+			couponspecialoffer.FieldUpdatedAt:        {Type: field.TypeUint32, Column: couponspecialoffer.FieldUpdatedAt},
+			couponspecialoffer.FieldDeletedAt:        {Type: field.TypeUint32, Column: couponspecialoffer.FieldDeletedAt},
+			couponspecialoffer.FieldAppID:            {Type: field.TypeUUID, Column: couponspecialoffer.FieldAppID},
+			couponspecialoffer.FieldUserID:           {Type: field.TypeUUID, Column: couponspecialoffer.FieldUserID},
+			couponspecialoffer.FieldAmount:           {Type: field.TypeOther, Column: couponspecialoffer.FieldAmount},
+			couponspecialoffer.FieldReleasedByUserID: {Type: field.TypeUUID, Column: couponspecialoffer.FieldReleasedByUserID},
+			couponspecialoffer.FieldStartAt:          {Type: field.TypeUint32, Column: couponspecialoffer.FieldStartAt},
+			couponspecialoffer.FieldDurationDays:     {Type: field.TypeUint32, Column: couponspecialoffer.FieldDurationDays},
+			couponspecialoffer.FieldMessage:          {Type: field.TypeString, Column: couponspecialoffer.FieldMessage},
 		},
 	}
 	graph.Nodes[6] = &sqlgraph.Node{
@@ -608,9 +608,9 @@ func (f *CouponDiscountFilter) WhereDiscount(p entql.OtherP) {
 	f.Where(p.Field(coupondiscount.FieldDiscount))
 }
 
-// WhereReleaseByUserID applies the entql [16]byte predicate on the release_by_user_id field.
-func (f *CouponDiscountFilter) WhereReleaseByUserID(p entql.ValueP) {
-	f.Where(p.Field(coupondiscount.FieldReleaseByUserID))
+// WhereReleasedByUserID applies the entql [16]byte predicate on the released_by_user_id field.
+func (f *CouponDiscountFilter) WhereReleasedByUserID(p entql.ValueP) {
+	f.Where(p.Field(coupondiscount.FieldReleasedByUserID))
 }
 
 // WhereStartAt applies the entql uint32 predicate on the start_at field.
@@ -703,9 +703,9 @@ func (f *CouponFixAmountFilter) WhereCirculation(p entql.OtherP) {
 	f.Where(p.Field(couponfixamount.FieldCirculation))
 }
 
-// WhereReleaseByUserID applies the entql [16]byte predicate on the release_by_user_id field.
-func (f *CouponFixAmountFilter) WhereReleaseByUserID(p entql.ValueP) {
-	f.Where(p.Field(couponfixamount.FieldReleaseByUserID))
+// WhereReleasedByUserID applies the entql [16]byte predicate on the released_by_user_id field.
+func (f *CouponFixAmountFilter) WhereReleasedByUserID(p entql.ValueP) {
+	f.Where(p.Field(couponfixamount.FieldReleasedByUserID))
 }
 
 // WhereStartAt applies the entql uint32 predicate on the start_at field.
@@ -798,9 +798,9 @@ func (f *CouponSpecialOfferFilter) WhereAmount(p entql.OtherP) {
 	f.Where(p.Field(couponspecialoffer.FieldAmount))
 }
 
-// WhereReleaseByUserID applies the entql [16]byte predicate on the release_by_user_id field.
-func (f *CouponSpecialOfferFilter) WhereReleaseByUserID(p entql.ValueP) {
-	f.Where(p.Field(couponspecialoffer.FieldReleaseByUserID))
+// WhereReleasedByUserID applies the entql [16]byte predicate on the released_by_user_id field.
+func (f *CouponSpecialOfferFilter) WhereReleasedByUserID(p entql.ValueP) {
+	f.Where(p.Field(couponspecialoffer.FieldReleasedByUserID))
 }
 
 // WhereStartAt applies the entql uint32 predicate on the start_at field.

@@ -25,8 +25,8 @@ const (
 	FieldUserID = "user_id"
 	// FieldAmount holds the string denoting the amount field in the database.
 	FieldAmount = "amount"
-	// FieldReleaseByUserID holds the string denoting the release_by_user_id field in the database.
-	FieldReleaseByUserID = "release_by_user_id"
+	// FieldReleasedByUserID holds the string denoting the released_by_user_id field in the database.
+	FieldReleasedByUserID = "released_by_user_id"
 	// FieldStartAt holds the string denoting the start_at field in the database.
 	FieldStartAt = "start_at"
 	// FieldDurationDays holds the string denoting the duration_days field in the database.
@@ -46,7 +46,7 @@ var Columns = []string{
 	FieldAppID,
 	FieldUserID,
 	FieldAmount,
-	FieldReleaseByUserID,
+	FieldReleasedByUserID,
 	FieldStartAt,
 	FieldDurationDays,
 	FieldMessage,

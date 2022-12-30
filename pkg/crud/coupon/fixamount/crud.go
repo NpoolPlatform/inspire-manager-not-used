@@ -44,8 +44,8 @@ func CreateSet(c *ent.CouponFixAmountCreate, in *npool.FixAmountReq) (*ent.Coupo
 		}
 		c.SetCirculation(val)
 	}
-	if in.ReleaseByUserID != nil {
-		c.SetReleaseByUserID(uuid.MustParse(in.GetReleaseByUserID()))
+	if in.ReleasedByUserID != nil {
+		c.SetReleasedByUserID(uuid.MustParse(in.GetReleasedByUserID()))
 	}
 	if in.StartAt != nil {
 		c.SetStartAt(in.GetStartAt())
@@ -243,10 +243,10 @@ func setQueryConds(conds *npool.Conds, cli *ent.Client) (*ent.CouponFixAmountQue
 			return nil, fmt.Errorf("invalid couponfixamount field")
 		}
 	}
-	if conds.ReleaseByUserID != nil {
-		switch conds.GetReleaseByUserID().GetOp() {
+	if conds.ReleasedByUserID != nil {
+		switch conds.GetReleasedByUserID().GetOp() {
 		case cruder.EQ:
-			stm.Where(couponfixamount.ReleaseByUserID(uuid.MustParse(conds.GetReleaseByUserID().GetValue())))
+			stm.Where(couponfixamount.ReleasedByUserID(uuid.MustParse(conds.GetReleasedByUserID().GetValue())))
 		default:
 			return nil, fmt.Errorf("invalid couponfixamount field")
 		}

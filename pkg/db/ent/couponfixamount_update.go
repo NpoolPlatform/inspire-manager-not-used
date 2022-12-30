@@ -131,9 +131,9 @@ func (cfau *CouponFixAmountUpdate) ClearCirculation() *CouponFixAmountUpdate {
 	return cfau
 }
 
-// SetReleaseByUserID sets the "release_by_user_id" field.
-func (cfau *CouponFixAmountUpdate) SetReleaseByUserID(u uuid.UUID) *CouponFixAmountUpdate {
-	cfau.mutation.SetReleaseByUserID(u)
+// SetReleasedByUserID sets the "released_by_user_id" field.
+func (cfau *CouponFixAmountUpdate) SetReleasedByUserID(u uuid.UUID) *CouponFixAmountUpdate {
+	cfau.mutation.SetReleasedByUserID(u)
 	return cfau
 }
 
@@ -404,11 +404,11 @@ func (cfau *CouponFixAmountUpdate) sqlSave(ctx context.Context) (n int, err erro
 			Column: couponfixamount.FieldCirculation,
 		})
 	}
-	if value, ok := cfau.mutation.ReleaseByUserID(); ok {
+	if value, ok := cfau.mutation.ReleasedByUserID(); ok {
 		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
 			Type:   field.TypeUUID,
 			Value:  value,
-			Column: couponfixamount.FieldReleaseByUserID,
+			Column: couponfixamount.FieldReleasedByUserID,
 		})
 	}
 	if value, ok := cfau.mutation.StartAt(); ok {
@@ -599,9 +599,9 @@ func (cfauo *CouponFixAmountUpdateOne) ClearCirculation() *CouponFixAmountUpdate
 	return cfauo
 }
 
-// SetReleaseByUserID sets the "release_by_user_id" field.
-func (cfauo *CouponFixAmountUpdateOne) SetReleaseByUserID(u uuid.UUID) *CouponFixAmountUpdateOne {
-	cfauo.mutation.SetReleaseByUserID(u)
+// SetReleasedByUserID sets the "released_by_user_id" field.
+func (cfauo *CouponFixAmountUpdateOne) SetReleasedByUserID(u uuid.UUID) *CouponFixAmountUpdateOne {
+	cfauo.mutation.SetReleasedByUserID(u)
 	return cfauo
 }
 
@@ -902,11 +902,11 @@ func (cfauo *CouponFixAmountUpdateOne) sqlSave(ctx context.Context) (_node *Coup
 			Column: couponfixamount.FieldCirculation,
 		})
 	}
-	if value, ok := cfauo.mutation.ReleaseByUserID(); ok {
+	if value, ok := cfauo.mutation.ReleasedByUserID(); ok {
 		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
 			Type:   field.TypeUUID,
 			Value:  value,
-			Column: couponfixamount.FieldReleaseByUserID,
+			Column: couponfixamount.FieldReleasedByUserID,
 		})
 	}
 	if value, ok := cfauo.mutation.StartAt(); ok {

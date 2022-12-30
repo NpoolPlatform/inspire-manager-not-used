@@ -29,8 +29,8 @@ type CouponSpecialOffer struct {
 	UserID uuid.UUID `json:"user_id,omitempty"`
 	// Amount holds the value of the "amount" field.
 	Amount decimal.Decimal `json:"amount,omitempty"`
-	// ReleaseByUserID holds the value of the "release_by_user_id" field.
-	ReleaseByUserID uuid.UUID `json:"release_by_user_id,omitempty"`
+	// ReleasedByUserID holds the value of the "released_by_user_id" field.
+	ReleasedByUserID uuid.UUID `json:"released_by_user_id,omitempty"`
 	// StartAt holds the value of the "start_at" field.
 	StartAt uint32 `json:"start_at,omitempty"`
 	// DurationDays holds the value of the "duration_days" field.
@@ -50,7 +50,7 @@ func (*CouponSpecialOffer) scanValues(columns []string) ([]interface{}, error) {
 			values[i] = new(sql.NullInt64)
 		case couponspecialoffer.FieldMessage:
 			values[i] = new(sql.NullString)
-		case couponspecialoffer.FieldID, couponspecialoffer.FieldAppID, couponspecialoffer.FieldUserID, couponspecialoffer.FieldReleaseByUserID:
+		case couponspecialoffer.FieldID, couponspecialoffer.FieldAppID, couponspecialoffer.FieldUserID, couponspecialoffer.FieldReleasedByUserID:
 			values[i] = new(uuid.UUID)
 		default:
 			return nil, fmt.Errorf("unexpected column %q for type CouponSpecialOffer", columns[i])
@@ -109,11 +109,11 @@ func (cso *CouponSpecialOffer) assignValues(columns []string, values []interface
 			} else if value != nil {
 				cso.Amount = *value
 			}
-		case couponspecialoffer.FieldReleaseByUserID:
+		case couponspecialoffer.FieldReleasedByUserID:
 			if value, ok := values[i].(*uuid.UUID); !ok {
-				return fmt.Errorf("unexpected type %T for field release_by_user_id", values[i])
+				return fmt.Errorf("unexpected type %T for field released_by_user_id", values[i])
 			} else if value != nil {
-				cso.ReleaseByUserID = *value
+				cso.ReleasedByUserID = *value
 			}
 		case couponspecialoffer.FieldStartAt:
 			if value, ok := values[i].(*sql.NullInt64); !ok {
@@ -179,8 +179,8 @@ func (cso *CouponSpecialOffer) String() string {
 	builder.WriteString("amount=")
 	builder.WriteString(fmt.Sprintf("%v", cso.Amount))
 	builder.WriteString(", ")
-	builder.WriteString("release_by_user_id=")
-	builder.WriteString(fmt.Sprintf("%v", cso.ReleaseByUserID))
+	builder.WriteString("released_by_user_id=")
+	builder.WriteString(fmt.Sprintf("%v", cso.ReleasedByUserID))
 	builder.WriteString(", ")
 	builder.WriteString("start_at=")
 	builder.WriteString(fmt.Sprintf("%v", cso.StartAt))

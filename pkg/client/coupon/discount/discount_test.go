@@ -36,26 +36,26 @@ func init() {
 }
 
 var appDate = npool.Discount{
-	ID:              uuid.NewString(),
-	AppID:           uuid.NewString(),
-	Discount:        "7.5",
-	ReleaseByUserID: uuid.NewString(),
-	StartAt:         999,
-	DurationDays:    999,
-	Message:         uuid.NewString(),
-	Name:            uuid.NewString(),
+	ID:               uuid.NewString(),
+	AppID:            uuid.NewString(),
+	Discount:         "7.5",
+	ReleasedByUserID: uuid.NewString(),
+	StartAt:          999,
+	DurationDays:     999,
+	Message:          uuid.NewString(),
+	Name:             uuid.NewString(),
 }
 
 var (
 	appInfo = npool.DiscountReq{
-		ID:              &appDate.ID,
-		AppID:           &appDate.AppID,
-		Discount:        &appDate.Discount,
-		ReleaseByUserID: &appDate.ReleaseByUserID,
-		StartAt:         &appDate.StartAt,
-		DurationDays:    &appDate.DurationDays,
-		Message:         &appDate.Message,
-		Name:            &appDate.Name,
+		ID:               &appDate.ID,
+		AppID:            &appDate.AppID,
+		Discount:         &appDate.Discount,
+		ReleasedByUserID: &appDate.ReleasedByUserID,
+		StartAt:          &appDate.StartAt,
+		DurationDays:     &appDate.DurationDays,
+		Message:          &appDate.Message,
+		Name:             &appDate.Name,
 	}
 )
 
@@ -74,38 +74,38 @@ func createDiscount(t *testing.T) {
 func createDiscounts(t *testing.T) {
 	appDates := []npool.Discount{
 		{
-			ID:              uuid.NewString(),
-			AppID:           uuid.NewString(),
-			Discount:        "7.5",
-			ReleaseByUserID: uuid.NewString(),
-			StartAt:         999,
-			DurationDays:    999,
-			Message:         uuid.NewString(),
-			Name:            uuid.NewString(),
+			ID:               uuid.NewString(),
+			AppID:            uuid.NewString(),
+			Discount:         "7.5",
+			ReleasedByUserID: uuid.NewString(),
+			StartAt:          999,
+			DurationDays:     999,
+			Message:          uuid.NewString(),
+			Name:             uuid.NewString(),
 		},
 		{
-			ID:              uuid.NewString(),
-			AppID:           uuid.NewString(),
-			Discount:        "7.5",
-			ReleaseByUserID: uuid.NewString(),
-			StartAt:         999,
-			DurationDays:    999,
-			Message:         uuid.NewString(),
-			Name:            uuid.NewString(),
+			ID:               uuid.NewString(),
+			AppID:            uuid.NewString(),
+			Discount:         "7.5",
+			ReleasedByUserID: uuid.NewString(),
+			StartAt:          999,
+			DurationDays:     999,
+			Message:          uuid.NewString(),
+			Name:             uuid.NewString(),
 		},
 	}
 
 	apps := []*npool.DiscountReq{}
 	for key := range appDates {
 		apps = append(apps, &npool.DiscountReq{
-			ID:              &appDates[key].ID,
-			AppID:           &appDates[key].AppID,
-			Discount:        &appDates[key].Discount,
-			ReleaseByUserID: &appDates[key].ReleaseByUserID,
-			StartAt:         &appDates[key].StartAt,
-			DurationDays:    &appDates[key].DurationDays,
-			Message:         &appDates[key].Message,
-			Name:            &appDates[key].Name,
+			ID:               &appDates[key].ID,
+			AppID:            &appDates[key].AppID,
+			Discount:         &appDates[key].Discount,
+			ReleasedByUserID: &appDates[key].ReleasedByUserID,
+			StartAt:          &appDates[key].StartAt,
+			DurationDays:     &appDates[key].DurationDays,
+			Message:          &appDates[key].Message,
+			Name:             &appDates[key].Name,
 		})
 	}
 
