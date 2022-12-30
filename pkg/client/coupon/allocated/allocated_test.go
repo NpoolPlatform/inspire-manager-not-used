@@ -39,7 +39,7 @@ var appDate = npool.Allocated{
 	ID:            uuid.NewString(),
 	AppID:         uuid.NewString(),
 	UserID:        uuid.NewString(),
-	Type:          npool.CouponType_Discount,
+	CouponType:    npool.CouponType_Discount,
 	CouponID:      uuid.NewString(),
 	Value:         "0",
 	UsedByOrderID: uuid.UUID{}.String(),
@@ -47,11 +47,11 @@ var appDate = npool.Allocated{
 
 var (
 	appInfo = npool.AllocatedReq{
-		ID:       &appDate.ID,
-		AppID:    &appDate.AppID,
-		UserID:   &appDate.UserID,
-		Type:     &appDate.Type,
-		CouponID: &appDate.CouponID,
+		ID:         &appDate.ID,
+		AppID:      &appDate.AppID,
+		UserID:     &appDate.UserID,
+		CouponType: &appDate.CouponType,
+		CouponID:   &appDate.CouponID,
 	}
 )
 
@@ -70,29 +70,29 @@ func createAllocated(t *testing.T) {
 func createAllocateds(t *testing.T) {
 	appDates := []npool.Allocated{
 		{
-			ID:       uuid.NewString(),
-			AppID:    uuid.NewString(),
-			UserID:   uuid.NewString(),
-			Type:     npool.CouponType_Discount,
-			CouponID: uuid.NewString(),
+			ID:         uuid.NewString(),
+			AppID:      uuid.NewString(),
+			UserID:     uuid.NewString(),
+			CouponType: npool.CouponType_Discount,
+			CouponID:   uuid.NewString(),
 		},
 		{
-			ID:       uuid.NewString(),
-			AppID:    uuid.NewString(),
-			UserID:   uuid.NewString(),
-			Type:     npool.CouponType_Discount,
-			CouponID: uuid.NewString(),
+			ID:         uuid.NewString(),
+			AppID:      uuid.NewString(),
+			UserID:     uuid.NewString(),
+			CouponType: npool.CouponType_Discount,
+			CouponID:   uuid.NewString(),
 		},
 	}
 
 	apps := []*npool.AllocatedReq{}
 	for key := range appDates {
 		apps = append(apps, &npool.AllocatedReq{
-			ID:       &appDates[key].ID,
-			AppID:    &appDates[key].AppID,
-			UserID:   &appDates[key].UserID,
-			Type:     &appDates[key].Type,
-			CouponID: &appDates[key].CouponID,
+			ID:         &appDates[key].ID,
+			AppID:      &appDates[key].AppID,
+			UserID:     &appDates[key].UserID,
+			CouponType: &appDates[key].CouponType,
+			CouponID:   &appDates[key].CouponID,
 		})
 	}
 

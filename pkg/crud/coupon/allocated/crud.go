@@ -31,8 +31,8 @@ func CreateSet(c *ent.CouponAllocatedCreate, in *npool.AllocatedReq) (*ent.Coupo
 	if in.UserID != nil {
 		c.SetUserID(uuid.MustParse(in.GetUserID()))
 	}
-	if in.Type != nil {
-		c.SetType(in.GetType().String())
+	if in.CouponType != nil {
+		c.SetCouponType(in.GetCouponType().String())
 	}
 	if in.CouponID != nil {
 		c.SetCouponID(uuid.MustParse(in.GetCouponID()))
@@ -220,10 +220,10 @@ func setQueryConds(conds *npool.Conds, cli *ent.Client) (*ent.CouponAllocatedQue
 			return nil, fmt.Errorf("invalid couponallocated field")
 		}
 	}
-	if conds.Type != nil {
-		switch conds.GetType().GetOp() {
+	if conds.CouponType != nil {
+		switch conds.GetCouponType().GetOp() {
 		case cruder.EQ:
-			stm.Where(couponallocated.Type(npool.CouponType(conds.GetType().GetValue()).String()))
+			stm.Where(couponallocated.CouponType(npool.CouponType(conds.GetCouponType().GetValue()).String()))
 		default:
 			return nil, fmt.Errorf("invalid couponallocated field")
 		}

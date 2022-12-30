@@ -35,7 +35,7 @@ func (CouponAllocated) Fields() []ent.Field {
 		field.
 			UUID("user_id", uuid.UUID{}),
 		field.
-			String("type").
+			String("coupon_type").
 			Optional().
 			Default(allocated.CouponType_DefaultCouponType.String()),
 		field.

@@ -214,10 +214,10 @@ func init() {
 	couponallocatedDescDeletedAt := couponallocatedMixinFields0[2].Descriptor()
 	// couponallocated.DefaultDeletedAt holds the default value on creation for the deleted_at field.
 	couponallocated.DefaultDeletedAt = couponallocatedDescDeletedAt.Default.(func() uint32)
-	// couponallocatedDescType is the schema descriptor for type field.
-	couponallocatedDescType := couponallocatedFields[3].Descriptor()
-	// couponallocated.DefaultType holds the default value on creation for the type field.
-	couponallocated.DefaultType = couponallocatedDescType.Default.(string)
+	// couponallocatedDescCouponType is the schema descriptor for coupon_type field.
+	couponallocatedDescCouponType := couponallocatedFields[3].Descriptor()
+	// couponallocated.DefaultCouponType holds the default value on creation for the coupon_type field.
+	couponallocated.DefaultCouponType = couponallocatedDescCouponType.Default.(string)
 	// couponallocatedDescValue is the schema descriptor for value field.
 	couponallocatedDescValue := couponallocatedFields[5].Descriptor()
 	// couponallocated.DefaultValue holds the default value on creation for the value field.

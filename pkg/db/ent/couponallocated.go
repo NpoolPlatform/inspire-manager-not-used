@@ -27,8 +27,8 @@ type CouponAllocated struct {
 	AppID uuid.UUID `json:"app_id,omitempty"`
 	// UserID holds the value of the "user_id" field.
 	UserID uuid.UUID `json:"user_id,omitempty"`
-	// Type holds the value of the "type" field.
-	Type string `json:"type,omitempty"`
+	// CouponType holds the value of the "coupon_type" field.
+	CouponType string `json:"coupon_type,omitempty"`
 	// CouponID holds the value of the "coupon_id" field.
 	CouponID uuid.UUID `json:"coupon_id,omitempty"`
 	// Value holds the value of the "value" field.
@@ -52,7 +52,7 @@ func (*CouponAllocated) scanValues(columns []string) ([]interface{}, error) {
 			values[i] = new(sql.NullBool)
 		case couponallocated.FieldCreatedAt, couponallocated.FieldUpdatedAt, couponallocated.FieldDeletedAt, couponallocated.FieldUsedAt:
 			values[i] = new(sql.NullInt64)
-		case couponallocated.FieldType:
+		case couponallocated.FieldCouponType:
 			values[i] = new(sql.NullString)
 		case couponallocated.FieldID, couponallocated.FieldAppID, couponallocated.FieldUserID, couponallocated.FieldCouponID, couponallocated.FieldUsedByOrderID:
 			values[i] = new(uuid.UUID)
@@ -107,11 +107,11 @@ func (ca *CouponAllocated) assignValues(columns []string, values []interface{}) 
 			} else if value != nil {
 				ca.UserID = *value
 			}
-		case couponallocated.FieldType:
+		case couponallocated.FieldCouponType:
 			if value, ok := values[i].(*sql.NullString); !ok {
-				return fmt.Errorf("unexpected type %T for field type", values[i])
+				return fmt.Errorf("unexpected type %T for field coupon_type", values[i])
 			} else if value.Valid {
-				ca.Type = value.String
+				ca.CouponType = value.String
 			}
 		case couponallocated.FieldCouponID:
 			if value, ok := values[i].(*uuid.UUID); !ok {
@@ -186,8 +186,8 @@ func (ca *CouponAllocated) String() string {
 	builder.WriteString("user_id=")
 	builder.WriteString(fmt.Sprintf("%v", ca.UserID))
 	builder.WriteString(", ")
-	builder.WriteString("type=")
-	builder.WriteString(ca.Type)
+	builder.WriteString("coupon_type=")
+	builder.WriteString(ca.CouponType)
 	builder.WriteString(", ")
 	builder.WriteString("coupon_id=")
 	builder.WriteString(fmt.Sprintf("%v", ca.CouponID))

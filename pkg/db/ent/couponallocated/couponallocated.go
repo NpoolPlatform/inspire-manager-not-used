@@ -23,8 +23,8 @@ const (
 	FieldAppID = "app_id"
 	// FieldUserID holds the string denoting the user_id field in the database.
 	FieldUserID = "user_id"
-	// FieldType holds the string denoting the type field in the database.
-	FieldType = "type"
+	// FieldCouponType holds the string denoting the coupon_type field in the database.
+	FieldCouponType = "coupon_type"
 	// FieldCouponID holds the string denoting the coupon_id field in the database.
 	FieldCouponID = "coupon_id"
 	// FieldValue holds the string denoting the value field in the database.
@@ -47,7 +47,7 @@ var Columns = []string{
 	FieldDeletedAt,
 	FieldAppID,
 	FieldUserID,
-	FieldType,
+	FieldCouponType,
 	FieldCouponID,
 	FieldValue,
 	FieldUsed,
@@ -82,8 +82,8 @@ var (
 	UpdateDefaultUpdatedAt func() uint32
 	// DefaultDeletedAt holds the default value on creation for the "deleted_at" field.
 	DefaultDeletedAt func() uint32
-	// DefaultType holds the default value on creation for the "type" field.
-	DefaultType string
+	// DefaultCouponType holds the default value on creation for the "coupon_type" field.
+	DefaultCouponType string
 	// DefaultValue holds the default value on creation for the "value" field.
 	DefaultValue decimal.Decimal
 	// DefaultUsed holds the default value on creation for the "used" field.

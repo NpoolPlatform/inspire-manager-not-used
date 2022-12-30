@@ -66,7 +66,7 @@ var (
 		{Name: "deleted_at", Type: field.TypeUint32},
 		{Name: "app_id", Type: field.TypeUUID},
 		{Name: "user_id", Type: field.TypeUUID},
-		{Name: "type", Type: field.TypeString, Nullable: true, Default: "DefaultCouponType"},
+		{Name: "coupon_type", Type: field.TypeString, Nullable: true, Default: "DefaultCouponType"},
 		{Name: "coupon_id", Type: field.TypeUUID},
 		{Name: "value", Type: field.TypeOther, Nullable: true, SchemaType: map[string]string{"mysql": "decimal(37,18)"}},
 		{Name: "used", Type: field.TypeBool, Nullable: true, Default: false},
@@ -153,7 +153,7 @@ var (
 		{Name: "user_id", Type: field.TypeUUID, Nullable: true},
 		{Name: "good_id", Type: field.TypeUUID, Nullable: true},
 		{Name: "percent", Type: field.TypeOther, Nullable: true, SchemaType: map[string]string{"mysql": "decimal(37,18)"}},
-		{Name: "start_at", Type: field.TypeUint32, Nullable: true, Default: 1672389889},
+		{Name: "start_at", Type: field.TypeUint32, Nullable: true, Default: 1672392583},
 		{Name: "end_at", Type: field.TypeUint32, Nullable: true, Default: 0},
 	}
 	// GoodOrderPercentsTable holds the schema information for the "good_order_percents" table.

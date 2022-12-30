@@ -94,7 +94,7 @@ var schemaGraph = func() *sqlgraph.Schema {
 			couponallocated.FieldDeletedAt:     {Type: field.TypeUint32, Column: couponallocated.FieldDeletedAt},
 			couponallocated.FieldAppID:         {Type: field.TypeUUID, Column: couponallocated.FieldAppID},
 			couponallocated.FieldUserID:        {Type: field.TypeUUID, Column: couponallocated.FieldUserID},
-			couponallocated.FieldType:          {Type: field.TypeString, Column: couponallocated.FieldType},
+			couponallocated.FieldCouponType:    {Type: field.TypeString, Column: couponallocated.FieldCouponType},
 			couponallocated.FieldCouponID:      {Type: field.TypeUUID, Column: couponallocated.FieldCouponID},
 			couponallocated.FieldValue:         {Type: field.TypeOther, Column: couponallocated.FieldValue},
 			couponallocated.FieldUsed:          {Type: field.TypeBool, Column: couponallocated.FieldUsed},
@@ -540,9 +540,9 @@ func (f *CouponAllocatedFilter) WhereUserID(p entql.ValueP) {
 	f.Where(p.Field(couponallocated.FieldUserID))
 }
 
-// WhereType applies the entql string predicate on the type field.
-func (f *CouponAllocatedFilter) WhereType(p entql.StringP) {
-	f.Where(p.Field(couponallocated.FieldType))
+// WhereCouponType applies the entql string predicate on the coupon_type field.
+func (f *CouponAllocatedFilter) WhereCouponType(p entql.StringP) {
+	f.Where(p.Field(couponallocated.FieldCouponType))
 }
 
 // WhereCouponID applies the entql [16]byte predicate on the coupon_id field.

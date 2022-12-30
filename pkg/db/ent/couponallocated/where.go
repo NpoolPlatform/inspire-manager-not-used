@@ -115,10 +115,10 @@ func UserID(v uuid.UUID) predicate.CouponAllocated {
 	})
 }
 
-// Type applies equality check predicate on the "type" field. It's identical to TypeEQ.
-func Type(v string) predicate.CouponAllocated {
+// CouponType applies equality check predicate on the "coupon_type" field. It's identical to CouponTypeEQ.
+func CouponType(v string) predicate.CouponAllocated {
 	return predicate.CouponAllocated(func(s *sql.Selector) {
-		s.Where(sql.EQ(s.C(FieldType), v))
+		s.Where(sql.EQ(s.C(FieldCouponType), v))
 	})
 }
 
@@ -477,116 +477,116 @@ func UserIDLTE(v uuid.UUID) predicate.CouponAllocated {
 	})
 }
 
-// TypeEQ applies the EQ predicate on the "type" field.
-func TypeEQ(v string) predicate.CouponAllocated {
+// CouponTypeEQ applies the EQ predicate on the "coupon_type" field.
+func CouponTypeEQ(v string) predicate.CouponAllocated {
 	return predicate.CouponAllocated(func(s *sql.Selector) {
-		s.Where(sql.EQ(s.C(FieldType), v))
+		s.Where(sql.EQ(s.C(FieldCouponType), v))
 	})
 }
 
-// TypeNEQ applies the NEQ predicate on the "type" field.
-func TypeNEQ(v string) predicate.CouponAllocated {
+// CouponTypeNEQ applies the NEQ predicate on the "coupon_type" field.
+func CouponTypeNEQ(v string) predicate.CouponAllocated {
 	return predicate.CouponAllocated(func(s *sql.Selector) {
-		s.Where(sql.NEQ(s.C(FieldType), v))
+		s.Where(sql.NEQ(s.C(FieldCouponType), v))
 	})
 }
 
-// TypeIn applies the In predicate on the "type" field.
-func TypeIn(vs ...string) predicate.CouponAllocated {
+// CouponTypeIn applies the In predicate on the "coupon_type" field.
+func CouponTypeIn(vs ...string) predicate.CouponAllocated {
 	v := make([]interface{}, len(vs))
 	for i := range v {
 		v[i] = vs[i]
 	}
 	return predicate.CouponAllocated(func(s *sql.Selector) {
-		s.Where(sql.In(s.C(FieldType), v...))
+		s.Where(sql.In(s.C(FieldCouponType), v...))
 	})
 }
 
-// TypeNotIn applies the NotIn predicate on the "type" field.
-func TypeNotIn(vs ...string) predicate.CouponAllocated {
+// CouponTypeNotIn applies the NotIn predicate on the "coupon_type" field.
+func CouponTypeNotIn(vs ...string) predicate.CouponAllocated {
 	v := make([]interface{}, len(vs))
 	for i := range v {
 		v[i] = vs[i]
 	}
 	return predicate.CouponAllocated(func(s *sql.Selector) {
-		s.Where(sql.NotIn(s.C(FieldType), v...))
+		s.Where(sql.NotIn(s.C(FieldCouponType), v...))
 	})
 }
 
-// TypeGT applies the GT predicate on the "type" field.
-func TypeGT(v string) predicate.CouponAllocated {
+// CouponTypeGT applies the GT predicate on the "coupon_type" field.
+func CouponTypeGT(v string) predicate.CouponAllocated {
 	return predicate.CouponAllocated(func(s *sql.Selector) {
-		s.Where(sql.GT(s.C(FieldType), v))
+		s.Where(sql.GT(s.C(FieldCouponType), v))
 	})
 }
 
-// TypeGTE applies the GTE predicate on the "type" field.
-func TypeGTE(v string) predicate.CouponAllocated {
+// CouponTypeGTE applies the GTE predicate on the "coupon_type" field.
+func CouponTypeGTE(v string) predicate.CouponAllocated {
 	return predicate.CouponAllocated(func(s *sql.Selector) {
-		s.Where(sql.GTE(s.C(FieldType), v))
+		s.Where(sql.GTE(s.C(FieldCouponType), v))
 	})
 }
 
-// TypeLT applies the LT predicate on the "type" field.
-func TypeLT(v string) predicate.CouponAllocated {
+// CouponTypeLT applies the LT predicate on the "coupon_type" field.
+func CouponTypeLT(v string) predicate.CouponAllocated {
 	return predicate.CouponAllocated(func(s *sql.Selector) {
-		s.Where(sql.LT(s.C(FieldType), v))
+		s.Where(sql.LT(s.C(FieldCouponType), v))
 	})
 }
 
-// TypeLTE applies the LTE predicate on the "type" field.
-func TypeLTE(v string) predicate.CouponAllocated {
+// CouponTypeLTE applies the LTE predicate on the "coupon_type" field.
+func CouponTypeLTE(v string) predicate.CouponAllocated {
 	return predicate.CouponAllocated(func(s *sql.Selector) {
-		s.Where(sql.LTE(s.C(FieldType), v))
+		s.Where(sql.LTE(s.C(FieldCouponType), v))
 	})
 }
 
-// TypeContains applies the Contains predicate on the "type" field.
-func TypeContains(v string) predicate.CouponAllocated {
+// CouponTypeContains applies the Contains predicate on the "coupon_type" field.
+func CouponTypeContains(v string) predicate.CouponAllocated {
 	return predicate.CouponAllocated(func(s *sql.Selector) {
-		s.Where(sql.Contains(s.C(FieldType), v))
+		s.Where(sql.Contains(s.C(FieldCouponType), v))
 	})
 }
 
-// TypeHasPrefix applies the HasPrefix predicate on the "type" field.
-func TypeHasPrefix(v string) predicate.CouponAllocated {
+// CouponTypeHasPrefix applies the HasPrefix predicate on the "coupon_type" field.
+func CouponTypeHasPrefix(v string) predicate.CouponAllocated {
 	return predicate.CouponAllocated(func(s *sql.Selector) {
-		s.Where(sql.HasPrefix(s.C(FieldType), v))
+		s.Where(sql.HasPrefix(s.C(FieldCouponType), v))
 	})
 }
 
-// TypeHasSuffix applies the HasSuffix predicate on the "type" field.
-func TypeHasSuffix(v string) predicate.CouponAllocated {
+// CouponTypeHasSuffix applies the HasSuffix predicate on the "coupon_type" field.
+func CouponTypeHasSuffix(v string) predicate.CouponAllocated {
 	return predicate.CouponAllocated(func(s *sql.Selector) {
-		s.Where(sql.HasSuffix(s.C(FieldType), v))
+		s.Where(sql.HasSuffix(s.C(FieldCouponType), v))
 	})
 }
 
-// TypeIsNil applies the IsNil predicate on the "type" field.
-func TypeIsNil() predicate.CouponAllocated {
+// CouponTypeIsNil applies the IsNil predicate on the "coupon_type" field.
+func CouponTypeIsNil() predicate.CouponAllocated {
 	return predicate.CouponAllocated(func(s *sql.Selector) {
-		s.Where(sql.IsNull(s.C(FieldType)))
+		s.Where(sql.IsNull(s.C(FieldCouponType)))
 	})
 }
 
-// TypeNotNil applies the NotNil predicate on the "type" field.
-func TypeNotNil() predicate.CouponAllocated {
+// CouponTypeNotNil applies the NotNil predicate on the "coupon_type" field.
+func CouponTypeNotNil() predicate.CouponAllocated {
 	return predicate.CouponAllocated(func(s *sql.Selector) {
-		s.Where(sql.NotNull(s.C(FieldType)))
+		s.Where(sql.NotNull(s.C(FieldCouponType)))
 	})
 }
 
-// TypeEqualFold applies the EqualFold predicate on the "type" field.
-func TypeEqualFold(v string) predicate.CouponAllocated {
+// CouponTypeEqualFold applies the EqualFold predicate on the "coupon_type" field.
+func CouponTypeEqualFold(v string) predicate.CouponAllocated {
 	return predicate.CouponAllocated(func(s *sql.Selector) {
-		s.Where(sql.EqualFold(s.C(FieldType), v))
+		s.Where(sql.EqualFold(s.C(FieldCouponType), v))
 	})
 }
 
-// TypeContainsFold applies the ContainsFold predicate on the "type" field.
-func TypeContainsFold(v string) predicate.CouponAllocated {
+// CouponTypeContainsFold applies the ContainsFold predicate on the "coupon_type" field.
+func CouponTypeContainsFold(v string) predicate.CouponAllocated {
 	return predicate.CouponAllocated(func(s *sql.Selector) {
-		s.Where(sql.ContainsFold(s.C(FieldType), v))
+		s.Where(sql.ContainsFold(s.C(FieldCouponType), v))
 	})
 }
 

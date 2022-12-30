@@ -14,7 +14,7 @@ func trace(span trace1.Span, in *npool.AllocatedReq, index int) trace1.Span {
 		attribute.String(fmt.Sprintf("ID.%v", index), in.GetID()),
 		attribute.String(fmt.Sprintf("AppID.%v", index), in.GetAppID()),
 		attribute.String(fmt.Sprintf("UserID.%v", index), in.GetUserID()),
-		attribute.String(fmt.Sprintf("Type.%v", index), in.GetType().String()),
+		attribute.String(fmt.Sprintf("CouponType.%v", index), in.GetCouponType().String()),
 		attribute.String(fmt.Sprintf("CouponID.%v", index), in.GetCouponID()),
 	)
 	return span

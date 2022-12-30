@@ -29,11 +29,11 @@ func init() {
 }
 
 var coupon = ent.CouponAllocated{
-	ID:       uuid.New(),
-	AppID:    uuid.New(),
-	UserID:   uuid.New(),
-	Type:     npool.CouponType_Discount.String(),
-	CouponID: uuid.New(),
+	ID:         uuid.New(),
+	AppID:      uuid.New(),
+	UserID:     uuid.New(),
+	CouponType: npool.CouponType_Discount.String(),
+	CouponID:   uuid.New(),
 }
 
 var (
@@ -43,11 +43,11 @@ var (
 	cType    = npool.CouponType_Discount
 	couponID = coupon.CouponID.String()
 	req      = npool.AllocatedReq{
-		ID:       &id,
-		AppID:    &appID,
-		UserID:   &userID,
-		Type:     &cType,
-		CouponID: &couponID,
+		ID:         &id,
+		AppID:      &appID,
+		UserID:     &userID,
+		CouponType: &cType,
+		CouponID:   &couponID,
 	}
 )
 
@@ -66,18 +66,18 @@ func create(t *testing.T) {
 func createBulk(t *testing.T) {
 	entities := []*ent.CouponAllocated{
 		{
-			ID:       uuid.New(),
-			AppID:    uuid.New(),
-			UserID:   uuid.New(),
-			Type:     npool.CouponType_Discount.String(),
-			CouponID: uuid.New(),
+			ID:         uuid.New(),
+			AppID:      uuid.New(),
+			UserID:     uuid.New(),
+			CouponType: npool.CouponType_Discount.String(),
+			CouponID:   uuid.New(),
 		},
 		{
-			ID:       uuid.New(),
-			AppID:    uuid.New(),
-			UserID:   uuid.New(),
-			Type:     npool.CouponType_Discount.String(),
-			CouponID: uuid.New(),
+			ID:         uuid.New(),
+			AppID:      uuid.New(),
+			UserID:     uuid.New(),
+			CouponType: npool.CouponType_Discount.String(),
+			CouponID:   uuid.New(),
 		},
 	}
 
@@ -89,11 +89,11 @@ func createBulk(t *testing.T) {
 		_cType := npool.CouponType_Discount
 		_couponID := coupon.CouponID.String()
 		reqs = append(reqs, &npool.AllocatedReq{
-			ID:       &_id,
-			AppID:    &_appID,
-			UserID:   &_userID,
-			Type:     &_cType,
-			CouponID: &_couponID,
+			ID:         &_id,
+			AppID:      &_appID,
+			UserID:     &_userID,
+			CouponType: &_cType,
+			CouponID:   &_couponID,
 		})
 	}
 	infos, err := CreateBulk(context.Background(), reqs)

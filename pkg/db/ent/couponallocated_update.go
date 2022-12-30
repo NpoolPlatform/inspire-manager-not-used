@@ -97,23 +97,23 @@ func (cau *CouponAllocatedUpdate) SetUserID(u uuid.UUID) *CouponAllocatedUpdate 
 	return cau
 }
 
-// SetType sets the "type" field.
-func (cau *CouponAllocatedUpdate) SetType(s string) *CouponAllocatedUpdate {
-	cau.mutation.SetType(s)
+// SetCouponType sets the "coupon_type" field.
+func (cau *CouponAllocatedUpdate) SetCouponType(s string) *CouponAllocatedUpdate {
+	cau.mutation.SetCouponType(s)
 	return cau
 }
 
-// SetNillableType sets the "type" field if the given value is not nil.
-func (cau *CouponAllocatedUpdate) SetNillableType(s *string) *CouponAllocatedUpdate {
+// SetNillableCouponType sets the "coupon_type" field if the given value is not nil.
+func (cau *CouponAllocatedUpdate) SetNillableCouponType(s *string) *CouponAllocatedUpdate {
 	if s != nil {
-		cau.SetType(*s)
+		cau.SetCouponType(*s)
 	}
 	return cau
 }
 
-// ClearType clears the value of the "type" field.
-func (cau *CouponAllocatedUpdate) ClearType() *CouponAllocatedUpdate {
-	cau.mutation.ClearType()
+// ClearCouponType clears the value of the "coupon_type" field.
+func (cau *CouponAllocatedUpdate) ClearCouponType() *CouponAllocatedUpdate {
+	cau.mutation.ClearCouponType()
 	return cau
 }
 
@@ -364,17 +364,17 @@ func (cau *CouponAllocatedUpdate) sqlSave(ctx context.Context) (n int, err error
 			Column: couponallocated.FieldUserID,
 		})
 	}
-	if value, ok := cau.mutation.GetType(); ok {
+	if value, ok := cau.mutation.CouponType(); ok {
 		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
 			Type:   field.TypeString,
 			Value:  value,
-			Column: couponallocated.FieldType,
+			Column: couponallocated.FieldCouponType,
 		})
 	}
-	if cau.mutation.TypeCleared() {
+	if cau.mutation.CouponTypeCleared() {
 		_spec.Fields.Clear = append(_spec.Fields.Clear, &sqlgraph.FieldSpec{
 			Type:   field.TypeString,
-			Column: couponallocated.FieldType,
+			Column: couponallocated.FieldCouponType,
 		})
 	}
 	if value, ok := cau.mutation.CouponID(); ok {
@@ -531,23 +531,23 @@ func (cauo *CouponAllocatedUpdateOne) SetUserID(u uuid.UUID) *CouponAllocatedUpd
 	return cauo
 }
 
-// SetType sets the "type" field.
-func (cauo *CouponAllocatedUpdateOne) SetType(s string) *CouponAllocatedUpdateOne {
-	cauo.mutation.SetType(s)
+// SetCouponType sets the "coupon_type" field.
+func (cauo *CouponAllocatedUpdateOne) SetCouponType(s string) *CouponAllocatedUpdateOne {
+	cauo.mutation.SetCouponType(s)
 	return cauo
 }
 
-// SetNillableType sets the "type" field if the given value is not nil.
-func (cauo *CouponAllocatedUpdateOne) SetNillableType(s *string) *CouponAllocatedUpdateOne {
+// SetNillableCouponType sets the "coupon_type" field if the given value is not nil.
+func (cauo *CouponAllocatedUpdateOne) SetNillableCouponType(s *string) *CouponAllocatedUpdateOne {
 	if s != nil {
-		cauo.SetType(*s)
+		cauo.SetCouponType(*s)
 	}
 	return cauo
 }
 
-// ClearType clears the value of the "type" field.
-func (cauo *CouponAllocatedUpdateOne) ClearType() *CouponAllocatedUpdateOne {
-	cauo.mutation.ClearType()
+// ClearCouponType clears the value of the "coupon_type" field.
+func (cauo *CouponAllocatedUpdateOne) ClearCouponType() *CouponAllocatedUpdateOne {
+	cauo.mutation.ClearCouponType()
 	return cauo
 }
 
@@ -828,17 +828,17 @@ func (cauo *CouponAllocatedUpdateOne) sqlSave(ctx context.Context) (_node *Coupo
 			Column: couponallocated.FieldUserID,
 		})
 	}
-	if value, ok := cauo.mutation.GetType(); ok {
+	if value, ok := cauo.mutation.CouponType(); ok {
 		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
 			Type:   field.TypeString,
 			Value:  value,
-			Column: couponallocated.FieldType,
+			Column: couponallocated.FieldCouponType,
 		})
 	}
-	if cauo.mutation.TypeCleared() {
+	if cauo.mutation.CouponTypeCleared() {
 		_spec.Fields.Clear = append(_spec.Fields.Clear, &sqlgraph.FieldSpec{
 			Type:   field.TypeString,
-			Column: couponallocated.FieldType,
+			Column: couponallocated.FieldCouponType,
 		})
 	}
 	if value, ok := cauo.mutation.CouponID(); ok {
