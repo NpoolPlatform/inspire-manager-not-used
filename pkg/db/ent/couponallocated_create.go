@@ -112,6 +112,48 @@ func (cac *CouponAllocatedCreate) SetNillableValue(d *decimal.Decimal) *CouponAl
 	return cac
 }
 
+// SetUsed sets the "used" field.
+func (cac *CouponAllocatedCreate) SetUsed(b bool) *CouponAllocatedCreate {
+	cac.mutation.SetUsed(b)
+	return cac
+}
+
+// SetNillableUsed sets the "used" field if the given value is not nil.
+func (cac *CouponAllocatedCreate) SetNillableUsed(b *bool) *CouponAllocatedCreate {
+	if b != nil {
+		cac.SetUsed(*b)
+	}
+	return cac
+}
+
+// SetUsedAt sets the "used_at" field.
+func (cac *CouponAllocatedCreate) SetUsedAt(u uint32) *CouponAllocatedCreate {
+	cac.mutation.SetUsedAt(u)
+	return cac
+}
+
+// SetNillableUsedAt sets the "used_at" field if the given value is not nil.
+func (cac *CouponAllocatedCreate) SetNillableUsedAt(u *uint32) *CouponAllocatedCreate {
+	if u != nil {
+		cac.SetUsedAt(*u)
+	}
+	return cac
+}
+
+// SetUsedByOrderID sets the "used_by_order_id" field.
+func (cac *CouponAllocatedCreate) SetUsedByOrderID(u uuid.UUID) *CouponAllocatedCreate {
+	cac.mutation.SetUsedByOrderID(u)
+	return cac
+}
+
+// SetNillableUsedByOrderID sets the "used_by_order_id" field if the given value is not nil.
+func (cac *CouponAllocatedCreate) SetNillableUsedByOrderID(u *uuid.UUID) *CouponAllocatedCreate {
+	if u != nil {
+		cac.SetUsedByOrderID(*u)
+	}
+	return cac
+}
+
 // SetID sets the "id" field.
 func (cac *CouponAllocatedCreate) SetID(u uuid.UUID) *CouponAllocatedCreate {
 	cac.mutation.SetID(u)
@@ -233,6 +275,21 @@ func (cac *CouponAllocatedCreate) defaults() error {
 	if _, ok := cac.mutation.Value(); !ok {
 		v := couponallocated.DefaultValue
 		cac.mutation.SetValue(v)
+	}
+	if _, ok := cac.mutation.Used(); !ok {
+		v := couponallocated.DefaultUsed
+		cac.mutation.SetUsed(v)
+	}
+	if _, ok := cac.mutation.UsedAt(); !ok {
+		v := couponallocated.DefaultUsedAt
+		cac.mutation.SetUsedAt(v)
+	}
+	if _, ok := cac.mutation.UsedByOrderID(); !ok {
+		if couponallocated.DefaultUsedByOrderID == nil {
+			return fmt.Errorf("ent: uninitialized couponallocated.DefaultUsedByOrderID (forgotten import ent/runtime?)")
+		}
+		v := couponallocated.DefaultUsedByOrderID()
+		cac.mutation.SetUsedByOrderID(v)
 	}
 	if _, ok := cac.mutation.ID(); !ok {
 		if couponallocated.DefaultID == nil {
@@ -364,6 +421,30 @@ func (cac *CouponAllocatedCreate) createSpec() (*CouponAllocated, *sqlgraph.Crea
 			Column: couponallocated.FieldValue,
 		})
 		_node.Value = value
+	}
+	if value, ok := cac.mutation.Used(); ok {
+		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
+			Type:   field.TypeBool,
+			Value:  value,
+			Column: couponallocated.FieldUsed,
+		})
+		_node.Used = value
+	}
+	if value, ok := cac.mutation.UsedAt(); ok {
+		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
+			Type:   field.TypeUint32,
+			Value:  value,
+			Column: couponallocated.FieldUsedAt,
+		})
+		_node.UsedAt = value
+	}
+	if value, ok := cac.mutation.UsedByOrderID(); ok {
+		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
+			Type:   field.TypeUUID,
+			Value:  value,
+			Column: couponallocated.FieldUsedByOrderID,
+		})
+		_node.UsedByOrderID = value
 	}
 	return _node, _spec
 }
@@ -542,6 +623,66 @@ func (u *CouponAllocatedUpsert) UpdateValue() *CouponAllocatedUpsert {
 // ClearValue clears the value of the "value" field.
 func (u *CouponAllocatedUpsert) ClearValue() *CouponAllocatedUpsert {
 	u.SetNull(couponallocated.FieldValue)
+	return u
+}
+
+// SetUsed sets the "used" field.
+func (u *CouponAllocatedUpsert) SetUsed(v bool) *CouponAllocatedUpsert {
+	u.Set(couponallocated.FieldUsed, v)
+	return u
+}
+
+// UpdateUsed sets the "used" field to the value that was provided on create.
+func (u *CouponAllocatedUpsert) UpdateUsed() *CouponAllocatedUpsert {
+	u.SetExcluded(couponallocated.FieldUsed)
+	return u
+}
+
+// ClearUsed clears the value of the "used" field.
+func (u *CouponAllocatedUpsert) ClearUsed() *CouponAllocatedUpsert {
+	u.SetNull(couponallocated.FieldUsed)
+	return u
+}
+
+// SetUsedAt sets the "used_at" field.
+func (u *CouponAllocatedUpsert) SetUsedAt(v uint32) *CouponAllocatedUpsert {
+	u.Set(couponallocated.FieldUsedAt, v)
+	return u
+}
+
+// UpdateUsedAt sets the "used_at" field to the value that was provided on create.
+func (u *CouponAllocatedUpsert) UpdateUsedAt() *CouponAllocatedUpsert {
+	u.SetExcluded(couponallocated.FieldUsedAt)
+	return u
+}
+
+// AddUsedAt adds v to the "used_at" field.
+func (u *CouponAllocatedUpsert) AddUsedAt(v uint32) *CouponAllocatedUpsert {
+	u.Add(couponallocated.FieldUsedAt, v)
+	return u
+}
+
+// ClearUsedAt clears the value of the "used_at" field.
+func (u *CouponAllocatedUpsert) ClearUsedAt() *CouponAllocatedUpsert {
+	u.SetNull(couponallocated.FieldUsedAt)
+	return u
+}
+
+// SetUsedByOrderID sets the "used_by_order_id" field.
+func (u *CouponAllocatedUpsert) SetUsedByOrderID(v uuid.UUID) *CouponAllocatedUpsert {
+	u.Set(couponallocated.FieldUsedByOrderID, v)
+	return u
+}
+
+// UpdateUsedByOrderID sets the "used_by_order_id" field to the value that was provided on create.
+func (u *CouponAllocatedUpsert) UpdateUsedByOrderID() *CouponAllocatedUpsert {
+	u.SetExcluded(couponallocated.FieldUsedByOrderID)
+	return u
+}
+
+// ClearUsedByOrderID clears the value of the "used_by_order_id" field.
+func (u *CouponAllocatedUpsert) ClearUsedByOrderID() *CouponAllocatedUpsert {
+	u.SetNull(couponallocated.FieldUsedByOrderID)
 	return u
 }
 
@@ -739,6 +880,76 @@ func (u *CouponAllocatedUpsertOne) UpdateValue() *CouponAllocatedUpsertOne {
 func (u *CouponAllocatedUpsertOne) ClearValue() *CouponAllocatedUpsertOne {
 	return u.Update(func(s *CouponAllocatedUpsert) {
 		s.ClearValue()
+	})
+}
+
+// SetUsed sets the "used" field.
+func (u *CouponAllocatedUpsertOne) SetUsed(v bool) *CouponAllocatedUpsertOne {
+	return u.Update(func(s *CouponAllocatedUpsert) {
+		s.SetUsed(v)
+	})
+}
+
+// UpdateUsed sets the "used" field to the value that was provided on create.
+func (u *CouponAllocatedUpsertOne) UpdateUsed() *CouponAllocatedUpsertOne {
+	return u.Update(func(s *CouponAllocatedUpsert) {
+		s.UpdateUsed()
+	})
+}
+
+// ClearUsed clears the value of the "used" field.
+func (u *CouponAllocatedUpsertOne) ClearUsed() *CouponAllocatedUpsertOne {
+	return u.Update(func(s *CouponAllocatedUpsert) {
+		s.ClearUsed()
+	})
+}
+
+// SetUsedAt sets the "used_at" field.
+func (u *CouponAllocatedUpsertOne) SetUsedAt(v uint32) *CouponAllocatedUpsertOne {
+	return u.Update(func(s *CouponAllocatedUpsert) {
+		s.SetUsedAt(v)
+	})
+}
+
+// AddUsedAt adds v to the "used_at" field.
+func (u *CouponAllocatedUpsertOne) AddUsedAt(v uint32) *CouponAllocatedUpsertOne {
+	return u.Update(func(s *CouponAllocatedUpsert) {
+		s.AddUsedAt(v)
+	})
+}
+
+// UpdateUsedAt sets the "used_at" field to the value that was provided on create.
+func (u *CouponAllocatedUpsertOne) UpdateUsedAt() *CouponAllocatedUpsertOne {
+	return u.Update(func(s *CouponAllocatedUpsert) {
+		s.UpdateUsedAt()
+	})
+}
+
+// ClearUsedAt clears the value of the "used_at" field.
+func (u *CouponAllocatedUpsertOne) ClearUsedAt() *CouponAllocatedUpsertOne {
+	return u.Update(func(s *CouponAllocatedUpsert) {
+		s.ClearUsedAt()
+	})
+}
+
+// SetUsedByOrderID sets the "used_by_order_id" field.
+func (u *CouponAllocatedUpsertOne) SetUsedByOrderID(v uuid.UUID) *CouponAllocatedUpsertOne {
+	return u.Update(func(s *CouponAllocatedUpsert) {
+		s.SetUsedByOrderID(v)
+	})
+}
+
+// UpdateUsedByOrderID sets the "used_by_order_id" field to the value that was provided on create.
+func (u *CouponAllocatedUpsertOne) UpdateUsedByOrderID() *CouponAllocatedUpsertOne {
+	return u.Update(func(s *CouponAllocatedUpsert) {
+		s.UpdateUsedByOrderID()
+	})
+}
+
+// ClearUsedByOrderID clears the value of the "used_by_order_id" field.
+func (u *CouponAllocatedUpsertOne) ClearUsedByOrderID() *CouponAllocatedUpsertOne {
+	return u.Update(func(s *CouponAllocatedUpsert) {
+		s.ClearUsedByOrderID()
 	})
 }
 
@@ -1102,6 +1313,76 @@ func (u *CouponAllocatedUpsertBulk) UpdateValue() *CouponAllocatedUpsertBulk {
 func (u *CouponAllocatedUpsertBulk) ClearValue() *CouponAllocatedUpsertBulk {
 	return u.Update(func(s *CouponAllocatedUpsert) {
 		s.ClearValue()
+	})
+}
+
+// SetUsed sets the "used" field.
+func (u *CouponAllocatedUpsertBulk) SetUsed(v bool) *CouponAllocatedUpsertBulk {
+	return u.Update(func(s *CouponAllocatedUpsert) {
+		s.SetUsed(v)
+	})
+}
+
+// UpdateUsed sets the "used" field to the value that was provided on create.
+func (u *CouponAllocatedUpsertBulk) UpdateUsed() *CouponAllocatedUpsertBulk {
+	return u.Update(func(s *CouponAllocatedUpsert) {
+		s.UpdateUsed()
+	})
+}
+
+// ClearUsed clears the value of the "used" field.
+func (u *CouponAllocatedUpsertBulk) ClearUsed() *CouponAllocatedUpsertBulk {
+	return u.Update(func(s *CouponAllocatedUpsert) {
+		s.ClearUsed()
+	})
+}
+
+// SetUsedAt sets the "used_at" field.
+func (u *CouponAllocatedUpsertBulk) SetUsedAt(v uint32) *CouponAllocatedUpsertBulk {
+	return u.Update(func(s *CouponAllocatedUpsert) {
+		s.SetUsedAt(v)
+	})
+}
+
+// AddUsedAt adds v to the "used_at" field.
+func (u *CouponAllocatedUpsertBulk) AddUsedAt(v uint32) *CouponAllocatedUpsertBulk {
+	return u.Update(func(s *CouponAllocatedUpsert) {
+		s.AddUsedAt(v)
+	})
+}
+
+// UpdateUsedAt sets the "used_at" field to the value that was provided on create.
+func (u *CouponAllocatedUpsertBulk) UpdateUsedAt() *CouponAllocatedUpsertBulk {
+	return u.Update(func(s *CouponAllocatedUpsert) {
+		s.UpdateUsedAt()
+	})
+}
+
+// ClearUsedAt clears the value of the "used_at" field.
+func (u *CouponAllocatedUpsertBulk) ClearUsedAt() *CouponAllocatedUpsertBulk {
+	return u.Update(func(s *CouponAllocatedUpsert) {
+		s.ClearUsedAt()
+	})
+}
+
+// SetUsedByOrderID sets the "used_by_order_id" field.
+func (u *CouponAllocatedUpsertBulk) SetUsedByOrderID(v uuid.UUID) *CouponAllocatedUpsertBulk {
+	return u.Update(func(s *CouponAllocatedUpsert) {
+		s.SetUsedByOrderID(v)
+	})
+}
+
+// UpdateUsedByOrderID sets the "used_by_order_id" field to the value that was provided on create.
+func (u *CouponAllocatedUpsertBulk) UpdateUsedByOrderID() *CouponAllocatedUpsertBulk {
+	return u.Update(func(s *CouponAllocatedUpsert) {
+		s.UpdateUsedByOrderID()
+	})
+}
+
+// ClearUsedByOrderID clears the value of the "used_by_order_id" field.
+func (u *CouponAllocatedUpsertBulk) ClearUsedByOrderID() *CouponAllocatedUpsertBulk {
+	return u.Update(func(s *CouponAllocatedUpsert) {
+		s.ClearUsedByOrderID()
 	})
 }
 

@@ -2961,24 +2961,28 @@ func (m *ArchivementGeneralMutation) ResetEdge(name string) error {
 // CouponAllocatedMutation represents an operation that mutates the CouponAllocated nodes in the graph.
 type CouponAllocatedMutation struct {
 	config
-	op            Op
-	typ           string
-	id            *uuid.UUID
-	created_at    *uint32
-	addcreated_at *int32
-	updated_at    *uint32
-	addupdated_at *int32
-	deleted_at    *uint32
-	adddeleted_at *int32
-	app_id        *uuid.UUID
-	user_id       *uuid.UUID
-	_type         *string
-	coupon_id     *uuid.UUID
-	value         *decimal.Decimal
-	clearedFields map[string]struct{}
-	done          bool
-	oldValue      func(context.Context) (*CouponAllocated, error)
-	predicates    []predicate.CouponAllocated
+	op               Op
+	typ              string
+	id               *uuid.UUID
+	created_at       *uint32
+	addcreated_at    *int32
+	updated_at       *uint32
+	addupdated_at    *int32
+	deleted_at       *uint32
+	adddeleted_at    *int32
+	app_id           *uuid.UUID
+	user_id          *uuid.UUID
+	_type            *string
+	coupon_id        *uuid.UUID
+	value            *decimal.Decimal
+	used             *bool
+	used_at          *uint32
+	addused_at       *int32
+	used_by_order_id *uuid.UUID
+	clearedFields    map[string]struct{}
+	done             bool
+	oldValue         func(context.Context) (*CouponAllocated, error)
+	predicates       []predicate.CouponAllocated
 }
 
 var _ ent.Mutation = (*CouponAllocatedMutation)(nil)
@@ -3459,6 +3463,174 @@ func (m *CouponAllocatedMutation) ResetValue() {
 	delete(m.clearedFields, couponallocated.FieldValue)
 }
 
+// SetUsed sets the "used" field.
+func (m *CouponAllocatedMutation) SetUsed(b bool) {
+	m.used = &b
+}
+
+// Used returns the value of the "used" field in the mutation.
+func (m *CouponAllocatedMutation) Used() (r bool, exists bool) {
+	v := m.used
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldUsed returns the old "used" field's value of the CouponAllocated entity.
+// If the CouponAllocated object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *CouponAllocatedMutation) OldUsed(ctx context.Context) (v bool, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldUsed is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldUsed requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldUsed: %w", err)
+	}
+	return oldValue.Used, nil
+}
+
+// ClearUsed clears the value of the "used" field.
+func (m *CouponAllocatedMutation) ClearUsed() {
+	m.used = nil
+	m.clearedFields[couponallocated.FieldUsed] = struct{}{}
+}
+
+// UsedCleared returns if the "used" field was cleared in this mutation.
+func (m *CouponAllocatedMutation) UsedCleared() bool {
+	_, ok := m.clearedFields[couponallocated.FieldUsed]
+	return ok
+}
+
+// ResetUsed resets all changes to the "used" field.
+func (m *CouponAllocatedMutation) ResetUsed() {
+	m.used = nil
+	delete(m.clearedFields, couponallocated.FieldUsed)
+}
+
+// SetUsedAt sets the "used_at" field.
+func (m *CouponAllocatedMutation) SetUsedAt(u uint32) {
+	m.used_at = &u
+	m.addused_at = nil
+}
+
+// UsedAt returns the value of the "used_at" field in the mutation.
+func (m *CouponAllocatedMutation) UsedAt() (r uint32, exists bool) {
+	v := m.used_at
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldUsedAt returns the old "used_at" field's value of the CouponAllocated entity.
+// If the CouponAllocated object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *CouponAllocatedMutation) OldUsedAt(ctx context.Context) (v uint32, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldUsedAt is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldUsedAt requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldUsedAt: %w", err)
+	}
+	return oldValue.UsedAt, nil
+}
+
+// AddUsedAt adds u to the "used_at" field.
+func (m *CouponAllocatedMutation) AddUsedAt(u int32) {
+	if m.addused_at != nil {
+		*m.addused_at += u
+	} else {
+		m.addused_at = &u
+	}
+}
+
+// AddedUsedAt returns the value that was added to the "used_at" field in this mutation.
+func (m *CouponAllocatedMutation) AddedUsedAt() (r int32, exists bool) {
+	v := m.addused_at
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// ClearUsedAt clears the value of the "used_at" field.
+func (m *CouponAllocatedMutation) ClearUsedAt() {
+	m.used_at = nil
+	m.addused_at = nil
+	m.clearedFields[couponallocated.FieldUsedAt] = struct{}{}
+}
+
+// UsedAtCleared returns if the "used_at" field was cleared in this mutation.
+func (m *CouponAllocatedMutation) UsedAtCleared() bool {
+	_, ok := m.clearedFields[couponallocated.FieldUsedAt]
+	return ok
+}
+
+// ResetUsedAt resets all changes to the "used_at" field.
+func (m *CouponAllocatedMutation) ResetUsedAt() {
+	m.used_at = nil
+	m.addused_at = nil
+	delete(m.clearedFields, couponallocated.FieldUsedAt)
+}
+
+// SetUsedByOrderID sets the "used_by_order_id" field.
+func (m *CouponAllocatedMutation) SetUsedByOrderID(u uuid.UUID) {
+	m.used_by_order_id = &u
+}
+
+// UsedByOrderID returns the value of the "used_by_order_id" field in the mutation.
+func (m *CouponAllocatedMutation) UsedByOrderID() (r uuid.UUID, exists bool) {
+	v := m.used_by_order_id
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldUsedByOrderID returns the old "used_by_order_id" field's value of the CouponAllocated entity.
+// If the CouponAllocated object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *CouponAllocatedMutation) OldUsedByOrderID(ctx context.Context) (v uuid.UUID, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldUsedByOrderID is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldUsedByOrderID requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldUsedByOrderID: %w", err)
+	}
+	return oldValue.UsedByOrderID, nil
+}
+
+// ClearUsedByOrderID clears the value of the "used_by_order_id" field.
+func (m *CouponAllocatedMutation) ClearUsedByOrderID() {
+	m.used_by_order_id = nil
+	m.clearedFields[couponallocated.FieldUsedByOrderID] = struct{}{}
+}
+
+// UsedByOrderIDCleared returns if the "used_by_order_id" field was cleared in this mutation.
+func (m *CouponAllocatedMutation) UsedByOrderIDCleared() bool {
+	_, ok := m.clearedFields[couponallocated.FieldUsedByOrderID]
+	return ok
+}
+
+// ResetUsedByOrderID resets all changes to the "used_by_order_id" field.
+func (m *CouponAllocatedMutation) ResetUsedByOrderID() {
+	m.used_by_order_id = nil
+	delete(m.clearedFields, couponallocated.FieldUsedByOrderID)
+}
+
 // Where appends a list predicates to the CouponAllocatedMutation builder.
 func (m *CouponAllocatedMutation) Where(ps ...predicate.CouponAllocated) {
 	m.predicates = append(m.predicates, ps...)
@@ -3478,7 +3650,7 @@ func (m *CouponAllocatedMutation) Type() string {
 // order to get all numeric fields that were incremented/decremented, call
 // AddedFields().
 func (m *CouponAllocatedMutation) Fields() []string {
-	fields := make([]string, 0, 8)
+	fields := make([]string, 0, 11)
 	if m.created_at != nil {
 		fields = append(fields, couponallocated.FieldCreatedAt)
 	}
@@ -3502,6 +3674,15 @@ func (m *CouponAllocatedMutation) Fields() []string {
 	}
 	if m.value != nil {
 		fields = append(fields, couponallocated.FieldValue)
+	}
+	if m.used != nil {
+		fields = append(fields, couponallocated.FieldUsed)
+	}
+	if m.used_at != nil {
+		fields = append(fields, couponallocated.FieldUsedAt)
+	}
+	if m.used_by_order_id != nil {
+		fields = append(fields, couponallocated.FieldUsedByOrderID)
 	}
 	return fields
 }
@@ -3527,6 +3708,12 @@ func (m *CouponAllocatedMutation) Field(name string) (ent.Value, bool) {
 		return m.CouponID()
 	case couponallocated.FieldValue:
 		return m.Value()
+	case couponallocated.FieldUsed:
+		return m.Used()
+	case couponallocated.FieldUsedAt:
+		return m.UsedAt()
+	case couponallocated.FieldUsedByOrderID:
+		return m.UsedByOrderID()
 	}
 	return nil, false
 }
@@ -3552,6 +3739,12 @@ func (m *CouponAllocatedMutation) OldField(ctx context.Context, name string) (en
 		return m.OldCouponID(ctx)
 	case couponallocated.FieldValue:
 		return m.OldValue(ctx)
+	case couponallocated.FieldUsed:
+		return m.OldUsed(ctx)
+	case couponallocated.FieldUsedAt:
+		return m.OldUsedAt(ctx)
+	case couponallocated.FieldUsedByOrderID:
+		return m.OldUsedByOrderID(ctx)
 	}
 	return nil, fmt.Errorf("unknown CouponAllocated field %s", name)
 }
@@ -3617,6 +3810,27 @@ func (m *CouponAllocatedMutation) SetField(name string, value ent.Value) error {
 		}
 		m.SetValue(v)
 		return nil
+	case couponallocated.FieldUsed:
+		v, ok := value.(bool)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetUsed(v)
+		return nil
+	case couponallocated.FieldUsedAt:
+		v, ok := value.(uint32)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetUsedAt(v)
+		return nil
+	case couponallocated.FieldUsedByOrderID:
+		v, ok := value.(uuid.UUID)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetUsedByOrderID(v)
+		return nil
 	}
 	return fmt.Errorf("unknown CouponAllocated field %s", name)
 }
@@ -3634,6 +3848,9 @@ func (m *CouponAllocatedMutation) AddedFields() []string {
 	if m.adddeleted_at != nil {
 		fields = append(fields, couponallocated.FieldDeletedAt)
 	}
+	if m.addused_at != nil {
+		fields = append(fields, couponallocated.FieldUsedAt)
+	}
 	return fields
 }
 
@@ -3648,6 +3865,8 @@ func (m *CouponAllocatedMutation) AddedField(name string) (ent.Value, bool) {
 		return m.AddedUpdatedAt()
 	case couponallocated.FieldDeletedAt:
 		return m.AddedDeletedAt()
+	case couponallocated.FieldUsedAt:
+		return m.AddedUsedAt()
 	}
 	return nil, false
 }
@@ -3678,6 +3897,13 @@ func (m *CouponAllocatedMutation) AddField(name string, value ent.Value) error {
 		}
 		m.AddDeletedAt(v)
 		return nil
+	case couponallocated.FieldUsedAt:
+		v, ok := value.(int32)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.AddUsedAt(v)
+		return nil
 	}
 	return fmt.Errorf("unknown CouponAllocated numeric field %s", name)
 }
@@ -3691,6 +3917,15 @@ func (m *CouponAllocatedMutation) ClearedFields() []string {
 	}
 	if m.FieldCleared(couponallocated.FieldValue) {
 		fields = append(fields, couponallocated.FieldValue)
+	}
+	if m.FieldCleared(couponallocated.FieldUsed) {
+		fields = append(fields, couponallocated.FieldUsed)
+	}
+	if m.FieldCleared(couponallocated.FieldUsedAt) {
+		fields = append(fields, couponallocated.FieldUsedAt)
+	}
+	if m.FieldCleared(couponallocated.FieldUsedByOrderID) {
+		fields = append(fields, couponallocated.FieldUsedByOrderID)
 	}
 	return fields
 }
@@ -3711,6 +3946,15 @@ func (m *CouponAllocatedMutation) ClearField(name string) error {
 		return nil
 	case couponallocated.FieldValue:
 		m.ClearValue()
+		return nil
+	case couponallocated.FieldUsed:
+		m.ClearUsed()
+		return nil
+	case couponallocated.FieldUsedAt:
+		m.ClearUsedAt()
+		return nil
+	case couponallocated.FieldUsedByOrderID:
+		m.ClearUsedByOrderID()
 		return nil
 	}
 	return fmt.Errorf("unknown CouponAllocated nullable field %s", name)
@@ -3743,6 +3987,15 @@ func (m *CouponAllocatedMutation) ResetField(name string) error {
 		return nil
 	case couponallocated.FieldValue:
 		m.ResetValue()
+		return nil
+	case couponallocated.FieldUsed:
+		m.ResetUsed()
+		return nil
+	case couponallocated.FieldUsedAt:
+		m.ResetUsedAt()
+		return nil
+	case couponallocated.FieldUsedByOrderID:
+		m.ResetUsedByOrderID()
 		return nil
 	}
 	return fmt.Errorf("unknown CouponAllocated field %s", name)

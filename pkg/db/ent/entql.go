@@ -89,14 +89,17 @@ var schemaGraph = func() *sqlgraph.Schema {
 		},
 		Type: "CouponAllocated",
 		Fields: map[string]*sqlgraph.FieldSpec{
-			couponallocated.FieldCreatedAt: {Type: field.TypeUint32, Column: couponallocated.FieldCreatedAt},
-			couponallocated.FieldUpdatedAt: {Type: field.TypeUint32, Column: couponallocated.FieldUpdatedAt},
-			couponallocated.FieldDeletedAt: {Type: field.TypeUint32, Column: couponallocated.FieldDeletedAt},
-			couponallocated.FieldAppID:     {Type: field.TypeUUID, Column: couponallocated.FieldAppID},
-			couponallocated.FieldUserID:    {Type: field.TypeUUID, Column: couponallocated.FieldUserID},
-			couponallocated.FieldType:      {Type: field.TypeString, Column: couponallocated.FieldType},
-			couponallocated.FieldCouponID:  {Type: field.TypeUUID, Column: couponallocated.FieldCouponID},
-			couponallocated.FieldValue:     {Type: field.TypeOther, Column: couponallocated.FieldValue},
+			couponallocated.FieldCreatedAt:     {Type: field.TypeUint32, Column: couponallocated.FieldCreatedAt},
+			couponallocated.FieldUpdatedAt:     {Type: field.TypeUint32, Column: couponallocated.FieldUpdatedAt},
+			couponallocated.FieldDeletedAt:     {Type: field.TypeUint32, Column: couponallocated.FieldDeletedAt},
+			couponallocated.FieldAppID:         {Type: field.TypeUUID, Column: couponallocated.FieldAppID},
+			couponallocated.FieldUserID:        {Type: field.TypeUUID, Column: couponallocated.FieldUserID},
+			couponallocated.FieldType:          {Type: field.TypeString, Column: couponallocated.FieldType},
+			couponallocated.FieldCouponID:      {Type: field.TypeUUID, Column: couponallocated.FieldCouponID},
+			couponallocated.FieldValue:         {Type: field.TypeOther, Column: couponallocated.FieldValue},
+			couponallocated.FieldUsed:          {Type: field.TypeBool, Column: couponallocated.FieldUsed},
+			couponallocated.FieldUsedAt:        {Type: field.TypeUint32, Column: couponallocated.FieldUsedAt},
+			couponallocated.FieldUsedByOrderID: {Type: field.TypeUUID, Column: couponallocated.FieldUsedByOrderID},
 		},
 	}
 	graph.Nodes[3] = &sqlgraph.Node{
@@ -550,6 +553,21 @@ func (f *CouponAllocatedFilter) WhereCouponID(p entql.ValueP) {
 // WhereValue applies the entql other predicate on the value field.
 func (f *CouponAllocatedFilter) WhereValue(p entql.OtherP) {
 	f.Where(p.Field(couponallocated.FieldValue))
+}
+
+// WhereUsed applies the entql bool predicate on the used field.
+func (f *CouponAllocatedFilter) WhereUsed(p entql.BoolP) {
+	f.Where(p.Field(couponallocated.FieldUsed))
+}
+
+// WhereUsedAt applies the entql uint32 predicate on the used_at field.
+func (f *CouponAllocatedFilter) WhereUsedAt(p entql.Uint32P) {
+	f.Where(p.Field(couponallocated.FieldUsedAt))
+}
+
+// WhereUsedByOrderID applies the entql [16]byte predicate on the used_by_order_id field.
+func (f *CouponAllocatedFilter) WhereUsedByOrderID(p entql.ValueP) {
+	f.Where(p.Field(couponallocated.FieldUsedByOrderID))
 }
 
 // addPredicate implements the predicateAdder interface.

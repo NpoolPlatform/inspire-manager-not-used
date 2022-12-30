@@ -86,6 +86,44 @@ func (s *Server) CreateAllocateds(ctx context.Context, in *npool.CreateAllocated
 	}, nil
 }
 
+func (s *Server) UpdateAllocated(ctx context.Context, in *npool.UpdateAllocatedRequest) (*npool.UpdateAllocatedResponse, error) {
+	var err error
+
+	_, span := otel.Tracer(constant.ServiceName).Start(ctx, "UpdateAllocated")
+	defer span.End()
+
+	defer func() {
+		if err != nil {
+			span.SetStatus(scodes.Error, err.Error())
+			span.RecordError(err)
+		}
+	}()
+
+	span = tracer.Trace(span, in.GetInfo())
+
+	if _, err := uuid.Parse(in.GetInfo().GetID()); err != nil {
+		return &npool.UpdateAllocatedResponse{}, status.Error(codes.InvalidArgument, err.Error())
+	}
+
+	if in.GetInfo().UsedByOrderID != nil {
+		if _, err := uuid.Parse(in.GetInfo().GetUsedByOrderID()); err != nil {
+			return &npool.UpdateAllocatedResponse{}, status.Error(codes.InvalidArgument, err.Error())
+		}
+	}
+
+	span = commontracer.TraceInvoker(span, "allocated", "crud", "Update")
+
+	info, err := crud.Update(ctx, in.GetInfo())
+	if err != nil {
+		logger.Sugar().Errorf("fail create allocated: %v", err.Error())
+		return &npool.UpdateAllocatedResponse{}, status.Error(codes.Internal, err.Error())
+	}
+
+	return &npool.UpdateAllocatedResponse{
+		Info: converter.Ent2Grpc(info),
+	}, nil
+}
+
 func (s *Server) GetAllocated(ctx context.Context, in *npool.GetAllocatedRequest) (*npool.GetAllocatedResponse, error) {
 	var err error
 

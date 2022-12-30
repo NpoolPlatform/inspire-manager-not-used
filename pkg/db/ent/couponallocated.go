@@ -33,6 +33,12 @@ type CouponAllocated struct {
 	CouponID uuid.UUID `json:"coupon_id,omitempty"`
 	// Value holds the value of the "value" field.
 	Value decimal.Decimal `json:"value,omitempty"`
+	// Used holds the value of the "used" field.
+	Used bool `json:"used,omitempty"`
+	// UsedAt holds the value of the "used_at" field.
+	UsedAt uint32 `json:"used_at,omitempty"`
+	// UsedByOrderID holds the value of the "used_by_order_id" field.
+	UsedByOrderID uuid.UUID `json:"used_by_order_id,omitempty"`
 }
 
 // scanValues returns the types for scanning values from sql.Rows.
@@ -42,11 +48,13 @@ func (*CouponAllocated) scanValues(columns []string) ([]interface{}, error) {
 		switch columns[i] {
 		case couponallocated.FieldValue:
 			values[i] = new(decimal.Decimal)
-		case couponallocated.FieldCreatedAt, couponallocated.FieldUpdatedAt, couponallocated.FieldDeletedAt:
+		case couponallocated.FieldUsed:
+			values[i] = new(sql.NullBool)
+		case couponallocated.FieldCreatedAt, couponallocated.FieldUpdatedAt, couponallocated.FieldDeletedAt, couponallocated.FieldUsedAt:
 			values[i] = new(sql.NullInt64)
 		case couponallocated.FieldType:
 			values[i] = new(sql.NullString)
-		case couponallocated.FieldID, couponallocated.FieldAppID, couponallocated.FieldUserID, couponallocated.FieldCouponID:
+		case couponallocated.FieldID, couponallocated.FieldAppID, couponallocated.FieldUserID, couponallocated.FieldCouponID, couponallocated.FieldUsedByOrderID:
 			values[i] = new(uuid.UUID)
 		default:
 			return nil, fmt.Errorf("unexpected column %q for type CouponAllocated", columns[i])
@@ -117,6 +125,24 @@ func (ca *CouponAllocated) assignValues(columns []string, values []interface{}) 
 			} else if value != nil {
 				ca.Value = *value
 			}
+		case couponallocated.FieldUsed:
+			if value, ok := values[i].(*sql.NullBool); !ok {
+				return fmt.Errorf("unexpected type %T for field used", values[i])
+			} else if value.Valid {
+				ca.Used = value.Bool
+			}
+		case couponallocated.FieldUsedAt:
+			if value, ok := values[i].(*sql.NullInt64); !ok {
+				return fmt.Errorf("unexpected type %T for field used_at", values[i])
+			} else if value.Valid {
+				ca.UsedAt = uint32(value.Int64)
+			}
+		case couponallocated.FieldUsedByOrderID:
+			if value, ok := values[i].(*uuid.UUID); !ok {
+				return fmt.Errorf("unexpected type %T for field used_by_order_id", values[i])
+			} else if value != nil {
+				ca.UsedByOrderID = *value
+			}
 		}
 	}
 	return nil
@@ -168,6 +194,15 @@ func (ca *CouponAllocated) String() string {
 	builder.WriteString(", ")
 	builder.WriteString("value=")
 	builder.WriteString(fmt.Sprintf("%v", ca.Value))
+	builder.WriteString(", ")
+	builder.WriteString("used=")
+	builder.WriteString(fmt.Sprintf("%v", ca.Used))
+	builder.WriteString(", ")
+	builder.WriteString("used_at=")
+	builder.WriteString(fmt.Sprintf("%v", ca.UsedAt))
+	builder.WriteString(", ")
+	builder.WriteString("used_by_order_id=")
+	builder.WriteString(fmt.Sprintf("%v", ca.UsedByOrderID))
 	builder.WriteByte(')')
 	return builder.String()
 }

@@ -29,6 +29,12 @@ const (
 	FieldCouponID = "coupon_id"
 	// FieldValue holds the string denoting the value field in the database.
 	FieldValue = "value"
+	// FieldUsed holds the string denoting the used field in the database.
+	FieldUsed = "used"
+	// FieldUsedAt holds the string denoting the used_at field in the database.
+	FieldUsedAt = "used_at"
+	// FieldUsedByOrderID holds the string denoting the used_by_order_id field in the database.
+	FieldUsedByOrderID = "used_by_order_id"
 	// Table holds the table name of the couponallocated in the database.
 	Table = "coupon_allocateds"
 )
@@ -44,6 +50,9 @@ var Columns = []string{
 	FieldType,
 	FieldCouponID,
 	FieldValue,
+	FieldUsed,
+	FieldUsedAt,
+	FieldUsedByOrderID,
 }
 
 // ValidColumn reports if the column name is valid (part of the table columns).
@@ -77,6 +86,12 @@ var (
 	DefaultType string
 	// DefaultValue holds the default value on creation for the "value" field.
 	DefaultValue decimal.Decimal
+	// DefaultUsed holds the default value on creation for the "used" field.
+	DefaultUsed bool
+	// DefaultUsedAt holds the default value on creation for the "used_at" field.
+	DefaultUsedAt uint32
+	// DefaultUsedByOrderID holds the default value on creation for the "used_by_order_id" field.
+	DefaultUsedByOrderID func() uuid.UUID
 	// DefaultID holds the default value on creation for the "id" field.
 	DefaultID func() uuid.UUID
 )

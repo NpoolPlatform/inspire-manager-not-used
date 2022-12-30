@@ -47,6 +47,20 @@ func (CouponAllocated) Fields() []ent.Field {
 			}).
 			Optional().
 			Default(decimal.Decimal{}),
+		field.
+			Bool("used").
+			Optional().
+			Default(false),
+		field.
+			Uint32("used_at").
+			Optional().
+			Default(0),
+		field.
+			UUID("used_by_order_id", uuid.UUID{}).
+			Optional().
+			Default(func() uuid.UUID {
+				return uuid.UUID{}
+			}),
 	}
 }
 

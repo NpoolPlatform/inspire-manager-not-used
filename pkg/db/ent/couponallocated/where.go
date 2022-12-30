@@ -136,6 +136,27 @@ func Value(v decimal.Decimal) predicate.CouponAllocated {
 	})
 }
 
+// Used applies equality check predicate on the "used" field. It's identical to UsedEQ.
+func Used(v bool) predicate.CouponAllocated {
+	return predicate.CouponAllocated(func(s *sql.Selector) {
+		s.Where(sql.EQ(s.C(FieldUsed), v))
+	})
+}
+
+// UsedAt applies equality check predicate on the "used_at" field. It's identical to UsedAtEQ.
+func UsedAt(v uint32) predicate.CouponAllocated {
+	return predicate.CouponAllocated(func(s *sql.Selector) {
+		s.Where(sql.EQ(s.C(FieldUsedAt), v))
+	})
+}
+
+// UsedByOrderID applies equality check predicate on the "used_by_order_id" field. It's identical to UsedByOrderIDEQ.
+func UsedByOrderID(v uuid.UUID) predicate.CouponAllocated {
+	return predicate.CouponAllocated(func(s *sql.Selector) {
+		s.Where(sql.EQ(s.C(FieldUsedByOrderID), v))
+	})
+}
+
 // CreatedAtEQ applies the EQ predicate on the "created_at" field.
 func CreatedAtEQ(v uint32) predicate.CouponAllocated {
 	return predicate.CouponAllocated(func(s *sql.Selector) {
@@ -708,6 +729,190 @@ func ValueIsNil() predicate.CouponAllocated {
 func ValueNotNil() predicate.CouponAllocated {
 	return predicate.CouponAllocated(func(s *sql.Selector) {
 		s.Where(sql.NotNull(s.C(FieldValue)))
+	})
+}
+
+// UsedEQ applies the EQ predicate on the "used" field.
+func UsedEQ(v bool) predicate.CouponAllocated {
+	return predicate.CouponAllocated(func(s *sql.Selector) {
+		s.Where(sql.EQ(s.C(FieldUsed), v))
+	})
+}
+
+// UsedNEQ applies the NEQ predicate on the "used" field.
+func UsedNEQ(v bool) predicate.CouponAllocated {
+	return predicate.CouponAllocated(func(s *sql.Selector) {
+		s.Where(sql.NEQ(s.C(FieldUsed), v))
+	})
+}
+
+// UsedIsNil applies the IsNil predicate on the "used" field.
+func UsedIsNil() predicate.CouponAllocated {
+	return predicate.CouponAllocated(func(s *sql.Selector) {
+		s.Where(sql.IsNull(s.C(FieldUsed)))
+	})
+}
+
+// UsedNotNil applies the NotNil predicate on the "used" field.
+func UsedNotNil() predicate.CouponAllocated {
+	return predicate.CouponAllocated(func(s *sql.Selector) {
+		s.Where(sql.NotNull(s.C(FieldUsed)))
+	})
+}
+
+// UsedAtEQ applies the EQ predicate on the "used_at" field.
+func UsedAtEQ(v uint32) predicate.CouponAllocated {
+	return predicate.CouponAllocated(func(s *sql.Selector) {
+		s.Where(sql.EQ(s.C(FieldUsedAt), v))
+	})
+}
+
+// UsedAtNEQ applies the NEQ predicate on the "used_at" field.
+func UsedAtNEQ(v uint32) predicate.CouponAllocated {
+	return predicate.CouponAllocated(func(s *sql.Selector) {
+		s.Where(sql.NEQ(s.C(FieldUsedAt), v))
+	})
+}
+
+// UsedAtIn applies the In predicate on the "used_at" field.
+func UsedAtIn(vs ...uint32) predicate.CouponAllocated {
+	v := make([]interface{}, len(vs))
+	for i := range v {
+		v[i] = vs[i]
+	}
+	return predicate.CouponAllocated(func(s *sql.Selector) {
+		s.Where(sql.In(s.C(FieldUsedAt), v...))
+	})
+}
+
+// UsedAtNotIn applies the NotIn predicate on the "used_at" field.
+func UsedAtNotIn(vs ...uint32) predicate.CouponAllocated {
+	v := make([]interface{}, len(vs))
+	for i := range v {
+		v[i] = vs[i]
+	}
+	return predicate.CouponAllocated(func(s *sql.Selector) {
+		s.Where(sql.NotIn(s.C(FieldUsedAt), v...))
+	})
+}
+
+// UsedAtGT applies the GT predicate on the "used_at" field.
+func UsedAtGT(v uint32) predicate.CouponAllocated {
+	return predicate.CouponAllocated(func(s *sql.Selector) {
+		s.Where(sql.GT(s.C(FieldUsedAt), v))
+	})
+}
+
+// UsedAtGTE applies the GTE predicate on the "used_at" field.
+func UsedAtGTE(v uint32) predicate.CouponAllocated {
+	return predicate.CouponAllocated(func(s *sql.Selector) {
+		s.Where(sql.GTE(s.C(FieldUsedAt), v))
+	})
+}
+
+// UsedAtLT applies the LT predicate on the "used_at" field.
+func UsedAtLT(v uint32) predicate.CouponAllocated {
+	return predicate.CouponAllocated(func(s *sql.Selector) {
+		s.Where(sql.LT(s.C(FieldUsedAt), v))
+	})
+}
+
+// UsedAtLTE applies the LTE predicate on the "used_at" field.
+func UsedAtLTE(v uint32) predicate.CouponAllocated {
+	return predicate.CouponAllocated(func(s *sql.Selector) {
+		s.Where(sql.LTE(s.C(FieldUsedAt), v))
+	})
+}
+
+// UsedAtIsNil applies the IsNil predicate on the "used_at" field.
+func UsedAtIsNil() predicate.CouponAllocated {
+	return predicate.CouponAllocated(func(s *sql.Selector) {
+		s.Where(sql.IsNull(s.C(FieldUsedAt)))
+	})
+}
+
+// UsedAtNotNil applies the NotNil predicate on the "used_at" field.
+func UsedAtNotNil() predicate.CouponAllocated {
+	return predicate.CouponAllocated(func(s *sql.Selector) {
+		s.Where(sql.NotNull(s.C(FieldUsedAt)))
+	})
+}
+
+// UsedByOrderIDEQ applies the EQ predicate on the "used_by_order_id" field.
+func UsedByOrderIDEQ(v uuid.UUID) predicate.CouponAllocated {
+	return predicate.CouponAllocated(func(s *sql.Selector) {
+		s.Where(sql.EQ(s.C(FieldUsedByOrderID), v))
+	})
+}
+
+// UsedByOrderIDNEQ applies the NEQ predicate on the "used_by_order_id" field.
+func UsedByOrderIDNEQ(v uuid.UUID) predicate.CouponAllocated {
+	return predicate.CouponAllocated(func(s *sql.Selector) {
+		s.Where(sql.NEQ(s.C(FieldUsedByOrderID), v))
+	})
+}
+
+// UsedByOrderIDIn applies the In predicate on the "used_by_order_id" field.
+func UsedByOrderIDIn(vs ...uuid.UUID) predicate.CouponAllocated {
+	v := make([]interface{}, len(vs))
+	for i := range v {
+		v[i] = vs[i]
+	}
+	return predicate.CouponAllocated(func(s *sql.Selector) {
+		s.Where(sql.In(s.C(FieldUsedByOrderID), v...))
+	})
+}
+
+// UsedByOrderIDNotIn applies the NotIn predicate on the "used_by_order_id" field.
+func UsedByOrderIDNotIn(vs ...uuid.UUID) predicate.CouponAllocated {
+	v := make([]interface{}, len(vs))
+	for i := range v {
+		v[i] = vs[i]
+	}
+	return predicate.CouponAllocated(func(s *sql.Selector) {
+		s.Where(sql.NotIn(s.C(FieldUsedByOrderID), v...))
+	})
+}
+
+// UsedByOrderIDGT applies the GT predicate on the "used_by_order_id" field.
+func UsedByOrderIDGT(v uuid.UUID) predicate.CouponAllocated {
+	return predicate.CouponAllocated(func(s *sql.Selector) {
+		s.Where(sql.GT(s.C(FieldUsedByOrderID), v))
+	})
+}
+
+// UsedByOrderIDGTE applies the GTE predicate on the "used_by_order_id" field.
+func UsedByOrderIDGTE(v uuid.UUID) predicate.CouponAllocated {
+	return predicate.CouponAllocated(func(s *sql.Selector) {
+		s.Where(sql.GTE(s.C(FieldUsedByOrderID), v))
+	})
+}
+
+// UsedByOrderIDLT applies the LT predicate on the "used_by_order_id" field.
+func UsedByOrderIDLT(v uuid.UUID) predicate.CouponAllocated {
+	return predicate.CouponAllocated(func(s *sql.Selector) {
+		s.Where(sql.LT(s.C(FieldUsedByOrderID), v))
+	})
+}
+
+// UsedByOrderIDLTE applies the LTE predicate on the "used_by_order_id" field.
+func UsedByOrderIDLTE(v uuid.UUID) predicate.CouponAllocated {
+	return predicate.CouponAllocated(func(s *sql.Selector) {
+		s.Where(sql.LTE(s.C(FieldUsedByOrderID), v))
+	})
+}
+
+// UsedByOrderIDIsNil applies the IsNil predicate on the "used_by_order_id" field.
+func UsedByOrderIDIsNil() predicate.CouponAllocated {
+	return predicate.CouponAllocated(func(s *sql.Selector) {
+		s.Where(sql.IsNull(s.C(FieldUsedByOrderID)))
+	})
+}
+
+// UsedByOrderIDNotNil applies the NotNil predicate on the "used_by_order_id" field.
+func UsedByOrderIDNotNil() predicate.CouponAllocated {
+	return predicate.CouponAllocated(func(s *sql.Selector) {
+		s.Where(sql.NotNull(s.C(FieldUsedByOrderID)))
 	})
 }
 

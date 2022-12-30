@@ -143,6 +143,73 @@ func (cau *CouponAllocatedUpdate) ClearValue() *CouponAllocatedUpdate {
 	return cau
 }
 
+// SetUsed sets the "used" field.
+func (cau *CouponAllocatedUpdate) SetUsed(b bool) *CouponAllocatedUpdate {
+	cau.mutation.SetUsed(b)
+	return cau
+}
+
+// SetNillableUsed sets the "used" field if the given value is not nil.
+func (cau *CouponAllocatedUpdate) SetNillableUsed(b *bool) *CouponAllocatedUpdate {
+	if b != nil {
+		cau.SetUsed(*b)
+	}
+	return cau
+}
+
+// ClearUsed clears the value of the "used" field.
+func (cau *CouponAllocatedUpdate) ClearUsed() *CouponAllocatedUpdate {
+	cau.mutation.ClearUsed()
+	return cau
+}
+
+// SetUsedAt sets the "used_at" field.
+func (cau *CouponAllocatedUpdate) SetUsedAt(u uint32) *CouponAllocatedUpdate {
+	cau.mutation.ResetUsedAt()
+	cau.mutation.SetUsedAt(u)
+	return cau
+}
+
+// SetNillableUsedAt sets the "used_at" field if the given value is not nil.
+func (cau *CouponAllocatedUpdate) SetNillableUsedAt(u *uint32) *CouponAllocatedUpdate {
+	if u != nil {
+		cau.SetUsedAt(*u)
+	}
+	return cau
+}
+
+// AddUsedAt adds u to the "used_at" field.
+func (cau *CouponAllocatedUpdate) AddUsedAt(u int32) *CouponAllocatedUpdate {
+	cau.mutation.AddUsedAt(u)
+	return cau
+}
+
+// ClearUsedAt clears the value of the "used_at" field.
+func (cau *CouponAllocatedUpdate) ClearUsedAt() *CouponAllocatedUpdate {
+	cau.mutation.ClearUsedAt()
+	return cau
+}
+
+// SetUsedByOrderID sets the "used_by_order_id" field.
+func (cau *CouponAllocatedUpdate) SetUsedByOrderID(u uuid.UUID) *CouponAllocatedUpdate {
+	cau.mutation.SetUsedByOrderID(u)
+	return cau
+}
+
+// SetNillableUsedByOrderID sets the "used_by_order_id" field if the given value is not nil.
+func (cau *CouponAllocatedUpdate) SetNillableUsedByOrderID(u *uuid.UUID) *CouponAllocatedUpdate {
+	if u != nil {
+		cau.SetUsedByOrderID(*u)
+	}
+	return cau
+}
+
+// ClearUsedByOrderID clears the value of the "used_by_order_id" field.
+func (cau *CouponAllocatedUpdate) ClearUsedByOrderID() *CouponAllocatedUpdate {
+	cau.mutation.ClearUsedByOrderID()
+	return cau
+}
+
 // Mutation returns the CouponAllocatedMutation object of the builder.
 func (cau *CouponAllocatedUpdate) Mutation() *CouponAllocatedMutation {
 	return cau.mutation
@@ -330,6 +397,52 @@ func (cau *CouponAllocatedUpdate) sqlSave(ctx context.Context) (n int, err error
 			Column: couponallocated.FieldValue,
 		})
 	}
+	if value, ok := cau.mutation.Used(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeBool,
+			Value:  value,
+			Column: couponallocated.FieldUsed,
+		})
+	}
+	if cau.mutation.UsedCleared() {
+		_spec.Fields.Clear = append(_spec.Fields.Clear, &sqlgraph.FieldSpec{
+			Type:   field.TypeBool,
+			Column: couponallocated.FieldUsed,
+		})
+	}
+	if value, ok := cau.mutation.UsedAt(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeUint32,
+			Value:  value,
+			Column: couponallocated.FieldUsedAt,
+		})
+	}
+	if value, ok := cau.mutation.AddedUsedAt(); ok {
+		_spec.Fields.Add = append(_spec.Fields.Add, &sqlgraph.FieldSpec{
+			Type:   field.TypeUint32,
+			Value:  value,
+			Column: couponallocated.FieldUsedAt,
+		})
+	}
+	if cau.mutation.UsedAtCleared() {
+		_spec.Fields.Clear = append(_spec.Fields.Clear, &sqlgraph.FieldSpec{
+			Type:   field.TypeUint32,
+			Column: couponallocated.FieldUsedAt,
+		})
+	}
+	if value, ok := cau.mutation.UsedByOrderID(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeUUID,
+			Value:  value,
+			Column: couponallocated.FieldUsedByOrderID,
+		})
+	}
+	if cau.mutation.UsedByOrderIDCleared() {
+		_spec.Fields.Clear = append(_spec.Fields.Clear, &sqlgraph.FieldSpec{
+			Type:   field.TypeUUID,
+			Column: couponallocated.FieldUsedByOrderID,
+		})
+	}
 	_spec.Modifiers = cau.modifiers
 	if n, err = sqlgraph.UpdateNodes(ctx, cau.driver, _spec); err != nil {
 		if _, ok := err.(*sqlgraph.NotFoundError); ok {
@@ -461,6 +574,73 @@ func (cauo *CouponAllocatedUpdateOne) SetNillableValue(d *decimal.Decimal) *Coup
 // ClearValue clears the value of the "value" field.
 func (cauo *CouponAllocatedUpdateOne) ClearValue() *CouponAllocatedUpdateOne {
 	cauo.mutation.ClearValue()
+	return cauo
+}
+
+// SetUsed sets the "used" field.
+func (cauo *CouponAllocatedUpdateOne) SetUsed(b bool) *CouponAllocatedUpdateOne {
+	cauo.mutation.SetUsed(b)
+	return cauo
+}
+
+// SetNillableUsed sets the "used" field if the given value is not nil.
+func (cauo *CouponAllocatedUpdateOne) SetNillableUsed(b *bool) *CouponAllocatedUpdateOne {
+	if b != nil {
+		cauo.SetUsed(*b)
+	}
+	return cauo
+}
+
+// ClearUsed clears the value of the "used" field.
+func (cauo *CouponAllocatedUpdateOne) ClearUsed() *CouponAllocatedUpdateOne {
+	cauo.mutation.ClearUsed()
+	return cauo
+}
+
+// SetUsedAt sets the "used_at" field.
+func (cauo *CouponAllocatedUpdateOne) SetUsedAt(u uint32) *CouponAllocatedUpdateOne {
+	cauo.mutation.ResetUsedAt()
+	cauo.mutation.SetUsedAt(u)
+	return cauo
+}
+
+// SetNillableUsedAt sets the "used_at" field if the given value is not nil.
+func (cauo *CouponAllocatedUpdateOne) SetNillableUsedAt(u *uint32) *CouponAllocatedUpdateOne {
+	if u != nil {
+		cauo.SetUsedAt(*u)
+	}
+	return cauo
+}
+
+// AddUsedAt adds u to the "used_at" field.
+func (cauo *CouponAllocatedUpdateOne) AddUsedAt(u int32) *CouponAllocatedUpdateOne {
+	cauo.mutation.AddUsedAt(u)
+	return cauo
+}
+
+// ClearUsedAt clears the value of the "used_at" field.
+func (cauo *CouponAllocatedUpdateOne) ClearUsedAt() *CouponAllocatedUpdateOne {
+	cauo.mutation.ClearUsedAt()
+	return cauo
+}
+
+// SetUsedByOrderID sets the "used_by_order_id" field.
+func (cauo *CouponAllocatedUpdateOne) SetUsedByOrderID(u uuid.UUID) *CouponAllocatedUpdateOne {
+	cauo.mutation.SetUsedByOrderID(u)
+	return cauo
+}
+
+// SetNillableUsedByOrderID sets the "used_by_order_id" field if the given value is not nil.
+func (cauo *CouponAllocatedUpdateOne) SetNillableUsedByOrderID(u *uuid.UUID) *CouponAllocatedUpdateOne {
+	if u != nil {
+		cauo.SetUsedByOrderID(*u)
+	}
+	return cauo
+}
+
+// ClearUsedByOrderID clears the value of the "used_by_order_id" field.
+func (cauo *CouponAllocatedUpdateOne) ClearUsedByOrderID() *CouponAllocatedUpdateOne {
+	cauo.mutation.ClearUsedByOrderID()
 	return cauo
 }
 
@@ -679,6 +859,52 @@ func (cauo *CouponAllocatedUpdateOne) sqlSave(ctx context.Context) (_node *Coupo
 		_spec.Fields.Clear = append(_spec.Fields.Clear, &sqlgraph.FieldSpec{
 			Type:   field.TypeOther,
 			Column: couponallocated.FieldValue,
+		})
+	}
+	if value, ok := cauo.mutation.Used(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeBool,
+			Value:  value,
+			Column: couponallocated.FieldUsed,
+		})
+	}
+	if cauo.mutation.UsedCleared() {
+		_spec.Fields.Clear = append(_spec.Fields.Clear, &sqlgraph.FieldSpec{
+			Type:   field.TypeBool,
+			Column: couponallocated.FieldUsed,
+		})
+	}
+	if value, ok := cauo.mutation.UsedAt(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeUint32,
+			Value:  value,
+			Column: couponallocated.FieldUsedAt,
+		})
+	}
+	if value, ok := cauo.mutation.AddedUsedAt(); ok {
+		_spec.Fields.Add = append(_spec.Fields.Add, &sqlgraph.FieldSpec{
+			Type:   field.TypeUint32,
+			Value:  value,
+			Column: couponallocated.FieldUsedAt,
+		})
+	}
+	if cauo.mutation.UsedAtCleared() {
+		_spec.Fields.Clear = append(_spec.Fields.Clear, &sqlgraph.FieldSpec{
+			Type:   field.TypeUint32,
+			Column: couponallocated.FieldUsedAt,
+		})
+	}
+	if value, ok := cauo.mutation.UsedByOrderID(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeUUID,
+			Value:  value,
+			Column: couponallocated.FieldUsedByOrderID,
+		})
+	}
+	if cauo.mutation.UsedByOrderIDCleared() {
+		_spec.Fields.Clear = append(_spec.Fields.Clear, &sqlgraph.FieldSpec{
+			Type:   field.TypeUUID,
+			Column: couponallocated.FieldUsedByOrderID,
 		})
 	}
 	_spec.Modifiers = cauo.modifiers

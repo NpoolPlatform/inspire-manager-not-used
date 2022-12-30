@@ -222,6 +222,18 @@ func init() {
 	couponallocatedDescValue := couponallocatedFields[5].Descriptor()
 	// couponallocated.DefaultValue holds the default value on creation for the value field.
 	couponallocated.DefaultValue = couponallocatedDescValue.Default.(decimal.Decimal)
+	// couponallocatedDescUsed is the schema descriptor for used field.
+	couponallocatedDescUsed := couponallocatedFields[6].Descriptor()
+	// couponallocated.DefaultUsed holds the default value on creation for the used field.
+	couponallocated.DefaultUsed = couponallocatedDescUsed.Default.(bool)
+	// couponallocatedDescUsedAt is the schema descriptor for used_at field.
+	couponallocatedDescUsedAt := couponallocatedFields[7].Descriptor()
+	// couponallocated.DefaultUsedAt holds the default value on creation for the used_at field.
+	couponallocated.DefaultUsedAt = couponallocatedDescUsedAt.Default.(uint32)
+	// couponallocatedDescUsedByOrderID is the schema descriptor for used_by_order_id field.
+	couponallocatedDescUsedByOrderID := couponallocatedFields[8].Descriptor()
+	// couponallocated.DefaultUsedByOrderID holds the default value on creation for the used_by_order_id field.
+	couponallocated.DefaultUsedByOrderID = couponallocatedDescUsedByOrderID.Default.(func() uuid.UUID)
 	// couponallocatedDescID is the schema descriptor for id field.
 	couponallocatedDescID := couponallocatedFields[0].Descriptor()
 	// couponallocated.DefaultID holds the default value on creation for the id field.

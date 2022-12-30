@@ -37,6 +37,8 @@ func CreateSet(c *ent.CouponAllocatedCreate, in *npool.AllocatedReq) (*ent.Coupo
 	if in.CouponID != nil {
 		c.SetCouponID(uuid.MustParse(in.GetCouponID()))
 	}
+	c.SetUsed(false)
+	c.SetUsedAt(0)
 	return c, nil
 }
 
@@ -104,6 +106,62 @@ func CreateBulk(ctx context.Context, in []*npool.AllocatedReq) ([]*ent.CouponAll
 		return nil, err
 	}
 	return rows, nil
+}
+
+func UpdateSet(info *ent.CouponAllocated, in *npool.AllocatedReq) (*ent.CouponAllocatedUpdateOne, error) {
+	u := info.Update()
+
+	if in.GetUsed() {
+		if info.Used {
+			return nil, nil
+		}
+
+		if _, err := uuid.Parse(in.GetUsedByOrderID()); err != nil {
+			return nil, err
+		}
+
+		u.SetUsed(in.GetUsed())
+		u.SetUsedByOrderID(uuid.MustParse(in.GetUsedByOrderID()))
+		u.SetUsedAt(uint32(time.Now().Unix()))
+	}
+	return u, nil
+}
+
+func Update(ctx context.Context, in *npool.AllocatedReq) (*ent.CouponAllocated, error) {
+	var info *ent.CouponAllocated
+	var err error
+
+	_, span := otel.Tracer(constant.ServiceName).Start(ctx, "Update")
+	defer span.End()
+
+	defer func() {
+		if err != nil {
+			span.SetStatus(codes.Error, "db operation fail")
+			span.RecordError(err)
+		}
+	}()
+
+	span = tracer.Trace(span, in)
+
+	err = db.WithTx(ctx, func(_ctx context.Context, tx *ent.Tx) error {
+		info, err = tx.CouponAllocated.Query().Where(couponallocated.ID(uuid.MustParse(in.GetID()))).ForUpdate().Only(_ctx)
+		if err != nil {
+			return err
+		}
+
+		stm, err := UpdateSet(info, in)
+		if err != nil {
+			return err
+		}
+
+		info, err = stm.Save(_ctx)
+		return err
+	})
+	if err != nil {
+		return nil, err
+	}
+
+	return info, nil
 }
 
 func Row(ctx context.Context, id uuid.UUID) (*ent.CouponAllocated, error) {

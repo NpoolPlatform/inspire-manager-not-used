@@ -36,12 +36,13 @@ func init() {
 }
 
 var appDate = npool.Allocated{
-	ID:       uuid.NewString(),
-	AppID:    uuid.NewString(),
-	UserID:   uuid.NewString(),
-	Type:     npool.CouponType_Discount,
-	CouponID: uuid.NewString(),
-	Value:    "0",
+	ID:            uuid.NewString(),
+	AppID:         uuid.NewString(),
+	UserID:        uuid.NewString(),
+	Type:          npool.CouponType_Discount,
+	CouponID:      uuid.NewString(),
+	Value:         "0",
+	UsedByOrderID: uuid.UUID{}.String(),
 }
 
 var (
