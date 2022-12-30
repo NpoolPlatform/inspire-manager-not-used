@@ -13,6 +13,7 @@ import (
 	"entgo.io/ent/schema/field"
 	"github.com/NpoolPlatform/inspire-manager/pkg/db/ent/couponallocated"
 	"github.com/google/uuid"
+	"github.com/shopspring/decimal"
 )
 
 // CouponAllocatedCreate is the builder for creating a CouponAllocated entity.
@@ -94,6 +95,20 @@ func (cac *CouponAllocatedCreate) SetNillableType(s *string) *CouponAllocatedCre
 // SetCouponID sets the "coupon_id" field.
 func (cac *CouponAllocatedCreate) SetCouponID(u uuid.UUID) *CouponAllocatedCreate {
 	cac.mutation.SetCouponID(u)
+	return cac
+}
+
+// SetValue sets the "value" field.
+func (cac *CouponAllocatedCreate) SetValue(d decimal.Decimal) *CouponAllocatedCreate {
+	cac.mutation.SetValue(d)
+	return cac
+}
+
+// SetNillableValue sets the "value" field if the given value is not nil.
+func (cac *CouponAllocatedCreate) SetNillableValue(d *decimal.Decimal) *CouponAllocatedCreate {
+	if d != nil {
+		cac.SetValue(*d)
+	}
 	return cac
 }
 
@@ -214,6 +229,10 @@ func (cac *CouponAllocatedCreate) defaults() error {
 	if _, ok := cac.mutation.GetType(); !ok {
 		v := couponallocated.DefaultType
 		cac.mutation.SetType(v)
+	}
+	if _, ok := cac.mutation.Value(); !ok {
+		v := couponallocated.DefaultValue
+		cac.mutation.SetValue(v)
 	}
 	if _, ok := cac.mutation.ID(); !ok {
 		if couponallocated.DefaultID == nil {
@@ -337,6 +356,14 @@ func (cac *CouponAllocatedCreate) createSpec() (*CouponAllocated, *sqlgraph.Crea
 			Column: couponallocated.FieldCouponID,
 		})
 		_node.CouponID = value
+	}
+	if value, ok := cac.mutation.Value(); ok {
+		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
+			Type:   field.TypeOther,
+			Value:  value,
+			Column: couponallocated.FieldValue,
+		})
+		_node.Value = value
 	}
 	return _node, _spec
 }
@@ -497,6 +524,24 @@ func (u *CouponAllocatedUpsert) SetCouponID(v uuid.UUID) *CouponAllocatedUpsert 
 // UpdateCouponID sets the "coupon_id" field to the value that was provided on create.
 func (u *CouponAllocatedUpsert) UpdateCouponID() *CouponAllocatedUpsert {
 	u.SetExcluded(couponallocated.FieldCouponID)
+	return u
+}
+
+// SetValue sets the "value" field.
+func (u *CouponAllocatedUpsert) SetValue(v decimal.Decimal) *CouponAllocatedUpsert {
+	u.Set(couponallocated.FieldValue, v)
+	return u
+}
+
+// UpdateValue sets the "value" field to the value that was provided on create.
+func (u *CouponAllocatedUpsert) UpdateValue() *CouponAllocatedUpsert {
+	u.SetExcluded(couponallocated.FieldValue)
+	return u
+}
+
+// ClearValue clears the value of the "value" field.
+func (u *CouponAllocatedUpsert) ClearValue() *CouponAllocatedUpsert {
+	u.SetNull(couponallocated.FieldValue)
 	return u
 }
 
@@ -673,6 +718,27 @@ func (u *CouponAllocatedUpsertOne) SetCouponID(v uuid.UUID) *CouponAllocatedUpse
 func (u *CouponAllocatedUpsertOne) UpdateCouponID() *CouponAllocatedUpsertOne {
 	return u.Update(func(s *CouponAllocatedUpsert) {
 		s.UpdateCouponID()
+	})
+}
+
+// SetValue sets the "value" field.
+func (u *CouponAllocatedUpsertOne) SetValue(v decimal.Decimal) *CouponAllocatedUpsertOne {
+	return u.Update(func(s *CouponAllocatedUpsert) {
+		s.SetValue(v)
+	})
+}
+
+// UpdateValue sets the "value" field to the value that was provided on create.
+func (u *CouponAllocatedUpsertOne) UpdateValue() *CouponAllocatedUpsertOne {
+	return u.Update(func(s *CouponAllocatedUpsert) {
+		s.UpdateValue()
+	})
+}
+
+// ClearValue clears the value of the "value" field.
+func (u *CouponAllocatedUpsertOne) ClearValue() *CouponAllocatedUpsertOne {
+	return u.Update(func(s *CouponAllocatedUpsert) {
+		s.ClearValue()
 	})
 }
 
@@ -1015,6 +1081,27 @@ func (u *CouponAllocatedUpsertBulk) SetCouponID(v uuid.UUID) *CouponAllocatedUps
 func (u *CouponAllocatedUpsertBulk) UpdateCouponID() *CouponAllocatedUpsertBulk {
 	return u.Update(func(s *CouponAllocatedUpsert) {
 		s.UpdateCouponID()
+	})
+}
+
+// SetValue sets the "value" field.
+func (u *CouponAllocatedUpsertBulk) SetValue(v decimal.Decimal) *CouponAllocatedUpsertBulk {
+	return u.Update(func(s *CouponAllocatedUpsert) {
+		s.SetValue(v)
+	})
+}
+
+// UpdateValue sets the "value" field to the value that was provided on create.
+func (u *CouponAllocatedUpsertBulk) UpdateValue() *CouponAllocatedUpsertBulk {
+	return u.Update(func(s *CouponAllocatedUpsert) {
+		s.UpdateValue()
+	})
+}
+
+// ClearValue clears the value of the "value" field.
+func (u *CouponAllocatedUpsertBulk) ClearValue() *CouponAllocatedUpsertBulk {
+	return u.Update(func(s *CouponAllocatedUpsert) {
+		s.ClearValue()
 	})
 }
 

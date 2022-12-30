@@ -2,8 +2,10 @@ package schema
 
 import (
 	"entgo.io/ent"
+	"entgo.io/ent/dialect"
 	"entgo.io/ent/schema/field"
 	"github.com/NpoolPlatform/inspire-manager/pkg/db/mixin"
+	"github.com/shopspring/decimal"
 
 	"github.com/google/uuid"
 
@@ -38,6 +40,13 @@ func (CouponAllocated) Fields() []ent.Field {
 			Default(allocated.CouponType_DefaultCouponType.String()),
 		field.
 			UUID("coupon_id", uuid.UUID{}),
+		field.
+			Other("value", decimal.Decimal{}).
+			SchemaType(map[string]string{
+				dialect.MySQL: "decimal(37,18)",
+			}).
+			Optional().
+			Default(decimal.Decimal{}),
 	}
 }
 

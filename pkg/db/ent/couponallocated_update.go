@@ -13,6 +13,7 @@ import (
 	"github.com/NpoolPlatform/inspire-manager/pkg/db/ent/couponallocated"
 	"github.com/NpoolPlatform/inspire-manager/pkg/db/ent/predicate"
 	"github.com/google/uuid"
+	"github.com/shopspring/decimal"
 )
 
 // CouponAllocatedUpdate is the builder for updating CouponAllocated entities.
@@ -119,6 +120,26 @@ func (cau *CouponAllocatedUpdate) ClearType() *CouponAllocatedUpdate {
 // SetCouponID sets the "coupon_id" field.
 func (cau *CouponAllocatedUpdate) SetCouponID(u uuid.UUID) *CouponAllocatedUpdate {
 	cau.mutation.SetCouponID(u)
+	return cau
+}
+
+// SetValue sets the "value" field.
+func (cau *CouponAllocatedUpdate) SetValue(d decimal.Decimal) *CouponAllocatedUpdate {
+	cau.mutation.SetValue(d)
+	return cau
+}
+
+// SetNillableValue sets the "value" field if the given value is not nil.
+func (cau *CouponAllocatedUpdate) SetNillableValue(d *decimal.Decimal) *CouponAllocatedUpdate {
+	if d != nil {
+		cau.SetValue(*d)
+	}
+	return cau
+}
+
+// ClearValue clears the value of the "value" field.
+func (cau *CouponAllocatedUpdate) ClearValue() *CouponAllocatedUpdate {
+	cau.mutation.ClearValue()
 	return cau
 }
 
@@ -296,6 +317,19 @@ func (cau *CouponAllocatedUpdate) sqlSave(ctx context.Context) (n int, err error
 			Column: couponallocated.FieldCouponID,
 		})
 	}
+	if value, ok := cau.mutation.Value(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeOther,
+			Value:  value,
+			Column: couponallocated.FieldValue,
+		})
+	}
+	if cau.mutation.ValueCleared() {
+		_spec.Fields.Clear = append(_spec.Fields.Clear, &sqlgraph.FieldSpec{
+			Type:   field.TypeOther,
+			Column: couponallocated.FieldValue,
+		})
+	}
 	_spec.Modifiers = cau.modifiers
 	if n, err = sqlgraph.UpdateNodes(ctx, cau.driver, _spec); err != nil {
 		if _, ok := err.(*sqlgraph.NotFoundError); ok {
@@ -407,6 +441,26 @@ func (cauo *CouponAllocatedUpdateOne) ClearType() *CouponAllocatedUpdateOne {
 // SetCouponID sets the "coupon_id" field.
 func (cauo *CouponAllocatedUpdateOne) SetCouponID(u uuid.UUID) *CouponAllocatedUpdateOne {
 	cauo.mutation.SetCouponID(u)
+	return cauo
+}
+
+// SetValue sets the "value" field.
+func (cauo *CouponAllocatedUpdateOne) SetValue(d decimal.Decimal) *CouponAllocatedUpdateOne {
+	cauo.mutation.SetValue(d)
+	return cauo
+}
+
+// SetNillableValue sets the "value" field if the given value is not nil.
+func (cauo *CouponAllocatedUpdateOne) SetNillableValue(d *decimal.Decimal) *CouponAllocatedUpdateOne {
+	if d != nil {
+		cauo.SetValue(*d)
+	}
+	return cauo
+}
+
+// ClearValue clears the value of the "value" field.
+func (cauo *CouponAllocatedUpdateOne) ClearValue() *CouponAllocatedUpdateOne {
+	cauo.mutation.ClearValue()
 	return cauo
 }
 
@@ -612,6 +666,19 @@ func (cauo *CouponAllocatedUpdateOne) sqlSave(ctx context.Context) (_node *Coupo
 			Type:   field.TypeUUID,
 			Value:  value,
 			Column: couponallocated.FieldCouponID,
+		})
+	}
+	if value, ok := cauo.mutation.Value(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeOther,
+			Value:  value,
+			Column: couponallocated.FieldValue,
+		})
+	}
+	if cauo.mutation.ValueCleared() {
+		_spec.Fields.Clear = append(_spec.Fields.Clear, &sqlgraph.FieldSpec{
+			Type:   field.TypeOther,
+			Column: couponallocated.FieldValue,
 		})
 	}
 	_spec.Modifiers = cauo.modifiers

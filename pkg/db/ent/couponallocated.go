@@ -9,6 +9,7 @@ import (
 	"entgo.io/ent/dialect/sql"
 	"github.com/NpoolPlatform/inspire-manager/pkg/db/ent/couponallocated"
 	"github.com/google/uuid"
+	"github.com/shopspring/decimal"
 )
 
 // CouponAllocated is the model entity for the CouponAllocated schema.
@@ -30,6 +31,8 @@ type CouponAllocated struct {
 	Type string `json:"type,omitempty"`
 	// CouponID holds the value of the "coupon_id" field.
 	CouponID uuid.UUID `json:"coupon_id,omitempty"`
+	// Value holds the value of the "value" field.
+	Value decimal.Decimal `json:"value,omitempty"`
 }
 
 // scanValues returns the types for scanning values from sql.Rows.
@@ -37,6 +40,8 @@ func (*CouponAllocated) scanValues(columns []string) ([]interface{}, error) {
 	values := make([]interface{}, len(columns))
 	for i := range columns {
 		switch columns[i] {
+		case couponallocated.FieldValue:
+			values[i] = new(decimal.Decimal)
 		case couponallocated.FieldCreatedAt, couponallocated.FieldUpdatedAt, couponallocated.FieldDeletedAt:
 			values[i] = new(sql.NullInt64)
 		case couponallocated.FieldType:
@@ -106,6 +111,12 @@ func (ca *CouponAllocated) assignValues(columns []string, values []interface{}) 
 			} else if value != nil {
 				ca.CouponID = *value
 			}
+		case couponallocated.FieldValue:
+			if value, ok := values[i].(*decimal.Decimal); !ok {
+				return fmt.Errorf("unexpected type %T for field value", values[i])
+			} else if value != nil {
+				ca.Value = *value
+			}
 		}
 	}
 	return nil
@@ -154,6 +165,9 @@ func (ca *CouponAllocated) String() string {
 	builder.WriteString(", ")
 	builder.WriteString("coupon_id=")
 	builder.WriteString(fmt.Sprintf("%v", ca.CouponID))
+	builder.WriteString(", ")
+	builder.WriteString("value=")
+	builder.WriteString(fmt.Sprintf("%v", ca.Value))
 	builder.WriteByte(')')
 	return builder.String()
 }

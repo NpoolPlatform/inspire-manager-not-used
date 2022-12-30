@@ -5,6 +5,7 @@ package couponallocated
 import (
 	"entgo.io/ent"
 	"github.com/google/uuid"
+	"github.com/shopspring/decimal"
 )
 
 const (
@@ -26,6 +27,8 @@ const (
 	FieldType = "type"
 	// FieldCouponID holds the string denoting the coupon_id field in the database.
 	FieldCouponID = "coupon_id"
+	// FieldValue holds the string denoting the value field in the database.
+	FieldValue = "value"
 	// Table holds the table name of the couponallocated in the database.
 	Table = "coupon_allocateds"
 )
@@ -40,6 +43,7 @@ var Columns = []string{
 	FieldUserID,
 	FieldType,
 	FieldCouponID,
+	FieldValue,
 }
 
 // ValidColumn reports if the column name is valid (part of the table columns).
@@ -71,6 +75,8 @@ var (
 	DefaultDeletedAt func() uint32
 	// DefaultType holds the default value on creation for the "type" field.
 	DefaultType string
+	// DefaultValue holds the default value on creation for the "value" field.
+	DefaultValue decimal.Decimal
 	// DefaultID holds the default value on creation for the "id" field.
 	DefaultID func() uuid.UUID
 )

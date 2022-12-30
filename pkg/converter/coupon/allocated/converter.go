@@ -16,6 +16,7 @@ func Ent2Grpc(row *ent.CouponAllocated) *npool.Allocated {
 		UserID:    row.UserID.String(),
 		Type:      npool.CouponType(npool.CouponType_value[row.Type]),
 		CouponID:  row.CouponID.String(),
+		Value:     row.Value.String(),
 		CreatedAt: row.CreatedAt,
 		UpdatedAt: row.UpdatedAt,
 	}

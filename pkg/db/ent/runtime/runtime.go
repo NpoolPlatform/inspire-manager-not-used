@@ -218,6 +218,10 @@ func init() {
 	couponallocatedDescType := couponallocatedFields[3].Descriptor()
 	// couponallocated.DefaultType holds the default value on creation for the type field.
 	couponallocated.DefaultType = couponallocatedDescType.Default.(string)
+	// couponallocatedDescValue is the schema descriptor for value field.
+	couponallocatedDescValue := couponallocatedFields[5].Descriptor()
+	// couponallocated.DefaultValue holds the default value on creation for the value field.
+	couponallocated.DefaultValue = couponallocatedDescValue.Default.(decimal.Decimal)
 	// couponallocatedDescID is the schema descriptor for id field.
 	couponallocatedDescID := couponallocatedFields[0].Descriptor()
 	// couponallocated.DefaultID holds the default value on creation for the id field.

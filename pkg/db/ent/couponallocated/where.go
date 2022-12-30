@@ -6,6 +6,7 @@ import (
 	"entgo.io/ent/dialect/sql"
 	"github.com/NpoolPlatform/inspire-manager/pkg/db/ent/predicate"
 	"github.com/google/uuid"
+	"github.com/shopspring/decimal"
 )
 
 // ID filters vertices based on their ID field.
@@ -125,6 +126,13 @@ func Type(v string) predicate.CouponAllocated {
 func CouponID(v uuid.UUID) predicate.CouponAllocated {
 	return predicate.CouponAllocated(func(s *sql.Selector) {
 		s.Where(sql.EQ(s.C(FieldCouponID), v))
+	})
+}
+
+// Value applies equality check predicate on the "value" field. It's identical to ValueEQ.
+func Value(v decimal.Decimal) predicate.CouponAllocated {
+	return predicate.CouponAllocated(func(s *sql.Selector) {
+		s.Where(sql.EQ(s.C(FieldValue), v))
 	})
 }
 
@@ -622,6 +630,84 @@ func CouponIDLT(v uuid.UUID) predicate.CouponAllocated {
 func CouponIDLTE(v uuid.UUID) predicate.CouponAllocated {
 	return predicate.CouponAllocated(func(s *sql.Selector) {
 		s.Where(sql.LTE(s.C(FieldCouponID), v))
+	})
+}
+
+// ValueEQ applies the EQ predicate on the "value" field.
+func ValueEQ(v decimal.Decimal) predicate.CouponAllocated {
+	return predicate.CouponAllocated(func(s *sql.Selector) {
+		s.Where(sql.EQ(s.C(FieldValue), v))
+	})
+}
+
+// ValueNEQ applies the NEQ predicate on the "value" field.
+func ValueNEQ(v decimal.Decimal) predicate.CouponAllocated {
+	return predicate.CouponAllocated(func(s *sql.Selector) {
+		s.Where(sql.NEQ(s.C(FieldValue), v))
+	})
+}
+
+// ValueIn applies the In predicate on the "value" field.
+func ValueIn(vs ...decimal.Decimal) predicate.CouponAllocated {
+	v := make([]interface{}, len(vs))
+	for i := range v {
+		v[i] = vs[i]
+	}
+	return predicate.CouponAllocated(func(s *sql.Selector) {
+		s.Where(sql.In(s.C(FieldValue), v...))
+	})
+}
+
+// ValueNotIn applies the NotIn predicate on the "value" field.
+func ValueNotIn(vs ...decimal.Decimal) predicate.CouponAllocated {
+	v := make([]interface{}, len(vs))
+	for i := range v {
+		v[i] = vs[i]
+	}
+	return predicate.CouponAllocated(func(s *sql.Selector) {
+		s.Where(sql.NotIn(s.C(FieldValue), v...))
+	})
+}
+
+// ValueGT applies the GT predicate on the "value" field.
+func ValueGT(v decimal.Decimal) predicate.CouponAllocated {
+	return predicate.CouponAllocated(func(s *sql.Selector) {
+		s.Where(sql.GT(s.C(FieldValue), v))
+	})
+}
+
+// ValueGTE applies the GTE predicate on the "value" field.
+func ValueGTE(v decimal.Decimal) predicate.CouponAllocated {
+	return predicate.CouponAllocated(func(s *sql.Selector) {
+		s.Where(sql.GTE(s.C(FieldValue), v))
+	})
+}
+
+// ValueLT applies the LT predicate on the "value" field.
+func ValueLT(v decimal.Decimal) predicate.CouponAllocated {
+	return predicate.CouponAllocated(func(s *sql.Selector) {
+		s.Where(sql.LT(s.C(FieldValue), v))
+	})
+}
+
+// ValueLTE applies the LTE predicate on the "value" field.
+func ValueLTE(v decimal.Decimal) predicate.CouponAllocated {
+	return predicate.CouponAllocated(func(s *sql.Selector) {
+		s.Where(sql.LTE(s.C(FieldValue), v))
+	})
+}
+
+// ValueIsNil applies the IsNil predicate on the "value" field.
+func ValueIsNil() predicate.CouponAllocated {
+	return predicate.CouponAllocated(func(s *sql.Selector) {
+		s.Where(sql.IsNull(s.C(FieldValue)))
+	})
+}
+
+// ValueNotNil applies the NotNil predicate on the "value" field.
+func ValueNotNil() predicate.CouponAllocated {
+	return predicate.CouponAllocated(func(s *sql.Selector) {
+		s.Where(sql.NotNull(s.C(FieldValue)))
 	})
 }
 

@@ -41,6 +41,7 @@ var appDate = npool.Allocated{
 	UserID:   uuid.NewString(),
 	Type:     npool.CouponType_Discount,
 	CouponID: uuid.NewString(),
+	Value:    "0",
 }
 
 var (

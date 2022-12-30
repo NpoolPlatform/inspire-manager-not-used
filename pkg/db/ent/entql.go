@@ -96,6 +96,7 @@ var schemaGraph = func() *sqlgraph.Schema {
 			couponallocated.FieldUserID:    {Type: field.TypeUUID, Column: couponallocated.FieldUserID},
 			couponallocated.FieldType:      {Type: field.TypeString, Column: couponallocated.FieldType},
 			couponallocated.FieldCouponID:  {Type: field.TypeUUID, Column: couponallocated.FieldCouponID},
+			couponallocated.FieldValue:     {Type: field.TypeOther, Column: couponallocated.FieldValue},
 		},
 	}
 	graph.Nodes[3] = &sqlgraph.Node{
@@ -544,6 +545,11 @@ func (f *CouponAllocatedFilter) WhereType(p entql.StringP) {
 // WhereCouponID applies the entql [16]byte predicate on the coupon_id field.
 func (f *CouponAllocatedFilter) WhereCouponID(p entql.ValueP) {
 	f.Where(p.Field(couponallocated.FieldCouponID))
+}
+
+// WhereValue applies the entql other predicate on the value field.
+func (f *CouponAllocatedFilter) WhereValue(p entql.OtherP) {
+	f.Where(p.Field(couponallocated.FieldValue))
 }
 
 // addPredicate implements the predicateAdder interface.
