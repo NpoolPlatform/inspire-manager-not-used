@@ -162,6 +162,20 @@ func (cfac *CouponFixAmountCreate) SetNillableName(s *string) *CouponFixAmountCr
 	return cfac
 }
 
+// SetAllocated sets the "allocated" field.
+func (cfac *CouponFixAmountCreate) SetAllocated(u uint32) *CouponFixAmountCreate {
+	cfac.mutation.SetAllocated(u)
+	return cfac
+}
+
+// SetNillableAllocated sets the "allocated" field if the given value is not nil.
+func (cfac *CouponFixAmountCreate) SetNillableAllocated(u *uint32) *CouponFixAmountCreate {
+	if u != nil {
+		cfac.SetAllocated(*u)
+	}
+	return cfac
+}
+
 // SetID sets the "id" field.
 func (cfac *CouponFixAmountCreate) SetID(u uuid.UUID) *CouponFixAmountCreate {
 	cfac.mutation.SetID(u)
@@ -299,6 +313,10 @@ func (cfac *CouponFixAmountCreate) defaults() error {
 	if _, ok := cfac.mutation.Name(); !ok {
 		v := couponfixamount.DefaultName
 		cfac.mutation.SetName(v)
+	}
+	if _, ok := cfac.mutation.Allocated(); !ok {
+		v := couponfixamount.DefaultAllocated
+		cfac.mutation.SetAllocated(v)
 	}
 	if _, ok := cfac.mutation.ID(); !ok {
 		if couponfixamount.DefaultID == nil {
@@ -451,6 +469,14 @@ func (cfac *CouponFixAmountCreate) createSpec() (*CouponFixAmount, *sqlgraph.Cre
 			Column: couponfixamount.FieldName,
 		})
 		_node.Name = value
+	}
+	if value, ok := cfac.mutation.Allocated(); ok {
+		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
+			Type:   field.TypeUint32,
+			Value:  value,
+			Column: couponfixamount.FieldAllocated,
+		})
+		_node.Allocated = value
 	}
 	return _node, _spec
 }
@@ -701,6 +727,30 @@ func (u *CouponFixAmountUpsert) UpdateName() *CouponFixAmountUpsert {
 // ClearName clears the value of the "name" field.
 func (u *CouponFixAmountUpsert) ClearName() *CouponFixAmountUpsert {
 	u.SetNull(couponfixamount.FieldName)
+	return u
+}
+
+// SetAllocated sets the "allocated" field.
+func (u *CouponFixAmountUpsert) SetAllocated(v uint32) *CouponFixAmountUpsert {
+	u.Set(couponfixamount.FieldAllocated, v)
+	return u
+}
+
+// UpdateAllocated sets the "allocated" field to the value that was provided on create.
+func (u *CouponFixAmountUpsert) UpdateAllocated() *CouponFixAmountUpsert {
+	u.SetExcluded(couponfixamount.FieldAllocated)
+	return u
+}
+
+// AddAllocated adds v to the "allocated" field.
+func (u *CouponFixAmountUpsert) AddAllocated(v uint32) *CouponFixAmountUpsert {
+	u.Add(couponfixamount.FieldAllocated, v)
+	return u
+}
+
+// ClearAllocated clears the value of the "allocated" field.
+func (u *CouponFixAmountUpsert) ClearAllocated() *CouponFixAmountUpsert {
+	u.SetNull(couponfixamount.FieldAllocated)
 	return u
 }
 
@@ -982,6 +1032,34 @@ func (u *CouponFixAmountUpsertOne) UpdateName() *CouponFixAmountUpsertOne {
 func (u *CouponFixAmountUpsertOne) ClearName() *CouponFixAmountUpsertOne {
 	return u.Update(func(s *CouponFixAmountUpsert) {
 		s.ClearName()
+	})
+}
+
+// SetAllocated sets the "allocated" field.
+func (u *CouponFixAmountUpsertOne) SetAllocated(v uint32) *CouponFixAmountUpsertOne {
+	return u.Update(func(s *CouponFixAmountUpsert) {
+		s.SetAllocated(v)
+	})
+}
+
+// AddAllocated adds v to the "allocated" field.
+func (u *CouponFixAmountUpsertOne) AddAllocated(v uint32) *CouponFixAmountUpsertOne {
+	return u.Update(func(s *CouponFixAmountUpsert) {
+		s.AddAllocated(v)
+	})
+}
+
+// UpdateAllocated sets the "allocated" field to the value that was provided on create.
+func (u *CouponFixAmountUpsertOne) UpdateAllocated() *CouponFixAmountUpsertOne {
+	return u.Update(func(s *CouponFixAmountUpsert) {
+		s.UpdateAllocated()
+	})
+}
+
+// ClearAllocated clears the value of the "allocated" field.
+func (u *CouponFixAmountUpsertOne) ClearAllocated() *CouponFixAmountUpsertOne {
+	return u.Update(func(s *CouponFixAmountUpsert) {
+		s.ClearAllocated()
 	})
 }
 
@@ -1429,6 +1507,34 @@ func (u *CouponFixAmountUpsertBulk) UpdateName() *CouponFixAmountUpsertBulk {
 func (u *CouponFixAmountUpsertBulk) ClearName() *CouponFixAmountUpsertBulk {
 	return u.Update(func(s *CouponFixAmountUpsert) {
 		s.ClearName()
+	})
+}
+
+// SetAllocated sets the "allocated" field.
+func (u *CouponFixAmountUpsertBulk) SetAllocated(v uint32) *CouponFixAmountUpsertBulk {
+	return u.Update(func(s *CouponFixAmountUpsert) {
+		s.SetAllocated(v)
+	})
+}
+
+// AddAllocated adds v to the "allocated" field.
+func (u *CouponFixAmountUpsertBulk) AddAllocated(v uint32) *CouponFixAmountUpsertBulk {
+	return u.Update(func(s *CouponFixAmountUpsert) {
+		s.AddAllocated(v)
+	})
+}
+
+// UpdateAllocated sets the "allocated" field to the value that was provided on create.
+func (u *CouponFixAmountUpsertBulk) UpdateAllocated() *CouponFixAmountUpsertBulk {
+	return u.Update(func(s *CouponFixAmountUpsert) {
+		s.UpdateAllocated()
+	})
+}
+
+// ClearAllocated clears the value of the "allocated" field.
+func (u *CouponFixAmountUpsertBulk) ClearAllocated() *CouponFixAmountUpsertBulk {
+	return u.Update(func(s *CouponFixAmountUpsert) {
+		s.ClearAllocated()
 	})
 }
 

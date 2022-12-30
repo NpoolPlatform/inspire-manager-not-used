@@ -38,6 +38,10 @@ func (CouponDiscount) Fields() []ent.Field {
 			Optional().
 			Default(decimal.Decimal{}),
 		field.
+			Uint32("circulation").
+			Optional().
+			Default(0),
+		field.
 			UUID("released_by_user_id", uuid.UUID{}),
 		field.
 			Uint32("start_at").
@@ -55,6 +59,10 @@ func (CouponDiscount) Fields() []ent.Field {
 			String("name").
 			Optional().
 			Default(""),
+		field.
+			Uint32("allocated").
+			Optional().
+			Default(0),
 	}
 }
 

@@ -62,6 +62,10 @@ func (CouponFixAmount) Fields() []ent.Field {
 			String("name").
 			Optional().
 			Default(""),
+		field.
+			Uint32("allocated").
+			Optional().
+			Default(0),
 	}
 }
 

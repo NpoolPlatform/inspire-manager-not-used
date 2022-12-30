@@ -157,6 +157,13 @@ func Name(v string) predicate.CouponFixAmount {
 	})
 }
 
+// Allocated applies equality check predicate on the "allocated" field. It's identical to AllocatedEQ.
+func Allocated(v uint32) predicate.CouponFixAmount {
+	return predicate.CouponFixAmount(func(s *sql.Selector) {
+		s.Where(sql.EQ(s.C(FieldAllocated), v))
+	})
+}
+
 // CreatedAtEQ applies the EQ predicate on the "created_at" field.
 func CreatedAtEQ(v uint32) predicate.CouponFixAmount {
 	return predicate.CouponFixAmount(func(s *sql.Selector) {
@@ -1012,6 +1019,84 @@ func NameEqualFold(v string) predicate.CouponFixAmount {
 func NameContainsFold(v string) predicate.CouponFixAmount {
 	return predicate.CouponFixAmount(func(s *sql.Selector) {
 		s.Where(sql.ContainsFold(s.C(FieldName), v))
+	})
+}
+
+// AllocatedEQ applies the EQ predicate on the "allocated" field.
+func AllocatedEQ(v uint32) predicate.CouponFixAmount {
+	return predicate.CouponFixAmount(func(s *sql.Selector) {
+		s.Where(sql.EQ(s.C(FieldAllocated), v))
+	})
+}
+
+// AllocatedNEQ applies the NEQ predicate on the "allocated" field.
+func AllocatedNEQ(v uint32) predicate.CouponFixAmount {
+	return predicate.CouponFixAmount(func(s *sql.Selector) {
+		s.Where(sql.NEQ(s.C(FieldAllocated), v))
+	})
+}
+
+// AllocatedIn applies the In predicate on the "allocated" field.
+func AllocatedIn(vs ...uint32) predicate.CouponFixAmount {
+	v := make([]interface{}, len(vs))
+	for i := range v {
+		v[i] = vs[i]
+	}
+	return predicate.CouponFixAmount(func(s *sql.Selector) {
+		s.Where(sql.In(s.C(FieldAllocated), v...))
+	})
+}
+
+// AllocatedNotIn applies the NotIn predicate on the "allocated" field.
+func AllocatedNotIn(vs ...uint32) predicate.CouponFixAmount {
+	v := make([]interface{}, len(vs))
+	for i := range v {
+		v[i] = vs[i]
+	}
+	return predicate.CouponFixAmount(func(s *sql.Selector) {
+		s.Where(sql.NotIn(s.C(FieldAllocated), v...))
+	})
+}
+
+// AllocatedGT applies the GT predicate on the "allocated" field.
+func AllocatedGT(v uint32) predicate.CouponFixAmount {
+	return predicate.CouponFixAmount(func(s *sql.Selector) {
+		s.Where(sql.GT(s.C(FieldAllocated), v))
+	})
+}
+
+// AllocatedGTE applies the GTE predicate on the "allocated" field.
+func AllocatedGTE(v uint32) predicate.CouponFixAmount {
+	return predicate.CouponFixAmount(func(s *sql.Selector) {
+		s.Where(sql.GTE(s.C(FieldAllocated), v))
+	})
+}
+
+// AllocatedLT applies the LT predicate on the "allocated" field.
+func AllocatedLT(v uint32) predicate.CouponFixAmount {
+	return predicate.CouponFixAmount(func(s *sql.Selector) {
+		s.Where(sql.LT(s.C(FieldAllocated), v))
+	})
+}
+
+// AllocatedLTE applies the LTE predicate on the "allocated" field.
+func AllocatedLTE(v uint32) predicate.CouponFixAmount {
+	return predicate.CouponFixAmount(func(s *sql.Selector) {
+		s.Where(sql.LTE(s.C(FieldAllocated), v))
+	})
+}
+
+// AllocatedIsNil applies the IsNil predicate on the "allocated" field.
+func AllocatedIsNil() predicate.CouponFixAmount {
+	return predicate.CouponFixAmount(func(s *sql.Selector) {
+		s.Where(sql.IsNull(s.C(FieldAllocated)))
+	})
+}
+
+// AllocatedNotNil applies the NotNil predicate on the "allocated" field.
+func AllocatedNotNil() predicate.CouponFixAmount {
+	return predicate.CouponFixAmount(func(s *sql.Selector) {
+		s.Where(sql.NotNull(s.C(FieldAllocated)))
 	})
 }
 

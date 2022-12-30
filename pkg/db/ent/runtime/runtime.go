@@ -254,22 +254,30 @@ func init() {
 	coupondiscountDescDiscount := coupondiscountFields[2].Descriptor()
 	// coupondiscount.DefaultDiscount holds the default value on creation for the discount field.
 	coupondiscount.DefaultDiscount = coupondiscountDescDiscount.Default.(decimal.Decimal)
+	// coupondiscountDescCirculation is the schema descriptor for circulation field.
+	coupondiscountDescCirculation := coupondiscountFields[3].Descriptor()
+	// coupondiscount.DefaultCirculation holds the default value on creation for the circulation field.
+	coupondiscount.DefaultCirculation = coupondiscountDescCirculation.Default.(uint32)
 	// coupondiscountDescStartAt is the schema descriptor for start_at field.
-	coupondiscountDescStartAt := coupondiscountFields[4].Descriptor()
+	coupondiscountDescStartAt := coupondiscountFields[5].Descriptor()
 	// coupondiscount.DefaultStartAt holds the default value on creation for the start_at field.
 	coupondiscount.DefaultStartAt = coupondiscountDescStartAt.Default.(uint32)
 	// coupondiscountDescDurationDays is the schema descriptor for duration_days field.
-	coupondiscountDescDurationDays := coupondiscountFields[5].Descriptor()
+	coupondiscountDescDurationDays := coupondiscountFields[6].Descriptor()
 	// coupondiscount.DefaultDurationDays holds the default value on creation for the duration_days field.
 	coupondiscount.DefaultDurationDays = coupondiscountDescDurationDays.Default.(uint32)
 	// coupondiscountDescMessage is the schema descriptor for message field.
-	coupondiscountDescMessage := coupondiscountFields[6].Descriptor()
+	coupondiscountDescMessage := coupondiscountFields[7].Descriptor()
 	// coupondiscount.DefaultMessage holds the default value on creation for the message field.
 	coupondiscount.DefaultMessage = coupondiscountDescMessage.Default.(string)
 	// coupondiscountDescName is the schema descriptor for name field.
-	coupondiscountDescName := coupondiscountFields[7].Descriptor()
+	coupondiscountDescName := coupondiscountFields[8].Descriptor()
 	// coupondiscount.DefaultName holds the default value on creation for the name field.
 	coupondiscount.DefaultName = coupondiscountDescName.Default.(string)
+	// coupondiscountDescAllocated is the schema descriptor for allocated field.
+	coupondiscountDescAllocated := coupondiscountFields[9].Descriptor()
+	// coupondiscount.DefaultAllocated holds the default value on creation for the allocated field.
+	coupondiscount.DefaultAllocated = coupondiscountDescAllocated.Default.(uint32)
 	// coupondiscountDescID is the schema descriptor for id field.
 	coupondiscountDescID := coupondiscountFields[0].Descriptor()
 	// coupondiscount.DefaultID holds the default value on creation for the id field.
@@ -326,6 +334,10 @@ func init() {
 	couponfixamountDescName := couponfixamountFields[8].Descriptor()
 	// couponfixamount.DefaultName holds the default value on creation for the name field.
 	couponfixamount.DefaultName = couponfixamountDescName.Default.(string)
+	// couponfixamountDescAllocated is the schema descriptor for allocated field.
+	couponfixamountDescAllocated := couponfixamountFields[9].Descriptor()
+	// couponfixamount.DefaultAllocated holds the default value on creation for the allocated field.
+	couponfixamount.DefaultAllocated = couponfixamountDescAllocated.Default.(uint32)
 	// couponfixamountDescID is the schema descriptor for id field.
 	couponfixamountDescID := couponfixamountFields[0].Descriptor()
 	// couponfixamount.DefaultID holds the default value on creation for the id field.

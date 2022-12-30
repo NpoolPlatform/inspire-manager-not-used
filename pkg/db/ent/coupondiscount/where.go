@@ -115,6 +115,13 @@ func Discount(v decimal.Decimal) predicate.CouponDiscount {
 	})
 }
 
+// Circulation applies equality check predicate on the "circulation" field. It's identical to CirculationEQ.
+func Circulation(v uint32) predicate.CouponDiscount {
+	return predicate.CouponDiscount(func(s *sql.Selector) {
+		s.Where(sql.EQ(s.C(FieldCirculation), v))
+	})
+}
+
 // ReleasedByUserID applies equality check predicate on the "released_by_user_id" field. It's identical to ReleasedByUserIDEQ.
 func ReleasedByUserID(v uuid.UUID) predicate.CouponDiscount {
 	return predicate.CouponDiscount(func(s *sql.Selector) {
@@ -147,6 +154,13 @@ func Message(v string) predicate.CouponDiscount {
 func Name(v string) predicate.CouponDiscount {
 	return predicate.CouponDiscount(func(s *sql.Selector) {
 		s.Where(sql.EQ(s.C(FieldName), v))
+	})
+}
+
+// Allocated applies equality check predicate on the "allocated" field. It's identical to AllocatedEQ.
+func Allocated(v uint32) predicate.CouponDiscount {
+	return predicate.CouponDiscount(func(s *sql.Selector) {
+		s.Where(sql.EQ(s.C(FieldAllocated), v))
 	})
 }
 
@@ -481,6 +495,84 @@ func DiscountIsNil() predicate.CouponDiscount {
 func DiscountNotNil() predicate.CouponDiscount {
 	return predicate.CouponDiscount(func(s *sql.Selector) {
 		s.Where(sql.NotNull(s.C(FieldDiscount)))
+	})
+}
+
+// CirculationEQ applies the EQ predicate on the "circulation" field.
+func CirculationEQ(v uint32) predicate.CouponDiscount {
+	return predicate.CouponDiscount(func(s *sql.Selector) {
+		s.Where(sql.EQ(s.C(FieldCirculation), v))
+	})
+}
+
+// CirculationNEQ applies the NEQ predicate on the "circulation" field.
+func CirculationNEQ(v uint32) predicate.CouponDiscount {
+	return predicate.CouponDiscount(func(s *sql.Selector) {
+		s.Where(sql.NEQ(s.C(FieldCirculation), v))
+	})
+}
+
+// CirculationIn applies the In predicate on the "circulation" field.
+func CirculationIn(vs ...uint32) predicate.CouponDiscount {
+	v := make([]interface{}, len(vs))
+	for i := range v {
+		v[i] = vs[i]
+	}
+	return predicate.CouponDiscount(func(s *sql.Selector) {
+		s.Where(sql.In(s.C(FieldCirculation), v...))
+	})
+}
+
+// CirculationNotIn applies the NotIn predicate on the "circulation" field.
+func CirculationNotIn(vs ...uint32) predicate.CouponDiscount {
+	v := make([]interface{}, len(vs))
+	for i := range v {
+		v[i] = vs[i]
+	}
+	return predicate.CouponDiscount(func(s *sql.Selector) {
+		s.Where(sql.NotIn(s.C(FieldCirculation), v...))
+	})
+}
+
+// CirculationGT applies the GT predicate on the "circulation" field.
+func CirculationGT(v uint32) predicate.CouponDiscount {
+	return predicate.CouponDiscount(func(s *sql.Selector) {
+		s.Where(sql.GT(s.C(FieldCirculation), v))
+	})
+}
+
+// CirculationGTE applies the GTE predicate on the "circulation" field.
+func CirculationGTE(v uint32) predicate.CouponDiscount {
+	return predicate.CouponDiscount(func(s *sql.Selector) {
+		s.Where(sql.GTE(s.C(FieldCirculation), v))
+	})
+}
+
+// CirculationLT applies the LT predicate on the "circulation" field.
+func CirculationLT(v uint32) predicate.CouponDiscount {
+	return predicate.CouponDiscount(func(s *sql.Selector) {
+		s.Where(sql.LT(s.C(FieldCirculation), v))
+	})
+}
+
+// CirculationLTE applies the LTE predicate on the "circulation" field.
+func CirculationLTE(v uint32) predicate.CouponDiscount {
+	return predicate.CouponDiscount(func(s *sql.Selector) {
+		s.Where(sql.LTE(s.C(FieldCirculation), v))
+	})
+}
+
+// CirculationIsNil applies the IsNil predicate on the "circulation" field.
+func CirculationIsNil() predicate.CouponDiscount {
+	return predicate.CouponDiscount(func(s *sql.Selector) {
+		s.Where(sql.IsNull(s.C(FieldCirculation)))
+	})
+}
+
+// CirculationNotNil applies the NotNil predicate on the "circulation" field.
+func CirculationNotNil() predicate.CouponDiscount {
+	return predicate.CouponDiscount(func(s *sql.Selector) {
+		s.Where(sql.NotNull(s.C(FieldCirculation)))
 	})
 }
 
@@ -927,6 +1019,84 @@ func NameEqualFold(v string) predicate.CouponDiscount {
 func NameContainsFold(v string) predicate.CouponDiscount {
 	return predicate.CouponDiscount(func(s *sql.Selector) {
 		s.Where(sql.ContainsFold(s.C(FieldName), v))
+	})
+}
+
+// AllocatedEQ applies the EQ predicate on the "allocated" field.
+func AllocatedEQ(v uint32) predicate.CouponDiscount {
+	return predicate.CouponDiscount(func(s *sql.Selector) {
+		s.Where(sql.EQ(s.C(FieldAllocated), v))
+	})
+}
+
+// AllocatedNEQ applies the NEQ predicate on the "allocated" field.
+func AllocatedNEQ(v uint32) predicate.CouponDiscount {
+	return predicate.CouponDiscount(func(s *sql.Selector) {
+		s.Where(sql.NEQ(s.C(FieldAllocated), v))
+	})
+}
+
+// AllocatedIn applies the In predicate on the "allocated" field.
+func AllocatedIn(vs ...uint32) predicate.CouponDiscount {
+	v := make([]interface{}, len(vs))
+	for i := range v {
+		v[i] = vs[i]
+	}
+	return predicate.CouponDiscount(func(s *sql.Selector) {
+		s.Where(sql.In(s.C(FieldAllocated), v...))
+	})
+}
+
+// AllocatedNotIn applies the NotIn predicate on the "allocated" field.
+func AllocatedNotIn(vs ...uint32) predicate.CouponDiscount {
+	v := make([]interface{}, len(vs))
+	for i := range v {
+		v[i] = vs[i]
+	}
+	return predicate.CouponDiscount(func(s *sql.Selector) {
+		s.Where(sql.NotIn(s.C(FieldAllocated), v...))
+	})
+}
+
+// AllocatedGT applies the GT predicate on the "allocated" field.
+func AllocatedGT(v uint32) predicate.CouponDiscount {
+	return predicate.CouponDiscount(func(s *sql.Selector) {
+		s.Where(sql.GT(s.C(FieldAllocated), v))
+	})
+}
+
+// AllocatedGTE applies the GTE predicate on the "allocated" field.
+func AllocatedGTE(v uint32) predicate.CouponDiscount {
+	return predicate.CouponDiscount(func(s *sql.Selector) {
+		s.Where(sql.GTE(s.C(FieldAllocated), v))
+	})
+}
+
+// AllocatedLT applies the LT predicate on the "allocated" field.
+func AllocatedLT(v uint32) predicate.CouponDiscount {
+	return predicate.CouponDiscount(func(s *sql.Selector) {
+		s.Where(sql.LT(s.C(FieldAllocated), v))
+	})
+}
+
+// AllocatedLTE applies the LTE predicate on the "allocated" field.
+func AllocatedLTE(v uint32) predicate.CouponDiscount {
+	return predicate.CouponDiscount(func(s *sql.Selector) {
+		s.Where(sql.LTE(s.C(FieldAllocated), v))
+	})
+}
+
+// AllocatedIsNil applies the IsNil predicate on the "allocated" field.
+func AllocatedIsNil() predicate.CouponDiscount {
+	return predicate.CouponDiscount(func(s *sql.Selector) {
+		s.Where(sql.IsNull(s.C(FieldAllocated)))
+	})
+}
+
+// AllocatedNotNil applies the NotNil predicate on the "allocated" field.
+func AllocatedNotNil() predicate.CouponDiscount {
+	return predicate.CouponDiscount(func(s *sql.Selector) {
+		s.Where(sql.NotNull(s.C(FieldAllocated)))
 	})
 }
 

@@ -59,6 +59,7 @@ func CreateSet(c *ent.CouponFixAmountCreate, in *npool.FixAmountReq) (*ent.Coupo
 	if in.Name != nil {
 		c.SetName(in.GetName())
 	}
+	c.SetAllocated(0)
 	return c, nil
 }
 
@@ -154,6 +155,9 @@ func UpdateSet(u *ent.CouponFixAmountUpdateOne, in *npool.FixAmountReq) (*ent.Co
 	}
 	if in.Name != nil {
 		u.SetName(in.GetName())
+	}
+	if in.Allocated != nil {
+		u.AddAllocated(int32(in.GetAllocated()))
 	}
 	return u, nil
 }

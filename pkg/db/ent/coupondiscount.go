@@ -27,6 +27,8 @@ type CouponDiscount struct {
 	AppID uuid.UUID `json:"app_id,omitempty"`
 	// Discount holds the value of the "discount" field.
 	Discount decimal.Decimal `json:"discount,omitempty"`
+	// Circulation holds the value of the "circulation" field.
+	Circulation uint32 `json:"circulation,omitempty"`
 	// ReleasedByUserID holds the value of the "released_by_user_id" field.
 	ReleasedByUserID uuid.UUID `json:"released_by_user_id,omitempty"`
 	// StartAt holds the value of the "start_at" field.
@@ -37,6 +39,8 @@ type CouponDiscount struct {
 	Message string `json:"message,omitempty"`
 	// Name holds the value of the "name" field.
 	Name string `json:"name,omitempty"`
+	// Allocated holds the value of the "allocated" field.
+	Allocated uint32 `json:"allocated,omitempty"`
 }
 
 // scanValues returns the types for scanning values from sql.Rows.
@@ -46,7 +50,7 @@ func (*CouponDiscount) scanValues(columns []string) ([]interface{}, error) {
 		switch columns[i] {
 		case coupondiscount.FieldDiscount:
 			values[i] = new(decimal.Decimal)
-		case coupondiscount.FieldCreatedAt, coupondiscount.FieldUpdatedAt, coupondiscount.FieldDeletedAt, coupondiscount.FieldStartAt, coupondiscount.FieldDurationDays:
+		case coupondiscount.FieldCreatedAt, coupondiscount.FieldUpdatedAt, coupondiscount.FieldDeletedAt, coupondiscount.FieldCirculation, coupondiscount.FieldStartAt, coupondiscount.FieldDurationDays, coupondiscount.FieldAllocated:
 			values[i] = new(sql.NullInt64)
 		case coupondiscount.FieldMessage, coupondiscount.FieldName:
 			values[i] = new(sql.NullString)
@@ -103,6 +107,12 @@ func (cd *CouponDiscount) assignValues(columns []string, values []interface{}) e
 			} else if value != nil {
 				cd.Discount = *value
 			}
+		case coupondiscount.FieldCirculation:
+			if value, ok := values[i].(*sql.NullInt64); !ok {
+				return fmt.Errorf("unexpected type %T for field circulation", values[i])
+			} else if value.Valid {
+				cd.Circulation = uint32(value.Int64)
+			}
 		case coupondiscount.FieldReleasedByUserID:
 			if value, ok := values[i].(*uuid.UUID); !ok {
 				return fmt.Errorf("unexpected type %T for field released_by_user_id", values[i])
@@ -132,6 +142,12 @@ func (cd *CouponDiscount) assignValues(columns []string, values []interface{}) e
 				return fmt.Errorf("unexpected type %T for field name", values[i])
 			} else if value.Valid {
 				cd.Name = value.String
+			}
+		case coupondiscount.FieldAllocated:
+			if value, ok := values[i].(*sql.NullInt64); !ok {
+				return fmt.Errorf("unexpected type %T for field allocated", values[i])
+			} else if value.Valid {
+				cd.Allocated = uint32(value.Int64)
 			}
 		}
 	}
@@ -176,6 +192,9 @@ func (cd *CouponDiscount) String() string {
 	builder.WriteString("discount=")
 	builder.WriteString(fmt.Sprintf("%v", cd.Discount))
 	builder.WriteString(", ")
+	builder.WriteString("circulation=")
+	builder.WriteString(fmt.Sprintf("%v", cd.Circulation))
+	builder.WriteString(", ")
 	builder.WriteString("released_by_user_id=")
 	builder.WriteString(fmt.Sprintf("%v", cd.ReleasedByUserID))
 	builder.WriteString(", ")
@@ -190,6 +209,9 @@ func (cd *CouponDiscount) String() string {
 	builder.WriteString(", ")
 	builder.WriteString("name=")
 	builder.WriteString(cd.Name)
+	builder.WriteString(", ")
+	builder.WriteString("allocated=")
+	builder.WriteString(fmt.Sprintf("%v", cd.Allocated))
 	builder.WriteByte(')')
 	return builder.String()
 }

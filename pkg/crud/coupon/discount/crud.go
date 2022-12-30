@@ -38,6 +38,9 @@ func CreateSet(c *ent.CouponDiscountCreate, in *npool.DiscountReq) (*ent.CouponD
 		}
 		c.SetDiscount(val)
 	}
+	if in.Circulation != nil {
+		c.SetCirculation(in.GetCirculation())
+	}
 	if in.ReleasedByUserID != nil {
 		c.SetReleasedByUserID(uuid.MustParse(in.GetReleasedByUserID()))
 	}
@@ -53,6 +56,7 @@ func CreateSet(c *ent.CouponDiscountCreate, in *npool.DiscountReq) (*ent.CouponD
 	if in.Name != nil {
 		c.SetName(in.GetName())
 	}
+	c.SetAllocated(0)
 	return c, nil
 }
 
@@ -130,6 +134,9 @@ func UpdateSet(u *ent.CouponDiscountUpdateOne, in *npool.DiscountReq) (*ent.Coup
 		}
 		u.SetDiscount(val)
 	}
+	if in.Circulation != nil {
+		u.SetCirculation(in.GetCirculation())
+	}
 	if in.StartAt != nil {
 		u.SetStartAt(in.GetStartAt())
 	}
@@ -141,6 +148,9 @@ func UpdateSet(u *ent.CouponDiscountUpdateOne, in *npool.DiscountReq) (*ent.Coup
 	}
 	if in.Name != nil {
 		u.SetName(in.GetName())
+	}
+	if in.Allocated != nil {
+		u.AddAllocated(int32(in.GetAllocated()))
 	}
 	return u, nil
 }

@@ -39,6 +39,8 @@ type CouponFixAmount struct {
 	Message string `json:"message,omitempty"`
 	// Name holds the value of the "name" field.
 	Name string `json:"name,omitempty"`
+	// Allocated holds the value of the "allocated" field.
+	Allocated uint32 `json:"allocated,omitempty"`
 }
 
 // scanValues returns the types for scanning values from sql.Rows.
@@ -48,7 +50,7 @@ func (*CouponFixAmount) scanValues(columns []string) ([]interface{}, error) {
 		switch columns[i] {
 		case couponfixamount.FieldDenomination, couponfixamount.FieldCirculation:
 			values[i] = new(decimal.Decimal)
-		case couponfixamount.FieldCreatedAt, couponfixamount.FieldUpdatedAt, couponfixamount.FieldDeletedAt, couponfixamount.FieldStartAt, couponfixamount.FieldDurationDays:
+		case couponfixamount.FieldCreatedAt, couponfixamount.FieldUpdatedAt, couponfixamount.FieldDeletedAt, couponfixamount.FieldStartAt, couponfixamount.FieldDurationDays, couponfixamount.FieldAllocated:
 			values[i] = new(sql.NullInt64)
 		case couponfixamount.FieldMessage, couponfixamount.FieldName:
 			values[i] = new(sql.NullString)
@@ -141,6 +143,12 @@ func (cfa *CouponFixAmount) assignValues(columns []string, values []interface{})
 			} else if value.Valid {
 				cfa.Name = value.String
 			}
+		case couponfixamount.FieldAllocated:
+			if value, ok := values[i].(*sql.NullInt64); !ok {
+				return fmt.Errorf("unexpected type %T for field allocated", values[i])
+			} else if value.Valid {
+				cfa.Allocated = uint32(value.Int64)
+			}
 		}
 	}
 	return nil
@@ -201,6 +209,9 @@ func (cfa *CouponFixAmount) String() string {
 	builder.WriteString(", ")
 	builder.WriteString("name=")
 	builder.WriteString(cfa.Name)
+	builder.WriteString(", ")
+	builder.WriteString("allocated=")
+	builder.WriteString(fmt.Sprintf("%v", cfa.Allocated))
 	builder.WriteByte(')')
 	return builder.String()
 }

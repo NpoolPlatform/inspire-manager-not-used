@@ -23,6 +23,8 @@ const (
 	FieldAppID = "app_id"
 	// FieldDiscount holds the string denoting the discount field in the database.
 	FieldDiscount = "discount"
+	// FieldCirculation holds the string denoting the circulation field in the database.
+	FieldCirculation = "circulation"
 	// FieldReleasedByUserID holds the string denoting the released_by_user_id field in the database.
 	FieldReleasedByUserID = "released_by_user_id"
 	// FieldStartAt holds the string denoting the start_at field in the database.
@@ -33,6 +35,8 @@ const (
 	FieldMessage = "message"
 	// FieldName holds the string denoting the name field in the database.
 	FieldName = "name"
+	// FieldAllocated holds the string denoting the allocated field in the database.
+	FieldAllocated = "allocated"
 	// Table holds the table name of the coupondiscount in the database.
 	Table = "coupon_discounts"
 )
@@ -45,11 +49,13 @@ var Columns = []string{
 	FieldDeletedAt,
 	FieldAppID,
 	FieldDiscount,
+	FieldCirculation,
 	FieldReleasedByUserID,
 	FieldStartAt,
 	FieldDurationDays,
 	FieldMessage,
 	FieldName,
+	FieldAllocated,
 }
 
 // ValidColumn reports if the column name is valid (part of the table columns).
@@ -81,6 +87,8 @@ var (
 	DefaultDeletedAt func() uint32
 	// DefaultDiscount holds the default value on creation for the "discount" field.
 	DefaultDiscount decimal.Decimal
+	// DefaultCirculation holds the default value on creation for the "circulation" field.
+	DefaultCirculation uint32
 	// DefaultStartAt holds the default value on creation for the "start_at" field.
 	DefaultStartAt uint32
 	// DefaultDurationDays holds the default value on creation for the "duration_days" field.
@@ -89,6 +97,8 @@ var (
 	DefaultMessage string
 	// DefaultName holds the default value on creation for the "name" field.
 	DefaultName string
+	// DefaultAllocated holds the default value on creation for the "allocated" field.
+	DefaultAllocated uint32
 	// DefaultID holds the default value on creation for the "id" field.
 	DefaultID func() uuid.UUID
 )

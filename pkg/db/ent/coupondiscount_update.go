@@ -111,6 +111,33 @@ func (cdu *CouponDiscountUpdate) ClearDiscount() *CouponDiscountUpdate {
 	return cdu
 }
 
+// SetCirculation sets the "circulation" field.
+func (cdu *CouponDiscountUpdate) SetCirculation(u uint32) *CouponDiscountUpdate {
+	cdu.mutation.ResetCirculation()
+	cdu.mutation.SetCirculation(u)
+	return cdu
+}
+
+// SetNillableCirculation sets the "circulation" field if the given value is not nil.
+func (cdu *CouponDiscountUpdate) SetNillableCirculation(u *uint32) *CouponDiscountUpdate {
+	if u != nil {
+		cdu.SetCirculation(*u)
+	}
+	return cdu
+}
+
+// AddCirculation adds u to the "circulation" field.
+func (cdu *CouponDiscountUpdate) AddCirculation(u int32) *CouponDiscountUpdate {
+	cdu.mutation.AddCirculation(u)
+	return cdu
+}
+
+// ClearCirculation clears the value of the "circulation" field.
+func (cdu *CouponDiscountUpdate) ClearCirculation() *CouponDiscountUpdate {
+	cdu.mutation.ClearCirculation()
+	return cdu
+}
+
 // SetReleasedByUserID sets the "released_by_user_id" field.
 func (cdu *CouponDiscountUpdate) SetReleasedByUserID(u uuid.UUID) *CouponDiscountUpdate {
 	cdu.mutation.SetReleasedByUserID(u)
@@ -208,6 +235,33 @@ func (cdu *CouponDiscountUpdate) SetNillableName(s *string) *CouponDiscountUpdat
 // ClearName clears the value of the "name" field.
 func (cdu *CouponDiscountUpdate) ClearName() *CouponDiscountUpdate {
 	cdu.mutation.ClearName()
+	return cdu
+}
+
+// SetAllocated sets the "allocated" field.
+func (cdu *CouponDiscountUpdate) SetAllocated(u uint32) *CouponDiscountUpdate {
+	cdu.mutation.ResetAllocated()
+	cdu.mutation.SetAllocated(u)
+	return cdu
+}
+
+// SetNillableAllocated sets the "allocated" field if the given value is not nil.
+func (cdu *CouponDiscountUpdate) SetNillableAllocated(u *uint32) *CouponDiscountUpdate {
+	if u != nil {
+		cdu.SetAllocated(*u)
+	}
+	return cdu
+}
+
+// AddAllocated adds u to the "allocated" field.
+func (cdu *CouponDiscountUpdate) AddAllocated(u int32) *CouponDiscountUpdate {
+	cdu.mutation.AddAllocated(u)
+	return cdu
+}
+
+// ClearAllocated clears the value of the "allocated" field.
+func (cdu *CouponDiscountUpdate) ClearAllocated() *CouponDiscountUpdate {
+	cdu.mutation.ClearAllocated()
 	return cdu
 }
 
@@ -371,6 +425,26 @@ func (cdu *CouponDiscountUpdate) sqlSave(ctx context.Context) (n int, err error)
 			Column: coupondiscount.FieldDiscount,
 		})
 	}
+	if value, ok := cdu.mutation.Circulation(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeUint32,
+			Value:  value,
+			Column: coupondiscount.FieldCirculation,
+		})
+	}
+	if value, ok := cdu.mutation.AddedCirculation(); ok {
+		_spec.Fields.Add = append(_spec.Fields.Add, &sqlgraph.FieldSpec{
+			Type:   field.TypeUint32,
+			Value:  value,
+			Column: coupondiscount.FieldCirculation,
+		})
+	}
+	if cdu.mutation.CirculationCleared() {
+		_spec.Fields.Clear = append(_spec.Fields.Clear, &sqlgraph.FieldSpec{
+			Type:   field.TypeUint32,
+			Column: coupondiscount.FieldCirculation,
+		})
+	}
 	if value, ok := cdu.mutation.ReleasedByUserID(); ok {
 		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
 			Type:   field.TypeUUID,
@@ -442,6 +516,26 @@ func (cdu *CouponDiscountUpdate) sqlSave(ctx context.Context) (n int, err error)
 		_spec.Fields.Clear = append(_spec.Fields.Clear, &sqlgraph.FieldSpec{
 			Type:   field.TypeString,
 			Column: coupondiscount.FieldName,
+		})
+	}
+	if value, ok := cdu.mutation.Allocated(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeUint32,
+			Value:  value,
+			Column: coupondiscount.FieldAllocated,
+		})
+	}
+	if value, ok := cdu.mutation.AddedAllocated(); ok {
+		_spec.Fields.Add = append(_spec.Fields.Add, &sqlgraph.FieldSpec{
+			Type:   field.TypeUint32,
+			Value:  value,
+			Column: coupondiscount.FieldAllocated,
+		})
+	}
+	if cdu.mutation.AllocatedCleared() {
+		_spec.Fields.Clear = append(_spec.Fields.Clear, &sqlgraph.FieldSpec{
+			Type:   field.TypeUint32,
+			Column: coupondiscount.FieldAllocated,
 		})
 	}
 	_spec.Modifiers = cdu.modifiers
@@ -546,6 +640,33 @@ func (cduo *CouponDiscountUpdateOne) ClearDiscount() *CouponDiscountUpdateOne {
 	return cduo
 }
 
+// SetCirculation sets the "circulation" field.
+func (cduo *CouponDiscountUpdateOne) SetCirculation(u uint32) *CouponDiscountUpdateOne {
+	cduo.mutation.ResetCirculation()
+	cduo.mutation.SetCirculation(u)
+	return cduo
+}
+
+// SetNillableCirculation sets the "circulation" field if the given value is not nil.
+func (cduo *CouponDiscountUpdateOne) SetNillableCirculation(u *uint32) *CouponDiscountUpdateOne {
+	if u != nil {
+		cduo.SetCirculation(*u)
+	}
+	return cduo
+}
+
+// AddCirculation adds u to the "circulation" field.
+func (cduo *CouponDiscountUpdateOne) AddCirculation(u int32) *CouponDiscountUpdateOne {
+	cduo.mutation.AddCirculation(u)
+	return cduo
+}
+
+// ClearCirculation clears the value of the "circulation" field.
+func (cduo *CouponDiscountUpdateOne) ClearCirculation() *CouponDiscountUpdateOne {
+	cduo.mutation.ClearCirculation()
+	return cduo
+}
+
 // SetReleasedByUserID sets the "released_by_user_id" field.
 func (cduo *CouponDiscountUpdateOne) SetReleasedByUserID(u uuid.UUID) *CouponDiscountUpdateOne {
 	cduo.mutation.SetReleasedByUserID(u)
@@ -643,6 +764,33 @@ func (cduo *CouponDiscountUpdateOne) SetNillableName(s *string) *CouponDiscountU
 // ClearName clears the value of the "name" field.
 func (cduo *CouponDiscountUpdateOne) ClearName() *CouponDiscountUpdateOne {
 	cduo.mutation.ClearName()
+	return cduo
+}
+
+// SetAllocated sets the "allocated" field.
+func (cduo *CouponDiscountUpdateOne) SetAllocated(u uint32) *CouponDiscountUpdateOne {
+	cduo.mutation.ResetAllocated()
+	cduo.mutation.SetAllocated(u)
+	return cduo
+}
+
+// SetNillableAllocated sets the "allocated" field if the given value is not nil.
+func (cduo *CouponDiscountUpdateOne) SetNillableAllocated(u *uint32) *CouponDiscountUpdateOne {
+	if u != nil {
+		cduo.SetAllocated(*u)
+	}
+	return cduo
+}
+
+// AddAllocated adds u to the "allocated" field.
+func (cduo *CouponDiscountUpdateOne) AddAllocated(u int32) *CouponDiscountUpdateOne {
+	cduo.mutation.AddAllocated(u)
+	return cduo
+}
+
+// ClearAllocated clears the value of the "allocated" field.
+func (cduo *CouponDiscountUpdateOne) ClearAllocated() *CouponDiscountUpdateOne {
+	cduo.mutation.ClearAllocated()
 	return cduo
 }
 
@@ -836,6 +984,26 @@ func (cduo *CouponDiscountUpdateOne) sqlSave(ctx context.Context) (_node *Coupon
 			Column: coupondiscount.FieldDiscount,
 		})
 	}
+	if value, ok := cduo.mutation.Circulation(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeUint32,
+			Value:  value,
+			Column: coupondiscount.FieldCirculation,
+		})
+	}
+	if value, ok := cduo.mutation.AddedCirculation(); ok {
+		_spec.Fields.Add = append(_spec.Fields.Add, &sqlgraph.FieldSpec{
+			Type:   field.TypeUint32,
+			Value:  value,
+			Column: coupondiscount.FieldCirculation,
+		})
+	}
+	if cduo.mutation.CirculationCleared() {
+		_spec.Fields.Clear = append(_spec.Fields.Clear, &sqlgraph.FieldSpec{
+			Type:   field.TypeUint32,
+			Column: coupondiscount.FieldCirculation,
+		})
+	}
 	if value, ok := cduo.mutation.ReleasedByUserID(); ok {
 		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
 			Type:   field.TypeUUID,
@@ -907,6 +1075,26 @@ func (cduo *CouponDiscountUpdateOne) sqlSave(ctx context.Context) (_node *Coupon
 		_spec.Fields.Clear = append(_spec.Fields.Clear, &sqlgraph.FieldSpec{
 			Type:   field.TypeString,
 			Column: coupondiscount.FieldName,
+		})
+	}
+	if value, ok := cduo.mutation.Allocated(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeUint32,
+			Value:  value,
+			Column: coupondiscount.FieldAllocated,
+		})
+	}
+	if value, ok := cduo.mutation.AddedAllocated(); ok {
+		_spec.Fields.Add = append(_spec.Fields.Add, &sqlgraph.FieldSpec{
+			Type:   field.TypeUint32,
+			Value:  value,
+			Column: coupondiscount.FieldAllocated,
+		})
+	}
+	if cduo.mutation.AllocatedCleared() {
+		_spec.Fields.Clear = append(_spec.Fields.Clear, &sqlgraph.FieldSpec{
+			Type:   field.TypeUint32,
+			Column: coupondiscount.FieldAllocated,
 		})
 	}
 	_spec.Modifiers = cduo.modifiers

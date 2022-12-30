@@ -83,11 +83,13 @@ var (
 		{Name: "deleted_at", Type: field.TypeUint32},
 		{Name: "app_id", Type: field.TypeUUID},
 		{Name: "discount", Type: field.TypeOther, Nullable: true, SchemaType: map[string]string{"mysql": "decimal(37,18)"}},
+		{Name: "circulation", Type: field.TypeUint32, Nullable: true, Default: 0},
 		{Name: "released_by_user_id", Type: field.TypeUUID},
 		{Name: "start_at", Type: field.TypeUint32, Nullable: true, Default: 0},
 		{Name: "duration_days", Type: field.TypeUint32, Nullable: true, Default: 0},
 		{Name: "message", Type: field.TypeString, Nullable: true, Default: ""},
 		{Name: "name", Type: field.TypeString, Nullable: true, Default: ""},
+		{Name: "allocated", Type: field.TypeUint32, Nullable: true, Default: 0},
 	}
 	// CouponDiscountsTable holds the schema information for the "coupon_discounts" table.
 	CouponDiscountsTable = &schema.Table{
@@ -109,6 +111,7 @@ var (
 		{Name: "duration_days", Type: field.TypeUint32, Nullable: true, Default: 0},
 		{Name: "message", Type: field.TypeString, Nullable: true, Default: ""},
 		{Name: "name", Type: field.TypeString, Nullable: true, Default: ""},
+		{Name: "allocated", Type: field.TypeUint32, Nullable: true, Default: 0},
 	}
 	// CouponFixAmountsTable holds the schema information for the "coupon_fix_amounts" table.
 	CouponFixAmountsTable = &schema.Table{
@@ -146,7 +149,7 @@ var (
 		{Name: "user_id", Type: field.TypeUUID, Nullable: true},
 		{Name: "good_id", Type: field.TypeUUID, Nullable: true},
 		{Name: "percent", Type: field.TypeOther, Nullable: true, SchemaType: map[string]string{"mysql": "decimal(37,18)"}},
-		{Name: "start_at", Type: field.TypeUint32, Nullable: true, Default: 1672372318},
+		{Name: "start_at", Type: field.TypeUint32, Nullable: true, Default: 1672380473},
 		{Name: "end_at", Type: field.TypeUint32, Nullable: true, Default: 0},
 	}
 	// GoodOrderPercentsTable holds the schema information for the "good_order_percents" table.

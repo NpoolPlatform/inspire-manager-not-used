@@ -20,6 +20,7 @@ func Ent2Grpc(row *ent.CouponFixAmount) *npool.FixAmount {
 		DurationDays:     row.DurationDays,
 		Message:          row.Message,
 		Name:             row.Name,
+		Allocated:        row.Allocated,
 		CreatedAt:        row.CreatedAt,
 		UpdatedAt:        row.UpdatedAt,
 	}

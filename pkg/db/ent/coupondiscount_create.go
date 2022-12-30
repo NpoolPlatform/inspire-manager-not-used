@@ -86,6 +86,20 @@ func (cdc *CouponDiscountCreate) SetNillableDiscount(d *decimal.Decimal) *Coupon
 	return cdc
 }
 
+// SetCirculation sets the "circulation" field.
+func (cdc *CouponDiscountCreate) SetCirculation(u uint32) *CouponDiscountCreate {
+	cdc.mutation.SetCirculation(u)
+	return cdc
+}
+
+// SetNillableCirculation sets the "circulation" field if the given value is not nil.
+func (cdc *CouponDiscountCreate) SetNillableCirculation(u *uint32) *CouponDiscountCreate {
+	if u != nil {
+		cdc.SetCirculation(*u)
+	}
+	return cdc
+}
+
 // SetReleasedByUserID sets the "released_by_user_id" field.
 func (cdc *CouponDiscountCreate) SetReleasedByUserID(u uuid.UUID) *CouponDiscountCreate {
 	cdc.mutation.SetReleasedByUserID(u)
@@ -144,6 +158,20 @@ func (cdc *CouponDiscountCreate) SetName(s string) *CouponDiscountCreate {
 func (cdc *CouponDiscountCreate) SetNillableName(s *string) *CouponDiscountCreate {
 	if s != nil {
 		cdc.SetName(*s)
+	}
+	return cdc
+}
+
+// SetAllocated sets the "allocated" field.
+func (cdc *CouponDiscountCreate) SetAllocated(u uint32) *CouponDiscountCreate {
+	cdc.mutation.SetAllocated(u)
+	return cdc
+}
+
+// SetNillableAllocated sets the "allocated" field if the given value is not nil.
+func (cdc *CouponDiscountCreate) SetNillableAllocated(u *uint32) *CouponDiscountCreate {
+	if u != nil {
+		cdc.SetAllocated(*u)
 	}
 	return cdc
 }
@@ -266,6 +294,10 @@ func (cdc *CouponDiscountCreate) defaults() error {
 		v := coupondiscount.DefaultDiscount
 		cdc.mutation.SetDiscount(v)
 	}
+	if _, ok := cdc.mutation.Circulation(); !ok {
+		v := coupondiscount.DefaultCirculation
+		cdc.mutation.SetCirculation(v)
+	}
 	if _, ok := cdc.mutation.StartAt(); !ok {
 		v := coupondiscount.DefaultStartAt
 		cdc.mutation.SetStartAt(v)
@@ -281,6 +313,10 @@ func (cdc *CouponDiscountCreate) defaults() error {
 	if _, ok := cdc.mutation.Name(); !ok {
 		v := coupondiscount.DefaultName
 		cdc.mutation.SetName(v)
+	}
+	if _, ok := cdc.mutation.Allocated(); !ok {
+		v := coupondiscount.DefaultAllocated
+		cdc.mutation.SetAllocated(v)
 	}
 	if _, ok := cdc.mutation.ID(); !ok {
 		if coupondiscount.DefaultID == nil {
@@ -386,6 +422,14 @@ func (cdc *CouponDiscountCreate) createSpec() (*CouponDiscount, *sqlgraph.Create
 		})
 		_node.Discount = value
 	}
+	if value, ok := cdc.mutation.Circulation(); ok {
+		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
+			Type:   field.TypeUint32,
+			Value:  value,
+			Column: coupondiscount.FieldCirculation,
+		})
+		_node.Circulation = value
+	}
 	if value, ok := cdc.mutation.ReleasedByUserID(); ok {
 		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
 			Type:   field.TypeUUID,
@@ -425,6 +469,14 @@ func (cdc *CouponDiscountCreate) createSpec() (*CouponDiscount, *sqlgraph.Create
 			Column: coupondiscount.FieldName,
 		})
 		_node.Name = value
+	}
+	if value, ok := cdc.mutation.Allocated(); ok {
+		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
+			Type:   field.TypeUint32,
+			Value:  value,
+			Column: coupondiscount.FieldAllocated,
+		})
+		_node.Allocated = value
 	}
 	return _node, _spec
 }
@@ -564,6 +616,30 @@ func (u *CouponDiscountUpsert) ClearDiscount() *CouponDiscountUpsert {
 	return u
 }
 
+// SetCirculation sets the "circulation" field.
+func (u *CouponDiscountUpsert) SetCirculation(v uint32) *CouponDiscountUpsert {
+	u.Set(coupondiscount.FieldCirculation, v)
+	return u
+}
+
+// UpdateCirculation sets the "circulation" field to the value that was provided on create.
+func (u *CouponDiscountUpsert) UpdateCirculation() *CouponDiscountUpsert {
+	u.SetExcluded(coupondiscount.FieldCirculation)
+	return u
+}
+
+// AddCirculation adds v to the "circulation" field.
+func (u *CouponDiscountUpsert) AddCirculation(v uint32) *CouponDiscountUpsert {
+	u.Add(coupondiscount.FieldCirculation, v)
+	return u
+}
+
+// ClearCirculation clears the value of the "circulation" field.
+func (u *CouponDiscountUpsert) ClearCirculation() *CouponDiscountUpsert {
+	u.SetNull(coupondiscount.FieldCirculation)
+	return u
+}
+
 // SetReleasedByUserID sets the "released_by_user_id" field.
 func (u *CouponDiscountUpsert) SetReleasedByUserID(v uuid.UUID) *CouponDiscountUpsert {
 	u.Set(coupondiscount.FieldReleasedByUserID, v)
@@ -657,6 +733,30 @@ func (u *CouponDiscountUpsert) UpdateName() *CouponDiscountUpsert {
 // ClearName clears the value of the "name" field.
 func (u *CouponDiscountUpsert) ClearName() *CouponDiscountUpsert {
 	u.SetNull(coupondiscount.FieldName)
+	return u
+}
+
+// SetAllocated sets the "allocated" field.
+func (u *CouponDiscountUpsert) SetAllocated(v uint32) *CouponDiscountUpsert {
+	u.Set(coupondiscount.FieldAllocated, v)
+	return u
+}
+
+// UpdateAllocated sets the "allocated" field to the value that was provided on create.
+func (u *CouponDiscountUpsert) UpdateAllocated() *CouponDiscountUpsert {
+	u.SetExcluded(coupondiscount.FieldAllocated)
+	return u
+}
+
+// AddAllocated adds v to the "allocated" field.
+func (u *CouponDiscountUpsert) AddAllocated(v uint32) *CouponDiscountUpsert {
+	u.Add(coupondiscount.FieldAllocated, v)
+	return u
+}
+
+// ClearAllocated clears the value of the "allocated" field.
+func (u *CouponDiscountUpsert) ClearAllocated() *CouponDiscountUpsert {
+	u.SetNull(coupondiscount.FieldAllocated)
 	return u
 }
 
@@ -808,6 +908,34 @@ func (u *CouponDiscountUpsertOne) ClearDiscount() *CouponDiscountUpsertOne {
 	})
 }
 
+// SetCirculation sets the "circulation" field.
+func (u *CouponDiscountUpsertOne) SetCirculation(v uint32) *CouponDiscountUpsertOne {
+	return u.Update(func(s *CouponDiscountUpsert) {
+		s.SetCirculation(v)
+	})
+}
+
+// AddCirculation adds v to the "circulation" field.
+func (u *CouponDiscountUpsertOne) AddCirculation(v uint32) *CouponDiscountUpsertOne {
+	return u.Update(func(s *CouponDiscountUpsert) {
+		s.AddCirculation(v)
+	})
+}
+
+// UpdateCirculation sets the "circulation" field to the value that was provided on create.
+func (u *CouponDiscountUpsertOne) UpdateCirculation() *CouponDiscountUpsertOne {
+	return u.Update(func(s *CouponDiscountUpsert) {
+		s.UpdateCirculation()
+	})
+}
+
+// ClearCirculation clears the value of the "circulation" field.
+func (u *CouponDiscountUpsertOne) ClearCirculation() *CouponDiscountUpsertOne {
+	return u.Update(func(s *CouponDiscountUpsert) {
+		s.ClearCirculation()
+	})
+}
+
 // SetReleasedByUserID sets the "released_by_user_id" field.
 func (u *CouponDiscountUpsertOne) SetReleasedByUserID(v uuid.UUID) *CouponDiscountUpsertOne {
 	return u.Update(func(s *CouponDiscountUpsert) {
@@ -917,6 +1045,34 @@ func (u *CouponDiscountUpsertOne) UpdateName() *CouponDiscountUpsertOne {
 func (u *CouponDiscountUpsertOne) ClearName() *CouponDiscountUpsertOne {
 	return u.Update(func(s *CouponDiscountUpsert) {
 		s.ClearName()
+	})
+}
+
+// SetAllocated sets the "allocated" field.
+func (u *CouponDiscountUpsertOne) SetAllocated(v uint32) *CouponDiscountUpsertOne {
+	return u.Update(func(s *CouponDiscountUpsert) {
+		s.SetAllocated(v)
+	})
+}
+
+// AddAllocated adds v to the "allocated" field.
+func (u *CouponDiscountUpsertOne) AddAllocated(v uint32) *CouponDiscountUpsertOne {
+	return u.Update(func(s *CouponDiscountUpsert) {
+		s.AddAllocated(v)
+	})
+}
+
+// UpdateAllocated sets the "allocated" field to the value that was provided on create.
+func (u *CouponDiscountUpsertOne) UpdateAllocated() *CouponDiscountUpsertOne {
+	return u.Update(func(s *CouponDiscountUpsert) {
+		s.UpdateAllocated()
+	})
+}
+
+// ClearAllocated clears the value of the "allocated" field.
+func (u *CouponDiscountUpsertOne) ClearAllocated() *CouponDiscountUpsertOne {
+	return u.Update(func(s *CouponDiscountUpsert) {
+		s.ClearAllocated()
 	})
 }
 
@@ -1234,6 +1390,34 @@ func (u *CouponDiscountUpsertBulk) ClearDiscount() *CouponDiscountUpsertBulk {
 	})
 }
 
+// SetCirculation sets the "circulation" field.
+func (u *CouponDiscountUpsertBulk) SetCirculation(v uint32) *CouponDiscountUpsertBulk {
+	return u.Update(func(s *CouponDiscountUpsert) {
+		s.SetCirculation(v)
+	})
+}
+
+// AddCirculation adds v to the "circulation" field.
+func (u *CouponDiscountUpsertBulk) AddCirculation(v uint32) *CouponDiscountUpsertBulk {
+	return u.Update(func(s *CouponDiscountUpsert) {
+		s.AddCirculation(v)
+	})
+}
+
+// UpdateCirculation sets the "circulation" field to the value that was provided on create.
+func (u *CouponDiscountUpsertBulk) UpdateCirculation() *CouponDiscountUpsertBulk {
+	return u.Update(func(s *CouponDiscountUpsert) {
+		s.UpdateCirculation()
+	})
+}
+
+// ClearCirculation clears the value of the "circulation" field.
+func (u *CouponDiscountUpsertBulk) ClearCirculation() *CouponDiscountUpsertBulk {
+	return u.Update(func(s *CouponDiscountUpsert) {
+		s.ClearCirculation()
+	})
+}
+
 // SetReleasedByUserID sets the "released_by_user_id" field.
 func (u *CouponDiscountUpsertBulk) SetReleasedByUserID(v uuid.UUID) *CouponDiscountUpsertBulk {
 	return u.Update(func(s *CouponDiscountUpsert) {
@@ -1343,6 +1527,34 @@ func (u *CouponDiscountUpsertBulk) UpdateName() *CouponDiscountUpsertBulk {
 func (u *CouponDiscountUpsertBulk) ClearName() *CouponDiscountUpsertBulk {
 	return u.Update(func(s *CouponDiscountUpsert) {
 		s.ClearName()
+	})
+}
+
+// SetAllocated sets the "allocated" field.
+func (u *CouponDiscountUpsertBulk) SetAllocated(v uint32) *CouponDiscountUpsertBulk {
+	return u.Update(func(s *CouponDiscountUpsert) {
+		s.SetAllocated(v)
+	})
+}
+
+// AddAllocated adds v to the "allocated" field.
+func (u *CouponDiscountUpsertBulk) AddAllocated(v uint32) *CouponDiscountUpsertBulk {
+	return u.Update(func(s *CouponDiscountUpsert) {
+		s.AddAllocated(v)
+	})
+}
+
+// UpdateAllocated sets the "allocated" field to the value that was provided on create.
+func (u *CouponDiscountUpsertBulk) UpdateAllocated() *CouponDiscountUpsertBulk {
+	return u.Update(func(s *CouponDiscountUpsert) {
+		s.UpdateAllocated()
+	})
+}
+
+// ClearAllocated clears the value of the "allocated" field.
+func (u *CouponDiscountUpsertBulk) ClearAllocated() *CouponDiscountUpsertBulk {
+	return u.Update(func(s *CouponDiscountUpsert) {
+		s.ClearAllocated()
 	})
 }
 

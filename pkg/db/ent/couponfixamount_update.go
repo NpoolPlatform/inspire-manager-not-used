@@ -231,6 +231,33 @@ func (cfau *CouponFixAmountUpdate) ClearName() *CouponFixAmountUpdate {
 	return cfau
 }
 
+// SetAllocated sets the "allocated" field.
+func (cfau *CouponFixAmountUpdate) SetAllocated(u uint32) *CouponFixAmountUpdate {
+	cfau.mutation.ResetAllocated()
+	cfau.mutation.SetAllocated(u)
+	return cfau
+}
+
+// SetNillableAllocated sets the "allocated" field if the given value is not nil.
+func (cfau *CouponFixAmountUpdate) SetNillableAllocated(u *uint32) *CouponFixAmountUpdate {
+	if u != nil {
+		cfau.SetAllocated(*u)
+	}
+	return cfau
+}
+
+// AddAllocated adds u to the "allocated" field.
+func (cfau *CouponFixAmountUpdate) AddAllocated(u int32) *CouponFixAmountUpdate {
+	cfau.mutation.AddAllocated(u)
+	return cfau
+}
+
+// ClearAllocated clears the value of the "allocated" field.
+func (cfau *CouponFixAmountUpdate) ClearAllocated() *CouponFixAmountUpdate {
+	cfau.mutation.ClearAllocated()
+	return cfau
+}
+
 // Mutation returns the CouponFixAmountMutation object of the builder.
 func (cfau *CouponFixAmountUpdate) Mutation() *CouponFixAmountMutation {
 	return cfau.mutation
@@ -477,6 +504,26 @@ func (cfau *CouponFixAmountUpdate) sqlSave(ctx context.Context) (n int, err erro
 			Column: couponfixamount.FieldName,
 		})
 	}
+	if value, ok := cfau.mutation.Allocated(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeUint32,
+			Value:  value,
+			Column: couponfixamount.FieldAllocated,
+		})
+	}
+	if value, ok := cfau.mutation.AddedAllocated(); ok {
+		_spec.Fields.Add = append(_spec.Fields.Add, &sqlgraph.FieldSpec{
+			Type:   field.TypeUint32,
+			Value:  value,
+			Column: couponfixamount.FieldAllocated,
+		})
+	}
+	if cfau.mutation.AllocatedCleared() {
+		_spec.Fields.Clear = append(_spec.Fields.Clear, &sqlgraph.FieldSpec{
+			Type:   field.TypeUint32,
+			Column: couponfixamount.FieldAllocated,
+		})
+	}
 	_spec.Modifiers = cfau.modifiers
 	if n, err = sqlgraph.UpdateNodes(ctx, cfau.driver, _spec); err != nil {
 		if _, ok := err.(*sqlgraph.NotFoundError); ok {
@@ -696,6 +743,33 @@ func (cfauo *CouponFixAmountUpdateOne) SetNillableName(s *string) *CouponFixAmou
 // ClearName clears the value of the "name" field.
 func (cfauo *CouponFixAmountUpdateOne) ClearName() *CouponFixAmountUpdateOne {
 	cfauo.mutation.ClearName()
+	return cfauo
+}
+
+// SetAllocated sets the "allocated" field.
+func (cfauo *CouponFixAmountUpdateOne) SetAllocated(u uint32) *CouponFixAmountUpdateOne {
+	cfauo.mutation.ResetAllocated()
+	cfauo.mutation.SetAllocated(u)
+	return cfauo
+}
+
+// SetNillableAllocated sets the "allocated" field if the given value is not nil.
+func (cfauo *CouponFixAmountUpdateOne) SetNillableAllocated(u *uint32) *CouponFixAmountUpdateOne {
+	if u != nil {
+		cfauo.SetAllocated(*u)
+	}
+	return cfauo
+}
+
+// AddAllocated adds u to the "allocated" field.
+func (cfauo *CouponFixAmountUpdateOne) AddAllocated(u int32) *CouponFixAmountUpdateOne {
+	cfauo.mutation.AddAllocated(u)
+	return cfauo
+}
+
+// ClearAllocated clears the value of the "allocated" field.
+func (cfauo *CouponFixAmountUpdateOne) ClearAllocated() *CouponFixAmountUpdateOne {
+	cfauo.mutation.ClearAllocated()
 	return cfauo
 }
 
@@ -973,6 +1047,26 @@ func (cfauo *CouponFixAmountUpdateOne) sqlSave(ctx context.Context) (_node *Coup
 		_spec.Fields.Clear = append(_spec.Fields.Clear, &sqlgraph.FieldSpec{
 			Type:   field.TypeString,
 			Column: couponfixamount.FieldName,
+		})
+	}
+	if value, ok := cfauo.mutation.Allocated(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeUint32,
+			Value:  value,
+			Column: couponfixamount.FieldAllocated,
+		})
+	}
+	if value, ok := cfauo.mutation.AddedAllocated(); ok {
+		_spec.Fields.Add = append(_spec.Fields.Add, &sqlgraph.FieldSpec{
+			Type:   field.TypeUint32,
+			Value:  value,
+			Column: couponfixamount.FieldAllocated,
+		})
+	}
+	if cfauo.mutation.AllocatedCleared() {
+		_spec.Fields.Clear = append(_spec.Fields.Clear, &sqlgraph.FieldSpec{
+			Type:   field.TypeUint32,
+			Column: couponfixamount.FieldAllocated,
 		})
 	}
 	_spec.Modifiers = cfauo.modifiers

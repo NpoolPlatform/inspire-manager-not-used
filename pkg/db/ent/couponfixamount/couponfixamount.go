@@ -35,6 +35,8 @@ const (
 	FieldMessage = "message"
 	// FieldName holds the string denoting the name field in the database.
 	FieldName = "name"
+	// FieldAllocated holds the string denoting the allocated field in the database.
+	FieldAllocated = "allocated"
 	// Table holds the table name of the couponfixamount in the database.
 	Table = "coupon_fix_amounts"
 )
@@ -53,6 +55,7 @@ var Columns = []string{
 	FieldDurationDays,
 	FieldMessage,
 	FieldName,
+	FieldAllocated,
 }
 
 // ValidColumn reports if the column name is valid (part of the table columns).
@@ -94,6 +97,8 @@ var (
 	DefaultMessage string
 	// DefaultName holds the default value on creation for the "name" field.
 	DefaultName string
+	// DefaultAllocated holds the default value on creation for the "allocated" field.
+	DefaultAllocated uint32
 	// DefaultID holds the default value on creation for the "id" field.
 	DefaultID func() uuid.UUID
 )

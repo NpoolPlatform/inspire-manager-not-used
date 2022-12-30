@@ -14,11 +14,13 @@ func Ent2Grpc(row *ent.CouponDiscount) *npool.Discount {
 		ID:               row.ID.String(),
 		AppID:            row.AppID.String(),
 		Discount:         row.Discount.String(),
+		Circulation:      row.Circulation,
 		ReleasedByUserID: row.ReleasedByUserID.String(),
 		StartAt:          row.StartAt,
 		DurationDays:     row.DurationDays,
 		Message:          row.Message,
 		Name:             row.Name,
+		Allocated:        row.Allocated,
 		CreatedAt:        row.CreatedAt,
 		UpdatedAt:        row.UpdatedAt,
 	}

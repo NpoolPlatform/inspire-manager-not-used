@@ -114,11 +114,13 @@ var schemaGraph = func() *sqlgraph.Schema {
 			coupondiscount.FieldDeletedAt:        {Type: field.TypeUint32, Column: coupondiscount.FieldDeletedAt},
 			coupondiscount.FieldAppID:            {Type: field.TypeUUID, Column: coupondiscount.FieldAppID},
 			coupondiscount.FieldDiscount:         {Type: field.TypeOther, Column: coupondiscount.FieldDiscount},
+			coupondiscount.FieldCirculation:      {Type: field.TypeUint32, Column: coupondiscount.FieldCirculation},
 			coupondiscount.FieldReleasedByUserID: {Type: field.TypeUUID, Column: coupondiscount.FieldReleasedByUserID},
 			coupondiscount.FieldStartAt:          {Type: field.TypeUint32, Column: coupondiscount.FieldStartAt},
 			coupondiscount.FieldDurationDays:     {Type: field.TypeUint32, Column: coupondiscount.FieldDurationDays},
 			coupondiscount.FieldMessage:          {Type: field.TypeString, Column: coupondiscount.FieldMessage},
 			coupondiscount.FieldName:             {Type: field.TypeString, Column: coupondiscount.FieldName},
+			coupondiscount.FieldAllocated:        {Type: field.TypeUint32, Column: coupondiscount.FieldAllocated},
 		},
 	}
 	graph.Nodes[4] = &sqlgraph.Node{
@@ -143,6 +145,7 @@ var schemaGraph = func() *sqlgraph.Schema {
 			couponfixamount.FieldDurationDays:     {Type: field.TypeUint32, Column: couponfixamount.FieldDurationDays},
 			couponfixamount.FieldMessage:          {Type: field.TypeString, Column: couponfixamount.FieldMessage},
 			couponfixamount.FieldName:             {Type: field.TypeString, Column: couponfixamount.FieldName},
+			couponfixamount.FieldAllocated:        {Type: field.TypeUint32, Column: couponfixamount.FieldAllocated},
 		},
 	}
 	graph.Nodes[5] = &sqlgraph.Node{
@@ -608,6 +611,11 @@ func (f *CouponDiscountFilter) WhereDiscount(p entql.OtherP) {
 	f.Where(p.Field(coupondiscount.FieldDiscount))
 }
 
+// WhereCirculation applies the entql uint32 predicate on the circulation field.
+func (f *CouponDiscountFilter) WhereCirculation(p entql.Uint32P) {
+	f.Where(p.Field(coupondiscount.FieldCirculation))
+}
+
 // WhereReleasedByUserID applies the entql [16]byte predicate on the released_by_user_id field.
 func (f *CouponDiscountFilter) WhereReleasedByUserID(p entql.ValueP) {
 	f.Where(p.Field(coupondiscount.FieldReleasedByUserID))
@@ -631,6 +639,11 @@ func (f *CouponDiscountFilter) WhereMessage(p entql.StringP) {
 // WhereName applies the entql string predicate on the name field.
 func (f *CouponDiscountFilter) WhereName(p entql.StringP) {
 	f.Where(p.Field(coupondiscount.FieldName))
+}
+
+// WhereAllocated applies the entql uint32 predicate on the allocated field.
+func (f *CouponDiscountFilter) WhereAllocated(p entql.Uint32P) {
+	f.Where(p.Field(coupondiscount.FieldAllocated))
 }
 
 // addPredicate implements the predicateAdder interface.
@@ -726,6 +739,11 @@ func (f *CouponFixAmountFilter) WhereMessage(p entql.StringP) {
 // WhereName applies the entql string predicate on the name field.
 func (f *CouponFixAmountFilter) WhereName(p entql.StringP) {
 	f.Where(p.Field(couponfixamount.FieldName))
+}
+
+// WhereAllocated applies the entql uint32 predicate on the allocated field.
+func (f *CouponFixAmountFilter) WhereAllocated(p entql.Uint32P) {
+	f.Where(p.Field(couponfixamount.FieldAllocated))
 }
 
 // addPredicate implements the predicateAdder interface.
