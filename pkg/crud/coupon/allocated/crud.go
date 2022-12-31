@@ -191,7 +191,7 @@ func Row(ctx context.Context, id uuid.UUID) (*ent.CouponAllocated, error) {
 	return info, nil
 }
 
-func setQueryConds(conds *npool.Conds, cli *ent.Client) (*ent.CouponAllocatedQuery, error) {
+func SetQueryConds(conds *npool.Conds, cli *ent.Client) (*ent.CouponAllocatedQuery, error) { //nolint
 	stm := cli.CouponAllocated.Query()
 	if conds == nil {
 		return stm, nil
@@ -236,6 +236,30 @@ func setQueryConds(conds *npool.Conds, cli *ent.Client) (*ent.CouponAllocatedQue
 			return nil, fmt.Errorf("invalid couponallocated field")
 		}
 	}
+	if len(conds.GetIDs().GetValue()) > 0 {
+		ids := []uuid.UUID{}
+		for _, id := range conds.GetIDs().GetValue() {
+			ids = append(ids, uuid.MustParse(id))
+		}
+		switch conds.GetIDs().GetOp() {
+		case cruder.IN:
+			stm.Where(couponallocated.IDIn(ids...))
+		default:
+			return nil, fmt.Errorf("invalid couponallocated field")
+		}
+	}
+	if len(conds.GetUsedByOrderIDs().GetValue()) > 0 {
+		ids := []uuid.UUID{}
+		for _, id := range conds.GetUsedByOrderIDs().GetValue() {
+			ids = append(ids, uuid.MustParse(id))
+		}
+		switch conds.GetUsedByOrderIDs().GetOp() {
+		case cruder.IN:
+			stm.Where(couponallocated.UsedByOrderIDIn(ids...))
+		default:
+			return nil, fmt.Errorf("invalid couponallocated field")
+		}
+	}
 	return stm, nil
 }
 
@@ -258,7 +282,7 @@ func Rows(ctx context.Context, conds *npool.Conds, offset, limit int) ([]*ent.Co
 	rows := []*ent.CouponAllocated{}
 	var total int
 	err = db.WithClient(ctx, func(_ctx context.Context, cli *ent.Client) error {
-		stm, err := setQueryConds(conds, cli)
+		stm, err := SetQueryConds(conds, cli)
 		if err != nil {
 			return err
 		}
@@ -302,7 +326,7 @@ func RowOnly(ctx context.Context, conds *npool.Conds) (*ent.CouponAllocated, err
 	span = tracer.TraceConds(span, conds)
 
 	err = db.WithClient(ctx, func(_ctx context.Context, cli *ent.Client) error {
-		stm, err := setQueryConds(conds, cli)
+		stm, err := SetQueryConds(conds, cli)
 		if err != nil {
 			return err
 		}
@@ -338,7 +362,7 @@ func Count(ctx context.Context, conds *npool.Conds) (uint32, error) {
 	span = tracer.TraceConds(span, conds)
 
 	err = db.WithClient(ctx, func(_ctx context.Context, cli *ent.Client) error {
-		stm, err := setQueryConds(conds, cli)
+		stm, err := SetQueryConds(conds, cli)
 		if err != nil {
 			return err
 		}
@@ -400,7 +424,7 @@ func ExistConds(ctx context.Context, conds *npool.Conds) (bool, error) {
 	span = tracer.TraceConds(span, conds)
 
 	err = db.WithClient(ctx, func(_ctx context.Context, cli *ent.Client) error {
-		stm, err := setQueryConds(conds, cli)
+		stm, err := SetQueryConds(conds, cli)
 		if err != nil {
 			return err
 		}
