@@ -212,6 +212,30 @@ func SetQueryConds(conds *npool.Conds, cli *ent.Client) (*ent.RegistrationQuery,
 			return nil, fmt.Errorf("invalid registration field")
 		}
 	}
+	if len(conds.GetInviterIDs().GetValue()) > 0 {
+		ids := []uuid.UUID{}
+		for _, id := range conds.GetInviterIDs().GetValue() {
+			ids = append(ids, uuid.MustParse(id))
+		}
+		switch conds.GetInviterIDs().GetOp() {
+		case cruder.IN:
+			stm.Where(registration.InviterIDIn(ids...))
+		default:
+			return nil, fmt.Errorf("invalid registration field")
+		}
+	}
+	if len(conds.GetInviteeIDs().GetValue()) > 0 {
+		ids := []uuid.UUID{}
+		for _, id := range conds.GetInviteeIDs().GetValue() {
+			ids = append(ids, uuid.MustParse(id))
+		}
+		switch conds.GetInviteeIDs().GetOp() {
+		case cruder.IN:
+			stm.Where(registration.InviteeIDIn(ids...))
+		default:
+			return nil, fmt.Errorf("invalid registration field")
+		}
+	}
 	return stm, nil
 }
 
