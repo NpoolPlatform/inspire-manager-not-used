@@ -226,7 +226,7 @@ func Row(ctx context.Context, id uuid.UUID) (*ent.CouponFixAmount, error) {
 	return info, nil
 }
 
-func setQueryConds(conds *npool.Conds, cli *ent.Client) (*ent.CouponFixAmountQuery, error) {
+func SetQueryConds(conds *npool.Conds, cli *ent.Client) (*ent.CouponFixAmountQuery, error) { //nolint
 	stm := cli.CouponFixAmount.Query()
 	if conds == nil {
 		return stm, nil
@@ -279,6 +279,18 @@ func setQueryConds(conds *npool.Conds, cli *ent.Client) (*ent.CouponFixAmountQue
 			return nil, fmt.Errorf("invalid couponfixamount field")
 		}
 	}
+	if len(conds.GetIDs().GetValue()) > 0 {
+		ids := []uuid.UUID{}
+		for _, id := range conds.GetIDs().GetValue() {
+			ids = append(ids, uuid.MustParse(id))
+		}
+		switch conds.GetIDs().GetOp() {
+		case cruder.IN:
+			stm.Where(couponfixamount.IDIn(ids...))
+		default:
+			return nil, fmt.Errorf("invalid couponfixamount field")
+		}
+	}
 	return stm, nil
 }
 
@@ -301,7 +313,7 @@ func Rows(ctx context.Context, conds *npool.Conds, offset, limit int) ([]*ent.Co
 	rows := []*ent.CouponFixAmount{}
 	var total int
 	err = db.WithClient(ctx, func(_ctx context.Context, cli *ent.Client) error {
-		stm, err := setQueryConds(conds, cli)
+		stm, err := SetQueryConds(conds, cli)
 		if err != nil {
 			return err
 		}
@@ -345,7 +357,7 @@ func RowOnly(ctx context.Context, conds *npool.Conds) (*ent.CouponFixAmount, err
 	span = tracer.TraceConds(span, conds)
 
 	err = db.WithClient(ctx, func(_ctx context.Context, cli *ent.Client) error {
-		stm, err := setQueryConds(conds, cli)
+		stm, err := SetQueryConds(conds, cli)
 		if err != nil {
 			return err
 		}
@@ -381,7 +393,7 @@ func Count(ctx context.Context, conds *npool.Conds) (uint32, error) {
 	span = tracer.TraceConds(span, conds)
 
 	err = db.WithClient(ctx, func(_ctx context.Context, cli *ent.Client) error {
-		stm, err := setQueryConds(conds, cli)
+		stm, err := SetQueryConds(conds, cli)
 		if err != nil {
 			return err
 		}
@@ -443,7 +455,7 @@ func ExistConds(ctx context.Context, conds *npool.Conds) (bool, error) {
 	span = tracer.TraceConds(span, conds)
 
 	err = db.WithClient(ctx, func(_ctx context.Context, cli *ent.Client) error {
-		stm, err := setQueryConds(conds, cli)
+		stm, err := SetQueryConds(conds, cli)
 		if err != nil {
 			return err
 		}
