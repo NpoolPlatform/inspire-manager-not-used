@@ -22,6 +22,9 @@ import (
 
 	cg "github.com/NpoolPlatform/inspire-manager/pkg/generator"
 
+	cruder "github.com/NpoolPlatform/libent-cruder/pkg/cruder"
+	commonpb "github.com/NpoolPlatform/message/npool"
+
 	"github.com/google/uuid"
 )
 
@@ -72,9 +75,34 @@ func (s *Server) CreateInvitationCode(
 		return &npool.CreateInvitationCodeResponse{}, err
 	}
 
-	code, err := cg.Generate()
-	if err != nil {
-		return &npool.CreateInvitationCodeResponse{}, status.Error(codes.Internal, err.Error())
+	var code string
+
+	for {
+		code, err = cg.Generate()
+		if err != nil {
+			return &npool.CreateInvitationCodeResponse{}, status.Error(codes.Internal, err.Error())
+		}
+
+		exist, err := crud.ExistConds(ctx, &npool.Conds{
+			AppID: &commonpb.StringVal{
+				Op:    cruder.EQ,
+				Value: in.GetInfo().GetAppID(),
+			},
+			UserID: &commonpb.StringVal{
+				Op:    cruder.EQ,
+				Value: in.GetInfo().GetUserID(),
+			},
+			InvitationCode: &commonpb.StringVal{
+				Op:    cruder.EQ,
+				Value: code,
+			},
+		})
+		if err != nil {
+			return &npool.CreateInvitationCodeResponse{}, status.Error(codes.Internal, err.Error())
+		}
+		if !exist {
+			break
+		}
 	}
 
 	req := in.GetInfo()
