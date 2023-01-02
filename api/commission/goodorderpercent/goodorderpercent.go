@@ -200,6 +200,16 @@ func ValidateConds(conds *npool.Conds) error {
 			return err
 		}
 	}
+	for _, id := range conds.GetUserIDs().GetValue() {
+		if _, err := uuid.Parse(id); err != nil {
+			return err
+		}
+	}
+	for _, id := range conds.GetGoodIDs().GetValue() {
+		if _, err := uuid.Parse(id); err != nil {
+			return err
+		}
+	}
 
 	return nil
 }

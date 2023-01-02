@@ -193,7 +193,7 @@ func Row(ctx context.Context, id uuid.UUID) (*ent.GoodOrderPercent, error) {
 	return info, nil
 }
 
-func SetQueryConds(conds *npool.Conds, cli *ent.Client) (*ent.GoodOrderPercentQuery, error) {
+func SetQueryConds(conds *npool.Conds, cli *ent.Client) (*ent.GoodOrderPercentQuery, error) { //nolint
 	stm := cli.GoodOrderPercent.Query()
 	if conds.ID != nil {
 		switch conds.GetID().GetOp() {
@@ -233,6 +233,30 @@ func SetQueryConds(conds *npool.Conds, cli *ent.Client) (*ent.GoodOrderPercentQu
 			stm.Where(goodorderpercent.EndAt(conds.GetEndAt().GetValue()))
 		case cruder.NEQ:
 			stm.Where(goodorderpercent.EndAtNEQ(conds.GetEndAt().GetValue()))
+		default:
+			return nil, fmt.Errorf("invalid goodorderpercent field")
+		}
+	}
+	if len(conds.GetUserIDs().GetValue()) > 0 {
+		ids := []uuid.UUID{}
+		for _, id := range conds.GetUserIDs().GetValue() {
+			ids = append(ids, uuid.MustParse(id))
+		}
+		switch conds.GetUserIDs().GetOp() {
+		case cruder.IN:
+			stm.Where(goodorderpercent.UserIDIn(ids...))
+		default:
+			return nil, fmt.Errorf("invalid goodorderpercent field")
+		}
+	}
+	if len(conds.GetGoodIDs().GetValue()) > 0 {
+		ids := []uuid.UUID{}
+		for _, id := range conds.GetGoodIDs().GetValue() {
+			ids = append(ids, uuid.MustParse(id))
+		}
+		switch conds.GetGoodIDs().GetOp() {
+		case cruder.IN:
+			stm.Where(goodorderpercent.GoodIDIn(ids...))
 		default:
 			return nil, fmt.Errorf("invalid goodorderpercent field")
 		}
