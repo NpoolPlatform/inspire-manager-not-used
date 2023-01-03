@@ -65,6 +65,22 @@ func CreateAllocateds(ctx context.Context, in []*npool.AllocatedReq) ([]*npool.A
 	return infos.([]*npool.Allocated), nil
 }
 
+func UpdateAllocated(ctx context.Context, in *npool.AllocatedReq) (*npool.Allocated, error) {
+	info, err := withCRUD(ctx, func(_ctx context.Context, cli npool.ManagerClient) (cruder.Any, error) {
+		resp, err := cli.UpdateAllocated(ctx, &npool.UpdateAllocatedRequest{
+			Info: in,
+		})
+		if err != nil {
+			return nil, err
+		}
+		return resp.Info, nil
+	})
+	if err != nil {
+		return nil, err
+	}
+	return info.(*npool.Allocated), nil
+}
+
 func GetAllocated(ctx context.Context, id string) (*npool.Allocated, error) {
 	info, err := withCRUD(ctx, func(_ctx context.Context, cli npool.ManagerClient) (cruder.Any, error) {
 		resp, err := cli.GetAllocated(ctx, &npool.GetAllocatedRequest{
