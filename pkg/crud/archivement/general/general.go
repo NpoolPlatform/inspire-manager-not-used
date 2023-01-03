@@ -106,7 +106,6 @@ func CreateBulk(ctx context.Context, in []*npool.GeneralReq) ([]*ent.Archivement
 	return rows, nil
 }
 
-//nolint:gocyclo
 func UpdateSet(info *ent.ArchivementGeneral, in *npool.GeneralReq) (u *ent.ArchivementGeneralUpdateOne, err error) {
 	totalAmount := decimal.NewFromInt(0)
 	if in.TotalAmount != nil {
