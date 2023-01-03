@@ -1,3 +1,3 @@
 package servicename
 
-const ServiceName = "InspireManager"
+const ServiceName = "Inspire Manager"
