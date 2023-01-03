@@ -136,6 +136,26 @@ func (icu *InvitationCodeUpdate) ClearConfirmed() *InvitationCodeUpdate {
 	return icu
 }
 
+// SetDisabled sets the "disabled" field.
+func (icu *InvitationCodeUpdate) SetDisabled(b bool) *InvitationCodeUpdate {
+	icu.mutation.SetDisabled(b)
+	return icu
+}
+
+// SetNillableDisabled sets the "disabled" field if the given value is not nil.
+func (icu *InvitationCodeUpdate) SetNillableDisabled(b *bool) *InvitationCodeUpdate {
+	if b != nil {
+		icu.SetDisabled(*b)
+	}
+	return icu
+}
+
+// ClearDisabled clears the value of the "disabled" field.
+func (icu *InvitationCodeUpdate) ClearDisabled() *InvitationCodeUpdate {
+	icu.mutation.ClearDisabled()
+	return icu
+}
+
 // Mutation returns the InvitationCodeMutation object of the builder.
 func (icu *InvitationCodeUpdate) Mutation() *InvitationCodeMutation {
 	return icu.mutation
@@ -316,6 +336,19 @@ func (icu *InvitationCodeUpdate) sqlSave(ctx context.Context) (n int, err error)
 			Column: invitationcode.FieldConfirmed,
 		})
 	}
+	if value, ok := icu.mutation.Disabled(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeBool,
+			Value:  value,
+			Column: invitationcode.FieldDisabled,
+		})
+	}
+	if icu.mutation.DisabledCleared() {
+		_spec.Fields.Clear = append(_spec.Fields.Clear, &sqlgraph.FieldSpec{
+			Type:   field.TypeBool,
+			Column: invitationcode.FieldDisabled,
+		})
+	}
 	_spec.Modifiers = icu.modifiers
 	if n, err = sqlgraph.UpdateNodes(ctx, icu.driver, _spec); err != nil {
 		if _, ok := err.(*sqlgraph.NotFoundError); ok {
@@ -441,6 +474,26 @@ func (icuo *InvitationCodeUpdateOne) SetNillableConfirmed(b *bool) *InvitationCo
 // ClearConfirmed clears the value of the "confirmed" field.
 func (icuo *InvitationCodeUpdateOne) ClearConfirmed() *InvitationCodeUpdateOne {
 	icuo.mutation.ClearConfirmed()
+	return icuo
+}
+
+// SetDisabled sets the "disabled" field.
+func (icuo *InvitationCodeUpdateOne) SetDisabled(b bool) *InvitationCodeUpdateOne {
+	icuo.mutation.SetDisabled(b)
+	return icuo
+}
+
+// SetNillableDisabled sets the "disabled" field if the given value is not nil.
+func (icuo *InvitationCodeUpdateOne) SetNillableDisabled(b *bool) *InvitationCodeUpdateOne {
+	if b != nil {
+		icuo.SetDisabled(*b)
+	}
+	return icuo
+}
+
+// ClearDisabled clears the value of the "disabled" field.
+func (icuo *InvitationCodeUpdateOne) ClearDisabled() *InvitationCodeUpdateOne {
+	icuo.mutation.ClearDisabled()
 	return icuo
 }
 
@@ -652,6 +705,19 @@ func (icuo *InvitationCodeUpdateOne) sqlSave(ctx context.Context) (_node *Invita
 		_spec.Fields.Clear = append(_spec.Fields.Clear, &sqlgraph.FieldSpec{
 			Type:   field.TypeBool,
 			Column: invitationcode.FieldConfirmed,
+		})
+	}
+	if value, ok := icuo.mutation.Disabled(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeBool,
+			Value:  value,
+			Column: invitationcode.FieldDisabled,
+		})
+	}
+	if icuo.mutation.DisabledCleared() {
+		_spec.Fields.Clear = append(_spec.Fields.Clear, &sqlgraph.FieldSpec{
+			Type:   field.TypeBool,
+			Column: invitationcode.FieldDisabled,
 		})
 	}
 	_spec.Modifiers = icuo.modifiers

@@ -26,6 +26,8 @@ const (
 	FieldInvitationCode = "invitation_code"
 	// FieldConfirmed holds the string denoting the confirmed field in the database.
 	FieldConfirmed = "confirmed"
+	// FieldDisabled holds the string denoting the disabled field in the database.
+	FieldDisabled = "disabled"
 	// Table holds the table name of the invitationcode in the database.
 	Table = "invitation_codes"
 )
@@ -40,6 +42,7 @@ var Columns = []string{
 	FieldUserID,
 	FieldInvitationCode,
 	FieldConfirmed,
+	FieldDisabled,
 }
 
 // ValidColumn reports if the column name is valid (part of the table columns).
@@ -73,6 +76,8 @@ var (
 	DefaultInvitationCode string
 	// DefaultConfirmed holds the default value on creation for the "confirmed" field.
 	DefaultConfirmed bool
+	// DefaultDisabled holds the default value on creation for the "disabled" field.
+	DefaultDisabled bool
 	// DefaultID holds the default value on creation for the "id" field.
 	DefaultID func() uuid.UUID
 )

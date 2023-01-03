@@ -128,6 +128,13 @@ func Confirmed(v bool) predicate.InvitationCode {
 	})
 }
 
+// Disabled applies equality check predicate on the "disabled" field. It's identical to DisabledEQ.
+func Disabled(v bool) predicate.InvitationCode {
+	return predicate.InvitationCode(func(s *sql.Selector) {
+		s.Where(sql.EQ(s.C(FieldDisabled), v))
+	})
+}
+
 // CreatedAtEQ applies the EQ predicate on the "created_at" field.
 func CreatedAtEQ(v uint32) predicate.InvitationCode {
 	return predicate.InvitationCode(func(s *sql.Selector) {
@@ -586,6 +593,34 @@ func ConfirmedIsNil() predicate.InvitationCode {
 func ConfirmedNotNil() predicate.InvitationCode {
 	return predicate.InvitationCode(func(s *sql.Selector) {
 		s.Where(sql.NotNull(s.C(FieldConfirmed)))
+	})
+}
+
+// DisabledEQ applies the EQ predicate on the "disabled" field.
+func DisabledEQ(v bool) predicate.InvitationCode {
+	return predicate.InvitationCode(func(s *sql.Selector) {
+		s.Where(sql.EQ(s.C(FieldDisabled), v))
+	})
+}
+
+// DisabledNEQ applies the NEQ predicate on the "disabled" field.
+func DisabledNEQ(v bool) predicate.InvitationCode {
+	return predicate.InvitationCode(func(s *sql.Selector) {
+		s.Where(sql.NEQ(s.C(FieldDisabled), v))
+	})
+}
+
+// DisabledIsNil applies the IsNil predicate on the "disabled" field.
+func DisabledIsNil() predicate.InvitationCode {
+	return predicate.InvitationCode(func(s *sql.Selector) {
+		s.Where(sql.IsNull(s.C(FieldDisabled)))
+	})
+}
+
+// DisabledNotNil applies the NotNil predicate on the "disabled" field.
+func DisabledNotNil() predicate.InvitationCode {
+	return predicate.InvitationCode(func(s *sql.Selector) {
+		s.Where(sql.NotNull(s.C(FieldDisabled)))
 	})
 }
 

@@ -30,6 +30,8 @@ type InvitationCode struct {
 	InvitationCode string `json:"invitation_code,omitempty"`
 	// Confirmed holds the value of the "confirmed" field.
 	Confirmed bool `json:"confirmed,omitempty"`
+	// Disabled holds the value of the "disabled" field.
+	Disabled bool `json:"disabled,omitempty"`
 }
 
 // scanValues returns the types for scanning values from sql.Rows.
@@ -37,7 +39,7 @@ func (*InvitationCode) scanValues(columns []string) ([]interface{}, error) {
 	values := make([]interface{}, len(columns))
 	for i := range columns {
 		switch columns[i] {
-		case invitationcode.FieldConfirmed:
+		case invitationcode.FieldConfirmed, invitationcode.FieldDisabled:
 			values[i] = new(sql.NullBool)
 		case invitationcode.FieldCreatedAt, invitationcode.FieldUpdatedAt, invitationcode.FieldDeletedAt:
 			values[i] = new(sql.NullInt64)
@@ -108,6 +110,12 @@ func (ic *InvitationCode) assignValues(columns []string, values []interface{}) e
 			} else if value.Valid {
 				ic.Confirmed = value.Bool
 			}
+		case invitationcode.FieldDisabled:
+			if value, ok := values[i].(*sql.NullBool); !ok {
+				return fmt.Errorf("unexpected type %T for field disabled", values[i])
+			} else if value.Valid {
+				ic.Disabled = value.Bool
+			}
 		}
 	}
 	return nil
@@ -156,6 +164,9 @@ func (ic *InvitationCode) String() string {
 	builder.WriteString(", ")
 	builder.WriteString("confirmed=")
 	builder.WriteString(fmt.Sprintf("%v", ic.Confirmed))
+	builder.WriteString(", ")
+	builder.WriteString("disabled=")
+	builder.WriteString(fmt.Sprintf("%v", ic.Disabled))
 	builder.WriteByte(')')
 	return builder.String()
 }

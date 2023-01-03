@@ -8689,6 +8689,7 @@ type InvitationCodeMutation struct {
 	user_id         *uuid.UUID
 	invitation_code *string
 	confirmed       *bool
+	disabled        *bool
 	clearedFields   map[string]struct{}
 	done            bool
 	oldValue        func(context.Context) (*InvitationCode, error)
@@ -9137,6 +9138,55 @@ func (m *InvitationCodeMutation) ResetConfirmed() {
 	delete(m.clearedFields, invitationcode.FieldConfirmed)
 }
 
+// SetDisabled sets the "disabled" field.
+func (m *InvitationCodeMutation) SetDisabled(b bool) {
+	m.disabled = &b
+}
+
+// Disabled returns the value of the "disabled" field in the mutation.
+func (m *InvitationCodeMutation) Disabled() (r bool, exists bool) {
+	v := m.disabled
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldDisabled returns the old "disabled" field's value of the InvitationCode entity.
+// If the InvitationCode object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *InvitationCodeMutation) OldDisabled(ctx context.Context) (v bool, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldDisabled is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldDisabled requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldDisabled: %w", err)
+	}
+	return oldValue.Disabled, nil
+}
+
+// ClearDisabled clears the value of the "disabled" field.
+func (m *InvitationCodeMutation) ClearDisabled() {
+	m.disabled = nil
+	m.clearedFields[invitationcode.FieldDisabled] = struct{}{}
+}
+
+// DisabledCleared returns if the "disabled" field was cleared in this mutation.
+func (m *InvitationCodeMutation) DisabledCleared() bool {
+	_, ok := m.clearedFields[invitationcode.FieldDisabled]
+	return ok
+}
+
+// ResetDisabled resets all changes to the "disabled" field.
+func (m *InvitationCodeMutation) ResetDisabled() {
+	m.disabled = nil
+	delete(m.clearedFields, invitationcode.FieldDisabled)
+}
+
 // Where appends a list predicates to the InvitationCodeMutation builder.
 func (m *InvitationCodeMutation) Where(ps ...predicate.InvitationCode) {
 	m.predicates = append(m.predicates, ps...)
@@ -9156,7 +9206,7 @@ func (m *InvitationCodeMutation) Type() string {
 // order to get all numeric fields that were incremented/decremented, call
 // AddedFields().
 func (m *InvitationCodeMutation) Fields() []string {
-	fields := make([]string, 0, 7)
+	fields := make([]string, 0, 8)
 	if m.created_at != nil {
 		fields = append(fields, invitationcode.FieldCreatedAt)
 	}
@@ -9177,6 +9227,9 @@ func (m *InvitationCodeMutation) Fields() []string {
 	}
 	if m.confirmed != nil {
 		fields = append(fields, invitationcode.FieldConfirmed)
+	}
+	if m.disabled != nil {
+		fields = append(fields, invitationcode.FieldDisabled)
 	}
 	return fields
 }
@@ -9200,6 +9253,8 @@ func (m *InvitationCodeMutation) Field(name string) (ent.Value, bool) {
 		return m.InvitationCode()
 	case invitationcode.FieldConfirmed:
 		return m.Confirmed()
+	case invitationcode.FieldDisabled:
+		return m.Disabled()
 	}
 	return nil, false
 }
@@ -9223,6 +9278,8 @@ func (m *InvitationCodeMutation) OldField(ctx context.Context, name string) (ent
 		return m.OldInvitationCode(ctx)
 	case invitationcode.FieldConfirmed:
 		return m.OldConfirmed(ctx)
+	case invitationcode.FieldDisabled:
+		return m.OldDisabled(ctx)
 	}
 	return nil, fmt.Errorf("unknown InvitationCode field %s", name)
 }
@@ -9280,6 +9337,13 @@ func (m *InvitationCodeMutation) SetField(name string, value ent.Value) error {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
 		m.SetConfirmed(v)
+		return nil
+	case invitationcode.FieldDisabled:
+		v, ok := value.(bool)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetDisabled(v)
 		return nil
 	}
 	return fmt.Errorf("unknown InvitationCode field %s", name)
@@ -9356,6 +9420,9 @@ func (m *InvitationCodeMutation) ClearedFields() []string {
 	if m.FieldCleared(invitationcode.FieldConfirmed) {
 		fields = append(fields, invitationcode.FieldConfirmed)
 	}
+	if m.FieldCleared(invitationcode.FieldDisabled) {
+		fields = append(fields, invitationcode.FieldDisabled)
+	}
 	return fields
 }
 
@@ -9375,6 +9442,9 @@ func (m *InvitationCodeMutation) ClearField(name string) error {
 		return nil
 	case invitationcode.FieldConfirmed:
 		m.ClearConfirmed()
+		return nil
+	case invitationcode.FieldDisabled:
+		m.ClearDisabled()
 		return nil
 	}
 	return fmt.Errorf("unknown InvitationCode nullable field %s", name)
@@ -9404,6 +9474,9 @@ func (m *InvitationCodeMutation) ResetField(name string) error {
 		return nil
 	case invitationcode.FieldConfirmed:
 		m.ResetConfirmed()
+		return nil
+	case invitationcode.FieldDisabled:
+		m.ResetDisabled()
 		return nil
 	}
 	return fmt.Errorf("unknown InvitationCode field %s", name)

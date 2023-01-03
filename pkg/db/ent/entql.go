@@ -215,6 +215,7 @@ var schemaGraph = func() *sqlgraph.Schema {
 			invitationcode.FieldUserID:         {Type: field.TypeUUID, Column: invitationcode.FieldUserID},
 			invitationcode.FieldInvitationCode: {Type: field.TypeString, Column: invitationcode.FieldInvitationCode},
 			invitationcode.FieldConfirmed:      {Type: field.TypeBool, Column: invitationcode.FieldConfirmed},
+			invitationcode.FieldDisabled:       {Type: field.TypeBool, Column: invitationcode.FieldDisabled},
 		},
 	}
 	graph.Nodes[8] = &sqlgraph.Node{
@@ -1018,6 +1019,11 @@ func (f *InvitationCodeFilter) WhereInvitationCode(p entql.StringP) {
 // WhereConfirmed applies the entql bool predicate on the confirmed field.
 func (f *InvitationCodeFilter) WhereConfirmed(p entql.BoolP) {
 	f.Where(p.Field(invitationcode.FieldConfirmed))
+}
+
+// WhereDisabled applies the entql bool predicate on the disabled field.
+func (f *InvitationCodeFilter) WhereDisabled(p entql.BoolP) {
+	f.Where(p.Field(invitationcode.FieldDisabled))
 }
 
 // addPredicate implements the predicateAdder interface.
