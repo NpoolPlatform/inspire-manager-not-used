@@ -21,7 +21,7 @@ spec:
           imagePullPolicy: Always
           volumeMounts:
             - name: service-config
-              mountPath: /etc/GoodManager
+              mountPath: /etc/InspireManager
           env:
             - name: ENV_ENVIRONMENT_TARGET
               valueFrom:
@@ -48,7 +48,7 @@ spec:
             name: inspire-manager-config
             items:
               - key: service-conf
-                path: GoodManager.viper.yaml
+                path: InspireManager.viper.yaml
 ---
 apiVersion: v1
 kind: Service
