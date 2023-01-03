@@ -16,6 +16,7 @@ func Ent2Grpc(row *ent.InvitationCode) *npool.InvitationCode {
 		UserID:         row.UserID.String(),
 		InvitationCode: row.InvitationCode,
 		Confirmed:      row.Confirmed,
+		Disabled:       row.Disabled,
 		CreatedAt:      row.CreatedAt,
 		UpdatedAt:      row.UpdatedAt,
 	}
