@@ -28,7 +28,7 @@ type CouponDiscount struct {
 	// Discount holds the value of the "discount" field.
 	Discount decimal.Decimal `json:"discount,omitempty"`
 	// Circulation holds the value of the "circulation" field.
-	Circulation uint32 `json:"circulation,omitempty"`
+	Circulation decimal.Decimal `json:"circulation,omitempty"`
 	// ReleasedByUserID holds the value of the "released_by_user_id" field.
 	ReleasedByUserID uuid.UUID `json:"released_by_user_id,omitempty"`
 	// StartAt holds the value of the "start_at" field.
@@ -48,9 +48,9 @@ func (*CouponDiscount) scanValues(columns []string) ([]interface{}, error) {
 	values := make([]interface{}, len(columns))
 	for i := range columns {
 		switch columns[i] {
-		case coupondiscount.FieldDiscount:
+		case coupondiscount.FieldDiscount, coupondiscount.FieldCirculation:
 			values[i] = new(decimal.Decimal)
-		case coupondiscount.FieldCreatedAt, coupondiscount.FieldUpdatedAt, coupondiscount.FieldDeletedAt, coupondiscount.FieldCirculation, coupondiscount.FieldStartAt, coupondiscount.FieldDurationDays, coupondiscount.FieldAllocated:
+		case coupondiscount.FieldCreatedAt, coupondiscount.FieldUpdatedAt, coupondiscount.FieldDeletedAt, coupondiscount.FieldStartAt, coupondiscount.FieldDurationDays, coupondiscount.FieldAllocated:
 			values[i] = new(sql.NullInt64)
 		case coupondiscount.FieldMessage, coupondiscount.FieldName:
 			values[i] = new(sql.NullString)
@@ -108,10 +108,10 @@ func (cd *CouponDiscount) assignValues(columns []string, values []interface{}) e
 				cd.Discount = *value
 			}
 		case coupondiscount.FieldCirculation:
-			if value, ok := values[i].(*sql.NullInt64); !ok {
+			if value, ok := values[i].(*decimal.Decimal); !ok {
 				return fmt.Errorf("unexpected type %T for field circulation", values[i])
-			} else if value.Valid {
-				cd.Circulation = uint32(value.Int64)
+			} else if value != nil {
+				cd.Circulation = *value
 			}
 		case coupondiscount.FieldReleasedByUserID:
 			if value, ok := values[i].(*uuid.UUID); !ok {

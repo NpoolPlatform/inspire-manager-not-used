@@ -112,23 +112,16 @@ func (cdu *CouponDiscountUpdate) ClearDiscount() *CouponDiscountUpdate {
 }
 
 // SetCirculation sets the "circulation" field.
-func (cdu *CouponDiscountUpdate) SetCirculation(u uint32) *CouponDiscountUpdate {
-	cdu.mutation.ResetCirculation()
-	cdu.mutation.SetCirculation(u)
+func (cdu *CouponDiscountUpdate) SetCirculation(d decimal.Decimal) *CouponDiscountUpdate {
+	cdu.mutation.SetCirculation(d)
 	return cdu
 }
 
 // SetNillableCirculation sets the "circulation" field if the given value is not nil.
-func (cdu *CouponDiscountUpdate) SetNillableCirculation(u *uint32) *CouponDiscountUpdate {
-	if u != nil {
-		cdu.SetCirculation(*u)
+func (cdu *CouponDiscountUpdate) SetNillableCirculation(d *decimal.Decimal) *CouponDiscountUpdate {
+	if d != nil {
+		cdu.SetCirculation(*d)
 	}
-	return cdu
-}
-
-// AddCirculation adds u to the "circulation" field.
-func (cdu *CouponDiscountUpdate) AddCirculation(u int32) *CouponDiscountUpdate {
-	cdu.mutation.AddCirculation(u)
 	return cdu
 }
 
@@ -427,21 +420,14 @@ func (cdu *CouponDiscountUpdate) sqlSave(ctx context.Context) (n int, err error)
 	}
 	if value, ok := cdu.mutation.Circulation(); ok {
 		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
-			Type:   field.TypeUint32,
-			Value:  value,
-			Column: coupondiscount.FieldCirculation,
-		})
-	}
-	if value, ok := cdu.mutation.AddedCirculation(); ok {
-		_spec.Fields.Add = append(_spec.Fields.Add, &sqlgraph.FieldSpec{
-			Type:   field.TypeUint32,
+			Type:   field.TypeOther,
 			Value:  value,
 			Column: coupondiscount.FieldCirculation,
 		})
 	}
 	if cdu.mutation.CirculationCleared() {
 		_spec.Fields.Clear = append(_spec.Fields.Clear, &sqlgraph.FieldSpec{
-			Type:   field.TypeUint32,
+			Type:   field.TypeOther,
 			Column: coupondiscount.FieldCirculation,
 		})
 	}
@@ -641,23 +627,16 @@ func (cduo *CouponDiscountUpdateOne) ClearDiscount() *CouponDiscountUpdateOne {
 }
 
 // SetCirculation sets the "circulation" field.
-func (cduo *CouponDiscountUpdateOne) SetCirculation(u uint32) *CouponDiscountUpdateOne {
-	cduo.mutation.ResetCirculation()
-	cduo.mutation.SetCirculation(u)
+func (cduo *CouponDiscountUpdateOne) SetCirculation(d decimal.Decimal) *CouponDiscountUpdateOne {
+	cduo.mutation.SetCirculation(d)
 	return cduo
 }
 
 // SetNillableCirculation sets the "circulation" field if the given value is not nil.
-func (cduo *CouponDiscountUpdateOne) SetNillableCirculation(u *uint32) *CouponDiscountUpdateOne {
-	if u != nil {
-		cduo.SetCirculation(*u)
+func (cduo *CouponDiscountUpdateOne) SetNillableCirculation(d *decimal.Decimal) *CouponDiscountUpdateOne {
+	if d != nil {
+		cduo.SetCirculation(*d)
 	}
-	return cduo
-}
-
-// AddCirculation adds u to the "circulation" field.
-func (cduo *CouponDiscountUpdateOne) AddCirculation(u int32) *CouponDiscountUpdateOne {
-	cduo.mutation.AddCirculation(u)
 	return cduo
 }
 
@@ -986,21 +965,14 @@ func (cduo *CouponDiscountUpdateOne) sqlSave(ctx context.Context) (_node *Coupon
 	}
 	if value, ok := cduo.mutation.Circulation(); ok {
 		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
-			Type:   field.TypeUint32,
-			Value:  value,
-			Column: coupondiscount.FieldCirculation,
-		})
-	}
-	if value, ok := cduo.mutation.AddedCirculation(); ok {
-		_spec.Fields.Add = append(_spec.Fields.Add, &sqlgraph.FieldSpec{
-			Type:   field.TypeUint32,
+			Type:   field.TypeOther,
 			Value:  value,
 			Column: coupondiscount.FieldCirculation,
 		})
 	}
 	if cduo.mutation.CirculationCleared() {
 		_spec.Fields.Clear = append(_spec.Fields.Clear, &sqlgraph.FieldSpec{
-			Type:   field.TypeUint32,
+			Type:   field.TypeOther,
 			Column: coupondiscount.FieldCirculation,
 		})
 	}

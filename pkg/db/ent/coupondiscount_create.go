@@ -87,15 +87,15 @@ func (cdc *CouponDiscountCreate) SetNillableDiscount(d *decimal.Decimal) *Coupon
 }
 
 // SetCirculation sets the "circulation" field.
-func (cdc *CouponDiscountCreate) SetCirculation(u uint32) *CouponDiscountCreate {
-	cdc.mutation.SetCirculation(u)
+func (cdc *CouponDiscountCreate) SetCirculation(d decimal.Decimal) *CouponDiscountCreate {
+	cdc.mutation.SetCirculation(d)
 	return cdc
 }
 
 // SetNillableCirculation sets the "circulation" field if the given value is not nil.
-func (cdc *CouponDiscountCreate) SetNillableCirculation(u *uint32) *CouponDiscountCreate {
-	if u != nil {
-		cdc.SetCirculation(*u)
+func (cdc *CouponDiscountCreate) SetNillableCirculation(d *decimal.Decimal) *CouponDiscountCreate {
+	if d != nil {
+		cdc.SetCirculation(*d)
 	}
 	return cdc
 }
@@ -424,7 +424,7 @@ func (cdc *CouponDiscountCreate) createSpec() (*CouponDiscount, *sqlgraph.Create
 	}
 	if value, ok := cdc.mutation.Circulation(); ok {
 		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
-			Type:   field.TypeUint32,
+			Type:   field.TypeOther,
 			Value:  value,
 			Column: coupondiscount.FieldCirculation,
 		})
@@ -617,7 +617,7 @@ func (u *CouponDiscountUpsert) ClearDiscount() *CouponDiscountUpsert {
 }
 
 // SetCirculation sets the "circulation" field.
-func (u *CouponDiscountUpsert) SetCirculation(v uint32) *CouponDiscountUpsert {
+func (u *CouponDiscountUpsert) SetCirculation(v decimal.Decimal) *CouponDiscountUpsert {
 	u.Set(coupondiscount.FieldCirculation, v)
 	return u
 }
@@ -625,12 +625,6 @@ func (u *CouponDiscountUpsert) SetCirculation(v uint32) *CouponDiscountUpsert {
 // UpdateCirculation sets the "circulation" field to the value that was provided on create.
 func (u *CouponDiscountUpsert) UpdateCirculation() *CouponDiscountUpsert {
 	u.SetExcluded(coupondiscount.FieldCirculation)
-	return u
-}
-
-// AddCirculation adds v to the "circulation" field.
-func (u *CouponDiscountUpsert) AddCirculation(v uint32) *CouponDiscountUpsert {
-	u.Add(coupondiscount.FieldCirculation, v)
 	return u
 }
 
@@ -909,16 +903,9 @@ func (u *CouponDiscountUpsertOne) ClearDiscount() *CouponDiscountUpsertOne {
 }
 
 // SetCirculation sets the "circulation" field.
-func (u *CouponDiscountUpsertOne) SetCirculation(v uint32) *CouponDiscountUpsertOne {
+func (u *CouponDiscountUpsertOne) SetCirculation(v decimal.Decimal) *CouponDiscountUpsertOne {
 	return u.Update(func(s *CouponDiscountUpsert) {
 		s.SetCirculation(v)
-	})
-}
-
-// AddCirculation adds v to the "circulation" field.
-func (u *CouponDiscountUpsertOne) AddCirculation(v uint32) *CouponDiscountUpsertOne {
-	return u.Update(func(s *CouponDiscountUpsert) {
-		s.AddCirculation(v)
 	})
 }
 
@@ -1391,16 +1378,9 @@ func (u *CouponDiscountUpsertBulk) ClearDiscount() *CouponDiscountUpsertBulk {
 }
 
 // SetCirculation sets the "circulation" field.
-func (u *CouponDiscountUpsertBulk) SetCirculation(v uint32) *CouponDiscountUpsertBulk {
+func (u *CouponDiscountUpsertBulk) SetCirculation(v decimal.Decimal) *CouponDiscountUpsertBulk {
 	return u.Update(func(s *CouponDiscountUpsert) {
 		s.SetCirculation(v)
-	})
-}
-
-// AddCirculation adds v to the "circulation" field.
-func (u *CouponDiscountUpsertBulk) AddCirculation(v uint32) *CouponDiscountUpsertBulk {
-	return u.Update(func(s *CouponDiscountUpsert) {
-		s.AddCirculation(v)
 	})
 }
 

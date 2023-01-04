@@ -88,7 +88,7 @@ var (
 	// DefaultDiscount holds the default value on creation for the "discount" field.
 	DefaultDiscount decimal.Decimal
 	// DefaultCirculation holds the default value on creation for the "circulation" field.
-	DefaultCirculation uint32
+	DefaultCirculation decimal.Decimal
 	// DefaultStartAt holds the default value on creation for the "start_at" field.
 	DefaultStartAt uint32
 	// DefaultDurationDays holds the default value on creation for the "duration_days" field.
