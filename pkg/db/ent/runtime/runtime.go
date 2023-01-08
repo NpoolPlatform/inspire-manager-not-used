@@ -273,7 +273,7 @@ func init() {
 	// coupondiscountDescCirculation is the schema descriptor for circulation field.
 	coupondiscountDescCirculation := coupondiscountFields[3].Descriptor()
 	// coupondiscount.DefaultCirculation holds the default value on creation for the circulation field.
-	coupondiscount.DefaultCirculation = coupondiscountDescCirculation.Default.(uint32)
+	coupondiscount.DefaultCirculation = coupondiscountDescCirculation.Default.(decimal.Decimal)
 	// coupondiscountDescStartAt is the schema descriptor for start_at field.
 	coupondiscountDescStartAt := coupondiscountFields[5].Descriptor()
 	// coupondiscount.DefaultStartAt holds the default value on creation for the start_at field.

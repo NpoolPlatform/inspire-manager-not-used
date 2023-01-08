@@ -1,3 +1,4 @@
+//nolint:dupl
 package schema
 
 import (
@@ -38,9 +39,12 @@ func (CouponDiscount) Fields() []ent.Field {
 			Optional().
 			Default(decimal.Decimal{}),
 		field.
-			Uint32("circulation").
+			Other("circulation", decimal.Decimal{}).
+			SchemaType(map[string]string{
+				dialect.MySQL: "decimal(37,18)",
+			}).
 			Optional().
-			Default(0),
+			Default(decimal.Decimal{}),
 		field.
 			UUID("released_by_user_id", uuid.UUID{}),
 		field.

@@ -39,7 +39,11 @@ func CreateSet(c *ent.CouponDiscountCreate, in *npool.DiscountReq) (*ent.CouponD
 		c.SetDiscount(val)
 	}
 	if in.Circulation != nil {
-		c.SetCirculation(in.GetCirculation())
+		val, err := decimal.NewFromString(in.GetCirculation())
+		if err != nil {
+			return nil, err
+		}
+		c.SetCirculation(val)
 	}
 	if in.ReleasedByUserID != nil {
 		c.SetReleasedByUserID(uuid.MustParse(in.GetReleasedByUserID()))
@@ -135,7 +139,11 @@ func UpdateSet(u *ent.CouponDiscountUpdateOne, in *npool.DiscountReq) (*ent.Coup
 		u.SetDiscount(val)
 	}
 	if in.Circulation != nil {
-		u.SetCirculation(in.GetCirculation())
+		val, err := decimal.NewFromString(in.GetCirculation())
+		if err != nil {
+			return nil, err
+		}
+		u.SetCirculation(val)
 	}
 	if in.StartAt != nil {
 		u.SetStartAt(in.GetStartAt())

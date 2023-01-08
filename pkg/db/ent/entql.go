@@ -118,7 +118,7 @@ var schemaGraph = func() *sqlgraph.Schema {
 			coupondiscount.FieldDeletedAt:        {Type: field.TypeUint32, Column: coupondiscount.FieldDeletedAt},
 			coupondiscount.FieldAppID:            {Type: field.TypeUUID, Column: coupondiscount.FieldAppID},
 			coupondiscount.FieldDiscount:         {Type: field.TypeOther, Column: coupondiscount.FieldDiscount},
-			coupondiscount.FieldCirculation:      {Type: field.TypeUint32, Column: coupondiscount.FieldCirculation},
+			coupondiscount.FieldCirculation:      {Type: field.TypeOther, Column: coupondiscount.FieldCirculation},
 			coupondiscount.FieldReleasedByUserID: {Type: field.TypeUUID, Column: coupondiscount.FieldReleasedByUserID},
 			coupondiscount.FieldStartAt:          {Type: field.TypeUint32, Column: coupondiscount.FieldStartAt},
 			coupondiscount.FieldDurationDays:     {Type: field.TypeUint32, Column: coupondiscount.FieldDurationDays},
@@ -636,8 +636,8 @@ func (f *CouponDiscountFilter) WhereDiscount(p entql.OtherP) {
 	f.Where(p.Field(coupondiscount.FieldDiscount))
 }
 
-// WhereCirculation applies the entql uint32 predicate on the circulation field.
-func (f *CouponDiscountFilter) WhereCirculation(p entql.Uint32P) {
+// WhereCirculation applies the entql other predicate on the circulation field.
+func (f *CouponDiscountFilter) WhereCirculation(p entql.OtherP) {
 	f.Where(p.Field(coupondiscount.FieldCirculation))
 }
 

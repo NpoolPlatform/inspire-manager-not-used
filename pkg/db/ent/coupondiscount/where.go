@@ -116,7 +116,7 @@ func Discount(v decimal.Decimal) predicate.CouponDiscount {
 }
 
 // Circulation applies equality check predicate on the "circulation" field. It's identical to CirculationEQ.
-func Circulation(v uint32) predicate.CouponDiscount {
+func Circulation(v decimal.Decimal) predicate.CouponDiscount {
 	return predicate.CouponDiscount(func(s *sql.Selector) {
 		s.Where(sql.EQ(s.C(FieldCirculation), v))
 	})
@@ -499,21 +499,21 @@ func DiscountNotNil() predicate.CouponDiscount {
 }
 
 // CirculationEQ applies the EQ predicate on the "circulation" field.
-func CirculationEQ(v uint32) predicate.CouponDiscount {
+func CirculationEQ(v decimal.Decimal) predicate.CouponDiscount {
 	return predicate.CouponDiscount(func(s *sql.Selector) {
 		s.Where(sql.EQ(s.C(FieldCirculation), v))
 	})
 }
 
 // CirculationNEQ applies the NEQ predicate on the "circulation" field.
-func CirculationNEQ(v uint32) predicate.CouponDiscount {
+func CirculationNEQ(v decimal.Decimal) predicate.CouponDiscount {
 	return predicate.CouponDiscount(func(s *sql.Selector) {
 		s.Where(sql.NEQ(s.C(FieldCirculation), v))
 	})
 }
 
 // CirculationIn applies the In predicate on the "circulation" field.
-func CirculationIn(vs ...uint32) predicate.CouponDiscount {
+func CirculationIn(vs ...decimal.Decimal) predicate.CouponDiscount {
 	v := make([]interface{}, len(vs))
 	for i := range v {
 		v[i] = vs[i]
@@ -524,7 +524,7 @@ func CirculationIn(vs ...uint32) predicate.CouponDiscount {
 }
 
 // CirculationNotIn applies the NotIn predicate on the "circulation" field.
-func CirculationNotIn(vs ...uint32) predicate.CouponDiscount {
+func CirculationNotIn(vs ...decimal.Decimal) predicate.CouponDiscount {
 	v := make([]interface{}, len(vs))
 	for i := range v {
 		v[i] = vs[i]
@@ -535,28 +535,28 @@ func CirculationNotIn(vs ...uint32) predicate.CouponDiscount {
 }
 
 // CirculationGT applies the GT predicate on the "circulation" field.
-func CirculationGT(v uint32) predicate.CouponDiscount {
+func CirculationGT(v decimal.Decimal) predicate.CouponDiscount {
 	return predicate.CouponDiscount(func(s *sql.Selector) {
 		s.Where(sql.GT(s.C(FieldCirculation), v))
 	})
 }
 
 // CirculationGTE applies the GTE predicate on the "circulation" field.
-func CirculationGTE(v uint32) predicate.CouponDiscount {
+func CirculationGTE(v decimal.Decimal) predicate.CouponDiscount {
 	return predicate.CouponDiscount(func(s *sql.Selector) {
 		s.Where(sql.GTE(s.C(FieldCirculation), v))
 	})
 }
 
 // CirculationLT applies the LT predicate on the "circulation" field.
-func CirculationLT(v uint32) predicate.CouponDiscount {
+func CirculationLT(v decimal.Decimal) predicate.CouponDiscount {
 	return predicate.CouponDiscount(func(s *sql.Selector) {
 		s.Where(sql.LT(s.C(FieldCirculation), v))
 	})
 }
 
 // CirculationLTE applies the LTE predicate on the "circulation" field.
-func CirculationLTE(v uint32) predicate.CouponDiscount {
+func CirculationLTE(v decimal.Decimal) predicate.CouponDiscount {
 	return predicate.CouponDiscount(func(s *sql.Selector) {
 		s.Where(sql.LTE(s.C(FieldCirculation), v))
 	})

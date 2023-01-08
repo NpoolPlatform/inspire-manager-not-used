@@ -4063,8 +4063,7 @@ type CouponDiscountMutation struct {
 	adddeleted_at       *int32
 	app_id              *uuid.UUID
 	discount            *decimal.Decimal
-	circulation         *uint32
-	addcirculation      *int32
+	circulation         *decimal.Decimal
 	released_by_user_id *uuid.UUID
 	start_at            *uint32
 	addstart_at         *int32
@@ -4438,13 +4437,12 @@ func (m *CouponDiscountMutation) ResetDiscount() {
 }
 
 // SetCirculation sets the "circulation" field.
-func (m *CouponDiscountMutation) SetCirculation(u uint32) {
-	m.circulation = &u
-	m.addcirculation = nil
+func (m *CouponDiscountMutation) SetCirculation(d decimal.Decimal) {
+	m.circulation = &d
 }
 
 // Circulation returns the value of the "circulation" field in the mutation.
-func (m *CouponDiscountMutation) Circulation() (r uint32, exists bool) {
+func (m *CouponDiscountMutation) Circulation() (r decimal.Decimal, exists bool) {
 	v := m.circulation
 	if v == nil {
 		return
@@ -4455,7 +4453,7 @@ func (m *CouponDiscountMutation) Circulation() (r uint32, exists bool) {
 // OldCirculation returns the old "circulation" field's value of the CouponDiscount entity.
 // If the CouponDiscount object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *CouponDiscountMutation) OldCirculation(ctx context.Context) (v uint32, err error) {
+func (m *CouponDiscountMutation) OldCirculation(ctx context.Context) (v decimal.Decimal, err error) {
 	if !m.op.Is(OpUpdateOne) {
 		return v, errors.New("OldCirculation is only allowed on UpdateOne operations")
 	}
@@ -4469,28 +4467,9 @@ func (m *CouponDiscountMutation) OldCirculation(ctx context.Context) (v uint32, 
 	return oldValue.Circulation, nil
 }
 
-// AddCirculation adds u to the "circulation" field.
-func (m *CouponDiscountMutation) AddCirculation(u int32) {
-	if m.addcirculation != nil {
-		*m.addcirculation += u
-	} else {
-		m.addcirculation = &u
-	}
-}
-
-// AddedCirculation returns the value that was added to the "circulation" field in this mutation.
-func (m *CouponDiscountMutation) AddedCirculation() (r int32, exists bool) {
-	v := m.addcirculation
-	if v == nil {
-		return
-	}
-	return *v, true
-}
-
 // ClearCirculation clears the value of the "circulation" field.
 func (m *CouponDiscountMutation) ClearCirculation() {
 	m.circulation = nil
-	m.addcirculation = nil
 	m.clearedFields[coupondiscount.FieldCirculation] = struct{}{}
 }
 
@@ -4503,7 +4482,6 @@ func (m *CouponDiscountMutation) CirculationCleared() bool {
 // ResetCirculation resets all changes to the "circulation" field.
 func (m *CouponDiscountMutation) ResetCirculation() {
 	m.circulation = nil
-	m.addcirculation = nil
 	delete(m.clearedFields, coupondiscount.FieldCirculation)
 }
 
@@ -5017,7 +4995,7 @@ func (m *CouponDiscountMutation) SetField(name string, value ent.Value) error {
 		m.SetDiscount(v)
 		return nil
 	case coupondiscount.FieldCirculation:
-		v, ok := value.(uint32)
+		v, ok := value.(decimal.Decimal)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
@@ -5082,9 +5060,6 @@ func (m *CouponDiscountMutation) AddedFields() []string {
 	if m.adddeleted_at != nil {
 		fields = append(fields, coupondiscount.FieldDeletedAt)
 	}
-	if m.addcirculation != nil {
-		fields = append(fields, coupondiscount.FieldCirculation)
-	}
 	if m.addstart_at != nil {
 		fields = append(fields, coupondiscount.FieldStartAt)
 	}
@@ -5108,8 +5083,6 @@ func (m *CouponDiscountMutation) AddedField(name string) (ent.Value, bool) {
 		return m.AddedUpdatedAt()
 	case coupondiscount.FieldDeletedAt:
 		return m.AddedDeletedAt()
-	case coupondiscount.FieldCirculation:
-		return m.AddedCirculation()
 	case coupondiscount.FieldStartAt:
 		return m.AddedStartAt()
 	case coupondiscount.FieldDurationDays:
@@ -5145,13 +5118,6 @@ func (m *CouponDiscountMutation) AddField(name string, value ent.Value) error {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
 		m.AddDeletedAt(v)
-		return nil
-	case coupondiscount.FieldCirculation:
-		v, ok := value.(int32)
-		if !ok {
-			return fmt.Errorf("unexpected type %T for field %s", value, name)
-		}
-		m.AddCirculation(v)
 		return nil
 	case coupondiscount.FieldStartAt:
 		v, ok := value.(int32)
