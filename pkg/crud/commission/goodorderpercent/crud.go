@@ -39,6 +39,7 @@ func CreateSet(c *ent.GoodOrderPercentCreate, in *npool.OrderPercentReq) (*ent.G
 	if in.Percent != nil {
 		c.SetPercent(decimal.RequireFromString(in.GetPercent()))
 	}
+	c.SetEndAt(uint32(time.Now().Unix()))
 	if in.StartAt != nil {
 		c.SetStartAt(in.GetStartAt())
 	}
