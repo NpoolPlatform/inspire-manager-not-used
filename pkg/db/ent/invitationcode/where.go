@@ -121,13 +121,6 @@ func InvitationCode(v string) predicate.InvitationCode {
 	})
 }
 
-// Confirmed applies equality check predicate on the "confirmed" field. It's identical to ConfirmedEQ.
-func Confirmed(v bool) predicate.InvitationCode {
-	return predicate.InvitationCode(func(s *sql.Selector) {
-		s.Where(sql.EQ(s.C(FieldConfirmed), v))
-	})
-}
-
 // Disabled applies equality check predicate on the "disabled" field. It's identical to DisabledEQ.
 func Disabled(v bool) predicate.InvitationCode {
 	return predicate.InvitationCode(func(s *sql.Selector) {
@@ -565,34 +558,6 @@ func InvitationCodeEqualFold(v string) predicate.InvitationCode {
 func InvitationCodeContainsFold(v string) predicate.InvitationCode {
 	return predicate.InvitationCode(func(s *sql.Selector) {
 		s.Where(sql.ContainsFold(s.C(FieldInvitationCode), v))
-	})
-}
-
-// ConfirmedEQ applies the EQ predicate on the "confirmed" field.
-func ConfirmedEQ(v bool) predicate.InvitationCode {
-	return predicate.InvitationCode(func(s *sql.Selector) {
-		s.Where(sql.EQ(s.C(FieldConfirmed), v))
-	})
-}
-
-// ConfirmedNEQ applies the NEQ predicate on the "confirmed" field.
-func ConfirmedNEQ(v bool) predicate.InvitationCode {
-	return predicate.InvitationCode(func(s *sql.Selector) {
-		s.Where(sql.NEQ(s.C(FieldConfirmed), v))
-	})
-}
-
-// ConfirmedIsNil applies the IsNil predicate on the "confirmed" field.
-func ConfirmedIsNil() predicate.InvitationCode {
-	return predicate.InvitationCode(func(s *sql.Selector) {
-		s.Where(sql.IsNull(s.C(FieldConfirmed)))
-	})
-}
-
-// ConfirmedNotNil applies the NotNil predicate on the "confirmed" field.
-func ConfirmedNotNil() predicate.InvitationCode {
-	return predicate.InvitationCode(func(s *sql.Selector) {
-		s.Where(sql.NotNull(s.C(FieldConfirmed)))
 	})
 }
 

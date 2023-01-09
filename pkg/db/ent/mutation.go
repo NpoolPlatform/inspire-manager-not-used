@@ -8654,7 +8654,6 @@ type InvitationCodeMutation struct {
 	app_id          *uuid.UUID
 	user_id         *uuid.UUID
 	invitation_code *string
-	confirmed       *bool
 	disabled        *bool
 	clearedFields   map[string]struct{}
 	done            bool
@@ -9055,55 +9054,6 @@ func (m *InvitationCodeMutation) ResetInvitationCode() {
 	delete(m.clearedFields, invitationcode.FieldInvitationCode)
 }
 
-// SetConfirmed sets the "confirmed" field.
-func (m *InvitationCodeMutation) SetConfirmed(b bool) {
-	m.confirmed = &b
-}
-
-// Confirmed returns the value of the "confirmed" field in the mutation.
-func (m *InvitationCodeMutation) Confirmed() (r bool, exists bool) {
-	v := m.confirmed
-	if v == nil {
-		return
-	}
-	return *v, true
-}
-
-// OldConfirmed returns the old "confirmed" field's value of the InvitationCode entity.
-// If the InvitationCode object wasn't provided to the builder, the object is fetched from the database.
-// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *InvitationCodeMutation) OldConfirmed(ctx context.Context) (v bool, err error) {
-	if !m.op.Is(OpUpdateOne) {
-		return v, errors.New("OldConfirmed is only allowed on UpdateOne operations")
-	}
-	if m.id == nil || m.oldValue == nil {
-		return v, errors.New("OldConfirmed requires an ID field in the mutation")
-	}
-	oldValue, err := m.oldValue(ctx)
-	if err != nil {
-		return v, fmt.Errorf("querying old value for OldConfirmed: %w", err)
-	}
-	return oldValue.Confirmed, nil
-}
-
-// ClearConfirmed clears the value of the "confirmed" field.
-func (m *InvitationCodeMutation) ClearConfirmed() {
-	m.confirmed = nil
-	m.clearedFields[invitationcode.FieldConfirmed] = struct{}{}
-}
-
-// ConfirmedCleared returns if the "confirmed" field was cleared in this mutation.
-func (m *InvitationCodeMutation) ConfirmedCleared() bool {
-	_, ok := m.clearedFields[invitationcode.FieldConfirmed]
-	return ok
-}
-
-// ResetConfirmed resets all changes to the "confirmed" field.
-func (m *InvitationCodeMutation) ResetConfirmed() {
-	m.confirmed = nil
-	delete(m.clearedFields, invitationcode.FieldConfirmed)
-}
-
 // SetDisabled sets the "disabled" field.
 func (m *InvitationCodeMutation) SetDisabled(b bool) {
 	m.disabled = &b
@@ -9172,7 +9122,7 @@ func (m *InvitationCodeMutation) Type() string {
 // order to get all numeric fields that were incremented/decremented, call
 // AddedFields().
 func (m *InvitationCodeMutation) Fields() []string {
-	fields := make([]string, 0, 8)
+	fields := make([]string, 0, 7)
 	if m.created_at != nil {
 		fields = append(fields, invitationcode.FieldCreatedAt)
 	}
@@ -9190,9 +9140,6 @@ func (m *InvitationCodeMutation) Fields() []string {
 	}
 	if m.invitation_code != nil {
 		fields = append(fields, invitationcode.FieldInvitationCode)
-	}
-	if m.confirmed != nil {
-		fields = append(fields, invitationcode.FieldConfirmed)
 	}
 	if m.disabled != nil {
 		fields = append(fields, invitationcode.FieldDisabled)
@@ -9217,8 +9164,6 @@ func (m *InvitationCodeMutation) Field(name string) (ent.Value, bool) {
 		return m.UserID()
 	case invitationcode.FieldInvitationCode:
 		return m.InvitationCode()
-	case invitationcode.FieldConfirmed:
-		return m.Confirmed()
 	case invitationcode.FieldDisabled:
 		return m.Disabled()
 	}
@@ -9242,8 +9187,6 @@ func (m *InvitationCodeMutation) OldField(ctx context.Context, name string) (ent
 		return m.OldUserID(ctx)
 	case invitationcode.FieldInvitationCode:
 		return m.OldInvitationCode(ctx)
-	case invitationcode.FieldConfirmed:
-		return m.OldConfirmed(ctx)
 	case invitationcode.FieldDisabled:
 		return m.OldDisabled(ctx)
 	}
@@ -9296,13 +9239,6 @@ func (m *InvitationCodeMutation) SetField(name string, value ent.Value) error {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
 		m.SetInvitationCode(v)
-		return nil
-	case invitationcode.FieldConfirmed:
-		v, ok := value.(bool)
-		if !ok {
-			return fmt.Errorf("unexpected type %T for field %s", value, name)
-		}
-		m.SetConfirmed(v)
 		return nil
 	case invitationcode.FieldDisabled:
 		v, ok := value.(bool)
@@ -9383,9 +9319,6 @@ func (m *InvitationCodeMutation) ClearedFields() []string {
 	if m.FieldCleared(invitationcode.FieldInvitationCode) {
 		fields = append(fields, invitationcode.FieldInvitationCode)
 	}
-	if m.FieldCleared(invitationcode.FieldConfirmed) {
-		fields = append(fields, invitationcode.FieldConfirmed)
-	}
 	if m.FieldCleared(invitationcode.FieldDisabled) {
 		fields = append(fields, invitationcode.FieldDisabled)
 	}
@@ -9405,9 +9338,6 @@ func (m *InvitationCodeMutation) ClearField(name string) error {
 	switch name {
 	case invitationcode.FieldInvitationCode:
 		m.ClearInvitationCode()
-		return nil
-	case invitationcode.FieldConfirmed:
-		m.ClearConfirmed()
 		return nil
 	case invitationcode.FieldDisabled:
 		m.ClearDisabled()
@@ -9437,9 +9367,6 @@ func (m *InvitationCodeMutation) ResetField(name string) error {
 		return nil
 	case invitationcode.FieldInvitationCode:
 		m.ResetInvitationCode()
-		return nil
-	case invitationcode.FieldConfirmed:
-		m.ResetConfirmed()
 		return nil
 	case invitationcode.FieldDisabled:
 		m.ResetDisabled()

@@ -15,7 +15,7 @@ func trace(span trace1.Span, in *npool.InvitationCodeReq, index int) trace1.Span
 		attribute.String(fmt.Sprintf("AppID.%v", index), in.GetAppID()),
 		attribute.String(fmt.Sprintf("UserID.%v", index), in.GetUserID()),
 		attribute.String(fmt.Sprintf("InvitationCode.%v", index), in.GetInvitationCode()),
-		attribute.Bool(fmt.Sprintf("Confirmed.%v", index), in.GetConfirmed()),
+		attribute.Bool(fmt.Sprintf("Disabled.%v", index), in.GetDisabled()),
 	)
 	return span
 }
@@ -34,8 +34,8 @@ func TraceConds(span trace1.Span, in *npool.Conds) trace1.Span {
 		attribute.String("UserID.Value", in.GetUserID().GetValue()),
 		attribute.String("InvitationCode.Op", in.GetInvitationCode().GetOp()),
 		attribute.String("InvitationCode.Value", in.GetInvitationCode().GetValue()),
-		attribute.String("Confirmed.Op", in.GetConfirmed().GetOp()),
-		attribute.Bool("Confirmed.Value", in.GetConfirmed().GetValue()),
+		attribute.String("Disabled.Op", in.GetDisabled().GetOp()),
+		attribute.Bool("Disabled.Value", in.GetDisabled().GetValue()),
 	)
 	return span
 }

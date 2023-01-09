@@ -494,12 +494,8 @@ func init() {
 	invitationcodeDescInvitationCode := invitationcodeFields[3].Descriptor()
 	// invitationcode.DefaultInvitationCode holds the default value on creation for the invitation_code field.
 	invitationcode.DefaultInvitationCode = invitationcodeDescInvitationCode.Default.(string)
-	// invitationcodeDescConfirmed is the schema descriptor for confirmed field.
-	invitationcodeDescConfirmed := invitationcodeFields[4].Descriptor()
-	// invitationcode.DefaultConfirmed holds the default value on creation for the confirmed field.
-	invitationcode.DefaultConfirmed = invitationcodeDescConfirmed.Default.(bool)
 	// invitationcodeDescDisabled is the schema descriptor for disabled field.
-	invitationcodeDescDisabled := invitationcodeFields[5].Descriptor()
+	invitationcodeDescDisabled := invitationcodeFields[4].Descriptor()
 	// invitationcode.DefaultDisabled holds the default value on creation for the disabled field.
 	invitationcode.DefaultDisabled = invitationcodeDescDisabled.Default.(bool)
 	// invitationcodeDescID is the schema descriptor for id field.

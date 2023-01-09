@@ -34,7 +34,6 @@ func CreateSet(c *ent.InvitationCodeCreate, in *npool.InvitationCodeReq) (*ent.I
 	if in.InvitationCode != nil {
 		c.SetInvitationCode(in.GetInvitationCode())
 	}
-	c.SetConfirmed(false)
 	c.SetDisabled(false)
 
 	return c, nil
@@ -108,9 +107,6 @@ func CreateBulk(ctx context.Context, in []*npool.InvitationCodeReq) ([]*ent.Invi
 func UpdateSet(info *ent.InvitationCode, in *npool.InvitationCodeReq) *ent.InvitationCodeUpdateOne {
 	stm := info.Update()
 
-	if in.Confirmed != nil && !info.Confirmed {
-		stm = stm.SetConfirmed(in.GetConfirmed())
-	}
 	if in.Disabled != nil {
 		stm = stm.SetDisabled(in.GetDisabled())
 	}
@@ -213,16 +209,6 @@ func SetQueryConds(conds *npool.Conds, cli *ent.Client) (*ent.InvitationCodeQuer
 		switch conds.GetInvitationCode().GetOp() {
 		case cruder.EQ:
 			stm.Where(invitationcode.InvitationCodeEQ(conds.GetInvitationCode().GetValue()))
-		default:
-			return nil, fmt.Errorf("invalid invitationcode field")
-		}
-	}
-	if conds.Confirmed != nil {
-		switch conds.GetConfirmed().GetOp() {
-		case cruder.EQ:
-			stm.Where(invitationcode.ConfirmedEQ(conds.GetConfirmed().GetValue()))
-		case cruder.NEQ:
-			stm.Where(invitationcode.ConfirmedNEQ(conds.GetConfirmed().GetValue()))
 		default:
 			return nil, fmt.Errorf("invalid invitationcode field")
 		}

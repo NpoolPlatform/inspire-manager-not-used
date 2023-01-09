@@ -24,8 +24,6 @@ const (
 	FieldUserID = "user_id"
 	// FieldInvitationCode holds the string denoting the invitation_code field in the database.
 	FieldInvitationCode = "invitation_code"
-	// FieldConfirmed holds the string denoting the confirmed field in the database.
-	FieldConfirmed = "confirmed"
 	// FieldDisabled holds the string denoting the disabled field in the database.
 	FieldDisabled = "disabled"
 	// Table holds the table name of the invitationcode in the database.
@@ -41,7 +39,6 @@ var Columns = []string{
 	FieldAppID,
 	FieldUserID,
 	FieldInvitationCode,
-	FieldConfirmed,
 	FieldDisabled,
 }
 
@@ -74,8 +71,6 @@ var (
 	DefaultDeletedAt func() uint32
 	// DefaultInvitationCode holds the default value on creation for the "invitation_code" field.
 	DefaultInvitationCode string
-	// DefaultConfirmed holds the default value on creation for the "confirmed" field.
-	DefaultConfirmed bool
 	// DefaultDisabled holds the default value on creation for the "disabled" field.
 	DefaultDisabled bool
 	// DefaultID holds the default value on creation for the "id" field.

@@ -35,10 +35,6 @@ func (InvitationCode) Fields() []ent.Field {
 			Optional().
 			Default(""),
 		field.
-			Bool("confirmed").
-			Optional().
-			Default(false),
-		field.
 			Bool("disabled").
 			Optional().
 			Default(false),

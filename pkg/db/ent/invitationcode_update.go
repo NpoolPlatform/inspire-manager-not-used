@@ -116,26 +116,6 @@ func (icu *InvitationCodeUpdate) ClearInvitationCode() *InvitationCodeUpdate {
 	return icu
 }
 
-// SetConfirmed sets the "confirmed" field.
-func (icu *InvitationCodeUpdate) SetConfirmed(b bool) *InvitationCodeUpdate {
-	icu.mutation.SetConfirmed(b)
-	return icu
-}
-
-// SetNillableConfirmed sets the "confirmed" field if the given value is not nil.
-func (icu *InvitationCodeUpdate) SetNillableConfirmed(b *bool) *InvitationCodeUpdate {
-	if b != nil {
-		icu.SetConfirmed(*b)
-	}
-	return icu
-}
-
-// ClearConfirmed clears the value of the "confirmed" field.
-func (icu *InvitationCodeUpdate) ClearConfirmed() *InvitationCodeUpdate {
-	icu.mutation.ClearConfirmed()
-	return icu
-}
-
 // SetDisabled sets the "disabled" field.
 func (icu *InvitationCodeUpdate) SetDisabled(b bool) *InvitationCodeUpdate {
 	icu.mutation.SetDisabled(b)
@@ -323,19 +303,6 @@ func (icu *InvitationCodeUpdate) sqlSave(ctx context.Context) (n int, err error)
 			Column: invitationcode.FieldInvitationCode,
 		})
 	}
-	if value, ok := icu.mutation.Confirmed(); ok {
-		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
-			Type:   field.TypeBool,
-			Value:  value,
-			Column: invitationcode.FieldConfirmed,
-		})
-	}
-	if icu.mutation.ConfirmedCleared() {
-		_spec.Fields.Clear = append(_spec.Fields.Clear, &sqlgraph.FieldSpec{
-			Type:   field.TypeBool,
-			Column: invitationcode.FieldConfirmed,
-		})
-	}
 	if value, ok := icu.mutation.Disabled(); ok {
 		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
 			Type:   field.TypeBool,
@@ -454,26 +421,6 @@ func (icuo *InvitationCodeUpdateOne) SetNillableInvitationCode(s *string) *Invit
 // ClearInvitationCode clears the value of the "invitation_code" field.
 func (icuo *InvitationCodeUpdateOne) ClearInvitationCode() *InvitationCodeUpdateOne {
 	icuo.mutation.ClearInvitationCode()
-	return icuo
-}
-
-// SetConfirmed sets the "confirmed" field.
-func (icuo *InvitationCodeUpdateOne) SetConfirmed(b bool) *InvitationCodeUpdateOne {
-	icuo.mutation.SetConfirmed(b)
-	return icuo
-}
-
-// SetNillableConfirmed sets the "confirmed" field if the given value is not nil.
-func (icuo *InvitationCodeUpdateOne) SetNillableConfirmed(b *bool) *InvitationCodeUpdateOne {
-	if b != nil {
-		icuo.SetConfirmed(*b)
-	}
-	return icuo
-}
-
-// ClearConfirmed clears the value of the "confirmed" field.
-func (icuo *InvitationCodeUpdateOne) ClearConfirmed() *InvitationCodeUpdateOne {
-	icuo.mutation.ClearConfirmed()
 	return icuo
 }
 
@@ -692,19 +639,6 @@ func (icuo *InvitationCodeUpdateOne) sqlSave(ctx context.Context) (_node *Invita
 		_spec.Fields.Clear = append(_spec.Fields.Clear, &sqlgraph.FieldSpec{
 			Type:   field.TypeString,
 			Column: invitationcode.FieldInvitationCode,
-		})
-	}
-	if value, ok := icuo.mutation.Confirmed(); ok {
-		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
-			Type:   field.TypeBool,
-			Value:  value,
-			Column: invitationcode.FieldConfirmed,
-		})
-	}
-	if icuo.mutation.ConfirmedCleared() {
-		_spec.Fields.Clear = append(_spec.Fields.Clear, &sqlgraph.FieldSpec{
-			Type:   field.TypeBool,
-			Column: invitationcode.FieldConfirmed,
 		})
 	}
 	if value, ok := icuo.mutation.Disabled(); ok {

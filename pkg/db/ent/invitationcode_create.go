@@ -91,20 +91,6 @@ func (icc *InvitationCodeCreate) SetNillableInvitationCode(s *string) *Invitatio
 	return icc
 }
 
-// SetConfirmed sets the "confirmed" field.
-func (icc *InvitationCodeCreate) SetConfirmed(b bool) *InvitationCodeCreate {
-	icc.mutation.SetConfirmed(b)
-	return icc
-}
-
-// SetNillableConfirmed sets the "confirmed" field if the given value is not nil.
-func (icc *InvitationCodeCreate) SetNillableConfirmed(b *bool) *InvitationCodeCreate {
-	if b != nil {
-		icc.SetConfirmed(*b)
-	}
-	return icc
-}
-
 // SetDisabled sets the "disabled" field.
 func (icc *InvitationCodeCreate) SetDisabled(b bool) *InvitationCodeCreate {
 	icc.mutation.SetDisabled(b)
@@ -237,10 +223,6 @@ func (icc *InvitationCodeCreate) defaults() error {
 		v := invitationcode.DefaultInvitationCode
 		icc.mutation.SetInvitationCode(v)
 	}
-	if _, ok := icc.mutation.Confirmed(); !ok {
-		v := invitationcode.DefaultConfirmed
-		icc.mutation.SetConfirmed(v)
-	}
 	if _, ok := icc.mutation.Disabled(); !ok {
 		v := invitationcode.DefaultDisabled
 		icc.mutation.SetDisabled(v)
@@ -356,14 +338,6 @@ func (icc *InvitationCodeCreate) createSpec() (*InvitationCode, *sqlgraph.Create
 			Column: invitationcode.FieldInvitationCode,
 		})
 		_node.InvitationCode = value
-	}
-	if value, ok := icc.mutation.Confirmed(); ok {
-		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
-			Type:   field.TypeBool,
-			Value:  value,
-			Column: invitationcode.FieldConfirmed,
-		})
-		_node.Confirmed = value
 	}
 	if value, ok := icc.mutation.Disabled(); ok {
 		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
@@ -520,24 +494,6 @@ func (u *InvitationCodeUpsert) UpdateInvitationCode() *InvitationCodeUpsert {
 // ClearInvitationCode clears the value of the "invitation_code" field.
 func (u *InvitationCodeUpsert) ClearInvitationCode() *InvitationCodeUpsert {
 	u.SetNull(invitationcode.FieldInvitationCode)
-	return u
-}
-
-// SetConfirmed sets the "confirmed" field.
-func (u *InvitationCodeUpsert) SetConfirmed(v bool) *InvitationCodeUpsert {
-	u.Set(invitationcode.FieldConfirmed, v)
-	return u
-}
-
-// UpdateConfirmed sets the "confirmed" field to the value that was provided on create.
-func (u *InvitationCodeUpsert) UpdateConfirmed() *InvitationCodeUpsert {
-	u.SetExcluded(invitationcode.FieldConfirmed)
-	return u
-}
-
-// ClearConfirmed clears the value of the "confirmed" field.
-func (u *InvitationCodeUpsert) ClearConfirmed() *InvitationCodeUpsert {
-	u.SetNull(invitationcode.FieldConfirmed)
 	return u
 }
 
@@ -718,27 +674,6 @@ func (u *InvitationCodeUpsertOne) UpdateInvitationCode() *InvitationCodeUpsertOn
 func (u *InvitationCodeUpsertOne) ClearInvitationCode() *InvitationCodeUpsertOne {
 	return u.Update(func(s *InvitationCodeUpsert) {
 		s.ClearInvitationCode()
-	})
-}
-
-// SetConfirmed sets the "confirmed" field.
-func (u *InvitationCodeUpsertOne) SetConfirmed(v bool) *InvitationCodeUpsertOne {
-	return u.Update(func(s *InvitationCodeUpsert) {
-		s.SetConfirmed(v)
-	})
-}
-
-// UpdateConfirmed sets the "confirmed" field to the value that was provided on create.
-func (u *InvitationCodeUpsertOne) UpdateConfirmed() *InvitationCodeUpsertOne {
-	return u.Update(func(s *InvitationCodeUpsert) {
-		s.UpdateConfirmed()
-	})
-}
-
-// ClearConfirmed clears the value of the "confirmed" field.
-func (u *InvitationCodeUpsertOne) ClearConfirmed() *InvitationCodeUpsertOne {
-	return u.Update(func(s *InvitationCodeUpsert) {
-		s.ClearConfirmed()
 	})
 }
 
@@ -1088,27 +1023,6 @@ func (u *InvitationCodeUpsertBulk) UpdateInvitationCode() *InvitationCodeUpsertB
 func (u *InvitationCodeUpsertBulk) ClearInvitationCode() *InvitationCodeUpsertBulk {
 	return u.Update(func(s *InvitationCodeUpsert) {
 		s.ClearInvitationCode()
-	})
-}
-
-// SetConfirmed sets the "confirmed" field.
-func (u *InvitationCodeUpsertBulk) SetConfirmed(v bool) *InvitationCodeUpsertBulk {
-	return u.Update(func(s *InvitationCodeUpsert) {
-		s.SetConfirmed(v)
-	})
-}
-
-// UpdateConfirmed sets the "confirmed" field to the value that was provided on create.
-func (u *InvitationCodeUpsertBulk) UpdateConfirmed() *InvitationCodeUpsertBulk {
-	return u.Update(func(s *InvitationCodeUpsert) {
-		s.UpdateConfirmed()
-	})
-}
-
-// ClearConfirmed clears the value of the "confirmed" field.
-func (u *InvitationCodeUpsertBulk) ClearConfirmed() *InvitationCodeUpsertBulk {
-	return u.Update(func(s *InvitationCodeUpsert) {
-		s.ClearConfirmed()
 	})
 }
 

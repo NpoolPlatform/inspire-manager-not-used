@@ -96,10 +96,10 @@ func createBulk(t *testing.T) {
 }
 
 func update(t *testing.T) {
-	confirmed := true
+	disabled := true
 
-	ret.Confirmed = confirmed
-	req.Confirmed = &confirmed
+	ret.Disabled = disabled
+	req.Disabled = &disabled
 
 	info, err := Update(context.Background(), &req)
 	if assert.Nil(t, err) {

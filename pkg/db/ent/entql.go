@@ -214,7 +214,6 @@ var schemaGraph = func() *sqlgraph.Schema {
 			invitationcode.FieldAppID:          {Type: field.TypeUUID, Column: invitationcode.FieldAppID},
 			invitationcode.FieldUserID:         {Type: field.TypeUUID, Column: invitationcode.FieldUserID},
 			invitationcode.FieldInvitationCode: {Type: field.TypeString, Column: invitationcode.FieldInvitationCode},
-			invitationcode.FieldConfirmed:      {Type: field.TypeBool, Column: invitationcode.FieldConfirmed},
 			invitationcode.FieldDisabled:       {Type: field.TypeBool, Column: invitationcode.FieldDisabled},
 		},
 	}
@@ -1014,11 +1013,6 @@ func (f *InvitationCodeFilter) WhereUserID(p entql.ValueP) {
 // WhereInvitationCode applies the entql string predicate on the invitation_code field.
 func (f *InvitationCodeFilter) WhereInvitationCode(p entql.StringP) {
 	f.Where(p.Field(invitationcode.FieldInvitationCode))
-}
-
-// WhereConfirmed applies the entql bool predicate on the confirmed field.
-func (f *InvitationCodeFilter) WhereConfirmed(p entql.BoolP) {
-	f.Where(p.Field(invitationcode.FieldConfirmed))
 }
 
 // WhereDisabled applies the entql bool predicate on the disabled field.
