@@ -223,6 +223,18 @@ func SetQueryConds(conds *npool.Conds, cli *ent.Client) (*ent.InvitationCodeQuer
 			return nil, fmt.Errorf("invalid invitationcode field")
 		}
 	}
+	if len(conds.GetUserIDs().GetValue()) > 0 {
+		ids := []uuid.UUID{}
+		for _, id := range conds.GetUserIDs().GetValue() {
+			ids = append(ids, uuid.MustParse(id))
+		}
+		switch conds.GetUserIDs().GetOp() {
+		case cruder.IN:
+			stm.Where(invitationcode.UserIDIn(ids...))
+		default:
+			return nil, fmt.Errorf("invalid invitationcode field")
+		}
+	}
 	return stm, nil
 }
 
