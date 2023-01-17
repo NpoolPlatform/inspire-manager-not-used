@@ -105,7 +105,34 @@ func (s *Server) CreateOrderPercents(
 	*npool.CreateOrderPercentsResponse,
 	error,
 ) {
-	return &npool.CreateOrderPercentsResponse{}, status.Error(codes.Unimplemented, "NOT SUPPORTED")
+	var err error
+
+	_, span := otel.Tracer(constant.ServiceName).Start(ctx, "CreateOrderPercents")
+	defer span.End()
+
+	defer func() {
+		if err != nil {
+			span.SetStatus(scodes.Error, err.Error())
+			span.RecordError(err)
+		}
+	}()
+
+	if len(in.GetInfos()) == 0 {
+		return &npool.CreateOrderPercentsResponse{}, status.Error(codes.InvalidArgument, "Infos is empty")
+	}
+
+	span = tracer.TraceMany(span, in.GetInfos())
+	span = commontracer.TraceInvoker(span, "goodorderpercent", "crud", "Create")
+
+	rows, err := crud.CreateBulk(ctx, in.GetInfos())
+	if err != nil {
+		logger.Sugar().Errorf("fail create goodorderpercent: %v", err)
+		return &npool.CreateOrderPercentsResponse{}, status.Error(codes.Internal, err.Error())
+	}
+
+	return &npool.CreateOrderPercentsResponse{
+		Infos: converter.Ent2GrpcMany(rows),
+	}, nil
 }
 
 func (s *Server) UpdateOrderPercent(
