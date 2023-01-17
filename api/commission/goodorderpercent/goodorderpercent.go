@@ -107,7 +107,7 @@ func (s *Server) CreateOrderPercents(
 ) {
 	var err error
 
-	_, span := otel.Tracer(constant.ServiceName).Start(ctx, "CreateDiscounts")
+	_, span := otel.Tracer(constant.ServiceName).Start(ctx, "CreateOrderPercents")
 	defer span.End()
 
 	defer func() {
@@ -122,11 +122,11 @@ func (s *Server) CreateOrderPercents(
 	}
 
 	span = tracer.TraceMany(span, in.GetInfos())
-	span = commontracer.TraceInvoker(span, "fixamount", "crud", "CreateBulk")
+	span = commontracer.TraceInvoker(span, "goodorderpercent", "crud", "Create")
 
 	rows, err := crud.CreateBulk(ctx, in.GetInfos())
 	if err != nil {
-		logger.Sugar().Errorf("fail create fixamounts: %v", err)
+		logger.Sugar().Errorf("fail create goodorderpercent: %v", err)
 		return &npool.CreateOrderPercentsResponse{}, status.Error(codes.Internal, err.Error())
 	}
 
