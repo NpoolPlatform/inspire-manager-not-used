@@ -220,6 +220,20 @@ func (adc *ArchivementDetailCreate) SetNillableUnits(u *uint32) *ArchivementDeta
 	return adc
 }
 
+// SetUnitsV1 sets the "units_v1" field.
+func (adc *ArchivementDetailCreate) SetUnitsV1(d decimal.Decimal) *ArchivementDetailCreate {
+	adc.mutation.SetUnitsV1(d)
+	return adc
+}
+
+// SetNillableUnitsV1 sets the "units_v1" field if the given value is not nil.
+func (adc *ArchivementDetailCreate) SetNillableUnitsV1(d *decimal.Decimal) *ArchivementDetailCreate {
+	if d != nil {
+		adc.SetUnitsV1(*d)
+	}
+	return adc
+}
+
 // SetAmount sets the "amount" field.
 func (adc *ArchivementDetailCreate) SetAmount(d decimal.Decimal) *ArchivementDetailCreate {
 	adc.mutation.SetAmount(d)
@@ -444,6 +458,10 @@ func (adc *ArchivementDetailCreate) defaults() error {
 		v := archivementdetail.DefaultUnits
 		adc.mutation.SetUnits(v)
 	}
+	if _, ok := adc.mutation.UnitsV1(); !ok {
+		v := archivementdetail.DefaultUnitsV1
+		adc.mutation.SetUnitsV1(v)
+	}
 	if _, ok := adc.mutation.Amount(); !ok {
 		v := archivementdetail.DefaultAmount
 		adc.mutation.SetAmount(v)
@@ -625,6 +643,14 @@ func (adc *ArchivementDetailCreate) createSpec() (*ArchivementDetail, *sqlgraph.
 			Column: archivementdetail.FieldUnits,
 		})
 		_node.Units = value
+	}
+	if value, ok := adc.mutation.UnitsV1(); ok {
+		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
+			Type:   field.TypeOther,
+			Value:  value,
+			Column: archivementdetail.FieldUnitsV1,
+		})
+		_node.UnitsV1 = value
 	}
 	if value, ok := adc.mutation.Amount(); ok {
 		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
@@ -959,6 +985,24 @@ func (u *ArchivementDetailUpsert) AddUnits(v uint32) *ArchivementDetailUpsert {
 // ClearUnits clears the value of the "units" field.
 func (u *ArchivementDetailUpsert) ClearUnits() *ArchivementDetailUpsert {
 	u.SetNull(archivementdetail.FieldUnits)
+	return u
+}
+
+// SetUnitsV1 sets the "units_v1" field.
+func (u *ArchivementDetailUpsert) SetUnitsV1(v decimal.Decimal) *ArchivementDetailUpsert {
+	u.Set(archivementdetail.FieldUnitsV1, v)
+	return u
+}
+
+// UpdateUnitsV1 sets the "units_v1" field to the value that was provided on create.
+func (u *ArchivementDetailUpsert) UpdateUnitsV1() *ArchivementDetailUpsert {
+	u.SetExcluded(archivementdetail.FieldUnitsV1)
+	return u
+}
+
+// ClearUnitsV1 clears the value of the "units_v1" field.
+func (u *ArchivementDetailUpsert) ClearUnitsV1() *ArchivementDetailUpsert {
+	u.SetNull(archivementdetail.FieldUnitsV1)
 	return u
 }
 
@@ -1364,6 +1408,27 @@ func (u *ArchivementDetailUpsertOne) UpdateUnits() *ArchivementDetailUpsertOne {
 func (u *ArchivementDetailUpsertOne) ClearUnits() *ArchivementDetailUpsertOne {
 	return u.Update(func(s *ArchivementDetailUpsert) {
 		s.ClearUnits()
+	})
+}
+
+// SetUnitsV1 sets the "units_v1" field.
+func (u *ArchivementDetailUpsertOne) SetUnitsV1(v decimal.Decimal) *ArchivementDetailUpsertOne {
+	return u.Update(func(s *ArchivementDetailUpsert) {
+		s.SetUnitsV1(v)
+	})
+}
+
+// UpdateUnitsV1 sets the "units_v1" field to the value that was provided on create.
+func (u *ArchivementDetailUpsertOne) UpdateUnitsV1() *ArchivementDetailUpsertOne {
+	return u.Update(func(s *ArchivementDetailUpsert) {
+		s.UpdateUnitsV1()
+	})
+}
+
+// ClearUnitsV1 clears the value of the "units_v1" field.
+func (u *ArchivementDetailUpsertOne) ClearUnitsV1() *ArchivementDetailUpsertOne {
+	return u.Update(func(s *ArchivementDetailUpsert) {
+		s.ClearUnitsV1()
 	})
 }
 
@@ -1944,6 +2009,27 @@ func (u *ArchivementDetailUpsertBulk) UpdateUnits() *ArchivementDetailUpsertBulk
 func (u *ArchivementDetailUpsertBulk) ClearUnits() *ArchivementDetailUpsertBulk {
 	return u.Update(func(s *ArchivementDetailUpsert) {
 		s.ClearUnits()
+	})
+}
+
+// SetUnitsV1 sets the "units_v1" field.
+func (u *ArchivementDetailUpsertBulk) SetUnitsV1(v decimal.Decimal) *ArchivementDetailUpsertBulk {
+	return u.Update(func(s *ArchivementDetailUpsert) {
+		s.SetUnitsV1(v)
+	})
+}
+
+// UpdateUnitsV1 sets the "units_v1" field to the value that was provided on create.
+func (u *ArchivementDetailUpsertBulk) UpdateUnitsV1() *ArchivementDetailUpsertBulk {
+	return u.Update(func(s *ArchivementDetailUpsert) {
+		s.UpdateUnitsV1()
+	})
+}
+
+// ClearUnitsV1 clears the value of the "units_v1" field.
+func (u *ArchivementDetailUpsertBulk) ClearUnitsV1() *ArchivementDetailUpsertBulk {
+	return u.Update(func(s *ArchivementDetailUpsert) {
+		s.ClearUnitsV1()
 	})
 }
 

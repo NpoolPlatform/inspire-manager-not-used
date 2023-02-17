@@ -41,7 +41,8 @@ var entity = ent.ArchivementDetail{
 	PaymentCoinUsdCurrency: decimal.RequireFromString("1.00045000000123012"),
 	Amount:                 decimal.RequireFromString("9999999999999999999.999999999999999999"),
 	UsdAmount:              decimal.RequireFromString("9999999999999999999.999999999999999999"),
-	Units:                  10,
+	UnitsV1:                decimal.NewFromInt(10),
+	Units:                  0,
 }
 
 var (
@@ -56,7 +57,7 @@ var (
 	paymentCoinUSDCurrency = entity.PaymentCoinUsdCurrency.String()
 	amount                 = entity.Amount.String()
 	usdAmount              = entity.UsdAmount.String()
-	units                  = entity.Units
+	unitsV1                = entity.UnitsV1.String()
 
 	req = npool.DetailReq{
 		ID:                     &id,
@@ -70,7 +71,7 @@ var (
 		PaymentCoinUSDCurrency: &paymentCoinUSDCurrency,
 		Amount:                 &amount,
 		USDAmount:              &usdAmount,
-		Units:                  &units,
+		Units:                  &unitsV1,
 	}
 )
 
@@ -100,7 +101,8 @@ func createBulk(t *testing.T) {
 			PaymentCoinUsdCurrency: decimal.RequireFromString("1.00045000000123012"),
 			Amount:                 decimal.RequireFromString("10.00896"),
 			UsdAmount:              decimal.RequireFromString("999123.123142"),
-			Units:                  10,
+			Units:                  0,
+			UnitsV1:                decimal.NewFromInt(10),
 		},
 		{
 			ID:                     uuid.New(),
@@ -114,7 +116,8 @@ func createBulk(t *testing.T) {
 			PaymentCoinUsdCurrency: decimal.RequireFromString("1.00045000000123012"),
 			Amount:                 decimal.RequireFromString("11.11111"),
 			UsdAmount:              decimal.RequireFromString("999123.123142"),
-			Units:                  10,
+			Units:                  0,
+			UnitsV1:                decimal.NewFromInt(10),
 		},
 	}
 
@@ -131,7 +134,7 @@ func createBulk(t *testing.T) {
 		_paymentCoinUSDCurrency := _entity.PaymentCoinUsdCurrency.String()
 		_amount := _entity.Amount.String()
 		_usdAmount := _entity.UsdAmount.String()
-		_units := _entity.Units
+		_units := _entity.UnitsV1.String()
 
 		reqs = append(reqs, &npool.DetailReq{
 			ID:                     &_id,

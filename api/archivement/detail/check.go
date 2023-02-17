@@ -139,11 +139,19 @@ func validate(info *npool.DetailReq) error { //nolint
 		}
 	}
 
-	if info.Units == nil || info.GetUnits() == 0 {
+	if info.Units == nil {
 		logger.Sugar().Errorw("validate", "Units", info.Units)
 		return status.Error(codes.InvalidArgument, "Units is 0")
 	}
-
+	units, err := decimal.NewFromString(info.GetUnits())
+	if err != nil {
+		logger.Sugar().Errorw("validate", "Units", info.Units, "err", err.Error())
+		return status.Error(codes.InvalidArgument, err.Error())
+	}
+	if units.Cmp(decimal.NewFromInt(0)) < 0 {
+		logger.Sugar().Errorw("validate", "Units", info.Units)
+		return status.Error(codes.InvalidArgument, "Units is 0")
+	}
 	return nil
 }
 
