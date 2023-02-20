@@ -148,9 +148,9 @@ func validate(info *npool.DetailReq) error { //nolint
 		logger.Sugar().Errorw("validate", "Units", info.Units, "err", err.Error())
 		return status.Error(codes.InvalidArgument, err.Error())
 	}
-	if units.Cmp(decimal.NewFromInt(0)) < 0 {
+	if units.Cmp(decimal.NewFromInt(0)) <= 0 {
 		logger.Sugar().Errorw("validate", "Units", info.Units)
-		return status.Error(codes.InvalidArgument, "Units is 0")
+		return status.Error(codes.InvalidArgument, "Units is invalid")
 	}
 	return nil
 }
