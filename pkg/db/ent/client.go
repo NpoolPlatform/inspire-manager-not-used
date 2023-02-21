@@ -18,6 +18,7 @@ import (
 	"github.com/NpoolPlatform/inspire-manager/pkg/db/ent/couponfixamount"
 	"github.com/NpoolPlatform/inspire-manager/pkg/db/ent/couponspecialoffer"
 	"github.com/NpoolPlatform/inspire-manager/pkg/db/ent/goodorderpercent"
+	"github.com/NpoolPlatform/inspire-manager/pkg/db/ent/goodordervaluepercent"
 	"github.com/NpoolPlatform/inspire-manager/pkg/db/ent/invitationcode"
 	"github.com/NpoolPlatform/inspire-manager/pkg/db/ent/registration"
 
@@ -44,6 +45,8 @@ type Client struct {
 	CouponSpecialOffer *CouponSpecialOfferClient
 	// GoodOrderPercent is the client for interacting with the GoodOrderPercent builders.
 	GoodOrderPercent *GoodOrderPercentClient
+	// GoodOrderValuePercent is the client for interacting with the GoodOrderValuePercent builders.
+	GoodOrderValuePercent *GoodOrderValuePercentClient
 	// InvitationCode is the client for interacting with the InvitationCode builders.
 	InvitationCode *InvitationCodeClient
 	// Registration is the client for interacting with the Registration builders.
@@ -68,6 +71,7 @@ func (c *Client) init() {
 	c.CouponFixAmount = NewCouponFixAmountClient(c.config)
 	c.CouponSpecialOffer = NewCouponSpecialOfferClient(c.config)
 	c.GoodOrderPercent = NewGoodOrderPercentClient(c.config)
+	c.GoodOrderValuePercent = NewGoodOrderValuePercentClient(c.config)
 	c.InvitationCode = NewInvitationCodeClient(c.config)
 	c.Registration = NewRegistrationClient(c.config)
 }
@@ -101,17 +105,18 @@ func (c *Client) Tx(ctx context.Context) (*Tx, error) {
 	cfg := c.config
 	cfg.driver = tx
 	return &Tx{
-		ctx:                ctx,
-		config:             cfg,
-		ArchivementDetail:  NewArchivementDetailClient(cfg),
-		ArchivementGeneral: NewArchivementGeneralClient(cfg),
-		CouponAllocated:    NewCouponAllocatedClient(cfg),
-		CouponDiscount:     NewCouponDiscountClient(cfg),
-		CouponFixAmount:    NewCouponFixAmountClient(cfg),
-		CouponSpecialOffer: NewCouponSpecialOfferClient(cfg),
-		GoodOrderPercent:   NewGoodOrderPercentClient(cfg),
-		InvitationCode:     NewInvitationCodeClient(cfg),
-		Registration:       NewRegistrationClient(cfg),
+		ctx:                   ctx,
+		config:                cfg,
+		ArchivementDetail:     NewArchivementDetailClient(cfg),
+		ArchivementGeneral:    NewArchivementGeneralClient(cfg),
+		CouponAllocated:       NewCouponAllocatedClient(cfg),
+		CouponDiscount:        NewCouponDiscountClient(cfg),
+		CouponFixAmount:       NewCouponFixAmountClient(cfg),
+		CouponSpecialOffer:    NewCouponSpecialOfferClient(cfg),
+		GoodOrderPercent:      NewGoodOrderPercentClient(cfg),
+		GoodOrderValuePercent: NewGoodOrderValuePercentClient(cfg),
+		InvitationCode:        NewInvitationCodeClient(cfg),
+		Registration:          NewRegistrationClient(cfg),
 	}, nil
 }
 
@@ -129,17 +134,18 @@ func (c *Client) BeginTx(ctx context.Context, opts *sql.TxOptions) (*Tx, error) 
 	cfg := c.config
 	cfg.driver = &txDriver{tx: tx, drv: c.driver}
 	return &Tx{
-		ctx:                ctx,
-		config:             cfg,
-		ArchivementDetail:  NewArchivementDetailClient(cfg),
-		ArchivementGeneral: NewArchivementGeneralClient(cfg),
-		CouponAllocated:    NewCouponAllocatedClient(cfg),
-		CouponDiscount:     NewCouponDiscountClient(cfg),
-		CouponFixAmount:    NewCouponFixAmountClient(cfg),
-		CouponSpecialOffer: NewCouponSpecialOfferClient(cfg),
-		GoodOrderPercent:   NewGoodOrderPercentClient(cfg),
-		InvitationCode:     NewInvitationCodeClient(cfg),
-		Registration:       NewRegistrationClient(cfg),
+		ctx:                   ctx,
+		config:                cfg,
+		ArchivementDetail:     NewArchivementDetailClient(cfg),
+		ArchivementGeneral:    NewArchivementGeneralClient(cfg),
+		CouponAllocated:       NewCouponAllocatedClient(cfg),
+		CouponDiscount:        NewCouponDiscountClient(cfg),
+		CouponFixAmount:       NewCouponFixAmountClient(cfg),
+		CouponSpecialOffer:    NewCouponSpecialOfferClient(cfg),
+		GoodOrderPercent:      NewGoodOrderPercentClient(cfg),
+		GoodOrderValuePercent: NewGoodOrderValuePercentClient(cfg),
+		InvitationCode:        NewInvitationCodeClient(cfg),
+		Registration:          NewRegistrationClient(cfg),
 	}, nil
 }
 
@@ -176,6 +182,7 @@ func (c *Client) Use(hooks ...Hook) {
 	c.CouponFixAmount.Use(hooks...)
 	c.CouponSpecialOffer.Use(hooks...)
 	c.GoodOrderPercent.Use(hooks...)
+	c.GoodOrderValuePercent.Use(hooks...)
 	c.InvitationCode.Use(hooks...)
 	c.Registration.Use(hooks...)
 }
@@ -815,6 +822,97 @@ func (c *GoodOrderPercentClient) GetX(ctx context.Context, id uuid.UUID) *GoodOr
 func (c *GoodOrderPercentClient) Hooks() []Hook {
 	hooks := c.hooks.GoodOrderPercent
 	return append(hooks[:len(hooks):len(hooks)], goodorderpercent.Hooks[:]...)
+}
+
+// GoodOrderValuePercentClient is a client for the GoodOrderValuePercent schema.
+type GoodOrderValuePercentClient struct {
+	config
+}
+
+// NewGoodOrderValuePercentClient returns a client for the GoodOrderValuePercent from the given config.
+func NewGoodOrderValuePercentClient(c config) *GoodOrderValuePercentClient {
+	return &GoodOrderValuePercentClient{config: c}
+}
+
+// Use adds a list of mutation hooks to the hooks stack.
+// A call to `Use(f, g, h)` equals to `goodordervaluepercent.Hooks(f(g(h())))`.
+func (c *GoodOrderValuePercentClient) Use(hooks ...Hook) {
+	c.hooks.GoodOrderValuePercent = append(c.hooks.GoodOrderValuePercent, hooks...)
+}
+
+// Create returns a builder for creating a GoodOrderValuePercent entity.
+func (c *GoodOrderValuePercentClient) Create() *GoodOrderValuePercentCreate {
+	mutation := newGoodOrderValuePercentMutation(c.config, OpCreate)
+	return &GoodOrderValuePercentCreate{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// CreateBulk returns a builder for creating a bulk of GoodOrderValuePercent entities.
+func (c *GoodOrderValuePercentClient) CreateBulk(builders ...*GoodOrderValuePercentCreate) *GoodOrderValuePercentCreateBulk {
+	return &GoodOrderValuePercentCreateBulk{config: c.config, builders: builders}
+}
+
+// Update returns an update builder for GoodOrderValuePercent.
+func (c *GoodOrderValuePercentClient) Update() *GoodOrderValuePercentUpdate {
+	mutation := newGoodOrderValuePercentMutation(c.config, OpUpdate)
+	return &GoodOrderValuePercentUpdate{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// UpdateOne returns an update builder for the given entity.
+func (c *GoodOrderValuePercentClient) UpdateOne(govp *GoodOrderValuePercent) *GoodOrderValuePercentUpdateOne {
+	mutation := newGoodOrderValuePercentMutation(c.config, OpUpdateOne, withGoodOrderValuePercent(govp))
+	return &GoodOrderValuePercentUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// UpdateOneID returns an update builder for the given id.
+func (c *GoodOrderValuePercentClient) UpdateOneID(id uuid.UUID) *GoodOrderValuePercentUpdateOne {
+	mutation := newGoodOrderValuePercentMutation(c.config, OpUpdateOne, withGoodOrderValuePercentID(id))
+	return &GoodOrderValuePercentUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// Delete returns a delete builder for GoodOrderValuePercent.
+func (c *GoodOrderValuePercentClient) Delete() *GoodOrderValuePercentDelete {
+	mutation := newGoodOrderValuePercentMutation(c.config, OpDelete)
+	return &GoodOrderValuePercentDelete{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// DeleteOne returns a builder for deleting the given entity.
+func (c *GoodOrderValuePercentClient) DeleteOne(govp *GoodOrderValuePercent) *GoodOrderValuePercentDeleteOne {
+	return c.DeleteOneID(govp.ID)
+}
+
+// DeleteOne returns a builder for deleting the given entity by its id.
+func (c *GoodOrderValuePercentClient) DeleteOneID(id uuid.UUID) *GoodOrderValuePercentDeleteOne {
+	builder := c.Delete().Where(goodordervaluepercent.ID(id))
+	builder.mutation.id = &id
+	builder.mutation.op = OpDeleteOne
+	return &GoodOrderValuePercentDeleteOne{builder}
+}
+
+// Query returns a query builder for GoodOrderValuePercent.
+func (c *GoodOrderValuePercentClient) Query() *GoodOrderValuePercentQuery {
+	return &GoodOrderValuePercentQuery{
+		config: c.config,
+	}
+}
+
+// Get returns a GoodOrderValuePercent entity by its id.
+func (c *GoodOrderValuePercentClient) Get(ctx context.Context, id uuid.UUID) (*GoodOrderValuePercent, error) {
+	return c.Query().Where(goodordervaluepercent.ID(id)).Only(ctx)
+}
+
+// GetX is like Get, but panics if an error occurs.
+func (c *GoodOrderValuePercentClient) GetX(ctx context.Context, id uuid.UUID) *GoodOrderValuePercent {
+	obj, err := c.Get(ctx, id)
+	if err != nil {
+		panic(err)
+	}
+	return obj
+}
+
+// Hooks returns the client hooks.
+func (c *GoodOrderValuePercentClient) Hooks() []Hook {
+	hooks := c.hooks.GoodOrderValuePercent
+	return append(hooks[:len(hooks):len(hooks)], goodordervaluepercent.Hooks[:]...)
 }
 
 // InvitationCodeClient is a client for the InvitationCode schema.

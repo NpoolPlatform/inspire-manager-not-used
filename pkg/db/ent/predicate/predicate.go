@@ -27,6 +27,9 @@ type CouponSpecialOffer func(*sql.Selector)
 // GoodOrderPercent is the predicate function for goodorderpercent builders.
 type GoodOrderPercent func(*sql.Selector)
 
+// GoodOrderValuePercent is the predicate function for goodordervaluepercent builders.
+type GoodOrderValuePercent func(*sql.Selector)
+
 // InvitationCode is the predicate function for invitationcode builders.
 type InvitationCode func(*sql.Selector)
 

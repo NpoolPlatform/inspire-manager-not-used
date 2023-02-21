@@ -318,6 +318,30 @@ func (f GoodOrderPercentMutationRuleFunc) EvalMutation(ctx context.Context, m en
 	return Denyf("ent/privacy: unexpected mutation type %T, expect *ent.GoodOrderPercentMutation", m)
 }
 
+// The GoodOrderValuePercentQueryRuleFunc type is an adapter to allow the use of ordinary
+// functions as a query rule.
+type GoodOrderValuePercentQueryRuleFunc func(context.Context, *ent.GoodOrderValuePercentQuery) error
+
+// EvalQuery return f(ctx, q).
+func (f GoodOrderValuePercentQueryRuleFunc) EvalQuery(ctx context.Context, q ent.Query) error {
+	if q, ok := q.(*ent.GoodOrderValuePercentQuery); ok {
+		return f(ctx, q)
+	}
+	return Denyf("ent/privacy: unexpected query type %T, expect *ent.GoodOrderValuePercentQuery", q)
+}
+
+// The GoodOrderValuePercentMutationRuleFunc type is an adapter to allow the use of ordinary
+// functions as a mutation rule.
+type GoodOrderValuePercentMutationRuleFunc func(context.Context, *ent.GoodOrderValuePercentMutation) error
+
+// EvalMutation calls f(ctx, m).
+func (f GoodOrderValuePercentMutationRuleFunc) EvalMutation(ctx context.Context, m ent.Mutation) error {
+	if m, ok := m.(*ent.GoodOrderValuePercentMutation); ok {
+		return f(ctx, m)
+	}
+	return Denyf("ent/privacy: unexpected mutation type %T, expect *ent.GoodOrderValuePercentMutation", m)
+}
+
 // The InvitationCodeQueryRuleFunc type is an adapter to allow the use of ordinary
 // functions as a query rule.
 type InvitationCodeQueryRuleFunc func(context.Context, *ent.InvitationCodeQuery) error
@@ -415,6 +439,8 @@ func queryFilter(q ent.Query) (Filter, error) {
 		return q.Filter(), nil
 	case *ent.GoodOrderPercentQuery:
 		return q.Filter(), nil
+	case *ent.GoodOrderValuePercentQuery:
+		return q.Filter(), nil
 	case *ent.InvitationCodeQuery:
 		return q.Filter(), nil
 	case *ent.RegistrationQuery:
@@ -439,6 +465,8 @@ func mutationFilter(m ent.Mutation) (Filter, error) {
 	case *ent.CouponSpecialOfferMutation:
 		return m.Filter(), nil
 	case *ent.GoodOrderPercentMutation:
+		return m.Filter(), nil
+	case *ent.GoodOrderValuePercentMutation:
 		return m.Filter(), nil
 	case *ent.InvitationCodeMutation:
 		return m.Filter(), nil
