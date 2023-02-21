@@ -113,6 +113,19 @@ func (f GoodOrderPercentFunc) Mutate(ctx context.Context, m ent.Mutation) (ent.V
 	return f(ctx, mv)
 }
 
+// The GoodOrderValuePercentFunc type is an adapter to allow the use of ordinary
+// function as GoodOrderValuePercent mutator.
+type GoodOrderValuePercentFunc func(context.Context, *ent.GoodOrderValuePercentMutation) (ent.Value, error)
+
+// Mutate calls f(ctx, m).
+func (f GoodOrderValuePercentFunc) Mutate(ctx context.Context, m ent.Mutation) (ent.Value, error) {
+	mv, ok := m.(*ent.GoodOrderValuePercentMutation)
+	if !ok {
+		return nil, fmt.Errorf("unexpected mutation type %T. expect *ent.GoodOrderValuePercentMutation", m)
+	}
+	return f(ctx, mv)
+}
+
 // The InvitationCodeFunc type is an adapter to allow the use of ordinary
 // function as InvitationCode mutator.
 type InvitationCodeFunc func(context.Context, *ent.InvitationCodeMutation) (ent.Value, error)
