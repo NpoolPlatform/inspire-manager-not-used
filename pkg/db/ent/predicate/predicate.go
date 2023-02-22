@@ -32,3 +32,6 @@ type InvitationCode func(*sql.Selector)
 
 // Registration is the predicate function for registration builders.
 type Registration func(*sql.Selector)
+
+// Event is the predicate function for event builders.
+type Event func(*sql.Selector)

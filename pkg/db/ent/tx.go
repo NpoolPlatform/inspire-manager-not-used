@@ -32,6 +32,8 @@ type Tx struct {
 	InvitationCode *InvitationCodeClient
 	// Registration is the client for interacting with the Registration builders.
 	Registration *RegistrationClient
+	// Event is the client for interacting with the Event builders.
+	Event *EventClient
 
 	// lazily loaded.
 	client     *Client
@@ -176,6 +178,7 @@ func (tx *Tx) init() {
 	tx.GoodOrderPercent = NewGoodOrderPercentClient(tx.config)
 	tx.InvitationCode = NewInvitationCodeClient(tx.config)
 	tx.Registration = NewRegistrationClient(tx.config)
+	tx.Event = NewEventClient(tx.config)
 }
 
 // txDriver wraps the given dialect.Tx with a nop dialect.Driver implementation.

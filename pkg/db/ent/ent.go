@@ -16,6 +16,7 @@ import (
 	"github.com/NpoolPlatform/inspire-manager/pkg/db/ent/coupondiscount"
 	"github.com/NpoolPlatform/inspire-manager/pkg/db/ent/couponfixamount"
 	"github.com/NpoolPlatform/inspire-manager/pkg/db/ent/couponspecialoffer"
+	"github.com/NpoolPlatform/inspire-manager/pkg/db/ent/event"
 	"github.com/NpoolPlatform/inspire-manager/pkg/db/ent/goodorderpercent"
 	"github.com/NpoolPlatform/inspire-manager/pkg/db/ent/invitationcode"
 	"github.com/NpoolPlatform/inspire-manager/pkg/db/ent/registration"
@@ -48,6 +49,7 @@ func columnChecker(table string) func(string) error {
 		goodorderpercent.Table:   goodorderpercent.ValidColumn,
 		invitationcode.Table:     invitationcode.ValidColumn,
 		registration.Table:       registration.ValidColumn,
+		event.Table:              event.ValidColumn,
 	}
 	check, ok := checks[table]
 	if !ok {

@@ -39,7 +39,7 @@ func (Event) Fields() []ent.Field {
 		field.
 			JSON("coupon_ids", []uuid.UUID{}).
 			Optional().
-			Default([]uuid.UUDI{}),
+			Default([]uuid.UUID{}),
 		field.
 			Other("credits", decimal.Decimal{}).
 			SchemaType(map[string]string{

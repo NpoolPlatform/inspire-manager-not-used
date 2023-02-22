@@ -37,6 +37,7 @@ type hooks struct {
 	GoodOrderPercent   []ent.Hook
 	InvitationCode     []ent.Hook
 	Registration       []ent.Hook
+	Event              []ent.Hook
 }
 
 // Options applies the options on the config object.

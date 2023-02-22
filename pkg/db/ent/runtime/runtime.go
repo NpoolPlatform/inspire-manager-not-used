@@ -11,6 +11,7 @@ import (
 	"github.com/NpoolPlatform/inspire-manager/pkg/db/ent/coupondiscount"
 	"github.com/NpoolPlatform/inspire-manager/pkg/db/ent/couponfixamount"
 	"github.com/NpoolPlatform/inspire-manager/pkg/db/ent/couponspecialoffer"
+	"github.com/NpoolPlatform/inspire-manager/pkg/db/ent/event"
 	"github.com/NpoolPlatform/inspire-manager/pkg/db/ent/goodorderpercent"
 	"github.com/NpoolPlatform/inspire-manager/pkg/db/ent/invitationcode"
 	"github.com/NpoolPlatform/inspire-manager/pkg/db/ent/registration"
@@ -546,6 +547,54 @@ func init() {
 	registrationDescID := registrationFields[0].Descriptor()
 	// registration.DefaultID holds the default value on creation for the id field.
 	registration.DefaultID = registrationDescID.Default.(func() uuid.UUID)
+	eventMixin := schema.Event{}.Mixin()
+	event.Policy = privacy.NewPolicies(eventMixin[0], schema.Event{})
+	event.Hooks[0] = func(next ent.Mutator) ent.Mutator {
+		return ent.MutateFunc(func(ctx context.Context, m ent.Mutation) (ent.Value, error) {
+			if err := event.Policy.EvalMutation(ctx, m); err != nil {
+				return nil, err
+			}
+			return next.Mutate(ctx, m)
+		})
+	}
+	eventMixinFields0 := eventMixin[0].Fields()
+	_ = eventMixinFields0
+	eventFields := schema.Event{}.Fields()
+	_ = eventFields
+	// eventDescCreatedAt is the schema descriptor for created_at field.
+	eventDescCreatedAt := eventMixinFields0[0].Descriptor()
+	// event.DefaultCreatedAt holds the default value on creation for the created_at field.
+	event.DefaultCreatedAt = eventDescCreatedAt.Default.(func() uint32)
+	// eventDescUpdatedAt is the schema descriptor for updated_at field.
+	eventDescUpdatedAt := eventMixinFields0[1].Descriptor()
+	// event.DefaultUpdatedAt holds the default value on creation for the updated_at field.
+	event.DefaultUpdatedAt = eventDescUpdatedAt.Default.(func() uint32)
+	// event.UpdateDefaultUpdatedAt holds the default value on update for the updated_at field.
+	event.UpdateDefaultUpdatedAt = eventDescUpdatedAt.UpdateDefault.(func() uint32)
+	// eventDescDeletedAt is the schema descriptor for deleted_at field.
+	eventDescDeletedAt := eventMixinFields0[2].Descriptor()
+	// event.DefaultDeletedAt holds the default value on creation for the deleted_at field.
+	event.DefaultDeletedAt = eventDescDeletedAt.Default.(func() uint32)
+	// eventDescEventType is the schema descriptor for event_type field.
+	eventDescEventType := eventFields[2].Descriptor()
+	// event.DefaultEventType holds the default value on creation for the event_type field.
+	event.DefaultEventType = eventDescEventType.Default.(string)
+	// eventDescCouponIds is the schema descriptor for coupon_ids field.
+	eventDescCouponIds := eventFields[3].Descriptor()
+	// event.DefaultCouponIds holds the default value on creation for the coupon_ids field.
+	event.DefaultCouponIds = eventDescCouponIds.Default.([]uuid.UUID)
+	// eventDescCredits is the schema descriptor for credits field.
+	eventDescCredits := eventFields[4].Descriptor()
+	// event.DefaultCredits holds the default value on creation for the credits field.
+	event.DefaultCredits = eventDescCredits.Default.(decimal.Decimal)
+	// eventDescCreditsPerUsd is the schema descriptor for credits_per_usd field.
+	eventDescCreditsPerUsd := eventFields[5].Descriptor()
+	// event.DefaultCreditsPerUsd holds the default value on creation for the credits_per_usd field.
+	event.DefaultCreditsPerUsd = eventDescCreditsPerUsd.Default.(decimal.Decimal)
+	// eventDescID is the schema descriptor for id field.
+	eventDescID := eventFields[0].Descriptor()
+	// event.DefaultID holds the default value on creation for the id field.
+	event.DefaultID = eventDescID.Default.(func() uuid.UUID)
 }
 
 const (
