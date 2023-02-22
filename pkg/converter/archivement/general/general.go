@@ -18,8 +18,8 @@ func Ent2Grpc(row *ent.ArchivementGeneral) *npool.General {
 		CoinTypeID:      row.CoinTypeID.String(),
 		TotalAmount:     row.TotalAmount.String(),
 		SelfAmount:      row.SelfAmount.String(),
-		TotalUnits:      row.TotalUnits,
-		SelfUnits:       row.SelfUnits,
+		TotalUnits:      row.TotalUnitsV1.String(),
+		SelfUnits:       row.SelfUnitsV1.String(),
 		TotalCommission: row.TotalCommission.String(),
 		SelfCommission:  row.SelfCommission.String(),
 	}

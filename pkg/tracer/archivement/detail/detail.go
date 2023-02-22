@@ -24,7 +24,7 @@ func trace(span trace1.Span, in *npool.DetailReq, index int) trace1.Span {
 		attribute.String(fmt.Sprintf("PaymentCoinUSDCurrency.%v", index), in.GetPaymentCoinUSDCurrency()),
 		attribute.String(fmt.Sprintf("Amount.%v", index), in.GetAmount()),
 		attribute.String(fmt.Sprintf("USDAmount.%v", index), in.GetUSDAmount()),
-		attribute.Int64(fmt.Sprintf("Units.%v", index), int64(in.GetUnits())),
+		attribute.String(fmt.Sprintf("Units.%v", index), in.GetUnits()),
 	)
 	return span
 }
@@ -62,7 +62,7 @@ func TraceConds(span trace1.Span, in *npool.Conds) trace1.Span {
 		attribute.String("USDAmount.Op", in.GetUSDAmount().GetOp()),
 		attribute.String("USDAmount.Value", in.GetUSDAmount().GetValue()),
 		attribute.String("Units.Op", in.GetUnits().GetOp()),
-		attribute.Int64("Units.Value", int64(in.GetUnits().GetValue())),
+		attribute.String("Units.Value", in.GetUnits().GetValue()),
 	)
 	return span
 }

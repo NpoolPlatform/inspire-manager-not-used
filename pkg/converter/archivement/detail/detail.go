@@ -22,7 +22,7 @@ func Ent2Grpc(row *ent.ArchivementDetail) *npool.Detail {
 		CoinTypeID:             row.CoinTypeID.String(),
 		PaymentCoinTypeID:      row.PaymentCoinTypeID.String(),
 		PaymentCoinUSDCurrency: row.PaymentCoinUsdCurrency.String(),
-		Units:                  row.Units,
+		Units:                  row.UnitsV1.String(),
 		Amount:                 row.Amount.String(),
 		USDAmount:              row.UsdAmount.String(),
 		Commission:             row.Commission.String(),

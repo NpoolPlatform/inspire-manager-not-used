@@ -81,7 +81,11 @@ func CreateSet(c *ent.ArchivementDetailCreate, in *npool.DetailReq) (*ent.Archiv
 		c.SetCommission(amount)
 	}
 	if in.Units != nil {
-		c.SetUnits(in.GetUnits())
+		units, err := decimal.NewFromString(in.GetUnits())
+		if err != nil {
+			return nil, err
+		}
+		c.SetUnitsV1(units)
 	}
 	if in.CreatedAt != nil {
 		c.SetCreatedAt(in.GetCreatedAt())
@@ -329,13 +333,17 @@ func setQueryConds(conds *npool.Conds, cli *ent.Client) (*ent.ArchivementDetailQ
 		}
 	}
 	if conds.Units != nil {
+		units, err := decimal.NewFromString(conds.GetUnits().GetValue())
+		if err != nil {
+			return nil, err
+		}
 		switch conds.GetUnits().GetOp() {
 		case cruder.LT:
-			stm.Where(archivementdetail.UnitsLT(conds.GetUnits().GetValue()))
+			stm.Where(archivementdetail.UnitsV1LT(units))
 		case cruder.GT:
-			stm.Where(archivementdetail.UnitsGT(conds.GetUnits().GetValue()))
+			stm.Where(archivementdetail.UnitsV1GT(units))
 		case cruder.EQ:
-			stm.Where(archivementdetail.UnitsEQ(conds.GetUnits().GetValue()))
+			stm.Where(archivementdetail.UnitsV1EQ(units))
 		default:
 			return nil, fmt.Errorf("invalid detail field")
 		}

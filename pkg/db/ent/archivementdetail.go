@@ -45,6 +45,8 @@ type ArchivementDetail struct {
 	PaymentCoinUsdCurrency decimal.Decimal `json:"payment_coin_usd_currency,omitempty"`
 	// Units holds the value of the "units" field.
 	Units uint32 `json:"units,omitempty"`
+	// UnitsV1 holds the value of the "units_v1" field.
+	UnitsV1 decimal.Decimal `json:"units_v1,omitempty"`
 	// Amount holds the value of the "amount" field.
 	Amount decimal.Decimal `json:"amount,omitempty"`
 	// UsdAmount holds the value of the "usd_amount" field.
@@ -58,7 +60,7 @@ func (*ArchivementDetail) scanValues(columns []string) ([]interface{}, error) {
 	values := make([]interface{}, len(columns))
 	for i := range columns {
 		switch columns[i] {
-		case archivementdetail.FieldPaymentCoinUsdCurrency, archivementdetail.FieldAmount, archivementdetail.FieldUsdAmount, archivementdetail.FieldCommission:
+		case archivementdetail.FieldPaymentCoinUsdCurrency, archivementdetail.FieldUnitsV1, archivementdetail.FieldAmount, archivementdetail.FieldUsdAmount, archivementdetail.FieldCommission:
 			values[i] = new(decimal.Decimal)
 		case archivementdetail.FieldSelfOrder:
 			values[i] = new(sql.NullBool)
@@ -171,6 +173,12 @@ func (ad *ArchivementDetail) assignValues(columns []string, values []interface{}
 			} else if value.Valid {
 				ad.Units = uint32(value.Int64)
 			}
+		case archivementdetail.FieldUnitsV1:
+			if value, ok := values[i].(*decimal.Decimal); !ok {
+				return fmt.Errorf("unexpected type %T for field units_v1", values[i])
+			} else if value != nil {
+				ad.UnitsV1 = *value
+			}
 		case archivementdetail.FieldAmount:
 			if value, ok := values[i].(*decimal.Decimal); !ok {
 				return fmt.Errorf("unexpected type %T for field amount", values[i])
@@ -258,6 +266,9 @@ func (ad *ArchivementDetail) String() string {
 	builder.WriteString(", ")
 	builder.WriteString("units=")
 	builder.WriteString(fmt.Sprintf("%v", ad.Units))
+	builder.WriteString(", ")
+	builder.WriteString("units_v1=")
+	builder.WriteString(fmt.Sprintf("%v", ad.UnitsV1))
 	builder.WriteString(", ")
 	builder.WriteString("amount=")
 	builder.WriteString(fmt.Sprintf("%v", ad.Amount))

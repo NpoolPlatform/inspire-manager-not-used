@@ -312,6 +312,26 @@ func (adu *ArchivementDetailUpdate) ClearUnits() *ArchivementDetailUpdate {
 	return adu
 }
 
+// SetUnitsV1 sets the "units_v1" field.
+func (adu *ArchivementDetailUpdate) SetUnitsV1(d decimal.Decimal) *ArchivementDetailUpdate {
+	adu.mutation.SetUnitsV1(d)
+	return adu
+}
+
+// SetNillableUnitsV1 sets the "units_v1" field if the given value is not nil.
+func (adu *ArchivementDetailUpdate) SetNillableUnitsV1(d *decimal.Decimal) *ArchivementDetailUpdate {
+	if d != nil {
+		adu.SetUnitsV1(*d)
+	}
+	return adu
+}
+
+// ClearUnitsV1 clears the value of the "units_v1" field.
+func (adu *ArchivementDetailUpdate) ClearUnitsV1() *ArchivementDetailUpdate {
+	adu.mutation.ClearUnitsV1()
+	return adu
+}
+
 // SetAmount sets the "amount" field.
 func (adu *ArchivementDetailUpdate) SetAmount(d decimal.Decimal) *ArchivementDetailUpdate {
 	adu.mutation.SetAmount(d)
@@ -662,6 +682,19 @@ func (adu *ArchivementDetailUpdate) sqlSave(ctx context.Context) (n int, err err
 			Column: archivementdetail.FieldUnits,
 		})
 	}
+	if value, ok := adu.mutation.UnitsV1(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeOther,
+			Value:  value,
+			Column: archivementdetail.FieldUnitsV1,
+		})
+	}
+	if adu.mutation.UnitsV1Cleared() {
+		_spec.Fields.Clear = append(_spec.Fields.Clear, &sqlgraph.FieldSpec{
+			Type:   field.TypeOther,
+			Column: archivementdetail.FieldUnitsV1,
+		})
+	}
 	if value, ok := adu.mutation.Amount(); ok {
 		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
 			Type:   field.TypeOther,
@@ -1001,6 +1034,26 @@ func (aduo *ArchivementDetailUpdateOne) AddUnits(u int32) *ArchivementDetailUpda
 // ClearUnits clears the value of the "units" field.
 func (aduo *ArchivementDetailUpdateOne) ClearUnits() *ArchivementDetailUpdateOne {
 	aduo.mutation.ClearUnits()
+	return aduo
+}
+
+// SetUnitsV1 sets the "units_v1" field.
+func (aduo *ArchivementDetailUpdateOne) SetUnitsV1(d decimal.Decimal) *ArchivementDetailUpdateOne {
+	aduo.mutation.SetUnitsV1(d)
+	return aduo
+}
+
+// SetNillableUnitsV1 sets the "units_v1" field if the given value is not nil.
+func (aduo *ArchivementDetailUpdateOne) SetNillableUnitsV1(d *decimal.Decimal) *ArchivementDetailUpdateOne {
+	if d != nil {
+		aduo.SetUnitsV1(*d)
+	}
+	return aduo
+}
+
+// ClearUnitsV1 clears the value of the "units_v1" field.
+func (aduo *ArchivementDetailUpdateOne) ClearUnitsV1() *ArchivementDetailUpdateOne {
+	aduo.mutation.ClearUnitsV1()
 	return aduo
 }
 
@@ -1382,6 +1435,19 @@ func (aduo *ArchivementDetailUpdateOne) sqlSave(ctx context.Context) (_node *Arc
 		_spec.Fields.Clear = append(_spec.Fields.Clear, &sqlgraph.FieldSpec{
 			Type:   field.TypeUint32,
 			Column: archivementdetail.FieldUnits,
+		})
+	}
+	if value, ok := aduo.mutation.UnitsV1(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeOther,
+			Value:  value,
+			Column: archivementdetail.FieldUnitsV1,
+		})
+	}
+	if aduo.mutation.UnitsV1Cleared() {
+		_spec.Fields.Clear = append(_spec.Fields.Clear, &sqlgraph.FieldSpec{
+			Type:   field.TypeOther,
+			Column: archivementdetail.FieldUnitsV1,
 		})
 	}
 	if value, ok := aduo.mutation.Amount(); ok {

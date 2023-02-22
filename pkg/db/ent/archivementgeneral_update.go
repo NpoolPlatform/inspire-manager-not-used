@@ -192,6 +192,26 @@ func (agu *ArchivementGeneralUpdate) ClearTotalUnits() *ArchivementGeneralUpdate
 	return agu
 }
 
+// SetTotalUnitsV1 sets the "total_units_v1" field.
+func (agu *ArchivementGeneralUpdate) SetTotalUnitsV1(d decimal.Decimal) *ArchivementGeneralUpdate {
+	agu.mutation.SetTotalUnitsV1(d)
+	return agu
+}
+
+// SetNillableTotalUnitsV1 sets the "total_units_v1" field if the given value is not nil.
+func (agu *ArchivementGeneralUpdate) SetNillableTotalUnitsV1(d *decimal.Decimal) *ArchivementGeneralUpdate {
+	if d != nil {
+		agu.SetTotalUnitsV1(*d)
+	}
+	return agu
+}
+
+// ClearTotalUnitsV1 clears the value of the "total_units_v1" field.
+func (agu *ArchivementGeneralUpdate) ClearTotalUnitsV1() *ArchivementGeneralUpdate {
+	agu.mutation.ClearTotalUnitsV1()
+	return agu
+}
+
 // SetSelfUnits sets the "self_units" field.
 func (agu *ArchivementGeneralUpdate) SetSelfUnits(u uint32) *ArchivementGeneralUpdate {
 	agu.mutation.ResetSelfUnits()
@@ -216,6 +236,26 @@ func (agu *ArchivementGeneralUpdate) AddSelfUnits(u int32) *ArchivementGeneralUp
 // ClearSelfUnits clears the value of the "self_units" field.
 func (agu *ArchivementGeneralUpdate) ClearSelfUnits() *ArchivementGeneralUpdate {
 	agu.mutation.ClearSelfUnits()
+	return agu
+}
+
+// SetSelfUnitsV1 sets the "self_units_v1" field.
+func (agu *ArchivementGeneralUpdate) SetSelfUnitsV1(d decimal.Decimal) *ArchivementGeneralUpdate {
+	agu.mutation.SetSelfUnitsV1(d)
+	return agu
+}
+
+// SetNillableSelfUnitsV1 sets the "self_units_v1" field if the given value is not nil.
+func (agu *ArchivementGeneralUpdate) SetNillableSelfUnitsV1(d *decimal.Decimal) *ArchivementGeneralUpdate {
+	if d != nil {
+		agu.SetSelfUnitsV1(*d)
+	}
+	return agu
+}
+
+// ClearSelfUnitsV1 clears the value of the "self_units_v1" field.
+func (agu *ArchivementGeneralUpdate) ClearSelfUnitsV1() *ArchivementGeneralUpdate {
+	agu.mutation.ClearSelfUnitsV1()
 	return agu
 }
 
@@ -511,6 +551,19 @@ func (agu *ArchivementGeneralUpdate) sqlSave(ctx context.Context) (n int, err er
 			Column: archivementgeneral.FieldTotalUnits,
 		})
 	}
+	if value, ok := agu.mutation.TotalUnitsV1(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeOther,
+			Value:  value,
+			Column: archivementgeneral.FieldTotalUnitsV1,
+		})
+	}
+	if agu.mutation.TotalUnitsV1Cleared() {
+		_spec.Fields.Clear = append(_spec.Fields.Clear, &sqlgraph.FieldSpec{
+			Type:   field.TypeOther,
+			Column: archivementgeneral.FieldTotalUnitsV1,
+		})
+	}
 	if value, ok := agu.mutation.SelfUnits(); ok {
 		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
 			Type:   field.TypeUint32,
@@ -529,6 +582,19 @@ func (agu *ArchivementGeneralUpdate) sqlSave(ctx context.Context) (n int, err er
 		_spec.Fields.Clear = append(_spec.Fields.Clear, &sqlgraph.FieldSpec{
 			Type:   field.TypeUint32,
 			Column: archivementgeneral.FieldSelfUnits,
+		})
+	}
+	if value, ok := agu.mutation.SelfUnitsV1(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeOther,
+			Value:  value,
+			Column: archivementgeneral.FieldSelfUnitsV1,
+		})
+	}
+	if agu.mutation.SelfUnitsV1Cleared() {
+		_spec.Fields.Clear = append(_spec.Fields.Clear, &sqlgraph.FieldSpec{
+			Type:   field.TypeOther,
+			Column: archivementgeneral.FieldSelfUnitsV1,
 		})
 	}
 	if value, ok := agu.mutation.TotalAmount(); ok {
@@ -766,6 +832,26 @@ func (aguo *ArchivementGeneralUpdateOne) ClearTotalUnits() *ArchivementGeneralUp
 	return aguo
 }
 
+// SetTotalUnitsV1 sets the "total_units_v1" field.
+func (aguo *ArchivementGeneralUpdateOne) SetTotalUnitsV1(d decimal.Decimal) *ArchivementGeneralUpdateOne {
+	aguo.mutation.SetTotalUnitsV1(d)
+	return aguo
+}
+
+// SetNillableTotalUnitsV1 sets the "total_units_v1" field if the given value is not nil.
+func (aguo *ArchivementGeneralUpdateOne) SetNillableTotalUnitsV1(d *decimal.Decimal) *ArchivementGeneralUpdateOne {
+	if d != nil {
+		aguo.SetTotalUnitsV1(*d)
+	}
+	return aguo
+}
+
+// ClearTotalUnitsV1 clears the value of the "total_units_v1" field.
+func (aguo *ArchivementGeneralUpdateOne) ClearTotalUnitsV1() *ArchivementGeneralUpdateOne {
+	aguo.mutation.ClearTotalUnitsV1()
+	return aguo
+}
+
 // SetSelfUnits sets the "self_units" field.
 func (aguo *ArchivementGeneralUpdateOne) SetSelfUnits(u uint32) *ArchivementGeneralUpdateOne {
 	aguo.mutation.ResetSelfUnits()
@@ -790,6 +876,26 @@ func (aguo *ArchivementGeneralUpdateOne) AddSelfUnits(u int32) *ArchivementGener
 // ClearSelfUnits clears the value of the "self_units" field.
 func (aguo *ArchivementGeneralUpdateOne) ClearSelfUnits() *ArchivementGeneralUpdateOne {
 	aguo.mutation.ClearSelfUnits()
+	return aguo
+}
+
+// SetSelfUnitsV1 sets the "self_units_v1" field.
+func (aguo *ArchivementGeneralUpdateOne) SetSelfUnitsV1(d decimal.Decimal) *ArchivementGeneralUpdateOne {
+	aguo.mutation.SetSelfUnitsV1(d)
+	return aguo
+}
+
+// SetNillableSelfUnitsV1 sets the "self_units_v1" field if the given value is not nil.
+func (aguo *ArchivementGeneralUpdateOne) SetNillableSelfUnitsV1(d *decimal.Decimal) *ArchivementGeneralUpdateOne {
+	if d != nil {
+		aguo.SetSelfUnitsV1(*d)
+	}
+	return aguo
+}
+
+// ClearSelfUnitsV1 clears the value of the "self_units_v1" field.
+func (aguo *ArchivementGeneralUpdateOne) ClearSelfUnitsV1() *ArchivementGeneralUpdateOne {
+	aguo.mutation.ClearSelfUnitsV1()
 	return aguo
 }
 
@@ -1115,6 +1221,19 @@ func (aguo *ArchivementGeneralUpdateOne) sqlSave(ctx context.Context) (_node *Ar
 			Column: archivementgeneral.FieldTotalUnits,
 		})
 	}
+	if value, ok := aguo.mutation.TotalUnitsV1(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeOther,
+			Value:  value,
+			Column: archivementgeneral.FieldTotalUnitsV1,
+		})
+	}
+	if aguo.mutation.TotalUnitsV1Cleared() {
+		_spec.Fields.Clear = append(_spec.Fields.Clear, &sqlgraph.FieldSpec{
+			Type:   field.TypeOther,
+			Column: archivementgeneral.FieldTotalUnitsV1,
+		})
+	}
 	if value, ok := aguo.mutation.SelfUnits(); ok {
 		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
 			Type:   field.TypeUint32,
@@ -1133,6 +1252,19 @@ func (aguo *ArchivementGeneralUpdateOne) sqlSave(ctx context.Context) (_node *Ar
 		_spec.Fields.Clear = append(_spec.Fields.Clear, &sqlgraph.FieldSpec{
 			Type:   field.TypeUint32,
 			Column: archivementgeneral.FieldSelfUnits,
+		})
+	}
+	if value, ok := aguo.mutation.SelfUnitsV1(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeOther,
+			Value:  value,
+			Column: archivementgeneral.FieldSelfUnitsV1,
+		})
+	}
+	if aguo.mutation.SelfUnitsV1Cleared() {
+		_spec.Fields.Clear = append(_spec.Fields.Clear, &sqlgraph.FieldSpec{
+			Type:   field.TypeOther,
+			Column: archivementgeneral.FieldSelfUnitsV1,
 		})
 	}
 	if value, ok := aguo.mutation.TotalAmount(); ok {
