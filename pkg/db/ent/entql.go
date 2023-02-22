@@ -9,6 +9,7 @@ import (
 	"github.com/NpoolPlatform/inspire-manager/pkg/db/ent/coupondiscount"
 	"github.com/NpoolPlatform/inspire-manager/pkg/db/ent/couponfixamount"
 	"github.com/NpoolPlatform/inspire-manager/pkg/db/ent/couponspecialoffer"
+	"github.com/NpoolPlatform/inspire-manager/pkg/db/ent/event"
 	"github.com/NpoolPlatform/inspire-manager/pkg/db/ent/goodorderpercent"
 	"github.com/NpoolPlatform/inspire-manager/pkg/db/ent/invitationcode"
 	"github.com/NpoolPlatform/inspire-manager/pkg/db/ent/registration"
@@ -21,7 +22,7 @@ import (
 
 // schemaGraph holds a representation of ent/schema at runtime.
 var schemaGraph = func() *sqlgraph.Schema {
-	graph := &sqlgraph.Schema{Nodes: make([]*sqlgraph.Node, 9)}
+	graph := &sqlgraph.Schema{Nodes: make([]*sqlgraph.Node, 10)}
 	graph.Nodes[0] = &sqlgraph.Node{
 		NodeSpec: sqlgraph.NodeSpec{
 			Table:   archivementdetail.Table,
@@ -177,6 +178,27 @@ var schemaGraph = func() *sqlgraph.Schema {
 	}
 	graph.Nodes[6] = &sqlgraph.Node{
 		NodeSpec: sqlgraph.NodeSpec{
+			Table:   event.Table,
+			Columns: event.Columns,
+			ID: &sqlgraph.FieldSpec{
+				Type:   field.TypeUUID,
+				Column: event.FieldID,
+			},
+		},
+		Type: "Event",
+		Fields: map[string]*sqlgraph.FieldSpec{
+			event.FieldCreatedAt:     {Type: field.TypeUint32, Column: event.FieldCreatedAt},
+			event.FieldUpdatedAt:     {Type: field.TypeUint32, Column: event.FieldUpdatedAt},
+			event.FieldDeletedAt:     {Type: field.TypeUint32, Column: event.FieldDeletedAt},
+			event.FieldAppID:         {Type: field.TypeUUID, Column: event.FieldAppID},
+			event.FieldEventType:     {Type: field.TypeString, Column: event.FieldEventType},
+			event.FieldCouponIds:     {Type: field.TypeJSON, Column: event.FieldCouponIds},
+			event.FieldCredits:       {Type: field.TypeOther, Column: event.FieldCredits},
+			event.FieldCreditsPerUsd: {Type: field.TypeOther, Column: event.FieldCreditsPerUsd},
+		},
+	}
+	graph.Nodes[7] = &sqlgraph.Node{
+		NodeSpec: sqlgraph.NodeSpec{
 			Table:   goodorderpercent.Table,
 			Columns: goodorderpercent.Columns,
 			ID: &sqlgraph.FieldSpec{
@@ -197,7 +219,7 @@ var schemaGraph = func() *sqlgraph.Schema {
 			goodorderpercent.FieldEndAt:     {Type: field.TypeUint32, Column: goodorderpercent.FieldEndAt},
 		},
 	}
-	graph.Nodes[7] = &sqlgraph.Node{
+	graph.Nodes[8] = &sqlgraph.Node{
 		NodeSpec: sqlgraph.NodeSpec{
 			Table:   invitationcode.Table,
 			Columns: invitationcode.Columns,
@@ -217,7 +239,7 @@ var schemaGraph = func() *sqlgraph.Schema {
 			invitationcode.FieldDisabled:       {Type: field.TypeBool, Column: invitationcode.FieldDisabled},
 		},
 	}
-	graph.Nodes[8] = &sqlgraph.Node{
+	graph.Nodes[9] = &sqlgraph.Node{
 		NodeSpec: sqlgraph.NodeSpec{
 			Table:   registration.Table,
 			Columns: registration.Columns,
@@ -861,6 +883,86 @@ func (f *CouponSpecialOfferFilter) WhereMessage(p entql.StringP) {
 }
 
 // addPredicate implements the predicateAdder interface.
+func (eq *EventQuery) addPredicate(pred func(s *sql.Selector)) {
+	eq.predicates = append(eq.predicates, pred)
+}
+
+// Filter returns a Filter implementation to apply filters on the EventQuery builder.
+func (eq *EventQuery) Filter() *EventFilter {
+	return &EventFilter{config: eq.config, predicateAdder: eq}
+}
+
+// addPredicate implements the predicateAdder interface.
+func (m *EventMutation) addPredicate(pred func(s *sql.Selector)) {
+	m.predicates = append(m.predicates, pred)
+}
+
+// Filter returns an entql.Where implementation to apply filters on the EventMutation builder.
+func (m *EventMutation) Filter() *EventFilter {
+	return &EventFilter{config: m.config, predicateAdder: m}
+}
+
+// EventFilter provides a generic filtering capability at runtime for EventQuery.
+type EventFilter struct {
+	predicateAdder
+	config
+}
+
+// Where applies the entql predicate on the query filter.
+func (f *EventFilter) Where(p entql.P) {
+	f.addPredicate(func(s *sql.Selector) {
+		if err := schemaGraph.EvalP(schemaGraph.Nodes[6].Type, p, s); err != nil {
+			s.AddError(err)
+		}
+	})
+}
+
+// WhereID applies the entql [16]byte predicate on the id field.
+func (f *EventFilter) WhereID(p entql.ValueP) {
+	f.Where(p.Field(event.FieldID))
+}
+
+// WhereCreatedAt applies the entql uint32 predicate on the created_at field.
+func (f *EventFilter) WhereCreatedAt(p entql.Uint32P) {
+	f.Where(p.Field(event.FieldCreatedAt))
+}
+
+// WhereUpdatedAt applies the entql uint32 predicate on the updated_at field.
+func (f *EventFilter) WhereUpdatedAt(p entql.Uint32P) {
+	f.Where(p.Field(event.FieldUpdatedAt))
+}
+
+// WhereDeletedAt applies the entql uint32 predicate on the deleted_at field.
+func (f *EventFilter) WhereDeletedAt(p entql.Uint32P) {
+	f.Where(p.Field(event.FieldDeletedAt))
+}
+
+// WhereAppID applies the entql [16]byte predicate on the app_id field.
+func (f *EventFilter) WhereAppID(p entql.ValueP) {
+	f.Where(p.Field(event.FieldAppID))
+}
+
+// WhereEventType applies the entql string predicate on the event_type field.
+func (f *EventFilter) WhereEventType(p entql.StringP) {
+	f.Where(p.Field(event.FieldEventType))
+}
+
+// WhereCouponIds applies the entql json.RawMessage predicate on the coupon_ids field.
+func (f *EventFilter) WhereCouponIds(p entql.BytesP) {
+	f.Where(p.Field(event.FieldCouponIds))
+}
+
+// WhereCredits applies the entql other predicate on the credits field.
+func (f *EventFilter) WhereCredits(p entql.OtherP) {
+	f.Where(p.Field(event.FieldCredits))
+}
+
+// WhereCreditsPerUsd applies the entql other predicate on the credits_per_usd field.
+func (f *EventFilter) WhereCreditsPerUsd(p entql.OtherP) {
+	f.Where(p.Field(event.FieldCreditsPerUsd))
+}
+
+// addPredicate implements the predicateAdder interface.
 func (gopq *GoodOrderPercentQuery) addPredicate(pred func(s *sql.Selector)) {
 	gopq.predicates = append(gopq.predicates, pred)
 }
@@ -889,7 +991,7 @@ type GoodOrderPercentFilter struct {
 // Where applies the entql predicate on the query filter.
 func (f *GoodOrderPercentFilter) Where(p entql.P) {
 	f.addPredicate(func(s *sql.Selector) {
-		if err := schemaGraph.EvalP(schemaGraph.Nodes[6].Type, p, s); err != nil {
+		if err := schemaGraph.EvalP(schemaGraph.Nodes[7].Type, p, s); err != nil {
 			s.AddError(err)
 		}
 	})
@@ -974,7 +1076,7 @@ type InvitationCodeFilter struct {
 // Where applies the entql predicate on the query filter.
 func (f *InvitationCodeFilter) Where(p entql.P) {
 	f.addPredicate(func(s *sql.Selector) {
-		if err := schemaGraph.EvalP(schemaGraph.Nodes[7].Type, p, s); err != nil {
+		if err := schemaGraph.EvalP(schemaGraph.Nodes[8].Type, p, s); err != nil {
 			s.AddError(err)
 		}
 	})
@@ -1049,7 +1151,7 @@ type RegistrationFilter struct {
 // Where applies the entql predicate on the query filter.
 func (f *RegistrationFilter) Where(p entql.P) {
 	f.addPredicate(func(s *sql.Selector) {
-		if err := schemaGraph.EvalP(schemaGraph.Nodes[8].Type, p, s); err != nil {
+		if err := schemaGraph.EvalP(schemaGraph.Nodes[9].Type, p, s); err != nil {
 			s.AddError(err)
 		}
 	})
