@@ -13,7 +13,7 @@ func Ent2Grpc(row *ent.Event) *npool.Event {
 	}
 
 	coupons := []*npool.Coupon{}
-	for i, _ := range row.Coupons {
+	for i, _ := range row.Coupons { //nolint
 		coupons = append(coupons, &row.Coupons[i])
 	}
 
