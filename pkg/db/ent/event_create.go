@@ -120,6 +120,20 @@ func (ec *EventCreate) SetNillableCreditsPerUsd(d *decimal.Decimal) *EventCreate
 	return ec
 }
 
+// SetMaxConsecutive sets the "max_consecutive" field.
+func (ec *EventCreate) SetMaxConsecutive(u uint32) *EventCreate {
+	ec.mutation.SetMaxConsecutive(u)
+	return ec
+}
+
+// SetNillableMaxConsecutive sets the "max_consecutive" field if the given value is not nil.
+func (ec *EventCreate) SetNillableMaxConsecutive(u *uint32) *EventCreate {
+	if u != nil {
+		ec.SetMaxConsecutive(*u)
+	}
+	return ec
+}
+
 // SetID sets the "id" field.
 func (ec *EventCreate) SetID(u uuid.UUID) *EventCreate {
 	ec.mutation.SetID(u)
@@ -250,6 +264,10 @@ func (ec *EventCreate) defaults() error {
 		v := event.DefaultCreditsPerUsd
 		ec.mutation.SetCreditsPerUsd(v)
 	}
+	if _, ok := ec.mutation.MaxConsecutive(); !ok {
+		v := event.DefaultMaxConsecutive
+		ec.mutation.SetMaxConsecutive(v)
+	}
 	if _, ok := ec.mutation.ID(); !ok {
 		if event.DefaultID == nil {
 			return fmt.Errorf("ent: uninitialized event.DefaultID (forgotten import ent/runtime?)")
@@ -374,6 +392,14 @@ func (ec *EventCreate) createSpec() (*Event, *sqlgraph.CreateSpec) {
 			Column: event.FieldCreditsPerUsd,
 		})
 		_node.CreditsPerUsd = value
+	}
+	if value, ok := ec.mutation.MaxConsecutive(); ok {
+		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
+			Type:   field.TypeUint32,
+			Value:  value,
+			Column: event.FieldMaxConsecutive,
+		})
+		_node.MaxConsecutive = value
 	}
 	return _node, _spec
 }
@@ -564,6 +590,30 @@ func (u *EventUpsert) UpdateCreditsPerUsd() *EventUpsert {
 // ClearCreditsPerUsd clears the value of the "credits_per_usd" field.
 func (u *EventUpsert) ClearCreditsPerUsd() *EventUpsert {
 	u.SetNull(event.FieldCreditsPerUsd)
+	return u
+}
+
+// SetMaxConsecutive sets the "max_consecutive" field.
+func (u *EventUpsert) SetMaxConsecutive(v uint32) *EventUpsert {
+	u.Set(event.FieldMaxConsecutive, v)
+	return u
+}
+
+// UpdateMaxConsecutive sets the "max_consecutive" field to the value that was provided on create.
+func (u *EventUpsert) UpdateMaxConsecutive() *EventUpsert {
+	u.SetExcluded(event.FieldMaxConsecutive)
+	return u
+}
+
+// AddMaxConsecutive adds v to the "max_consecutive" field.
+func (u *EventUpsert) AddMaxConsecutive(v uint32) *EventUpsert {
+	u.Add(event.FieldMaxConsecutive, v)
+	return u
+}
+
+// ClearMaxConsecutive clears the value of the "max_consecutive" field.
+func (u *EventUpsert) ClearMaxConsecutive() *EventUpsert {
+	u.SetNull(event.FieldMaxConsecutive)
 	return u
 }
 
@@ -775,6 +825,34 @@ func (u *EventUpsertOne) UpdateCreditsPerUsd() *EventUpsertOne {
 func (u *EventUpsertOne) ClearCreditsPerUsd() *EventUpsertOne {
 	return u.Update(func(s *EventUpsert) {
 		s.ClearCreditsPerUsd()
+	})
+}
+
+// SetMaxConsecutive sets the "max_consecutive" field.
+func (u *EventUpsertOne) SetMaxConsecutive(v uint32) *EventUpsertOne {
+	return u.Update(func(s *EventUpsert) {
+		s.SetMaxConsecutive(v)
+	})
+}
+
+// AddMaxConsecutive adds v to the "max_consecutive" field.
+func (u *EventUpsertOne) AddMaxConsecutive(v uint32) *EventUpsertOne {
+	return u.Update(func(s *EventUpsert) {
+		s.AddMaxConsecutive(v)
+	})
+}
+
+// UpdateMaxConsecutive sets the "max_consecutive" field to the value that was provided on create.
+func (u *EventUpsertOne) UpdateMaxConsecutive() *EventUpsertOne {
+	return u.Update(func(s *EventUpsert) {
+		s.UpdateMaxConsecutive()
+	})
+}
+
+// ClearMaxConsecutive clears the value of the "max_consecutive" field.
+func (u *EventUpsertOne) ClearMaxConsecutive() *EventUpsertOne {
+	return u.Update(func(s *EventUpsert) {
+		s.ClearMaxConsecutive()
 	})
 }
 
@@ -1152,6 +1230,34 @@ func (u *EventUpsertBulk) UpdateCreditsPerUsd() *EventUpsertBulk {
 func (u *EventUpsertBulk) ClearCreditsPerUsd() *EventUpsertBulk {
 	return u.Update(func(s *EventUpsert) {
 		s.ClearCreditsPerUsd()
+	})
+}
+
+// SetMaxConsecutive sets the "max_consecutive" field.
+func (u *EventUpsertBulk) SetMaxConsecutive(v uint32) *EventUpsertBulk {
+	return u.Update(func(s *EventUpsert) {
+		s.SetMaxConsecutive(v)
+	})
+}
+
+// AddMaxConsecutive adds v to the "max_consecutive" field.
+func (u *EventUpsertBulk) AddMaxConsecutive(v uint32) *EventUpsertBulk {
+	return u.Update(func(s *EventUpsert) {
+		s.AddMaxConsecutive(v)
+	})
+}
+
+// UpdateMaxConsecutive sets the "max_consecutive" field to the value that was provided on create.
+func (u *EventUpsertBulk) UpdateMaxConsecutive() *EventUpsertBulk {
+	return u.Update(func(s *EventUpsert) {
+		s.UpdateMaxConsecutive()
+	})
+}
+
+// ClearMaxConsecutive clears the value of the "max_consecutive" field.
+func (u *EventUpsertBulk) ClearMaxConsecutive() *EventUpsertBulk {
+	return u.Update(func(s *EventUpsert) {
+		s.ClearMaxConsecutive()
 	})
 }
 

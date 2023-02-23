@@ -451,6 +451,10 @@ func init() {
 	eventDescCreditsPerUsd := eventFields[5].Descriptor()
 	// event.DefaultCreditsPerUsd holds the default value on creation for the credits_per_usd field.
 	event.DefaultCreditsPerUsd = eventDescCreditsPerUsd.Default.(decimal.Decimal)
+	// eventDescMaxConsecutive is the schema descriptor for max_consecutive field.
+	eventDescMaxConsecutive := eventFields[6].Descriptor()
+	// event.DefaultMaxConsecutive holds the default value on creation for the max_consecutive field.
+	event.DefaultMaxConsecutive = eventDescMaxConsecutive.Default.(uint32)
 	// eventDescID is the schema descriptor for id field.
 	eventDescID := eventFields[0].Descriptor()
 	// event.DefaultID holds the default value on creation for the id field.

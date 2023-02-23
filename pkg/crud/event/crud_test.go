@@ -31,12 +31,13 @@ func init() {
 }
 
 var ret = ent.Event{
-	ID:            uuid.New(),
-	AppID:         uuid.New(),
-	EventType:     basetypes.UsedFor_Signup.String(),
-	CouponIds:     []uuid.UUID{uuid.New(), uuid.New()},
-	Credits:       decimal.RequireFromString("1.798"),
-	CreditsPerUsd: decimal.RequireFromString("1.789"),
+	ID:             uuid.New(),
+	AppID:          uuid.New(),
+	EventType:      basetypes.UsedFor_Signup.String(),
+	CouponIds:      []uuid.UUID{uuid.New(), uuid.New()},
+	Credits:        decimal.RequireFromString("1.798"),
+	CreditsPerUsd:  decimal.RequireFromString("1.789"),
+	MaxConsecutive: 1,
 }
 
 var (
@@ -71,20 +72,22 @@ func create(t *testing.T) {
 func createBulk(t *testing.T) {
 	entities := []*ent.Event{
 		{
-			ID:            uuid.New(),
-			AppID:         uuid.New(),
-			EventType:     basetypes.UsedFor_Signin.String(),
-			CouponIds:     []uuid.UUID{uuid.New(), uuid.New()},
-			Credits:       decimal.RequireFromString("1.7981"),
-			CreditsPerUsd: decimal.RequireFromString("1.7892"),
+			ID:             uuid.New(),
+			AppID:          uuid.New(),
+			EventType:      basetypes.UsedFor_Signin.String(),
+			CouponIds:      []uuid.UUID{uuid.New(), uuid.New()},
+			Credits:        decimal.RequireFromString("1.7981"),
+			CreditsPerUsd:  decimal.RequireFromString("1.7892"),
+			MaxConsecutive: 10,
 		},
 		{
-			ID:            uuid.New(),
-			AppID:         uuid.New(),
-			EventType:     basetypes.UsedFor_Signin.String(),
-			CouponIds:     []uuid.UUID{uuid.New(), uuid.New()},
-			Credits:       decimal.RequireFromString("1.7983"),
-			CreditsPerUsd: decimal.RequireFromString("1.7894"),
+			ID:             uuid.New(),
+			AppID:          uuid.New(),
+			EventType:      basetypes.UsedFor_Signin.String(),
+			CouponIds:      []uuid.UUID{uuid.New(), uuid.New()},
+			Credits:        decimal.RequireFromString("1.7983"),
+			CreditsPerUsd:  decimal.RequireFromString("1.7894"),
+			MaxConsecutive: 11,
 		},
 	}
 
@@ -98,12 +101,13 @@ func createBulk(t *testing.T) {
 		_creditsPerUSD := _event.CreditsPerUsd.String()
 
 		reqs = append(reqs, &npool.EventReq{
-			ID:            &_id,
-			AppID:         &_appID,
-			EventType:     &_evType,
-			CouponIDs:     []string{_event.CouponIds[0].String(), _event.CouponIds[1].String()},
-			Credits:       &_credits,
-			CreditsPerUSD: &_creditsPerUSD,
+			ID:             &_id,
+			AppID:          &_appID,
+			EventType:      &_evType,
+			CouponIDs:      []string{_event.CouponIds[0].String(), _event.CouponIds[1].String()},
+			Credits:        &_credits,
+			CreditsPerUSD:  &_creditsPerUSD,
+			MaxConsecutive: &_event.MaxConsecutive,
 		})
 	}
 	infos, err := CreateBulk(context.Background(), reqs)

@@ -7608,24 +7608,26 @@ func (m *CouponSpecialOfferMutation) ResetEdge(name string) error {
 // EventMutation represents an operation that mutates the Event nodes in the graph.
 type EventMutation struct {
 	config
-	op              Op
-	typ             string
-	id              *uuid.UUID
-	created_at      *uint32
-	addcreated_at   *int32
-	updated_at      *uint32
-	addupdated_at   *int32
-	deleted_at      *uint32
-	adddeleted_at   *int32
-	app_id          *uuid.UUID
-	event_type      *string
-	coupon_ids      *[]uuid.UUID
-	credits         *decimal.Decimal
-	credits_per_usd *decimal.Decimal
-	clearedFields   map[string]struct{}
-	done            bool
-	oldValue        func(context.Context) (*Event, error)
-	predicates      []predicate.Event
+	op                 Op
+	typ                string
+	id                 *uuid.UUID
+	created_at         *uint32
+	addcreated_at      *int32
+	updated_at         *uint32
+	addupdated_at      *int32
+	deleted_at         *uint32
+	adddeleted_at      *int32
+	app_id             *uuid.UUID
+	event_type         *string
+	coupon_ids         *[]uuid.UUID
+	credits            *decimal.Decimal
+	credits_per_usd    *decimal.Decimal
+	max_consecutive    *uint32
+	addmax_consecutive *int32
+	clearedFields      map[string]struct{}
+	done               bool
+	oldValue           func(context.Context) (*Event, error)
+	predicates         []predicate.Event
 }
 
 var _ ent.Mutation = (*EventMutation)(nil)
@@ -8132,6 +8134,76 @@ func (m *EventMutation) ResetCreditsPerUsd() {
 	delete(m.clearedFields, event.FieldCreditsPerUsd)
 }
 
+// SetMaxConsecutive sets the "max_consecutive" field.
+func (m *EventMutation) SetMaxConsecutive(u uint32) {
+	m.max_consecutive = &u
+	m.addmax_consecutive = nil
+}
+
+// MaxConsecutive returns the value of the "max_consecutive" field in the mutation.
+func (m *EventMutation) MaxConsecutive() (r uint32, exists bool) {
+	v := m.max_consecutive
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldMaxConsecutive returns the old "max_consecutive" field's value of the Event entity.
+// If the Event object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *EventMutation) OldMaxConsecutive(ctx context.Context) (v uint32, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldMaxConsecutive is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldMaxConsecutive requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldMaxConsecutive: %w", err)
+	}
+	return oldValue.MaxConsecutive, nil
+}
+
+// AddMaxConsecutive adds u to the "max_consecutive" field.
+func (m *EventMutation) AddMaxConsecutive(u int32) {
+	if m.addmax_consecutive != nil {
+		*m.addmax_consecutive += u
+	} else {
+		m.addmax_consecutive = &u
+	}
+}
+
+// AddedMaxConsecutive returns the value that was added to the "max_consecutive" field in this mutation.
+func (m *EventMutation) AddedMaxConsecutive() (r int32, exists bool) {
+	v := m.addmax_consecutive
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// ClearMaxConsecutive clears the value of the "max_consecutive" field.
+func (m *EventMutation) ClearMaxConsecutive() {
+	m.max_consecutive = nil
+	m.addmax_consecutive = nil
+	m.clearedFields[event.FieldMaxConsecutive] = struct{}{}
+}
+
+// MaxConsecutiveCleared returns if the "max_consecutive" field was cleared in this mutation.
+func (m *EventMutation) MaxConsecutiveCleared() bool {
+	_, ok := m.clearedFields[event.FieldMaxConsecutive]
+	return ok
+}
+
+// ResetMaxConsecutive resets all changes to the "max_consecutive" field.
+func (m *EventMutation) ResetMaxConsecutive() {
+	m.max_consecutive = nil
+	m.addmax_consecutive = nil
+	delete(m.clearedFields, event.FieldMaxConsecutive)
+}
+
 // Where appends a list predicates to the EventMutation builder.
 func (m *EventMutation) Where(ps ...predicate.Event) {
 	m.predicates = append(m.predicates, ps...)
@@ -8151,7 +8223,7 @@ func (m *EventMutation) Type() string {
 // order to get all numeric fields that were incremented/decremented, call
 // AddedFields().
 func (m *EventMutation) Fields() []string {
-	fields := make([]string, 0, 8)
+	fields := make([]string, 0, 9)
 	if m.created_at != nil {
 		fields = append(fields, event.FieldCreatedAt)
 	}
@@ -8175,6 +8247,9 @@ func (m *EventMutation) Fields() []string {
 	}
 	if m.credits_per_usd != nil {
 		fields = append(fields, event.FieldCreditsPerUsd)
+	}
+	if m.max_consecutive != nil {
+		fields = append(fields, event.FieldMaxConsecutive)
 	}
 	return fields
 }
@@ -8200,6 +8275,8 @@ func (m *EventMutation) Field(name string) (ent.Value, bool) {
 		return m.Credits()
 	case event.FieldCreditsPerUsd:
 		return m.CreditsPerUsd()
+	case event.FieldMaxConsecutive:
+		return m.MaxConsecutive()
 	}
 	return nil, false
 }
@@ -8225,6 +8302,8 @@ func (m *EventMutation) OldField(ctx context.Context, name string) (ent.Value, e
 		return m.OldCredits(ctx)
 	case event.FieldCreditsPerUsd:
 		return m.OldCreditsPerUsd(ctx)
+	case event.FieldMaxConsecutive:
+		return m.OldMaxConsecutive(ctx)
 	}
 	return nil, fmt.Errorf("unknown Event field %s", name)
 }
@@ -8290,6 +8369,13 @@ func (m *EventMutation) SetField(name string, value ent.Value) error {
 		}
 		m.SetCreditsPerUsd(v)
 		return nil
+	case event.FieldMaxConsecutive:
+		v, ok := value.(uint32)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetMaxConsecutive(v)
+		return nil
 	}
 	return fmt.Errorf("unknown Event field %s", name)
 }
@@ -8307,6 +8393,9 @@ func (m *EventMutation) AddedFields() []string {
 	if m.adddeleted_at != nil {
 		fields = append(fields, event.FieldDeletedAt)
 	}
+	if m.addmax_consecutive != nil {
+		fields = append(fields, event.FieldMaxConsecutive)
+	}
 	return fields
 }
 
@@ -8321,6 +8410,8 @@ func (m *EventMutation) AddedField(name string) (ent.Value, bool) {
 		return m.AddedUpdatedAt()
 	case event.FieldDeletedAt:
 		return m.AddedDeletedAt()
+	case event.FieldMaxConsecutive:
+		return m.AddedMaxConsecutive()
 	}
 	return nil, false
 }
@@ -8351,6 +8442,13 @@ func (m *EventMutation) AddField(name string, value ent.Value) error {
 		}
 		m.AddDeletedAt(v)
 		return nil
+	case event.FieldMaxConsecutive:
+		v, ok := value.(int32)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.AddMaxConsecutive(v)
+		return nil
 	}
 	return fmt.Errorf("unknown Event numeric field %s", name)
 }
@@ -8370,6 +8468,9 @@ func (m *EventMutation) ClearedFields() []string {
 	}
 	if m.FieldCleared(event.FieldCreditsPerUsd) {
 		fields = append(fields, event.FieldCreditsPerUsd)
+	}
+	if m.FieldCleared(event.FieldMaxConsecutive) {
+		fields = append(fields, event.FieldMaxConsecutive)
 	}
 	return fields
 }
@@ -8396,6 +8497,9 @@ func (m *EventMutation) ClearField(name string) error {
 		return nil
 	case event.FieldCreditsPerUsd:
 		m.ClearCreditsPerUsd()
+		return nil
+	case event.FieldMaxConsecutive:
+		m.ClearMaxConsecutive()
 		return nil
 	}
 	return fmt.Errorf("unknown Event nullable field %s", name)
@@ -8428,6 +8532,9 @@ func (m *EventMutation) ResetField(name string) error {
 		return nil
 	case event.FieldCreditsPerUsd:
 		m.ResetCreditsPerUsd()
+		return nil
+	case event.FieldMaxConsecutive:
+		m.ResetMaxConsecutive()
 		return nil
 	}
 	return fmt.Errorf("unknown Event field %s", name)

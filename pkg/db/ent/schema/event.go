@@ -54,6 +54,10 @@ func (Event) Fields() []ent.Field {
 			}).
 			Optional().
 			Default(decimal.Decimal{}),
+		field.
+			Uint32("max_consecutive").
+			Optional().
+			Default(1),
 	}
 }
 

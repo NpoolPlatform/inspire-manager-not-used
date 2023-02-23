@@ -48,6 +48,9 @@ func CreateSet(c *ent.EventCreate, in *npool.EventReq) (*ent.EventCreate, error)
 	if in.CreditsPerUSD != nil {
 		c.SetCreditsPerUsd(decimal.RequireFromString(in.GetCreditsPerUSD()))
 	}
+	if in.MaxConsecutive != nil {
+		c.SetMaxConsecutive(in.GetMaxConsecutive())
+	}
 	return c, nil
 }
 
@@ -132,6 +135,9 @@ func UpdateSet(info *ent.Event, in *npool.EventReq) (*ent.EventUpdateOne, error)
 	}
 	if in.CreditsPerUSD != nil {
 		u.SetCreditsPerUsd(decimal.RequireFromString(in.GetCreditsPerUSD()))
+	}
+	if in.MaxConsecutive != nil {
+		u.SetMaxConsecutive(in.GetMaxConsecutive())
 	}
 
 	return u, nil

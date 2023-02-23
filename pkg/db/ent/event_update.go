@@ -163,6 +163,33 @@ func (eu *EventUpdate) ClearCreditsPerUsd() *EventUpdate {
 	return eu
 }
 
+// SetMaxConsecutive sets the "max_consecutive" field.
+func (eu *EventUpdate) SetMaxConsecutive(u uint32) *EventUpdate {
+	eu.mutation.ResetMaxConsecutive()
+	eu.mutation.SetMaxConsecutive(u)
+	return eu
+}
+
+// SetNillableMaxConsecutive sets the "max_consecutive" field if the given value is not nil.
+func (eu *EventUpdate) SetNillableMaxConsecutive(u *uint32) *EventUpdate {
+	if u != nil {
+		eu.SetMaxConsecutive(*u)
+	}
+	return eu
+}
+
+// AddMaxConsecutive adds u to the "max_consecutive" field.
+func (eu *EventUpdate) AddMaxConsecutive(u int32) *EventUpdate {
+	eu.mutation.AddMaxConsecutive(u)
+	return eu
+}
+
+// ClearMaxConsecutive clears the value of the "max_consecutive" field.
+func (eu *EventUpdate) ClearMaxConsecutive() *EventUpdate {
+	eu.mutation.ClearMaxConsecutive()
+	return eu
+}
+
 // Mutation returns the EventMutation object of the builder.
 func (eu *EventUpdate) Mutation() *EventMutation {
 	return eu.mutation
@@ -362,6 +389,26 @@ func (eu *EventUpdate) sqlSave(ctx context.Context) (n int, err error) {
 			Column: event.FieldCreditsPerUsd,
 		})
 	}
+	if value, ok := eu.mutation.MaxConsecutive(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeUint32,
+			Value:  value,
+			Column: event.FieldMaxConsecutive,
+		})
+	}
+	if value, ok := eu.mutation.AddedMaxConsecutive(); ok {
+		_spec.Fields.Add = append(_spec.Fields.Add, &sqlgraph.FieldSpec{
+			Type:   field.TypeUint32,
+			Value:  value,
+			Column: event.FieldMaxConsecutive,
+		})
+	}
+	if eu.mutation.MaxConsecutiveCleared() {
+		_spec.Fields.Clear = append(_spec.Fields.Clear, &sqlgraph.FieldSpec{
+			Type:   field.TypeUint32,
+			Column: event.FieldMaxConsecutive,
+		})
+	}
 	_spec.Modifiers = eu.modifiers
 	if n, err = sqlgraph.UpdateNodes(ctx, eu.driver, _spec); err != nil {
 		if _, ok := err.(*sqlgraph.NotFoundError); ok {
@@ -513,6 +560,33 @@ func (euo *EventUpdateOne) SetNillableCreditsPerUsd(d *decimal.Decimal) *EventUp
 // ClearCreditsPerUsd clears the value of the "credits_per_usd" field.
 func (euo *EventUpdateOne) ClearCreditsPerUsd() *EventUpdateOne {
 	euo.mutation.ClearCreditsPerUsd()
+	return euo
+}
+
+// SetMaxConsecutive sets the "max_consecutive" field.
+func (euo *EventUpdateOne) SetMaxConsecutive(u uint32) *EventUpdateOne {
+	euo.mutation.ResetMaxConsecutive()
+	euo.mutation.SetMaxConsecutive(u)
+	return euo
+}
+
+// SetNillableMaxConsecutive sets the "max_consecutive" field if the given value is not nil.
+func (euo *EventUpdateOne) SetNillableMaxConsecutive(u *uint32) *EventUpdateOne {
+	if u != nil {
+		euo.SetMaxConsecutive(*u)
+	}
+	return euo
+}
+
+// AddMaxConsecutive adds u to the "max_consecutive" field.
+func (euo *EventUpdateOne) AddMaxConsecutive(u int32) *EventUpdateOne {
+	euo.mutation.AddMaxConsecutive(u)
+	return euo
+}
+
+// ClearMaxConsecutive clears the value of the "max_consecutive" field.
+func (euo *EventUpdateOne) ClearMaxConsecutive() *EventUpdateOne {
+	euo.mutation.ClearMaxConsecutive()
 	return euo
 }
 
@@ -743,6 +817,26 @@ func (euo *EventUpdateOne) sqlSave(ctx context.Context) (_node *Event, err error
 		_spec.Fields.Clear = append(_spec.Fields.Clear, &sqlgraph.FieldSpec{
 			Type:   field.TypeOther,
 			Column: event.FieldCreditsPerUsd,
+		})
+	}
+	if value, ok := euo.mutation.MaxConsecutive(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeUint32,
+			Value:  value,
+			Column: event.FieldMaxConsecutive,
+		})
+	}
+	if value, ok := euo.mutation.AddedMaxConsecutive(); ok {
+		_spec.Fields.Add = append(_spec.Fields.Add, &sqlgraph.FieldSpec{
+			Type:   field.TypeUint32,
+			Value:  value,
+			Column: event.FieldMaxConsecutive,
+		})
+	}
+	if euo.mutation.MaxConsecutiveCleared() {
+		_spec.Fields.Clear = append(_spec.Fields.Clear, &sqlgraph.FieldSpec{
+			Type:   field.TypeUint32,
+			Column: event.FieldMaxConsecutive,
 		})
 	}
 	_spec.Modifiers = euo.modifiers

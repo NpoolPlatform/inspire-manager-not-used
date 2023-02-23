@@ -187,14 +187,15 @@ var schemaGraph = func() *sqlgraph.Schema {
 		},
 		Type: "Event",
 		Fields: map[string]*sqlgraph.FieldSpec{
-			event.FieldCreatedAt:     {Type: field.TypeUint32, Column: event.FieldCreatedAt},
-			event.FieldUpdatedAt:     {Type: field.TypeUint32, Column: event.FieldUpdatedAt},
-			event.FieldDeletedAt:     {Type: field.TypeUint32, Column: event.FieldDeletedAt},
-			event.FieldAppID:         {Type: field.TypeUUID, Column: event.FieldAppID},
-			event.FieldEventType:     {Type: field.TypeString, Column: event.FieldEventType},
-			event.FieldCouponIds:     {Type: field.TypeJSON, Column: event.FieldCouponIds},
-			event.FieldCredits:       {Type: field.TypeOther, Column: event.FieldCredits},
-			event.FieldCreditsPerUsd: {Type: field.TypeOther, Column: event.FieldCreditsPerUsd},
+			event.FieldCreatedAt:      {Type: field.TypeUint32, Column: event.FieldCreatedAt},
+			event.FieldUpdatedAt:      {Type: field.TypeUint32, Column: event.FieldUpdatedAt},
+			event.FieldDeletedAt:      {Type: field.TypeUint32, Column: event.FieldDeletedAt},
+			event.FieldAppID:          {Type: field.TypeUUID, Column: event.FieldAppID},
+			event.FieldEventType:      {Type: field.TypeString, Column: event.FieldEventType},
+			event.FieldCouponIds:      {Type: field.TypeJSON, Column: event.FieldCouponIds},
+			event.FieldCredits:        {Type: field.TypeOther, Column: event.FieldCredits},
+			event.FieldCreditsPerUsd:  {Type: field.TypeOther, Column: event.FieldCreditsPerUsd},
+			event.FieldMaxConsecutive: {Type: field.TypeUint32, Column: event.FieldMaxConsecutive},
 		},
 	}
 	graph.Nodes[7] = &sqlgraph.Node{
@@ -960,6 +961,11 @@ func (f *EventFilter) WhereCredits(p entql.OtherP) {
 // WhereCreditsPerUsd applies the entql other predicate on the credits_per_usd field.
 func (f *EventFilter) WhereCreditsPerUsd(p entql.OtherP) {
 	f.Where(p.Field(event.FieldCreditsPerUsd))
+}
+
+// WhereMaxConsecutive applies the entql uint32 predicate on the max_consecutive field.
+func (f *EventFilter) WhereMaxConsecutive(p entql.Uint32P) {
+	f.Where(p.Field(event.FieldMaxConsecutive))
 }
 
 // addPredicate implements the predicateAdder interface.

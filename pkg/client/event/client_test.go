@@ -36,12 +36,13 @@ func init() {
 }
 
 var ret = npool.Event{
-	ID:            uuid.NewString(),
-	AppID:         uuid.NewString(),
-	EventType:     basetypes.UsedFor_Signup,
-	CouponIDs:     []string{uuid.New().String(), uuid.New().String()},
-	Credits:       "1.798",
-	CreditsPerUSD: "1.789",
+	ID:             uuid.NewString(),
+	AppID:          uuid.NewString(),
+	EventType:      basetypes.UsedFor_Signup,
+	CouponIDs:      []string{uuid.New().String(), uuid.New().String()},
+	Credits:        "1.798",
+	CreditsPerUSD:  "1.789",
+	MaxConsecutive: 1,
 }
 
 var (
