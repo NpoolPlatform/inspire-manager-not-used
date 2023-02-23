@@ -29,6 +29,8 @@ const (
 	FieldCredits = "credits"
 	// FieldCreditsPerUsd holds the string denoting the credits_per_usd field in the database.
 	FieldCreditsPerUsd = "credits_per_usd"
+	// FieldMaxConsecutive holds the string denoting the max_consecutive field in the database.
+	FieldMaxConsecutive = "max_consecutive"
 	// Table holds the table name of the event in the database.
 	Table = "events"
 )
@@ -44,6 +46,7 @@ var Columns = []string{
 	FieldCouponIds,
 	FieldCredits,
 	FieldCreditsPerUsd,
+	FieldMaxConsecutive,
 }
 
 // ValidColumn reports if the column name is valid (part of the table columns).
@@ -81,6 +84,8 @@ var (
 	DefaultCredits decimal.Decimal
 	// DefaultCreditsPerUsd holds the default value on creation for the "credits_per_usd" field.
 	DefaultCreditsPerUsd decimal.Decimal
+	// DefaultMaxConsecutive holds the default value on creation for the "max_consecutive" field.
+	DefaultMaxConsecutive uint32
 	// DefaultID holds the default value on creation for the "id" field.
 	DefaultID func() uuid.UUID
 )

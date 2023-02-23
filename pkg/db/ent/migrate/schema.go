@@ -146,6 +146,28 @@ var (
 		Columns:    CouponSpecialOffersColumns,
 		PrimaryKey: []*schema.Column{CouponSpecialOffersColumns[0]},
 	}
+<<<<<<< HEAD
+=======
+	// EventsColumns holds the columns for the "events" table.
+	EventsColumns = []*schema.Column{
+		{Name: "id", Type: field.TypeUUID, Unique: true},
+		{Name: "created_at", Type: field.TypeUint32},
+		{Name: "updated_at", Type: field.TypeUint32},
+		{Name: "deleted_at", Type: field.TypeUint32},
+		{Name: "app_id", Type: field.TypeUUID},
+		{Name: "event_type", Type: field.TypeString, Nullable: true, Default: "DefaultUsedFor"},
+		{Name: "coupon_ids", Type: field.TypeJSON, Nullable: true},
+		{Name: "credits", Type: field.TypeOther, Nullable: true, SchemaType: map[string]string{"mysql": "decimal(37,18)"}},
+		{Name: "credits_per_usd", Type: field.TypeOther, Nullable: true, SchemaType: map[string]string{"mysql": "decimal(37,18)"}},
+		{Name: "max_consecutive", Type: field.TypeUint32, Nullable: true, Default: 1},
+	}
+	// EventsTable holds the schema information for the "events" table.
+	EventsTable = &schema.Table{
+		Name:       "events",
+		Columns:    EventsColumns,
+		PrimaryKey: []*schema.Column{EventsColumns[0]},
+	}
+>>>>>>> Add max consecutive
 	// GoodOrderPercentsColumns holds the columns for the "good_order_percents" table.
 	GoodOrderPercentsColumns = []*schema.Column{
 		{Name: "id", Type: field.TypeUUID, Unique: true},
@@ -156,7 +178,11 @@ var (
 		{Name: "user_id", Type: field.TypeUUID, Nullable: true},
 		{Name: "good_id", Type: field.TypeUUID, Nullable: true},
 		{Name: "percent", Type: field.TypeOther, Nullable: true, SchemaType: map[string]string{"mysql": "decimal(37,18)"}},
+<<<<<<< HEAD
 		{Name: "start_at", Type: field.TypeUint32, Nullable: true, Default: 1.676614857e+09},
+=======
+		{Name: "start_at", Type: field.TypeUint32, Nullable: true, Default: 1677130324},
+>>>>>>> Add max consecutive
 		{Name: "end_at", Type: field.TypeUint32, Nullable: true, Default: 0},
 	}
 	// GoodOrderPercentsTable holds the schema information for the "good_order_percents" table.

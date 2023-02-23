@@ -18,14 +18,15 @@ func Ent2Grpc(row *ent.Event) *npool.Event {
 	}
 
 	ret := &npool.Event{
-		ID:            row.ID.String(),
-		AppID:         row.AppID.String(),
-		EventType:     basetypes.UsedFor(basetypes.UsedFor_value[row.EventType]),
-		CouponIDs:     ids,
-		Credits:       row.Credits.String(),
-		CreditsPerUSD: row.CreditsPerUsd.String(),
-		CreatedAt:     row.CreatedAt,
-		UpdatedAt:     row.UpdatedAt,
+		ID:             row.ID.String(),
+		AppID:          row.AppID.String(),
+		EventType:      basetypes.UsedFor(basetypes.UsedFor_value[row.EventType]),
+		CouponIDs:      ids,
+		Credits:        row.Credits.String(),
+		CreditsPerUSD:  row.CreditsPerUsd.String(),
+		MaxConsecutive: row.MaxConsecutive,
+		CreatedAt:      row.CreatedAt,
+		UpdatedAt:      row.UpdatedAt,
 	}
 
 	return ret

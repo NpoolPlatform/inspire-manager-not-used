@@ -129,6 +129,13 @@ func CreditsPerUsd(v decimal.Decimal) predicate.Event {
 	})
 }
 
+// MaxConsecutive applies equality check predicate on the "max_consecutive" field. It's identical to MaxConsecutiveEQ.
+func MaxConsecutive(v uint32) predicate.Event {
+	return predicate.Event(func(s *sql.Selector) {
+		s.Where(sql.EQ(s.C(FieldMaxConsecutive), v))
+	})
+}
+
 // CreatedAtEQ applies the EQ predicate on the "created_at" field.
 func CreatedAtEQ(v uint32) predicate.Event {
 	return predicate.Event(func(s *sql.Selector) {
@@ -665,6 +672,84 @@ func CreditsPerUsdIsNil() predicate.Event {
 func CreditsPerUsdNotNil() predicate.Event {
 	return predicate.Event(func(s *sql.Selector) {
 		s.Where(sql.NotNull(s.C(FieldCreditsPerUsd)))
+	})
+}
+
+// MaxConsecutiveEQ applies the EQ predicate on the "max_consecutive" field.
+func MaxConsecutiveEQ(v uint32) predicate.Event {
+	return predicate.Event(func(s *sql.Selector) {
+		s.Where(sql.EQ(s.C(FieldMaxConsecutive), v))
+	})
+}
+
+// MaxConsecutiveNEQ applies the NEQ predicate on the "max_consecutive" field.
+func MaxConsecutiveNEQ(v uint32) predicate.Event {
+	return predicate.Event(func(s *sql.Selector) {
+		s.Where(sql.NEQ(s.C(FieldMaxConsecutive), v))
+	})
+}
+
+// MaxConsecutiveIn applies the In predicate on the "max_consecutive" field.
+func MaxConsecutiveIn(vs ...uint32) predicate.Event {
+	v := make([]interface{}, len(vs))
+	for i := range v {
+		v[i] = vs[i]
+	}
+	return predicate.Event(func(s *sql.Selector) {
+		s.Where(sql.In(s.C(FieldMaxConsecutive), v...))
+	})
+}
+
+// MaxConsecutiveNotIn applies the NotIn predicate on the "max_consecutive" field.
+func MaxConsecutiveNotIn(vs ...uint32) predicate.Event {
+	v := make([]interface{}, len(vs))
+	for i := range v {
+		v[i] = vs[i]
+	}
+	return predicate.Event(func(s *sql.Selector) {
+		s.Where(sql.NotIn(s.C(FieldMaxConsecutive), v...))
+	})
+}
+
+// MaxConsecutiveGT applies the GT predicate on the "max_consecutive" field.
+func MaxConsecutiveGT(v uint32) predicate.Event {
+	return predicate.Event(func(s *sql.Selector) {
+		s.Where(sql.GT(s.C(FieldMaxConsecutive), v))
+	})
+}
+
+// MaxConsecutiveGTE applies the GTE predicate on the "max_consecutive" field.
+func MaxConsecutiveGTE(v uint32) predicate.Event {
+	return predicate.Event(func(s *sql.Selector) {
+		s.Where(sql.GTE(s.C(FieldMaxConsecutive), v))
+	})
+}
+
+// MaxConsecutiveLT applies the LT predicate on the "max_consecutive" field.
+func MaxConsecutiveLT(v uint32) predicate.Event {
+	return predicate.Event(func(s *sql.Selector) {
+		s.Where(sql.LT(s.C(FieldMaxConsecutive), v))
+	})
+}
+
+// MaxConsecutiveLTE applies the LTE predicate on the "max_consecutive" field.
+func MaxConsecutiveLTE(v uint32) predicate.Event {
+	return predicate.Event(func(s *sql.Selector) {
+		s.Where(sql.LTE(s.C(FieldMaxConsecutive), v))
+	})
+}
+
+// MaxConsecutiveIsNil applies the IsNil predicate on the "max_consecutive" field.
+func MaxConsecutiveIsNil() predicate.Event {
+	return predicate.Event(func(s *sql.Selector) {
+		s.Where(sql.IsNull(s.C(FieldMaxConsecutive)))
+	})
+}
+
+// MaxConsecutiveNotNil applies the NotNil predicate on the "max_consecutive" field.
+func MaxConsecutiveNotNil() predicate.Event {
+	return predicate.Event(func(s *sql.Selector) {
+		s.Where(sql.NotNull(s.C(FieldMaxConsecutive)))
 	})
 }
 

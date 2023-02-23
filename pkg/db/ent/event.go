@@ -34,6 +34,8 @@ type Event struct {
 	Credits decimal.Decimal `json:"credits,omitempty"`
 	// CreditsPerUsd holds the value of the "credits_per_usd" field.
 	CreditsPerUsd decimal.Decimal `json:"credits_per_usd,omitempty"`
+	// MaxConsecutive holds the value of the "max_consecutive" field.
+	MaxConsecutive uint32 `json:"max_consecutive,omitempty"`
 }
 
 // scanValues returns the types for scanning values from sql.Rows.
@@ -45,7 +47,7 @@ func (*Event) scanValues(columns []string) ([]interface{}, error) {
 			values[i] = new([]byte)
 		case event.FieldCredits, event.FieldCreditsPerUsd:
 			values[i] = new(decimal.Decimal)
-		case event.FieldCreatedAt, event.FieldUpdatedAt, event.FieldDeletedAt:
+		case event.FieldCreatedAt, event.FieldUpdatedAt, event.FieldDeletedAt, event.FieldMaxConsecutive:
 			values[i] = new(sql.NullInt64)
 		case event.FieldEventType:
 			values[i] = new(sql.NullString)
@@ -122,6 +124,12 @@ func (e *Event) assignValues(columns []string, values []interface{}) error {
 			} else if value != nil {
 				e.CreditsPerUsd = *value
 			}
+		case event.FieldMaxConsecutive:
+			if value, ok := values[i].(*sql.NullInt64); !ok {
+				return fmt.Errorf("unexpected type %T for field max_consecutive", values[i])
+			} else if value.Valid {
+				e.MaxConsecutive = uint32(value.Int64)
+			}
 		}
 	}
 	return nil
@@ -173,6 +181,9 @@ func (e *Event) String() string {
 	builder.WriteString(", ")
 	builder.WriteString("credits_per_usd=")
 	builder.WriteString(fmt.Sprintf("%v", e.CreditsPerUsd))
+	builder.WriteString(", ")
+	builder.WriteString("max_consecutive=")
+	builder.WriteString(fmt.Sprintf("%v", e.MaxConsecutive))
 	builder.WriteByte(')')
 	return builder.String()
 }

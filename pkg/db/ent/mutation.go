@@ -7827,6 +7827,7 @@ func (m *CouponSpecialOfferMutation) ResetEdge(name string) error {
 // GoodOrderPercentMutation represents an operation that mutates the GoodOrderPercent nodes in the graph.
 type GoodOrderPercentMutation struct {
 	config
+<<<<<<< HEAD
 	op            Op
 	typ           string
 	id            *uuid.UUID
@@ -7848,6 +7849,28 @@ type GoodOrderPercentMutation struct {
 	done          bool
 	oldValue      func(context.Context) (*GoodOrderPercent, error)
 	predicates    []predicate.GoodOrderPercent
+=======
+	op                 Op
+	typ                string
+	id                 *uuid.UUID
+	created_at         *uint32
+	addcreated_at      *int32
+	updated_at         *uint32
+	addupdated_at      *int32
+	deleted_at         *uint32
+	adddeleted_at      *int32
+	app_id             *uuid.UUID
+	event_type         *string
+	coupon_ids         *[]uuid.UUID
+	credits            *decimal.Decimal
+	credits_per_usd    *decimal.Decimal
+	max_consecutive    *uint32
+	addmax_consecutive *int32
+	clearedFields      map[string]struct{}
+	done               bool
+	oldValue           func(context.Context) (*Event, error)
+	predicates         []predicate.Event
+>>>>>>> Add max consecutive
 }
 
 var _ ent.Mutation = (*GoodOrderPercentMutation)(nil)
@@ -8388,6 +8411,7 @@ func (m *GoodOrderPercentMutation) ResetStartAt() {
 	delete(m.clearedFields, goodorderpercent.FieldStartAt)
 }
 
+<<<<<<< HEAD
 // SetEndAt sets the "end_at" field.
 func (m *GoodOrderPercentMutation) SetEndAt(u uint32) {
 	m.end_at = &u
@@ -8397,12 +8421,24 @@ func (m *GoodOrderPercentMutation) SetEndAt(u uint32) {
 // EndAt returns the value of the "end_at" field in the mutation.
 func (m *GoodOrderPercentMutation) EndAt() (r uint32, exists bool) {
 	v := m.end_at
+=======
+// SetMaxConsecutive sets the "max_consecutive" field.
+func (m *EventMutation) SetMaxConsecutive(u uint32) {
+	m.max_consecutive = &u
+	m.addmax_consecutive = nil
+}
+
+// MaxConsecutive returns the value of the "max_consecutive" field in the mutation.
+func (m *EventMutation) MaxConsecutive() (r uint32, exists bool) {
+	v := m.max_consecutive
+>>>>>>> Add max consecutive
 	if v == nil {
 		return
 	}
 	return *v, true
 }
 
+<<<<<<< HEAD
 // OldEndAt returns the old "end_at" field's value of the GoodOrderPercent entity.
 // If the GoodOrderPercent object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
@@ -8432,12 +8468,44 @@ func (m *GoodOrderPercentMutation) AddEndAt(u int32) {
 // AddedEndAt returns the value that was added to the "end_at" field in this mutation.
 func (m *GoodOrderPercentMutation) AddedEndAt() (r int32, exists bool) {
 	v := m.addend_at
+=======
+// OldMaxConsecutive returns the old "max_consecutive" field's value of the Event entity.
+// If the Event object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *EventMutation) OldMaxConsecutive(ctx context.Context) (v uint32, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldMaxConsecutive is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldMaxConsecutive requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldMaxConsecutive: %w", err)
+	}
+	return oldValue.MaxConsecutive, nil
+}
+
+// AddMaxConsecutive adds u to the "max_consecutive" field.
+func (m *EventMutation) AddMaxConsecutive(u int32) {
+	if m.addmax_consecutive != nil {
+		*m.addmax_consecutive += u
+	} else {
+		m.addmax_consecutive = &u
+	}
+}
+
+// AddedMaxConsecutive returns the value that was added to the "max_consecutive" field in this mutation.
+func (m *EventMutation) AddedMaxConsecutive() (r int32, exists bool) {
+	v := m.addmax_consecutive
+>>>>>>> Add max consecutive
 	if v == nil {
 		return
 	}
 	return *v, true
 }
 
+<<<<<<< HEAD
 // ClearEndAt clears the value of the "end_at" field.
 func (m *GoodOrderPercentMutation) ClearEndAt() {
 	m.end_at = nil
@@ -8460,6 +8528,30 @@ func (m *GoodOrderPercentMutation) ResetEndAt() {
 
 // Where appends a list predicates to the GoodOrderPercentMutation builder.
 func (m *GoodOrderPercentMutation) Where(ps ...predicate.GoodOrderPercent) {
+=======
+// ClearMaxConsecutive clears the value of the "max_consecutive" field.
+func (m *EventMutation) ClearMaxConsecutive() {
+	m.max_consecutive = nil
+	m.addmax_consecutive = nil
+	m.clearedFields[event.FieldMaxConsecutive] = struct{}{}
+}
+
+// MaxConsecutiveCleared returns if the "max_consecutive" field was cleared in this mutation.
+func (m *EventMutation) MaxConsecutiveCleared() bool {
+	_, ok := m.clearedFields[event.FieldMaxConsecutive]
+	return ok
+}
+
+// ResetMaxConsecutive resets all changes to the "max_consecutive" field.
+func (m *EventMutation) ResetMaxConsecutive() {
+	m.max_consecutive = nil
+	m.addmax_consecutive = nil
+	delete(m.clearedFields, event.FieldMaxConsecutive)
+}
+
+// Where appends a list predicates to the EventMutation builder.
+func (m *EventMutation) Where(ps ...predicate.Event) {
+>>>>>>> Add max consecutive
 	m.predicates = append(m.predicates, ps...)
 }
 
@@ -8476,7 +8568,11 @@ func (m *GoodOrderPercentMutation) Type() string {
 // Fields returns all fields that were changed during this mutation. Note that in
 // order to get all numeric fields that were incremented/decremented, call
 // AddedFields().
+<<<<<<< HEAD
 func (m *GoodOrderPercentMutation) Fields() []string {
+=======
+func (m *EventMutation) Fields() []string {
+>>>>>>> Add max consecutive
 	fields := make([]string, 0, 9)
 	if m.created_at != nil {
 		fields = append(fields, goodorderpercent.FieldCreatedAt)
@@ -8505,6 +8601,9 @@ func (m *GoodOrderPercentMutation) Fields() []string {
 	if m.end_at != nil {
 		fields = append(fields, goodorderpercent.FieldEndAt)
 	}
+	if m.max_consecutive != nil {
+		fields = append(fields, event.FieldMaxConsecutive)
+	}
 	return fields
 }
 
@@ -8521,6 +8620,7 @@ func (m *GoodOrderPercentMutation) Field(name string) (ent.Value, bool) {
 		return m.DeletedAt()
 	case goodorderpercent.FieldAppID:
 		return m.AppID()
+<<<<<<< HEAD
 	case goodorderpercent.FieldUserID:
 		return m.UserID()
 	case goodorderpercent.FieldGoodID:
@@ -8531,6 +8631,18 @@ func (m *GoodOrderPercentMutation) Field(name string) (ent.Value, bool) {
 		return m.StartAt()
 	case goodorderpercent.FieldEndAt:
 		return m.EndAt()
+=======
+	case event.FieldEventType:
+		return m.EventType()
+	case event.FieldCouponIds:
+		return m.CouponIds()
+	case event.FieldCredits:
+		return m.Credits()
+	case event.FieldCreditsPerUsd:
+		return m.CreditsPerUsd()
+	case event.FieldMaxConsecutive:
+		return m.MaxConsecutive()
+>>>>>>> Add max consecutive
 	}
 	return nil, false
 }
@@ -8548,6 +8660,7 @@ func (m *GoodOrderPercentMutation) OldField(ctx context.Context, name string) (e
 		return m.OldDeletedAt(ctx)
 	case goodorderpercent.FieldAppID:
 		return m.OldAppID(ctx)
+<<<<<<< HEAD
 	case goodorderpercent.FieldUserID:
 		return m.OldUserID(ctx)
 	case goodorderpercent.FieldGoodID:
@@ -8558,6 +8671,18 @@ func (m *GoodOrderPercentMutation) OldField(ctx context.Context, name string) (e
 		return m.OldStartAt(ctx)
 	case goodorderpercent.FieldEndAt:
 		return m.OldEndAt(ctx)
+=======
+	case event.FieldEventType:
+		return m.OldEventType(ctx)
+	case event.FieldCouponIds:
+		return m.OldCouponIds(ctx)
+	case event.FieldCredits:
+		return m.OldCredits(ctx)
+	case event.FieldCreditsPerUsd:
+		return m.OldCreditsPerUsd(ctx)
+	case event.FieldMaxConsecutive:
+		return m.OldMaxConsecutive(ctx)
+>>>>>>> Add max consecutive
 	}
 	return nil, fmt.Errorf("unknown GoodOrderPercent field %s", name)
 }
@@ -8630,6 +8755,13 @@ func (m *GoodOrderPercentMutation) SetField(name string, value ent.Value) error 
 		}
 		m.SetEndAt(v)
 		return nil
+	case event.FieldMaxConsecutive:
+		v, ok := value.(uint32)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetMaxConsecutive(v)
+		return nil
 	}
 	return fmt.Errorf("unknown GoodOrderPercent field %s", name)
 }
@@ -8653,6 +8785,9 @@ func (m *GoodOrderPercentMutation) AddedFields() []string {
 	if m.addend_at != nil {
 		fields = append(fields, goodorderpercent.FieldEndAt)
 	}
+	if m.addmax_consecutive != nil {
+		fields = append(fields, event.FieldMaxConsecutive)
+	}
 	return fields
 }
 
@@ -8667,10 +8802,15 @@ func (m *GoodOrderPercentMutation) AddedField(name string) (ent.Value, bool) {
 		return m.AddedUpdatedAt()
 	case goodorderpercent.FieldDeletedAt:
 		return m.AddedDeletedAt()
+<<<<<<< HEAD
 	case goodorderpercent.FieldStartAt:
 		return m.AddedStartAt()
 	case goodorderpercent.FieldEndAt:
 		return m.AddedEndAt()
+=======
+	case event.FieldMaxConsecutive:
+		return m.AddedMaxConsecutive()
+>>>>>>> Add max consecutive
 	}
 	return nil, false
 }
@@ -8701,11 +8841,16 @@ func (m *GoodOrderPercentMutation) AddField(name string, value ent.Value) error 
 		}
 		m.AddDeletedAt(v)
 		return nil
+<<<<<<< HEAD
 	case goodorderpercent.FieldStartAt:
+=======
+	case event.FieldMaxConsecutive:
+>>>>>>> Add max consecutive
 		v, ok := value.(int32)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
+<<<<<<< HEAD
 		m.AddStartAt(v)
 		return nil
 	case goodorderpercent.FieldEndAt:
@@ -8714,6 +8859,9 @@ func (m *GoodOrderPercentMutation) AddField(name string, value ent.Value) error 
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
 		m.AddEndAt(v)
+=======
+		m.AddMaxConsecutive(v)
+>>>>>>> Add max consecutive
 		return nil
 	}
 	return fmt.Errorf("unknown GoodOrderPercent numeric field %s", name)
@@ -8740,6 +8888,9 @@ func (m *GoodOrderPercentMutation) ClearedFields() []string {
 	}
 	if m.FieldCleared(goodorderpercent.FieldEndAt) {
 		fields = append(fields, goodorderpercent.FieldEndAt)
+	}
+	if m.FieldCleared(event.FieldMaxConsecutive) {
+		fields = append(fields, event.FieldMaxConsecutive)
 	}
 	return fields
 }
@@ -8772,6 +8923,9 @@ func (m *GoodOrderPercentMutation) ClearField(name string) error {
 		return nil
 	case goodorderpercent.FieldEndAt:
 		m.ClearEndAt()
+		return nil
+	case event.FieldMaxConsecutive:
+		m.ClearMaxConsecutive()
 		return nil
 	}
 	return fmt.Errorf("unknown GoodOrderPercent nullable field %s", name)
@@ -8807,6 +8961,9 @@ func (m *GoodOrderPercentMutation) ResetField(name string) error {
 		return nil
 	case goodorderpercent.FieldEndAt:
 		m.ResetEndAt()
+		return nil
+	case event.FieldMaxConsecutive:
+		m.ResetMaxConsecutive()
 		return nil
 	}
 	return fmt.Errorf("unknown GoodOrderPercent field %s", name)
