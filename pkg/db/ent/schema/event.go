@@ -38,9 +38,9 @@ func (Event) Fields() []ent.Field {
 			Optional().
 			Default(basetypes.UsedFor_DefaultUsedFor.String()),
 		field.
-			JSON("coupons", []*npool.Coupon{}).
+			JSON("coupons", []npool.Coupon{}).
 			Optional().
-			Default([]*npool.Coupon{}),
+			Default([]npool.Coupon{}),
 		field.
 			Other("credits", decimal.Decimal{}).
 			SchemaType(map[string]string{

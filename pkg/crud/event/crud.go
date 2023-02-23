@@ -36,7 +36,11 @@ func CreateSet(c *ent.EventCreate, in *npool.EventReq) (*ent.EventCreate, error)
 		c.SetEventType(in.GetEventType().String())
 	}
 	if len(in.GetCoupons()) > 0 {
-		c.SetCoupons(in.GetCoupons())
+		coupons := []npool.Coupon{}
+		for _, coup := range in.GetCoupons() {
+			coupons = append(coupons, *coup)
+		}
+		c.SetCoupons(coupons)
 	}
 	if in.Credits != nil {
 		c.SetCredits(decimal.RequireFromString(in.GetCredits()))
@@ -123,7 +127,11 @@ func UpdateSet(info *ent.Event, in *npool.EventReq) (*ent.EventUpdateOne, error)
 	u := info.Update()
 
 	if in.Coupons != nil {
-		u.SetCoupons(in.GetCoupons())
+		coupons := []npool.Coupon{}
+		for _, coup := range in.GetCoupons() {
+			coupons = append(coupons, *coup)
+		}
+		u.SetCoupons(coupons)
 	}
 	if in.Credits != nil {
 		u.SetCredits(decimal.RequireFromString(in.GetCredits()))

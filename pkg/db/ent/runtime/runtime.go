@@ -443,7 +443,7 @@ func init() {
 	// enteventDescCoupons is the schema descriptor for coupons field.
 	enteventDescCoupons := enteventFields[3].Descriptor()
 	// entevent.DefaultCoupons holds the default value on creation for the coupons field.
-	entevent.DefaultCoupons = enteventDescCoupons.Default.([]*event.Coupon)
+	entevent.DefaultCoupons = enteventDescCoupons.Default.([]event.Coupon)
 	// enteventDescCredits is the schema descriptor for credits field.
 	enteventDescCredits := enteventFields[4].Descriptor()
 	// entevent.DefaultCredits holds the default value on creation for the credits field.

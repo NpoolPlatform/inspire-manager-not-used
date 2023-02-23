@@ -114,7 +114,7 @@ func (eu *EventUpdate) ClearEventType() *EventUpdate {
 }
 
 // SetCoupons sets the "coupons" field.
-func (eu *EventUpdate) SetCoupons(e []*event.Coupon) *EventUpdate {
+func (eu *EventUpdate) SetCoupons(e []event.Coupon) *EventUpdate {
 	eu.mutation.SetCoupons(e)
 	return eu
 }
@@ -547,7 +547,7 @@ func (euo *EventUpdateOne) ClearEventType() *EventUpdateOne {
 }
 
 // SetCoupons sets the "coupons" field.
-func (euo *EventUpdateOne) SetCoupons(e []*event.Coupon) *EventUpdateOne {
+func (euo *EventUpdateOne) SetCoupons(e []event.Coupon) *EventUpdateOne {
 	euo.mutation.SetCoupons(e)
 	return euo
 }

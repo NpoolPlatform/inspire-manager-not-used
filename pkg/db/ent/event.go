@@ -31,7 +31,7 @@ type Event struct {
 	// EventType holds the value of the "event_type" field.
 	EventType string `json:"event_type,omitempty"`
 	// Coupons holds the value of the "coupons" field.
-	Coupons []*event.Coupon `json:"coupons,omitempty"`
+	Coupons []event.Coupon `json:"coupons,omitempty"`
 	// Credits holds the value of the "credits" field.
 	Credits decimal.Decimal `json:"credits,omitempty"`
 	// CreditsPerUsd holds the value of the "credits_per_usd" field.

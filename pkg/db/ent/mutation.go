@@ -7620,7 +7620,7 @@ type EventMutation struct {
 	adddeleted_at      *int32
 	app_id             *uuid.UUID
 	event_type         *string
-	coupons            *[]*event.Coupon
+	coupons            *[]event.Coupon
 	credits            *decimal.Decimal
 	credits_per_usd    *decimal.Decimal
 	max_consecutive    *uint32
@@ -7990,12 +7990,12 @@ func (m *EventMutation) ResetEventType() {
 }
 
 // SetCoupons sets the "coupons" field.
-func (m *EventMutation) SetCoupons(e []*event.Coupon) {
+func (m *EventMutation) SetCoupons(e []event.Coupon) {
 	m.coupons = &e
 }
 
 // Coupons returns the value of the "coupons" field in the mutation.
-func (m *EventMutation) Coupons() (r []*event.Coupon, exists bool) {
+func (m *EventMutation) Coupons() (r []event.Coupon, exists bool) {
 	v := m.coupons
 	if v == nil {
 		return
@@ -8006,7 +8006,7 @@ func (m *EventMutation) Coupons() (r []*event.Coupon, exists bool) {
 // OldCoupons returns the old "coupons" field's value of the Event entity.
 // If the Event object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *EventMutation) OldCoupons(ctx context.Context) (v []*event.Coupon, err error) {
+func (m *EventMutation) OldCoupons(ctx context.Context) (v []event.Coupon, err error) {
 	if !m.op.Is(OpUpdateOne) {
 		return v, errors.New("OldCoupons is only allowed on UpdateOne operations")
 	}
@@ -8407,7 +8407,7 @@ func (m *EventMutation) SetField(name string, value ent.Value) error {
 		m.SetEventType(v)
 		return nil
 	case entevent.FieldCoupons:
-		v, ok := value.([]*event.Coupon)
+		v, ok := value.([]event.Coupon)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
