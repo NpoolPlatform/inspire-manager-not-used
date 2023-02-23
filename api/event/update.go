@@ -3,6 +3,7 @@ package event
 
 import (
 	"context"
+	"fmt"
 
 	converter "github.com/NpoolPlatform/inspire-manager/pkg/converter/event"
 	crud "github.com/NpoolPlatform/inspire-manager/pkg/crud/event"
@@ -17,21 +18,37 @@ import (
 	"google.golang.org/grpc/status"
 
 	"github.com/NpoolPlatform/go-service-framework/pkg/logger"
+
+	alloccoupmgrpb "github.com/NpoolPlatform/message/npool/inspire/mgr/v1/coupon/allocated"
 	npool "github.com/NpoolPlatform/message/npool/inspire/mgr/v1/event"
 
 	"github.com/google/uuid"
 	"github.com/shopspring/decimal"
 )
 
-func ValidateUpdate(in *npool.EventReq) error {
+func ValidateUpdate(in *npool.EventReq) error { //nolint
 	if _, err := uuid.Parse(in.GetID()); err != nil {
 		logger.Sugar().Errorw("ValidateUpdate", "ID", in.GetID(), "Error", err)
 		return err
 	}
-	for _, id := range in.GetCouponIDs() {
-		if _, err := uuid.Parse(id); err != nil {
-			logger.Sugar().Errorw("ValidateUpdate", "CouponIDs", in.GetCouponIDs(), "Error", err)
+	for _, coupon := range in.GetCoupons() {
+		if _, err := uuid.Parse(coupon.GetID()); err != nil {
+			logger.Sugar().Errorw("ValidateCreate", "Coupons", in.GetCoupons(), "Error", err)
 			return err
+		}
+		switch coupon.GetCouponType() {
+		case alloccoupmgrpb.CouponType_FixAmount:
+		case alloccoupmgrpb.CouponType_Discount:
+		case alloccoupmgrpb.CouponType_SpecialOffer:
+		case alloccoupmgrpb.CouponType_ThresholdFixAmount:
+		case alloccoupmgrpb.CouponType_ThresholdDiscount:
+		case alloccoupmgrpb.CouponType_GoodFixAmount:
+		case alloccoupmgrpb.CouponType_GoodDiscount:
+		case alloccoupmgrpb.CouponType_GoodThresholdFixAmount:
+		case alloccoupmgrpb.CouponType_GoodThresholdDiscount:
+		default:
+			logger.Sugar().Errorw("ValidateCreate", "Coupons", in.GetCoupons())
+			return fmt.Errorf("coupontype is invalid")
 		}
 	}
 	if in.Credits != nil {

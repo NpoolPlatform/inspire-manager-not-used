@@ -12,9 +12,10 @@ import (
 	"entgo.io/ent/dialect/sql"
 	"entgo.io/ent/dialect/sql/sqlgraph"
 	"entgo.io/ent/schema/field"
-	"github.com/NpoolPlatform/inspire-manager/pkg/db/ent/event"
 	"github.com/NpoolPlatform/inspire-manager/pkg/db/ent/predicate"
 	"github.com/google/uuid"
+
+	entevent "github.com/NpoolPlatform/inspire-manager/pkg/db/ent/event"
 )
 
 // EventQuery is the builder for querying Event entities.
@@ -71,7 +72,7 @@ func (eq *EventQuery) First(ctx context.Context) (*Event, error) {
 		return nil, err
 	}
 	if len(nodes) == 0 {
-		return nil, &NotFoundError{event.Label}
+		return nil, &NotFoundError{entevent.Label}
 	}
 	return nodes[0], nil
 }
@@ -93,7 +94,7 @@ func (eq *EventQuery) FirstID(ctx context.Context) (id uuid.UUID, err error) {
 		return
 	}
 	if len(ids) == 0 {
-		err = &NotFoundError{event.Label}
+		err = &NotFoundError{entevent.Label}
 		return
 	}
 	return ids[0], nil
@@ -120,9 +121,9 @@ func (eq *EventQuery) Only(ctx context.Context) (*Event, error) {
 	case 1:
 		return nodes[0], nil
 	case 0:
-		return nil, &NotFoundError{event.Label}
+		return nil, &NotFoundError{entevent.Label}
 	default:
-		return nil, &NotSingularError{event.Label}
+		return nil, &NotSingularError{entevent.Label}
 	}
 }
 
@@ -147,9 +148,9 @@ func (eq *EventQuery) OnlyID(ctx context.Context) (id uuid.UUID, err error) {
 	case 1:
 		id = ids[0]
 	case 0:
-		err = &NotFoundError{event.Label}
+		err = &NotFoundError{entevent.Label}
 	default:
-		err = &NotSingularError{event.Label}
+		err = &NotSingularError{entevent.Label}
 	}
 	return
 }
@@ -183,7 +184,7 @@ func (eq *EventQuery) AllX(ctx context.Context) []*Event {
 // IDs executes the query and returns a list of Event IDs.
 func (eq *EventQuery) IDs(ctx context.Context) ([]uuid.UUID, error) {
 	var ids []uuid.UUID
-	if err := eq.Select(event.FieldID).Scan(ctx, &ids); err != nil {
+	if err := eq.Select(entevent.FieldID).Scan(ctx, &ids); err != nil {
 		return nil, err
 	}
 	return ids, nil
@@ -262,7 +263,7 @@ func (eq *EventQuery) Clone() *EventQuery {
 //	}
 //
 //	client.Event.Query().
-//		GroupBy(event.FieldCreatedAt).
+//		GroupBy(entevent.FieldCreatedAt).
 //		Aggregate(ent.Count()).
 //		Scan(ctx, &v)
 //
@@ -275,7 +276,7 @@ func (eq *EventQuery) GroupBy(field string, fields ...string) *EventGroupBy {
 		}
 		return eq.sqlQuery(ctx), nil
 	}
-	grbuild.label = event.Label
+	grbuild.label = entevent.Label
 	grbuild.flds, grbuild.scan = &grbuild.fields, grbuild.Scan
 	return grbuild
 }
@@ -290,20 +291,20 @@ func (eq *EventQuery) GroupBy(field string, fields ...string) *EventGroupBy {
 //	}
 //
 //	client.Event.Query().
-//		Select(event.FieldCreatedAt).
+//		Select(entevent.FieldCreatedAt).
 //		Scan(ctx, &v)
 //
 func (eq *EventQuery) Select(fields ...string) *EventSelect {
 	eq.fields = append(eq.fields, fields...)
 	selbuild := &EventSelect{EventQuery: eq}
-	selbuild.label = event.Label
+	selbuild.label = entevent.Label
 	selbuild.flds, selbuild.scan = &eq.fields, selbuild.Scan
 	return selbuild
 }
 
 func (eq *EventQuery) prepareQuery(ctx context.Context) error {
 	for _, f := range eq.fields {
-		if !event.ValidColumn(f) {
+		if !entevent.ValidColumn(f) {
 			return &ValidationError{Name: f, err: fmt.Errorf("ent: invalid field %q for query", f)}
 		}
 	}
@@ -314,10 +315,10 @@ func (eq *EventQuery) prepareQuery(ctx context.Context) error {
 		}
 		eq.sql = prev
 	}
-	if event.Policy == nil {
-		return errors.New("ent: uninitialized event.Policy (forgotten import ent/runtime?)")
+	if entevent.Policy == nil {
+		return errors.New("ent: uninitialized entevent.Policy (forgotten import ent/runtime?)")
 	}
-	if err := event.Policy.EvalQuery(ctx, eq); err != nil {
+	if err := entevent.Policy.EvalQuery(ctx, eq); err != nil {
 		return err
 	}
 	return nil
@@ -374,11 +375,11 @@ func (eq *EventQuery) sqlExist(ctx context.Context) (bool, error) {
 func (eq *EventQuery) querySpec() *sqlgraph.QuerySpec {
 	_spec := &sqlgraph.QuerySpec{
 		Node: &sqlgraph.NodeSpec{
-			Table:   event.Table,
-			Columns: event.Columns,
+			Table:   entevent.Table,
+			Columns: entevent.Columns,
 			ID: &sqlgraph.FieldSpec{
 				Type:   field.TypeUUID,
-				Column: event.FieldID,
+				Column: entevent.FieldID,
 			},
 		},
 		From:   eq.sql,
@@ -389,9 +390,9 @@ func (eq *EventQuery) querySpec() *sqlgraph.QuerySpec {
 	}
 	if fields := eq.fields; len(fields) > 0 {
 		_spec.Node.Columns = make([]string, 0, len(fields))
-		_spec.Node.Columns = append(_spec.Node.Columns, event.FieldID)
+		_spec.Node.Columns = append(_spec.Node.Columns, entevent.FieldID)
 		for i := range fields {
-			if fields[i] != event.FieldID {
+			if fields[i] != entevent.FieldID {
 				_spec.Node.Columns = append(_spec.Node.Columns, fields[i])
 			}
 		}
@@ -421,10 +422,10 @@ func (eq *EventQuery) querySpec() *sqlgraph.QuerySpec {
 
 func (eq *EventQuery) sqlQuery(ctx context.Context) *sql.Selector {
 	builder := sql.Dialect(eq.driver.Dialect())
-	t1 := builder.Table(event.Table)
+	t1 := builder.Table(entevent.Table)
 	columns := eq.fields
 	if len(columns) == 0 {
-		columns = event.Columns
+		columns = entevent.Columns
 	}
 	selector := builder.Select(t1.Columns(columns...)...).From(t1)
 	if eq.sql != nil {
@@ -515,7 +516,7 @@ func (egb *EventGroupBy) Scan(ctx context.Context, v interface{}) error {
 
 func (egb *EventGroupBy) sqlScan(ctx context.Context, v interface{}) error {
 	for _, f := range egb.fields {
-		if !event.ValidColumn(f) {
+		if !entevent.ValidColumn(f) {
 			return &ValidationError{Name: f, err: fmt.Errorf("invalid field %q for group-by", f)}
 		}
 	}

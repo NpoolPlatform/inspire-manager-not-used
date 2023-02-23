@@ -8,9 +8,11 @@ import (
 	"strings"
 
 	"entgo.io/ent/dialect/sql"
-	"github.com/NpoolPlatform/inspire-manager/pkg/db/ent/event"
+	"github.com/NpoolPlatform/message/npool/inspire/mgr/v1/event"
 	"github.com/google/uuid"
 	"github.com/shopspring/decimal"
+
+	entevent "github.com/NpoolPlatform/inspire-manager/pkg/db/ent/event"
 )
 
 // Event is the model entity for the Event schema.
@@ -28,8 +30,8 @@ type Event struct {
 	AppID uuid.UUID `json:"app_id,omitempty"`
 	// EventType holds the value of the "event_type" field.
 	EventType string `json:"event_type,omitempty"`
-	// CouponIds holds the value of the "coupon_ids" field.
-	CouponIds []uuid.UUID `json:"coupon_ids,omitempty"`
+	// Coupons holds the value of the "coupons" field.
+	Coupons []*event.Coupon `json:"coupons,omitempty"`
 	// Credits holds the value of the "credits" field.
 	Credits decimal.Decimal `json:"credits,omitempty"`
 	// CreditsPerUsd holds the value of the "credits_per_usd" field.
@@ -45,15 +47,15 @@ func (*Event) scanValues(columns []string) ([]interface{}, error) {
 	values := make([]interface{}, len(columns))
 	for i := range columns {
 		switch columns[i] {
-		case event.FieldCouponIds:
+		case entevent.FieldCoupons:
 			values[i] = new([]byte)
-		case event.FieldCredits, event.FieldCreditsPerUsd:
+		case entevent.FieldCredits, entevent.FieldCreditsPerUsd:
 			values[i] = new(decimal.Decimal)
-		case event.FieldCreatedAt, event.FieldUpdatedAt, event.FieldDeletedAt, event.FieldMaxConsecutive:
+		case entevent.FieldCreatedAt, entevent.FieldUpdatedAt, entevent.FieldDeletedAt, entevent.FieldMaxConsecutive:
 			values[i] = new(sql.NullInt64)
-		case event.FieldEventType:
+		case entevent.FieldEventType:
 			values[i] = new(sql.NullString)
-		case event.FieldID, event.FieldAppID, event.FieldGoodID:
+		case entevent.FieldID, entevent.FieldAppID, entevent.FieldGoodID:
 			values[i] = new(uuid.UUID)
 		default:
 			return nil, fmt.Errorf("unexpected column %q for type Event", columns[i])
@@ -70,69 +72,69 @@ func (e *Event) assignValues(columns []string, values []interface{}) error {
 	}
 	for i := range columns {
 		switch columns[i] {
-		case event.FieldID:
+		case entevent.FieldID:
 			if value, ok := values[i].(*uuid.UUID); !ok {
 				return fmt.Errorf("unexpected type %T for field id", values[i])
 			} else if value != nil {
 				e.ID = *value
 			}
-		case event.FieldCreatedAt:
+		case entevent.FieldCreatedAt:
 			if value, ok := values[i].(*sql.NullInt64); !ok {
 				return fmt.Errorf("unexpected type %T for field created_at", values[i])
 			} else if value.Valid {
 				e.CreatedAt = uint32(value.Int64)
 			}
-		case event.FieldUpdatedAt:
+		case entevent.FieldUpdatedAt:
 			if value, ok := values[i].(*sql.NullInt64); !ok {
 				return fmt.Errorf("unexpected type %T for field updated_at", values[i])
 			} else if value.Valid {
 				e.UpdatedAt = uint32(value.Int64)
 			}
-		case event.FieldDeletedAt:
+		case entevent.FieldDeletedAt:
 			if value, ok := values[i].(*sql.NullInt64); !ok {
 				return fmt.Errorf("unexpected type %T for field deleted_at", values[i])
 			} else if value.Valid {
 				e.DeletedAt = uint32(value.Int64)
 			}
-		case event.FieldAppID:
+		case entevent.FieldAppID:
 			if value, ok := values[i].(*uuid.UUID); !ok {
 				return fmt.Errorf("unexpected type %T for field app_id", values[i])
 			} else if value != nil {
 				e.AppID = *value
 			}
-		case event.FieldEventType:
+		case entevent.FieldEventType:
 			if value, ok := values[i].(*sql.NullString); !ok {
 				return fmt.Errorf("unexpected type %T for field event_type", values[i])
 			} else if value.Valid {
 				e.EventType = value.String
 			}
-		case event.FieldCouponIds:
+		case entevent.FieldCoupons:
 			if value, ok := values[i].(*[]byte); !ok {
-				return fmt.Errorf("unexpected type %T for field coupon_ids", values[i])
+				return fmt.Errorf("unexpected type %T for field coupons", values[i])
 			} else if value != nil && len(*value) > 0 {
-				if err := json.Unmarshal(*value, &e.CouponIds); err != nil {
-					return fmt.Errorf("unmarshal field coupon_ids: %w", err)
+				if err := json.Unmarshal(*value, &e.Coupons); err != nil {
+					return fmt.Errorf("unmarshal field coupons: %w", err)
 				}
 			}
-		case event.FieldCredits:
+		case entevent.FieldCredits:
 			if value, ok := values[i].(*decimal.Decimal); !ok {
 				return fmt.Errorf("unexpected type %T for field credits", values[i])
 			} else if value != nil {
 				e.Credits = *value
 			}
-		case event.FieldCreditsPerUsd:
+		case entevent.FieldCreditsPerUsd:
 			if value, ok := values[i].(*decimal.Decimal); !ok {
 				return fmt.Errorf("unexpected type %T for field credits_per_usd", values[i])
 			} else if value != nil {
 				e.CreditsPerUsd = *value
 			}
-		case event.FieldMaxConsecutive:
+		case entevent.FieldMaxConsecutive:
 			if value, ok := values[i].(*sql.NullInt64); !ok {
 				return fmt.Errorf("unexpected type %T for field max_consecutive", values[i])
 			} else if value.Valid {
 				e.MaxConsecutive = uint32(value.Int64)
 			}
-		case event.FieldGoodID:
+		case entevent.FieldGoodID:
 			if value, ok := values[i].(*uuid.UUID); !ok {
 				return fmt.Errorf("unexpected type %T for field good_id", values[i])
 			} else if value != nil {
@@ -181,8 +183,8 @@ func (e *Event) String() string {
 	builder.WriteString("event_type=")
 	builder.WriteString(e.EventType)
 	builder.WriteString(", ")
-	builder.WriteString("coupon_ids=")
-	builder.WriteString(fmt.Sprintf("%v", e.CouponIds))
+	builder.WriteString("coupons=")
+	builder.WriteString(fmt.Sprintf("%v", e.Coupons))
 	builder.WriteString(", ")
 	builder.WriteString("credits=")
 	builder.WriteString(fmt.Sprintf("%v", e.Credits))

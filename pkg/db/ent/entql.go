@@ -9,7 +9,7 @@ import (
 	"github.com/NpoolPlatform/inspire-manager/pkg/db/ent/coupondiscount"
 	"github.com/NpoolPlatform/inspire-manager/pkg/db/ent/couponfixamount"
 	"github.com/NpoolPlatform/inspire-manager/pkg/db/ent/couponspecialoffer"
-	"github.com/NpoolPlatform/inspire-manager/pkg/db/ent/event"
+	entevent "github.com/NpoolPlatform/inspire-manager/pkg/db/ent/event"
 	"github.com/NpoolPlatform/inspire-manager/pkg/db/ent/goodorderpercent"
 	"github.com/NpoolPlatform/inspire-manager/pkg/db/ent/invitationcode"
 	"github.com/NpoolPlatform/inspire-manager/pkg/db/ent/registration"
@@ -178,25 +178,25 @@ var schemaGraph = func() *sqlgraph.Schema {
 	}
 	graph.Nodes[6] = &sqlgraph.Node{
 		NodeSpec: sqlgraph.NodeSpec{
-			Table:   event.Table,
-			Columns: event.Columns,
+			Table:   entevent.Table,
+			Columns: entevent.Columns,
 			ID: &sqlgraph.FieldSpec{
 				Type:   field.TypeUUID,
-				Column: event.FieldID,
+				Column: entevent.FieldID,
 			},
 		},
 		Type: "Event",
 		Fields: map[string]*sqlgraph.FieldSpec{
-			event.FieldCreatedAt:      {Type: field.TypeUint32, Column: event.FieldCreatedAt},
-			event.FieldUpdatedAt:      {Type: field.TypeUint32, Column: event.FieldUpdatedAt},
-			event.FieldDeletedAt:      {Type: field.TypeUint32, Column: event.FieldDeletedAt},
-			event.FieldAppID:          {Type: field.TypeUUID, Column: event.FieldAppID},
-			event.FieldEventType:      {Type: field.TypeString, Column: event.FieldEventType},
-			event.FieldCouponIds:      {Type: field.TypeJSON, Column: event.FieldCouponIds},
-			event.FieldCredits:        {Type: field.TypeOther, Column: event.FieldCredits},
-			event.FieldCreditsPerUsd:  {Type: field.TypeOther, Column: event.FieldCreditsPerUsd},
-			event.FieldMaxConsecutive: {Type: field.TypeUint32, Column: event.FieldMaxConsecutive},
-			event.FieldGoodID:         {Type: field.TypeUUID, Column: event.FieldGoodID},
+			entevent.FieldCreatedAt:      {Type: field.TypeUint32, Column: entevent.FieldCreatedAt},
+			entevent.FieldUpdatedAt:      {Type: field.TypeUint32, Column: entevent.FieldUpdatedAt},
+			entevent.FieldDeletedAt:      {Type: field.TypeUint32, Column: entevent.FieldDeletedAt},
+			entevent.FieldAppID:          {Type: field.TypeUUID, Column: entevent.FieldAppID},
+			entevent.FieldEventType:      {Type: field.TypeString, Column: entevent.FieldEventType},
+			entevent.FieldCoupons:        {Type: field.TypeJSON, Column: entevent.FieldCoupons},
+			entevent.FieldCredits:        {Type: field.TypeOther, Column: entevent.FieldCredits},
+			entevent.FieldCreditsPerUsd:  {Type: field.TypeOther, Column: entevent.FieldCreditsPerUsd},
+			entevent.FieldMaxConsecutive: {Type: field.TypeUint32, Column: entevent.FieldMaxConsecutive},
+			entevent.FieldGoodID:         {Type: field.TypeUUID, Column: entevent.FieldGoodID},
 		},
 	}
 	graph.Nodes[7] = &sqlgraph.Node{
@@ -921,57 +921,57 @@ func (f *EventFilter) Where(p entql.P) {
 
 // WhereID applies the entql [16]byte predicate on the id field.
 func (f *EventFilter) WhereID(p entql.ValueP) {
-	f.Where(p.Field(event.FieldID))
+	f.Where(p.Field(entevent.FieldID))
 }
 
 // WhereCreatedAt applies the entql uint32 predicate on the created_at field.
 func (f *EventFilter) WhereCreatedAt(p entql.Uint32P) {
-	f.Where(p.Field(event.FieldCreatedAt))
+	f.Where(p.Field(entevent.FieldCreatedAt))
 }
 
 // WhereUpdatedAt applies the entql uint32 predicate on the updated_at field.
 func (f *EventFilter) WhereUpdatedAt(p entql.Uint32P) {
-	f.Where(p.Field(event.FieldUpdatedAt))
+	f.Where(p.Field(entevent.FieldUpdatedAt))
 }
 
 // WhereDeletedAt applies the entql uint32 predicate on the deleted_at field.
 func (f *EventFilter) WhereDeletedAt(p entql.Uint32P) {
-	f.Where(p.Field(event.FieldDeletedAt))
+	f.Where(p.Field(entevent.FieldDeletedAt))
 }
 
 // WhereAppID applies the entql [16]byte predicate on the app_id field.
 func (f *EventFilter) WhereAppID(p entql.ValueP) {
-	f.Where(p.Field(event.FieldAppID))
+	f.Where(p.Field(entevent.FieldAppID))
 }
 
 // WhereEventType applies the entql string predicate on the event_type field.
 func (f *EventFilter) WhereEventType(p entql.StringP) {
-	f.Where(p.Field(event.FieldEventType))
+	f.Where(p.Field(entevent.FieldEventType))
 }
 
-// WhereCouponIds applies the entql json.RawMessage predicate on the coupon_ids field.
-func (f *EventFilter) WhereCouponIds(p entql.BytesP) {
-	f.Where(p.Field(event.FieldCouponIds))
+// WhereCoupons applies the entql json.RawMessage predicate on the coupons field.
+func (f *EventFilter) WhereCoupons(p entql.BytesP) {
+	f.Where(p.Field(entevent.FieldCoupons))
 }
 
 // WhereCredits applies the entql other predicate on the credits field.
 func (f *EventFilter) WhereCredits(p entql.OtherP) {
-	f.Where(p.Field(event.FieldCredits))
+	f.Where(p.Field(entevent.FieldCredits))
 }
 
 // WhereCreditsPerUsd applies the entql other predicate on the credits_per_usd field.
 func (f *EventFilter) WhereCreditsPerUsd(p entql.OtherP) {
-	f.Where(p.Field(event.FieldCreditsPerUsd))
+	f.Where(p.Field(entevent.FieldCreditsPerUsd))
 }
 
 // WhereMaxConsecutive applies the entql uint32 predicate on the max_consecutive field.
 func (f *EventFilter) WhereMaxConsecutive(p entql.Uint32P) {
-	f.Where(p.Field(event.FieldMaxConsecutive))
+	f.Where(p.Field(entevent.FieldMaxConsecutive))
 }
 
 // WhereGoodID applies the entql [16]byte predicate on the good_id field.
 func (f *EventFilter) WhereGoodID(p entql.ValueP) {
-	f.Where(p.Field(event.FieldGoodID))
+	f.Where(p.Field(entevent.FieldGoodID))
 }
 
 // addPredicate implements the predicateAdder interface.

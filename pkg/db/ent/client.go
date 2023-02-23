@@ -17,7 +17,7 @@ import (
 	"github.com/NpoolPlatform/inspire-manager/pkg/db/ent/coupondiscount"
 	"github.com/NpoolPlatform/inspire-manager/pkg/db/ent/couponfixamount"
 	"github.com/NpoolPlatform/inspire-manager/pkg/db/ent/couponspecialoffer"
-	"github.com/NpoolPlatform/inspire-manager/pkg/db/ent/event"
+	entevent "github.com/NpoolPlatform/inspire-manager/pkg/db/ent/event"
 	"github.com/NpoolPlatform/inspire-manager/pkg/db/ent/goodorderpercent"
 	"github.com/NpoolPlatform/inspire-manager/pkg/db/ent/invitationcode"
 	"github.com/NpoolPlatform/inspire-manager/pkg/db/ent/registration"
@@ -744,7 +744,7 @@ func NewEventClient(c config) *EventClient {
 }
 
 // Use adds a list of mutation hooks to the hooks stack.
-// A call to `Use(f, g, h)` equals to `event.Hooks(f(g(h())))`.
+// A call to `Use(f, g, h)` equals to `entevent.Hooks(f(g(h())))`.
 func (c *EventClient) Use(hooks ...Hook) {
 	c.hooks.Event = append(c.hooks.Event, hooks...)
 }
@@ -791,7 +791,7 @@ func (c *EventClient) DeleteOne(e *Event) *EventDeleteOne {
 
 // DeleteOne returns a builder for deleting the given entity by its id.
 func (c *EventClient) DeleteOneID(id uuid.UUID) *EventDeleteOne {
-	builder := c.Delete().Where(event.ID(id))
+	builder := c.Delete().Where(entevent.ID(id))
 	builder.mutation.id = &id
 	builder.mutation.op = OpDeleteOne
 	return &EventDeleteOne{builder}
@@ -806,7 +806,7 @@ func (c *EventClient) Query() *EventQuery {
 
 // Get returns a Event entity by its id.
 func (c *EventClient) Get(ctx context.Context, id uuid.UUID) (*Event, error) {
-	return c.Query().Where(event.ID(id)).Only(ctx)
+	return c.Query().Where(entevent.ID(id)).Only(ctx)
 }
 
 // GetX is like Get, but panics if an error occurs.
@@ -821,7 +821,7 @@ func (c *EventClient) GetX(ctx context.Context, id uuid.UUID) *Event {
 // Hooks returns the client hooks.
 func (c *EventClient) Hooks() []Hook {
 	hooks := c.hooks.Event
-	return append(hooks[:len(hooks):len(hooks)], event.Hooks[:]...)
+	return append(hooks[:len(hooks):len(hooks)], entevent.Hooks[:]...)
 }
 
 // GoodOrderPercentClient is a client for the GoodOrderPercent schema.

@@ -18,6 +18,7 @@ import (
 	"github.com/NpoolPlatform/libent-cruder/pkg/cruder"
 
 	basetypes "github.com/NpoolPlatform/message/npool/basetypes/v1"
+	alloccoupmgrpb "github.com/NpoolPlatform/message/npool/inspire/mgr/v1/coupon/allocated"
 	npool "github.com/NpoolPlatform/message/npool/inspire/mgr/v1/event"
 
 	testinit "github.com/NpoolPlatform/inspire-manager/pkg/testinit"
@@ -36,10 +37,13 @@ func init() {
 }
 
 var ret = npool.Event{
-	ID:             uuid.NewString(),
-	AppID:          uuid.NewString(),
-	EventType:      basetypes.UsedFor_Signup,
-	CouponIDs:      []string{uuid.New().String(), uuid.New().String()},
+	ID:        uuid.NewString(),
+	AppID:     uuid.NewString(),
+	EventType: basetypes.UsedFor_Signup,
+	Coupons: []*npool.Coupon{
+		{ID: uuid.New().String(), CouponType: alloccoupmgrpb.CouponType_FixAmount},
+		{ID: uuid.New().String(), CouponType: alloccoupmgrpb.CouponType_Discount},
+	},
 	Credits:        "1.798",
 	CreditsPerUSD:  "1.789",
 	MaxConsecutive: 1,
@@ -51,7 +55,7 @@ var (
 		ID:            &ret.ID,
 		AppID:         &ret.AppID,
 		EventType:     &ret.EventType,
-		CouponIDs:     ret.CouponIDs,
+		Coupons:       ret.Coupons,
 		Credits:       &ret.Credits,
 		CreditsPerUSD: &ret.CreditsPerUSD,
 	}
@@ -72,19 +76,25 @@ func createEvent(t *testing.T) {
 func createEvents(t *testing.T) {
 	rets := []npool.Event{
 		{
-			ID:            uuid.NewString(),
-			AppID:         uuid.NewString(),
-			EventType:     basetypes.UsedFor_Signin,
-			CouponIDs:     []string{uuid.New().String(), uuid.New().String()},
+			ID:        uuid.NewString(),
+			AppID:     uuid.NewString(),
+			EventType: basetypes.UsedFor_Signin,
+			Coupons: []*npool.Coupon{
+				{ID: uuid.New().String(), CouponType: alloccoupmgrpb.CouponType_FixAmount},
+				{ID: uuid.New().String(), CouponType: alloccoupmgrpb.CouponType_Discount},
+			},
 			Credits:       "1.7981",
 			CreditsPerUSD: "1.7892",
 			GoodID:        uuid.UUID{}.String(),
 		},
 		{
-			ID:            uuid.NewString(),
-			AppID:         uuid.NewString(),
-			EventType:     basetypes.UsedFor_Signin,
-			CouponIDs:     []string{uuid.New().String(), uuid.New().String()},
+			ID:        uuid.NewString(),
+			AppID:     uuid.NewString(),
+			EventType: basetypes.UsedFor_Signin,
+			Coupons: []*npool.Coupon{
+				{ID: uuid.New().String(), CouponType: alloccoupmgrpb.CouponType_FixAmount},
+				{ID: uuid.New().String(), CouponType: alloccoupmgrpb.CouponType_Discount},
+			},
 			Credits:       "1.7983",
 			CreditsPerUSD: "1.7894",
 			GoodID:        uuid.UUID{}.String(),
@@ -97,7 +107,7 @@ func createEvents(t *testing.T) {
 			ID:            &rets[key].ID,
 			AppID:         &rets[key].AppID,
 			EventType:     &rets[key].EventType,
-			CouponIDs:     rets[key].CouponIDs,
+			Coupons:       rets[key].Coupons,
 			Credits:       &rets[key].Credits,
 			CreditsPerUSD: &rets[key].CreditsPerUSD,
 		})

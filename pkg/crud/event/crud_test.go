@@ -11,6 +11,7 @@ import (
 	"github.com/NpoolPlatform/libent-cruder/pkg/cruder"
 
 	basetypes "github.com/NpoolPlatform/message/npool/basetypes/v1"
+	alloccoupmgrpb "github.com/NpoolPlatform/message/npool/inspire/mgr/v1/coupon/allocated"
 	npool "github.com/NpoolPlatform/message/npool/inspire/mgr/v1/event"
 
 	testinit "github.com/NpoolPlatform/inspire-manager/pkg/testinit"
@@ -31,10 +32,13 @@ func init() {
 }
 
 var ret = ent.Event{
-	ID:             uuid.New(),
-	AppID:          uuid.New(),
-	EventType:      basetypes.UsedFor_Signup.String(),
-	CouponIds:      []uuid.UUID{uuid.New(), uuid.New()},
+	ID:        uuid.New(),
+	AppID:     uuid.New(),
+	EventType: basetypes.UsedFor_Signup.String(),
+	Coupons: []*npool.Coupon{
+		&npool.Coupon{ID: uuid.New().String(), CouponType: alloccoupmgrpb.CouponType_FixAmount}, //nolint
+		&npool.Coupon{ID: uuid.New().String(), CouponType: alloccoupmgrpb.CouponType_Discount},
+	},
 	Credits:        decimal.RequireFromString("1.798"),
 	CreditsPerUsd:  decimal.RequireFromString("1.789"),
 	MaxConsecutive: 1,
@@ -49,10 +53,13 @@ var (
 	creditsPerUSD = ret.CreditsPerUsd.String()
 
 	req = npool.EventReq{
-		ID:            &id,
-		AppID:         &appID,
-		EventType:     &evType,
-		CouponIDs:     []string{ret.CouponIds[0].String(), ret.CouponIds[1].String()},
+		ID:        &id,
+		AppID:     &appID,
+		EventType: &evType,
+		Coupons: []*npool.Coupon{
+			&npool.Coupon{ID: uuid.New().String(), CouponType: alloccoupmgrpb.CouponType_FixAmount}, //nolint
+			&npool.Coupon{ID: uuid.New().String(), CouponType: alloccoupmgrpb.CouponType_Discount},
+		},
 		Credits:       &credits,
 		CreditsPerUSD: &creditsPerUSD,
 	}
@@ -73,20 +80,26 @@ func create(t *testing.T) {
 func createBulk(t *testing.T) {
 	entities := []*ent.Event{
 		{
-			ID:             uuid.New(),
-			AppID:          uuid.New(),
-			EventType:      basetypes.UsedFor_Signin.String(),
-			CouponIds:      []uuid.UUID{uuid.New(), uuid.New()},
+			ID:        uuid.New(),
+			AppID:     uuid.New(),
+			EventType: basetypes.UsedFor_Signin.String(),
+			Coupons: []*npool.Coupon{
+				&npool.Coupon{ID: uuid.New().String(), CouponType: alloccoupmgrpb.CouponType_FixAmount}, //nolint
+				&npool.Coupon{ID: uuid.New().String(), CouponType: alloccoupmgrpb.CouponType_Discount},
+			},
 			Credits:        decimal.RequireFromString("1.7981"),
 			CreditsPerUsd:  decimal.RequireFromString("1.7892"),
 			MaxConsecutive: 10,
 			GoodID:         uuid.UUID{},
 		},
 		{
-			ID:             uuid.New(),
-			AppID:          uuid.New(),
-			EventType:      basetypes.UsedFor_Signin.String(),
-			CouponIds:      []uuid.UUID{uuid.New(), uuid.New()},
+			ID:        uuid.New(),
+			AppID:     uuid.New(),
+			EventType: basetypes.UsedFor_Signin.String(),
+			Coupons: []*npool.Coupon{
+				&npool.Coupon{ID: uuid.New().String(), CouponType: alloccoupmgrpb.CouponType_FixAmount}, //nolint
+				&npool.Coupon{ID: uuid.New().String(), CouponType: alloccoupmgrpb.CouponType_Discount},
+			},
 			Credits:        decimal.RequireFromString("1.7983"),
 			CreditsPerUsd:  decimal.RequireFromString("1.7894"),
 			MaxConsecutive: 11,
@@ -107,7 +120,7 @@ func createBulk(t *testing.T) {
 			ID:             &_id,
 			AppID:          &_appID,
 			EventType:      &_evType,
-			CouponIDs:      []string{_event.CouponIds[0].String(), _event.CouponIds[1].String()},
+			Coupons:        _event.Coupons,
 			Credits:        &_credits,
 			CreditsPerUSD:  &_creditsPerUSD,
 			MaxConsecutive: &_event.MaxConsecutive,
