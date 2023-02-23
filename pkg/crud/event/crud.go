@@ -38,7 +38,10 @@ func CreateSet(c *ent.EventCreate, in *npool.EventReq) (*ent.EventCreate, error)
 	if len(in.GetCoupons()) > 0 {
 		coupons := []npool.Coupon{}
 		for _, coup := range in.GetCoupons() {
-			coupons = append(coupons, *coup)
+			coupons = append(coupons, npool.Coupon{
+				ID:         coup.ID,
+				CouponType: coup.CouponType,
+			})
 		}
 		c.SetCoupons(coupons)
 	}
@@ -129,7 +132,10 @@ func UpdateSet(info *ent.Event, in *npool.EventReq) (*ent.EventUpdateOne, error)
 	if in.Coupons != nil {
 		coupons := []npool.Coupon{}
 		for _, coup := range in.GetCoupons() {
-			coupons = append(coupons, *coup)
+			coupons = append(coupons, npool.Coupon{
+				ID:         coup.ID,
+				CouponType: coup.CouponType,
+			})
 		}
 		u.SetCoupons(coupons)
 	}
