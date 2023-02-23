@@ -134,6 +134,20 @@ func (ec *EventCreate) SetNillableMaxConsecutive(u *uint32) *EventCreate {
 	return ec
 }
 
+// SetGoodID sets the "good_id" field.
+func (ec *EventCreate) SetGoodID(u uuid.UUID) *EventCreate {
+	ec.mutation.SetGoodID(u)
+	return ec
+}
+
+// SetNillableGoodID sets the "good_id" field if the given value is not nil.
+func (ec *EventCreate) SetNillableGoodID(u *uuid.UUID) *EventCreate {
+	if u != nil {
+		ec.SetGoodID(*u)
+	}
+	return ec
+}
+
 // SetID sets the "id" field.
 func (ec *EventCreate) SetID(u uuid.UUID) *EventCreate {
 	ec.mutation.SetID(u)
@@ -268,6 +282,13 @@ func (ec *EventCreate) defaults() error {
 		v := event.DefaultMaxConsecutive
 		ec.mutation.SetMaxConsecutive(v)
 	}
+	if _, ok := ec.mutation.GoodID(); !ok {
+		if event.DefaultGoodID == nil {
+			return fmt.Errorf("ent: uninitialized event.DefaultGoodID (forgotten import ent/runtime?)")
+		}
+		v := event.DefaultGoodID()
+		ec.mutation.SetGoodID(v)
+	}
 	if _, ok := ec.mutation.ID(); !ok {
 		if event.DefaultID == nil {
 			return fmt.Errorf("ent: uninitialized event.DefaultID (forgotten import ent/runtime?)")
@@ -400,6 +421,14 @@ func (ec *EventCreate) createSpec() (*Event, *sqlgraph.CreateSpec) {
 			Column: event.FieldMaxConsecutive,
 		})
 		_node.MaxConsecutive = value
+	}
+	if value, ok := ec.mutation.GoodID(); ok {
+		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
+			Type:   field.TypeUUID,
+			Value:  value,
+			Column: event.FieldGoodID,
+		})
+		_node.GoodID = value
 	}
 	return _node, _spec
 }
@@ -614,6 +643,24 @@ func (u *EventUpsert) AddMaxConsecutive(v uint32) *EventUpsert {
 // ClearMaxConsecutive clears the value of the "max_consecutive" field.
 func (u *EventUpsert) ClearMaxConsecutive() *EventUpsert {
 	u.SetNull(event.FieldMaxConsecutive)
+	return u
+}
+
+// SetGoodID sets the "good_id" field.
+func (u *EventUpsert) SetGoodID(v uuid.UUID) *EventUpsert {
+	u.Set(event.FieldGoodID, v)
+	return u
+}
+
+// UpdateGoodID sets the "good_id" field to the value that was provided on create.
+func (u *EventUpsert) UpdateGoodID() *EventUpsert {
+	u.SetExcluded(event.FieldGoodID)
+	return u
+}
+
+// ClearGoodID clears the value of the "good_id" field.
+func (u *EventUpsert) ClearGoodID() *EventUpsert {
+	u.SetNull(event.FieldGoodID)
 	return u
 }
 
@@ -853,6 +900,27 @@ func (u *EventUpsertOne) UpdateMaxConsecutive() *EventUpsertOne {
 func (u *EventUpsertOne) ClearMaxConsecutive() *EventUpsertOne {
 	return u.Update(func(s *EventUpsert) {
 		s.ClearMaxConsecutive()
+	})
+}
+
+// SetGoodID sets the "good_id" field.
+func (u *EventUpsertOne) SetGoodID(v uuid.UUID) *EventUpsertOne {
+	return u.Update(func(s *EventUpsert) {
+		s.SetGoodID(v)
+	})
+}
+
+// UpdateGoodID sets the "good_id" field to the value that was provided on create.
+func (u *EventUpsertOne) UpdateGoodID() *EventUpsertOne {
+	return u.Update(func(s *EventUpsert) {
+		s.UpdateGoodID()
+	})
+}
+
+// ClearGoodID clears the value of the "good_id" field.
+func (u *EventUpsertOne) ClearGoodID() *EventUpsertOne {
+	return u.Update(func(s *EventUpsert) {
+		s.ClearGoodID()
 	})
 }
 
@@ -1258,6 +1326,27 @@ func (u *EventUpsertBulk) UpdateMaxConsecutive() *EventUpsertBulk {
 func (u *EventUpsertBulk) ClearMaxConsecutive() *EventUpsertBulk {
 	return u.Update(func(s *EventUpsert) {
 		s.ClearMaxConsecutive()
+	})
+}
+
+// SetGoodID sets the "good_id" field.
+func (u *EventUpsertBulk) SetGoodID(v uuid.UUID) *EventUpsertBulk {
+	return u.Update(func(s *EventUpsert) {
+		s.SetGoodID(v)
+	})
+}
+
+// UpdateGoodID sets the "good_id" field to the value that was provided on create.
+func (u *EventUpsertBulk) UpdateGoodID() *EventUpsertBulk {
+	return u.Update(func(s *EventUpsert) {
+		s.UpdateGoodID()
+	})
+}
+
+// ClearGoodID clears the value of the "good_id" field.
+func (u *EventUpsertBulk) ClearGoodID() *EventUpsertBulk {
+	return u.Update(func(s *EventUpsert) {
+		s.ClearGoodID()
 	})
 }
 

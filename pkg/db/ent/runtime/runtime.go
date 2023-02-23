@@ -469,6 +469,10 @@ func init() {
 	eventDescMaxConsecutive := eventFields[6].Descriptor()
 	// event.DefaultMaxConsecutive holds the default value on creation for the max_consecutive field.
 	event.DefaultMaxConsecutive = eventDescMaxConsecutive.Default.(uint32)
+	// eventDescGoodID is the schema descriptor for good_id field.
+	eventDescGoodID := eventFields[7].Descriptor()
+	// event.DefaultGoodID holds the default value on creation for the good_id field.
+	event.DefaultGoodID = eventDescGoodID.Default.(func() uuid.UUID)
 	// eventDescID is the schema descriptor for id field.
 	eventDescID := eventFields[0].Descriptor()
 	// event.DefaultID holds the default value on creation for the id field.

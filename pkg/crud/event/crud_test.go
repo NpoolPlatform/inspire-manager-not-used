@@ -38,6 +38,7 @@ var ret = ent.Event{
 	Credits:        decimal.RequireFromString("1.798"),
 	CreditsPerUsd:  decimal.RequireFromString("1.789"),
 	MaxConsecutive: 1,
+	GoodID:         uuid.UUID{},
 }
 
 var (
@@ -79,6 +80,7 @@ func createBulk(t *testing.T) {
 			Credits:        decimal.RequireFromString("1.7981"),
 			CreditsPerUsd:  decimal.RequireFromString("1.7892"),
 			MaxConsecutive: 10,
+			GoodID:         uuid.UUID{},
 		},
 		{
 			ID:             uuid.New(),
@@ -88,6 +90,7 @@ func createBulk(t *testing.T) {
 			Credits:        decimal.RequireFromString("1.7983"),
 			CreditsPerUsd:  decimal.RequireFromString("1.7894"),
 			MaxConsecutive: 11,
+			GoodID:         uuid.UUID{},
 		},
 	}
 

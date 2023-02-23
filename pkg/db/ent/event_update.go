@@ -190,6 +190,26 @@ func (eu *EventUpdate) ClearMaxConsecutive() *EventUpdate {
 	return eu
 }
 
+// SetGoodID sets the "good_id" field.
+func (eu *EventUpdate) SetGoodID(u uuid.UUID) *EventUpdate {
+	eu.mutation.SetGoodID(u)
+	return eu
+}
+
+// SetNillableGoodID sets the "good_id" field if the given value is not nil.
+func (eu *EventUpdate) SetNillableGoodID(u *uuid.UUID) *EventUpdate {
+	if u != nil {
+		eu.SetGoodID(*u)
+	}
+	return eu
+}
+
+// ClearGoodID clears the value of the "good_id" field.
+func (eu *EventUpdate) ClearGoodID() *EventUpdate {
+	eu.mutation.ClearGoodID()
+	return eu
+}
+
 // Mutation returns the EventMutation object of the builder.
 func (eu *EventUpdate) Mutation() *EventMutation {
 	return eu.mutation
@@ -409,6 +429,19 @@ func (eu *EventUpdate) sqlSave(ctx context.Context) (n int, err error) {
 			Column: event.FieldMaxConsecutive,
 		})
 	}
+	if value, ok := eu.mutation.GoodID(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeUUID,
+			Value:  value,
+			Column: event.FieldGoodID,
+		})
+	}
+	if eu.mutation.GoodIDCleared() {
+		_spec.Fields.Clear = append(_spec.Fields.Clear, &sqlgraph.FieldSpec{
+			Type:   field.TypeUUID,
+			Column: event.FieldGoodID,
+		})
+	}
 	_spec.Modifiers = eu.modifiers
 	if n, err = sqlgraph.UpdateNodes(ctx, eu.driver, _spec); err != nil {
 		if _, ok := err.(*sqlgraph.NotFoundError); ok {
@@ -587,6 +620,26 @@ func (euo *EventUpdateOne) AddMaxConsecutive(u int32) *EventUpdateOne {
 // ClearMaxConsecutive clears the value of the "max_consecutive" field.
 func (euo *EventUpdateOne) ClearMaxConsecutive() *EventUpdateOne {
 	euo.mutation.ClearMaxConsecutive()
+	return euo
+}
+
+// SetGoodID sets the "good_id" field.
+func (euo *EventUpdateOne) SetGoodID(u uuid.UUID) *EventUpdateOne {
+	euo.mutation.SetGoodID(u)
+	return euo
+}
+
+// SetNillableGoodID sets the "good_id" field if the given value is not nil.
+func (euo *EventUpdateOne) SetNillableGoodID(u *uuid.UUID) *EventUpdateOne {
+	if u != nil {
+		euo.SetGoodID(*u)
+	}
+	return euo
+}
+
+// ClearGoodID clears the value of the "good_id" field.
+func (euo *EventUpdateOne) ClearGoodID() *EventUpdateOne {
+	euo.mutation.ClearGoodID()
 	return euo
 }
 
@@ -837,6 +890,19 @@ func (euo *EventUpdateOne) sqlSave(ctx context.Context) (_node *Event, err error
 		_spec.Fields.Clear = append(_spec.Fields.Clear, &sqlgraph.FieldSpec{
 			Type:   field.TypeUint32,
 			Column: event.FieldMaxConsecutive,
+		})
+	}
+	if value, ok := euo.mutation.GoodID(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeUUID,
+			Value:  value,
+			Column: event.FieldGoodID,
+		})
+	}
+	if euo.mutation.GoodIDCleared() {
+		_spec.Fields.Clear = append(_spec.Fields.Clear, &sqlgraph.FieldSpec{
+			Type:   field.TypeUUID,
+			Column: event.FieldGoodID,
 		})
 	}
 	_spec.Modifiers = euo.modifiers

@@ -58,6 +58,12 @@ func (Event) Fields() []ent.Field {
 			Uint32("max_consecutive").
 			Optional().
 			Default(1),
+		field.
+			UUID("good_id", uuid.UUID{}).
+			Optional().
+			Default(func() uuid.UUID {
+				return uuid.UUID{}
+			}),
 	}
 }
 

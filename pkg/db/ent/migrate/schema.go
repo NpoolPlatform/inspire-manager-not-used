@@ -160,6 +160,7 @@ var (
 		{Name: "credits", Type: field.TypeOther, Nullable: true, SchemaType: map[string]string{"mysql": "decimal(37,18)"}},
 		{Name: "credits_per_usd", Type: field.TypeOther, Nullable: true, SchemaType: map[string]string{"mysql": "decimal(37,18)"}},
 		{Name: "max_consecutive", Type: field.TypeUint32, Nullable: true, Default: 1},
+		{Name: "good_id", Type: field.TypeUUID, Nullable: true},
 	}
 	// EventsTable holds the schema information for the "events" table.
 	EventsTable = &schema.Table{
@@ -179,10 +180,14 @@ var (
 		{Name: "good_id", Type: field.TypeUUID, Nullable: true},
 		{Name: "percent", Type: field.TypeOther, Nullable: true, SchemaType: map[string]string{"mysql": "decimal(37,18)"}},
 <<<<<<< HEAD
+<<<<<<< HEAD
 		{Name: "start_at", Type: field.TypeUint32, Nullable: true, Default: 1.676614857e+09},
 =======
 		{Name: "start_at", Type: field.TypeUint32, Nullable: true, Default: 1677130324},
 >>>>>>> Add max consecutive
+=======
+		{Name: "start_at", Type: field.TypeUint32, Nullable: true, Default: 1677132135},
+>>>>>>> Add GoodID in event
 		{Name: "end_at", Type: field.TypeUint32, Nullable: true, Default: 0},
 	}
 	// GoodOrderPercentsTable holds the schema information for the "good_order_percents" table.
