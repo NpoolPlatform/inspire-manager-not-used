@@ -46,6 +46,11 @@ func ValidateCreate(in *npool.EventReq) error { //nolint
 	case basetypes.UsedFor_DepositReceived:
 	case basetypes.UsedFor_KYCApproved:
 	case basetypes.UsedFor_KYCRejected:
+	case basetypes.UsedFor_Purchase:
+		if _, err := uuid.Parse(in.GetGoodID()); err != nil {
+			logger.Sugar().Errorw("ValidateCreate", "GoodID", in.GetGoodID(), "Error", err)
+			return err
+		}
 	default:
 		logger.Sugar().Errorw("ValidateCreate", "EventType", in.GetEventType())
 		return fmt.Errorf("eventtype is invalid")
@@ -96,9 +101,17 @@ func (s *Server) CreateEvent(ctx context.Context, in *npool.CreateEventRequest) 
 		return &npool.CreateEventResponse{}, status.Error(codes.InvalidArgument, err.Error())
 	}
 
+	_info := in.GetInfo()
+
+	switch _info.GetEventType() {
+	case basetypes.UsedFor_Purchase:
+	default:
+		_info.GoodID = nil
+	}
+
 	span = commontracer.TraceInvoker(span, "event", "crud", "Create")
 
-	info, err := crud.Create(ctx, in.GetInfo())
+	info, err := crud.Create(ctx, _info)
 	if err != nil {
 		logger.Sugar().Errorw("CreateEvent", "Error", err)
 		return &npool.CreateEventResponse{}, status.Error(codes.Internal, err.Error())
@@ -133,7 +146,17 @@ func (s *Server) CreateEvents(ctx context.Context, in *npool.CreateEventsRequest
 	span = tracer.TraceMany(span, in.GetInfos())
 	span = commontracer.TraceInvoker(span, "event", "crud", "CreateBulk")
 
-	rows, err := crud.CreateBulk(ctx, in.GetInfos())
+	_infos := in.GetInfos()
+
+	for _, info := range _infos {
+		switch info.GetEventType() {
+		case basetypes.UsedFor_Purchase:
+		default:
+			info.GoodID = nil
+		}
+	}
+
+	rows, err := crud.CreateBulk(ctx, _infos)
 	if err != nil {
 		logger.Sugar().Errorw("CreateEvent", "Error", err)
 		return &npool.CreateEventsResponse{}, status.Error(codes.Internal, err.Error())
