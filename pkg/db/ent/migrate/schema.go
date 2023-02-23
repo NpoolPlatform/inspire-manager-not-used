@@ -156,7 +156,7 @@ var (
 		{Name: "deleted_at", Type: field.TypeUint32},
 		{Name: "app_id", Type: field.TypeUUID},
 		{Name: "event_type", Type: field.TypeString, Nullable: true, Default: "DefaultUsedFor"},
-		{Name: "coupon_ids", Type: field.TypeJSON, Nullable: true},
+		{Name: "coupons", Type: field.TypeJSON, Nullable: true},
 		{Name: "credits", Type: field.TypeOther, Nullable: true, SchemaType: map[string]string{"mysql": "decimal(37,18)"}},
 		{Name: "credits_per_usd", Type: field.TypeOther, Nullable: true, SchemaType: map[string]string{"mysql": "decimal(37,18)"}},
 		{Name: "max_consecutive", Type: field.TypeUint32, Nullable: true, Default: 1},
@@ -181,6 +181,7 @@ var (
 		{Name: "percent", Type: field.TypeOther, Nullable: true, SchemaType: map[string]string{"mysql": "decimal(37,18)"}},
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 		{Name: "start_at", Type: field.TypeUint32, Nullable: true, Default: 1.676614857e+09},
 =======
 		{Name: "start_at", Type: field.TypeUint32, Nullable: true, Default: 1677130324},
@@ -188,6 +189,9 @@ var (
 =======
 		{Name: "start_at", Type: field.TypeUint32, Nullable: true, Default: 1677132135},
 >>>>>>> Add GoodID in event
+=======
+		{Name: "start_at", Type: field.TypeUint32, Nullable: true, Default: 1677140679},
+>>>>>>> Support structure for coupon
 		{Name: "end_at", Type: field.TypeUint32, Nullable: true, Default: 0},
 	}
 	// GoodOrderPercentsTable holds the schema information for the "good_order_percents" table.

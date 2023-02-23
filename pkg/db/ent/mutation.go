@@ -14,11 +14,12 @@ import (
 	"github.com/NpoolPlatform/inspire-manager/pkg/db/ent/coupondiscount"
 	"github.com/NpoolPlatform/inspire-manager/pkg/db/ent/couponfixamount"
 	"github.com/NpoolPlatform/inspire-manager/pkg/db/ent/couponspecialoffer"
-	"github.com/NpoolPlatform/inspire-manager/pkg/db/ent/event"
+	entevent "github.com/NpoolPlatform/inspire-manager/pkg/db/ent/event"
 	"github.com/NpoolPlatform/inspire-manager/pkg/db/ent/goodorderpercent"
 	"github.com/NpoolPlatform/inspire-manager/pkg/db/ent/invitationcode"
 	"github.com/NpoolPlatform/inspire-manager/pkg/db/ent/predicate"
 	"github.com/NpoolPlatform/inspire-manager/pkg/db/ent/registration"
+	"github.com/NpoolPlatform/message/npool/inspire/mgr/v1/event"
 	"github.com/google/uuid"
 	"github.com/shopspring/decimal"
 
@@ -7861,7 +7862,7 @@ type GoodOrderPercentMutation struct {
 	adddeleted_at      *int32
 	app_id             *uuid.UUID
 	event_type         *string
-	coupon_ids         *[]uuid.UUID
+	coupons            *[]*event.Coupon
 	credits            *decimal.Decimal
 	credits_per_usd    *decimal.Decimal
 	max_consecutive    *uint32
@@ -8226,6 +8227,7 @@ func (m *GoodOrderPercentMutation) OldUserID(ctx context.Context) (v uuid.UUID, 
 	return oldValue.UserID, nil
 }
 
+<<<<<<< HEAD
 // ClearUserID clears the value of the "user_id" field.
 func (m *GoodOrderPercentMutation) ClearUserID() {
 	m.user_id = nil
@@ -8252,12 +8254,41 @@ func (m *GoodOrderPercentMutation) SetGoodID(u uuid.UUID) {
 // GoodID returns the value of the "good_id" field in the mutation.
 func (m *GoodOrderPercentMutation) GoodID() (r uuid.UUID, exists bool) {
 	v := m.good_id
+=======
+// ClearEventType clears the value of the "event_type" field.
+func (m *EventMutation) ClearEventType() {
+	m.event_type = nil
+	m.clearedFields[entevent.FieldEventType] = struct{}{}
+}
+
+// EventTypeCleared returns if the "event_type" field was cleared in this mutation.
+func (m *EventMutation) EventTypeCleared() bool {
+	_, ok := m.clearedFields[entevent.FieldEventType]
+	return ok
+}
+
+// ResetEventType resets all changes to the "event_type" field.
+func (m *EventMutation) ResetEventType() {
+	m.event_type = nil
+	delete(m.clearedFields, entevent.FieldEventType)
+}
+
+// SetCoupons sets the "coupons" field.
+func (m *EventMutation) SetCoupons(e []*event.Coupon) {
+	m.coupons = &e
+}
+
+// Coupons returns the value of the "coupons" field in the mutation.
+func (m *EventMutation) Coupons() (r []*event.Coupon, exists bool) {
+	v := m.coupons
+>>>>>>> Support structure for coupon
 	if v == nil {
 		return
 	}
 	return *v, true
 }
 
+<<<<<<< HEAD
 // OldGoodID returns the old "good_id" field's value of the GoodOrderPercent entity.
 // If the GoodOrderPercent object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
@@ -8291,6 +8322,41 @@ func (m *GoodOrderPercentMutation) GoodIDCleared() bool {
 func (m *GoodOrderPercentMutation) ResetGoodID() {
 	m.good_id = nil
 	delete(m.clearedFields, goodorderpercent.FieldGoodID)
+=======
+// OldCoupons returns the old "coupons" field's value of the Event entity.
+// If the Event object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *EventMutation) OldCoupons(ctx context.Context) (v []*event.Coupon, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldCoupons is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldCoupons requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldCoupons: %w", err)
+	}
+	return oldValue.Coupons, nil
+}
+
+// ClearCoupons clears the value of the "coupons" field.
+func (m *EventMutation) ClearCoupons() {
+	m.coupons = nil
+	m.clearedFields[entevent.FieldCoupons] = struct{}{}
+}
+
+// CouponsCleared returns if the "coupons" field was cleared in this mutation.
+func (m *EventMutation) CouponsCleared() bool {
+	_, ok := m.clearedFields[entevent.FieldCoupons]
+	return ok
+}
+
+// ResetCoupons resets all changes to the "coupons" field.
+func (m *EventMutation) ResetCoupons() {
+	m.coupons = nil
+	delete(m.clearedFields, entevent.FieldCoupons)
+>>>>>>> Support structure for coupon
 }
 
 // SetPercent sets the "percent" field.
@@ -8324,6 +8390,7 @@ func (m *GoodOrderPercentMutation) OldPercent(ctx context.Context) (v decimal.De
 	return oldValue.Percent, nil
 }
 
+<<<<<<< HEAD
 // ClearPercent clears the value of the "percent" field.
 func (m *GoodOrderPercentMutation) ClearPercent() {
 	m.percent = nil
@@ -8340,6 +8407,24 @@ func (m *GoodOrderPercentMutation) PercentCleared() bool {
 func (m *GoodOrderPercentMutation) ResetPercent() {
 	m.percent = nil
 	delete(m.clearedFields, goodorderpercent.FieldPercent)
+=======
+// ClearCredits clears the value of the "credits" field.
+func (m *EventMutation) ClearCredits() {
+	m.credits = nil
+	m.clearedFields[entevent.FieldCredits] = struct{}{}
+}
+
+// CreditsCleared returns if the "credits" field was cleared in this mutation.
+func (m *EventMutation) CreditsCleared() bool {
+	_, ok := m.clearedFields[entevent.FieldCredits]
+	return ok
+}
+
+// ResetCredits resets all changes to the "credits" field.
+func (m *EventMutation) ResetCredits() {
+	m.credits = nil
+	delete(m.clearedFields, entevent.FieldCredits)
+>>>>>>> Support structure for coupon
 }
 
 // SetStartAt sets the "start_at" field.
@@ -8374,6 +8459,7 @@ func (m *GoodOrderPercentMutation) OldStartAt(ctx context.Context) (v uint32, er
 	return oldValue.StartAt, nil
 }
 
+<<<<<<< HEAD
 // AddStartAt adds u to the "start_at" field.
 func (m *GoodOrderPercentMutation) AddStartAt(u int32) {
 	if m.addstart_at != nil {
@@ -8417,6 +8503,24 @@ func (m *GoodOrderPercentMutation) ResetStartAt() {
 func (m *GoodOrderPercentMutation) SetEndAt(u uint32) {
 	m.end_at = &u
 	m.addend_at = nil
+=======
+// ClearCreditsPerUsd clears the value of the "credits_per_usd" field.
+func (m *EventMutation) ClearCreditsPerUsd() {
+	m.credits_per_usd = nil
+	m.clearedFields[entevent.FieldCreditsPerUsd] = struct{}{}
+}
+
+// CreditsPerUsdCleared returns if the "credits_per_usd" field was cleared in this mutation.
+func (m *EventMutation) CreditsPerUsdCleared() bool {
+	_, ok := m.clearedFields[entevent.FieldCreditsPerUsd]
+	return ok
+}
+
+// ResetCreditsPerUsd resets all changes to the "credits_per_usd" field.
+func (m *EventMutation) ResetCreditsPerUsd() {
+	m.credits_per_usd = nil
+	delete(m.clearedFields, entevent.FieldCreditsPerUsd)
+>>>>>>> Support structure for coupon
 }
 
 // EndAt returns the value of the "end_at" field in the mutation.
@@ -8534,12 +8638,12 @@ func (m *GoodOrderPercentMutation) Where(ps ...predicate.GoodOrderPercent) {
 func (m *EventMutation) ClearMaxConsecutive() {
 	m.max_consecutive = nil
 	m.addmax_consecutive = nil
-	m.clearedFields[event.FieldMaxConsecutive] = struct{}{}
+	m.clearedFields[entevent.FieldMaxConsecutive] = struct{}{}
 }
 
 // MaxConsecutiveCleared returns if the "max_consecutive" field was cleared in this mutation.
 func (m *EventMutation) MaxConsecutiveCleared() bool {
-	_, ok := m.clearedFields[event.FieldMaxConsecutive]
+	_, ok := m.clearedFields[entevent.FieldMaxConsecutive]
 	return ok
 }
 
@@ -8547,7 +8651,7 @@ func (m *EventMutation) MaxConsecutiveCleared() bool {
 func (m *EventMutation) ResetMaxConsecutive() {
 	m.max_consecutive = nil
 	m.addmax_consecutive = nil
-	delete(m.clearedFields, event.FieldMaxConsecutive)
+	delete(m.clearedFields, entevent.FieldMaxConsecutive)
 }
 
 // SetGoodID sets the "good_id" field.
@@ -8584,19 +8688,19 @@ func (m *EventMutation) OldGoodID(ctx context.Context) (v uuid.UUID, err error) 
 // ClearGoodID clears the value of the "good_id" field.
 func (m *EventMutation) ClearGoodID() {
 	m.good_id = nil
-	m.clearedFields[event.FieldGoodID] = struct{}{}
+	m.clearedFields[entevent.FieldGoodID] = struct{}{}
 }
 
 // GoodIDCleared returns if the "good_id" field was cleared in this mutation.
 func (m *EventMutation) GoodIDCleared() bool {
-	_, ok := m.clearedFields[event.FieldGoodID]
+	_, ok := m.clearedFields[entevent.FieldGoodID]
 	return ok
 }
 
 // ResetGoodID resets all changes to the "good_id" field.
 func (m *EventMutation) ResetGoodID() {
 	m.good_id = nil
-	delete(m.clearedFields, event.FieldGoodID)
+	delete(m.clearedFields, entevent.FieldGoodID)
 }
 
 // Where appends a list predicates to the EventMutation builder.
@@ -8629,6 +8733,7 @@ func (m *EventMutation) Fields() []string {
 	fields := make([]string, 0, 10)
 >>>>>>> Add GoodID in event
 	if m.created_at != nil {
+<<<<<<< HEAD
 		fields = append(fields, goodorderpercent.FieldCreatedAt)
 	}
 	if m.updated_at != nil {
@@ -8654,12 +8759,36 @@ func (m *EventMutation) Fields() []string {
 	}
 	if m.end_at != nil {
 		fields = append(fields, goodorderpercent.FieldEndAt)
+=======
+		fields = append(fields, entevent.FieldCreatedAt)
+	}
+	if m.updated_at != nil {
+		fields = append(fields, entevent.FieldUpdatedAt)
+	}
+	if m.deleted_at != nil {
+		fields = append(fields, entevent.FieldDeletedAt)
+	}
+	if m.app_id != nil {
+		fields = append(fields, entevent.FieldAppID)
+	}
+	if m.event_type != nil {
+		fields = append(fields, entevent.FieldEventType)
+	}
+	if m.coupons != nil {
+		fields = append(fields, entevent.FieldCoupons)
+	}
+	if m.credits != nil {
+		fields = append(fields, entevent.FieldCredits)
+	}
+	if m.credits_per_usd != nil {
+		fields = append(fields, entevent.FieldCreditsPerUsd)
+>>>>>>> Support structure for coupon
 	}
 	if m.max_consecutive != nil {
-		fields = append(fields, event.FieldMaxConsecutive)
+		fields = append(fields, entevent.FieldMaxConsecutive)
 	}
 	if m.good_id != nil {
-		fields = append(fields, event.FieldGoodID)
+		fields = append(fields, entevent.FieldGoodID)
 	}
 	return fields
 }
@@ -8669,6 +8798,7 @@ func (m *EventMutation) Fields() []string {
 // schema.
 func (m *GoodOrderPercentMutation) Field(name string) (ent.Value, bool) {
 	switch name {
+<<<<<<< HEAD
 	case goodorderpercent.FieldCreatedAt:
 		return m.CreatedAt()
 	case goodorderpercent.FieldUpdatedAt:
@@ -8690,19 +8820,34 @@ func (m *GoodOrderPercentMutation) Field(name string) (ent.Value, bool) {
 		return m.EndAt()
 =======
 	case event.FieldEventType:
+=======
+	case entevent.FieldCreatedAt:
+		return m.CreatedAt()
+	case entevent.FieldUpdatedAt:
+		return m.UpdatedAt()
+	case entevent.FieldDeletedAt:
+		return m.DeletedAt()
+	case entevent.FieldAppID:
+		return m.AppID()
+	case entevent.FieldEventType:
+>>>>>>> Support structure for coupon
 		return m.EventType()
-	case event.FieldCouponIds:
-		return m.CouponIds()
-	case event.FieldCredits:
+	case entevent.FieldCoupons:
+		return m.Coupons()
+	case entevent.FieldCredits:
 		return m.Credits()
-	case event.FieldCreditsPerUsd:
+	case entevent.FieldCreditsPerUsd:
 		return m.CreditsPerUsd()
-	case event.FieldMaxConsecutive:
+	case entevent.FieldMaxConsecutive:
 		return m.MaxConsecutive()
+<<<<<<< HEAD
 <<<<<<< HEAD
 >>>>>>> Add max consecutive
 =======
 	case event.FieldGoodID:
+=======
+	case entevent.FieldGoodID:
+>>>>>>> Support structure for coupon
 		return m.GoodID()
 >>>>>>> Add GoodID in event
 	}
@@ -8714,6 +8859,7 @@ func (m *GoodOrderPercentMutation) Field(name string) (ent.Value, bool) {
 // database failed.
 func (m *GoodOrderPercentMutation) OldField(ctx context.Context, name string) (ent.Value, error) {
 	switch name {
+<<<<<<< HEAD
 	case goodorderpercent.FieldCreatedAt:
 		return m.OldCreatedAt(ctx)
 	case goodorderpercent.FieldUpdatedAt:
@@ -8735,19 +8881,34 @@ func (m *GoodOrderPercentMutation) OldField(ctx context.Context, name string) (e
 		return m.OldEndAt(ctx)
 =======
 	case event.FieldEventType:
+=======
+	case entevent.FieldCreatedAt:
+		return m.OldCreatedAt(ctx)
+	case entevent.FieldUpdatedAt:
+		return m.OldUpdatedAt(ctx)
+	case entevent.FieldDeletedAt:
+		return m.OldDeletedAt(ctx)
+	case entevent.FieldAppID:
+		return m.OldAppID(ctx)
+	case entevent.FieldEventType:
+>>>>>>> Support structure for coupon
 		return m.OldEventType(ctx)
-	case event.FieldCouponIds:
-		return m.OldCouponIds(ctx)
-	case event.FieldCredits:
+	case entevent.FieldCoupons:
+		return m.OldCoupons(ctx)
+	case entevent.FieldCredits:
 		return m.OldCredits(ctx)
-	case event.FieldCreditsPerUsd:
+	case entevent.FieldCreditsPerUsd:
 		return m.OldCreditsPerUsd(ctx)
-	case event.FieldMaxConsecutive:
+	case entevent.FieldMaxConsecutive:
 		return m.OldMaxConsecutive(ctx)
+<<<<<<< HEAD
 <<<<<<< HEAD
 >>>>>>> Add max consecutive
 =======
 	case event.FieldGoodID:
+=======
+	case entevent.FieldGoodID:
+>>>>>>> Support structure for coupon
 		return m.OldGoodID(ctx)
 >>>>>>> Add GoodID in event
 	}
@@ -8759,41 +8920,63 @@ func (m *GoodOrderPercentMutation) OldField(ctx context.Context, name string) (e
 // type.
 func (m *GoodOrderPercentMutation) SetField(name string, value ent.Value) error {
 	switch name {
+<<<<<<< HEAD
 	case goodorderpercent.FieldCreatedAt:
+=======
+	case entevent.FieldCreatedAt:
+>>>>>>> Support structure for coupon
 		v, ok := value.(uint32)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
 		m.SetCreatedAt(v)
 		return nil
+<<<<<<< HEAD
 	case goodorderpercent.FieldUpdatedAt:
+=======
+	case entevent.FieldUpdatedAt:
+>>>>>>> Support structure for coupon
 		v, ok := value.(uint32)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
 		m.SetUpdatedAt(v)
 		return nil
+<<<<<<< HEAD
 	case goodorderpercent.FieldDeletedAt:
+=======
+	case entevent.FieldDeletedAt:
+>>>>>>> Support structure for coupon
 		v, ok := value.(uint32)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
 		m.SetDeletedAt(v)
 		return nil
+<<<<<<< HEAD
 	case goodorderpercent.FieldAppID:
+=======
+	case entevent.FieldAppID:
+>>>>>>> Support structure for coupon
 		v, ok := value.(uuid.UUID)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
 		m.SetAppID(v)
 		return nil
+<<<<<<< HEAD
 	case goodorderpercent.FieldUserID:
 		v, ok := value.(uuid.UUID)
+=======
+	case entevent.FieldEventType:
+		v, ok := value.(string)
+>>>>>>> Support structure for coupon
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
 		m.SetUserID(v)
 		return nil
+<<<<<<< HEAD
 	case goodorderpercent.FieldGoodID:
 		v, ok := value.(uuid.UUID)
 		if !ok {
@@ -8802,14 +8985,29 @@ func (m *GoodOrderPercentMutation) SetField(name string, value ent.Value) error 
 		m.SetGoodID(v)
 		return nil
 	case goodorderpercent.FieldPercent:
+=======
+	case entevent.FieldCoupons:
+		v, ok := value.([]*event.Coupon)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetCoupons(v)
+		return nil
+	case entevent.FieldCredits:
+>>>>>>> Support structure for coupon
 		v, ok := value.(decimal.Decimal)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
 		m.SetPercent(v)
 		return nil
+<<<<<<< HEAD
 	case goodorderpercent.FieldStartAt:
 		v, ok := value.(uint32)
+=======
+	case entevent.FieldCreditsPerUsd:
+		v, ok := value.(decimal.Decimal)
+>>>>>>> Support structure for coupon
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
@@ -8822,14 +9020,14 @@ func (m *GoodOrderPercentMutation) SetField(name string, value ent.Value) error 
 		}
 		m.SetEndAt(v)
 		return nil
-	case event.FieldMaxConsecutive:
+	case entevent.FieldMaxConsecutive:
 		v, ok := value.(uint32)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
 		m.SetMaxConsecutive(v)
 		return nil
-	case event.FieldGoodID:
+	case entevent.FieldGoodID:
 		v, ok := value.(uuid.UUID)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
@@ -8845,6 +9043,7 @@ func (m *GoodOrderPercentMutation) SetField(name string, value ent.Value) error 
 func (m *GoodOrderPercentMutation) AddedFields() []string {
 	var fields []string
 	if m.addcreated_at != nil {
+<<<<<<< HEAD
 		fields = append(fields, goodorderpercent.FieldCreatedAt)
 	}
 	if m.addupdated_at != nil {
@@ -8858,9 +9057,18 @@ func (m *GoodOrderPercentMutation) AddedFields() []string {
 	}
 	if m.addend_at != nil {
 		fields = append(fields, goodorderpercent.FieldEndAt)
+=======
+		fields = append(fields, entevent.FieldCreatedAt)
+	}
+	if m.addupdated_at != nil {
+		fields = append(fields, entevent.FieldUpdatedAt)
+	}
+	if m.adddeleted_at != nil {
+		fields = append(fields, entevent.FieldDeletedAt)
+>>>>>>> Support structure for coupon
 	}
 	if m.addmax_consecutive != nil {
-		fields = append(fields, event.FieldMaxConsecutive)
+		fields = append(fields, entevent.FieldMaxConsecutive)
 	}
 	return fields
 }
@@ -8870,6 +9078,7 @@ func (m *GoodOrderPercentMutation) AddedFields() []string {
 // was not set, or was not defined in the schema.
 func (m *GoodOrderPercentMutation) AddedField(name string) (ent.Value, bool) {
 	switch name {
+<<<<<<< HEAD
 	case goodorderpercent.FieldCreatedAt:
 		return m.AddedCreatedAt()
 	case goodorderpercent.FieldUpdatedAt:
@@ -8883,6 +9092,15 @@ func (m *GoodOrderPercentMutation) AddedField(name string) (ent.Value, bool) {
 		return m.AddedEndAt()
 =======
 	case event.FieldMaxConsecutive:
+=======
+	case entevent.FieldCreatedAt:
+		return m.AddedCreatedAt()
+	case entevent.FieldUpdatedAt:
+		return m.AddedUpdatedAt()
+	case entevent.FieldDeletedAt:
+		return m.AddedDeletedAt()
+	case entevent.FieldMaxConsecutive:
+>>>>>>> Support structure for coupon
 		return m.AddedMaxConsecutive()
 >>>>>>> Add max consecutive
 	}
@@ -8894,27 +9112,40 @@ func (m *GoodOrderPercentMutation) AddedField(name string) (ent.Value, bool) {
 // type.
 func (m *GoodOrderPercentMutation) AddField(name string, value ent.Value) error {
 	switch name {
+<<<<<<< HEAD
 	case goodorderpercent.FieldCreatedAt:
+=======
+	case entevent.FieldCreatedAt:
+>>>>>>> Support structure for coupon
 		v, ok := value.(int32)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
 		m.AddCreatedAt(v)
 		return nil
+<<<<<<< HEAD
 	case goodorderpercent.FieldUpdatedAt:
+=======
+	case entevent.FieldUpdatedAt:
+>>>>>>> Support structure for coupon
 		v, ok := value.(int32)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
 		m.AddUpdatedAt(v)
 		return nil
+<<<<<<< HEAD
 	case goodorderpercent.FieldDeletedAt:
+=======
+	case entevent.FieldDeletedAt:
+>>>>>>> Support structure for coupon
 		v, ok := value.(int32)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
 		m.AddDeletedAt(v)
 		return nil
+<<<<<<< HEAD
 <<<<<<< HEAD
 	case goodorderpercent.FieldStartAt:
 =======
@@ -8928,6 +9159,9 @@ func (m *GoodOrderPercentMutation) AddField(name string, value ent.Value) error 
 		m.AddStartAt(v)
 		return nil
 	case goodorderpercent.FieldEndAt:
+=======
+	case entevent.FieldMaxConsecutive:
+>>>>>>> Support structure for coupon
 		v, ok := value.(int32)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
@@ -8945,6 +9179,7 @@ func (m *GoodOrderPercentMutation) AddField(name string, value ent.Value) error 
 // mutation.
 func (m *GoodOrderPercentMutation) ClearedFields() []string {
 	var fields []string
+<<<<<<< HEAD
 	if m.FieldCleared(goodorderpercent.FieldAppID) {
 		fields = append(fields, goodorderpercent.FieldAppID)
 	}
@@ -8962,12 +9197,25 @@ func (m *GoodOrderPercentMutation) ClearedFields() []string {
 	}
 	if m.FieldCleared(goodorderpercent.FieldEndAt) {
 		fields = append(fields, goodorderpercent.FieldEndAt)
+=======
+	if m.FieldCleared(entevent.FieldEventType) {
+		fields = append(fields, entevent.FieldEventType)
 	}
-	if m.FieldCleared(event.FieldMaxConsecutive) {
-		fields = append(fields, event.FieldMaxConsecutive)
+	if m.FieldCleared(entevent.FieldCoupons) {
+		fields = append(fields, entevent.FieldCoupons)
 	}
-	if m.FieldCleared(event.FieldGoodID) {
-		fields = append(fields, event.FieldGoodID)
+	if m.FieldCleared(entevent.FieldCredits) {
+		fields = append(fields, entevent.FieldCredits)
+	}
+	if m.FieldCleared(entevent.FieldCreditsPerUsd) {
+		fields = append(fields, entevent.FieldCreditsPerUsd)
+>>>>>>> Support structure for coupon
+	}
+	if m.FieldCleared(entevent.FieldMaxConsecutive) {
+		fields = append(fields, entevent.FieldMaxConsecutive)
+	}
+	if m.FieldCleared(entevent.FieldGoodID) {
+		fields = append(fields, entevent.FieldGoodID)
 	}
 	return fields
 }
@@ -8983,6 +9231,7 @@ func (m *GoodOrderPercentMutation) FieldCleared(name string) bool {
 // error if the field is not defined in the schema.
 func (m *GoodOrderPercentMutation) ClearField(name string) error {
 	switch name {
+<<<<<<< HEAD
 	case goodorderpercent.FieldAppID:
 		m.ClearAppID()
 		return nil
@@ -9000,11 +9249,24 @@ func (m *GoodOrderPercentMutation) ClearField(name string) error {
 		return nil
 	case goodorderpercent.FieldEndAt:
 		m.ClearEndAt()
+=======
+	case entevent.FieldEventType:
+		m.ClearEventType()
 		return nil
-	case event.FieldMaxConsecutive:
+	case entevent.FieldCoupons:
+		m.ClearCoupons()
+		return nil
+	case entevent.FieldCredits:
+		m.ClearCredits()
+		return nil
+	case entevent.FieldCreditsPerUsd:
+		m.ClearCreditsPerUsd()
+>>>>>>> Support structure for coupon
+		return nil
+	case entevent.FieldMaxConsecutive:
 		m.ClearMaxConsecutive()
 		return nil
-	case event.FieldGoodID:
+	case entevent.FieldGoodID:
 		m.ClearGoodID()
 		return nil
 	}
@@ -9015,6 +9277,7 @@ func (m *GoodOrderPercentMutation) ClearField(name string) error {
 // It returns an error if the field is not defined in the schema.
 func (m *GoodOrderPercentMutation) ResetField(name string) error {
 	switch name {
+<<<<<<< HEAD
 	case goodorderpercent.FieldCreatedAt:
 		m.ResetCreatedAt()
 		return nil
@@ -9041,11 +9304,36 @@ func (m *GoodOrderPercentMutation) ResetField(name string) error {
 		return nil
 	case goodorderpercent.FieldEndAt:
 		m.ResetEndAt()
+=======
+	case entevent.FieldCreatedAt:
+		m.ResetCreatedAt()
 		return nil
-	case event.FieldMaxConsecutive:
+	case entevent.FieldUpdatedAt:
+		m.ResetUpdatedAt()
+		return nil
+	case entevent.FieldDeletedAt:
+		m.ResetDeletedAt()
+		return nil
+	case entevent.FieldAppID:
+		m.ResetAppID()
+		return nil
+	case entevent.FieldEventType:
+		m.ResetEventType()
+		return nil
+	case entevent.FieldCoupons:
+		m.ResetCoupons()
+		return nil
+	case entevent.FieldCredits:
+		m.ResetCredits()
+		return nil
+	case entevent.FieldCreditsPerUsd:
+		m.ResetCreditsPerUsd()
+>>>>>>> Support structure for coupon
+		return nil
+	case entevent.FieldMaxConsecutive:
 		m.ResetMaxConsecutive()
 		return nil
-	case event.FieldGoodID:
+	case entevent.FieldGoodID:
 		m.ResetGoodID()
 		return nil
 	}

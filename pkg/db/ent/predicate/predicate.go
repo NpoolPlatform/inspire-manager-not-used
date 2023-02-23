@@ -24,6 +24,12 @@ type CouponFixAmount func(*sql.Selector)
 // CouponSpecialOffer is the predicate function for couponspecialoffer builders.
 type CouponSpecialOffer func(*sql.Selector)
 
+<<<<<<< HEAD
+=======
+// Event is the predicate function for entevent builders.
+type Event func(*sql.Selector)
+
+>>>>>>> Support structure for coupon
 // GoodOrderPercent is the predicate function for goodorderpercent builders.
 type GoodOrderPercent func(*sql.Selector)
 

@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/NpoolPlatform/inspire-manager/pkg/db/ent/event"
+	entevent "github.com/NpoolPlatform/inspire-manager/pkg/db/ent/event"
 	tracer "github.com/NpoolPlatform/inspire-manager/pkg/tracer/event"
 
 	constant "github.com/NpoolPlatform/inspire-manager/pkg/message/const"
@@ -35,12 +35,8 @@ func CreateSet(c *ent.EventCreate, in *npool.EventReq) (*ent.EventCreate, error)
 	if in.EventType != nil {
 		c.SetEventType(in.GetEventType().String())
 	}
-	if len(in.GetCouponIDs()) > 0 {
-		ids := []uuid.UUID{}
-		for _, id := range in.GetCouponIDs() {
-			ids = append(ids, uuid.MustParse(id))
-		}
-		c.SetCouponIds(ids)
+	if len(in.GetCoupons()) > 0 {
+		c.SetCoupons(in.GetCoupons())
 	}
 	if in.Credits != nil {
 		c.SetCredits(decimal.RequireFromString(in.GetCredits()))
@@ -126,12 +122,8 @@ func CreateBulk(ctx context.Context, in []*npool.EventReq) ([]*ent.Event, error)
 func UpdateSet(info *ent.Event, in *npool.EventReq) (*ent.EventUpdateOne, error) {
 	u := info.Update()
 
-	if in.CouponIDs != nil {
-		ids := []uuid.UUID{}
-		for _, id := range in.GetCouponIDs() {
-			ids = append(ids, uuid.MustParse(id))
-		}
-		u.SetCouponIds(ids)
+	if in.Coupons != nil {
+		u.SetCoupons(in.GetCoupons())
 	}
 	if in.Credits != nil {
 		u.SetCredits(decimal.RequireFromString(in.GetCredits()))
@@ -163,7 +155,7 @@ func Update(ctx context.Context, in *npool.EventReq) (*ent.Event, error) {
 	span = tracer.Trace(span, in)
 
 	err = db.WithTx(ctx, func(_ctx context.Context, tx *ent.Tx) error {
-		info, err = tx.Event.Query().Where(event.ID(uuid.MustParse(in.GetID()))).ForUpdate().Only(_ctx)
+		info, err = tx.Event.Query().Where(entevent.ID(uuid.MustParse(in.GetID()))).ForUpdate().Only(_ctx)
 		if err != nil {
 			return err
 		}
@@ -200,7 +192,7 @@ func Row(ctx context.Context, id uuid.UUID) (*ent.Event, error) {
 	span = commontracer.TraceID(span, id.String())
 
 	err = db.WithClient(ctx, func(_ctx context.Context, cli *ent.Client) error {
-		info, err = cli.Event.Query().Where(event.ID(id)).Only(_ctx)
+		info, err = cli.Event.Query().Where(entevent.ID(id)).Only(_ctx)
 		return err
 	})
 	if err != nil {
@@ -218,7 +210,7 @@ func SetQueryConds(conds *npool.Conds, cli *ent.Client) (*ent.EventQuery, error)
 	if conds.ID != nil {
 		switch conds.GetID().GetOp() {
 		case cruder.EQ:
-			stm.Where(event.ID(uuid.MustParse(conds.GetID().GetValue())))
+			stm.Where(entevent.ID(uuid.MustParse(conds.GetID().GetValue())))
 		default:
 			return nil, fmt.Errorf("invalid event field")
 		}
@@ -226,7 +218,7 @@ func SetQueryConds(conds *npool.Conds, cli *ent.Client) (*ent.EventQuery, error)
 	if conds.AppID != nil {
 		switch conds.GetAppID().GetOp() {
 		case cruder.EQ:
-			stm.Where(event.AppID(uuid.MustParse(conds.GetAppID().GetValue())))
+			stm.Where(entevent.AppID(uuid.MustParse(conds.GetAppID().GetValue())))
 		default:
 			return nil, fmt.Errorf("invalid event field")
 		}
@@ -234,7 +226,7 @@ func SetQueryConds(conds *npool.Conds, cli *ent.Client) (*ent.EventQuery, error)
 	if conds.EventType != nil {
 		switch conds.GetEventType().GetOp() {
 		case cruder.EQ:
-			stm.Where(event.EventType(basetypes.UsedFor(conds.GetEventType().GetValue()).String()))
+			stm.Where(entevent.EventType(basetypes.UsedFor(conds.GetEventType().GetValue()).String()))
 		default:
 			return nil, fmt.Errorf("invalid event field")
 		}
@@ -242,7 +234,7 @@ func SetQueryConds(conds *npool.Conds, cli *ent.Client) (*ent.EventQuery, error)
 	if conds.GoodID != nil {
 		switch conds.GetGoodID().GetOp() {
 		case cruder.EQ:
-			stm.Where(event.GoodID(uuid.MustParse(conds.GetGoodID().GetValue())))
+			stm.Where(entevent.GoodID(uuid.MustParse(conds.GetGoodID().GetValue())))
 		default:
 			return nil, fmt.Errorf("invalid event field")
 		}
@@ -281,7 +273,7 @@ func Rows(ctx context.Context, conds *npool.Conds, offset, limit int) ([]*ent.Ev
 
 		rows, err = stm.
 			Offset(offset).
-			Order(ent.Desc(event.FieldUpdatedAt)).
+			Order(ent.Desc(entevent.FieldUpdatedAt)).
 			Limit(limit).
 			All(_ctx)
 		if err != nil {
@@ -384,7 +376,7 @@ func Exist(ctx context.Context, id uuid.UUID) (bool, error) {
 	span = commontracer.TraceID(span, id.String())
 
 	err = db.WithClient(ctx, func(_ctx context.Context, cli *ent.Client) error {
-		exist, err = cli.Event.Query().Where(event.ID(id)).Exist(_ctx)
+		exist, err = cli.Event.Query().Where(entevent.ID(id)).Exist(_ctx)
 		return err
 	})
 	if err != nil {

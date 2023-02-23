@@ -10,6 +10,7 @@ import (
 	"github.com/google/uuid"
 
 	basetypes "github.com/NpoolPlatform/message/npool/basetypes/v1"
+	npool "github.com/NpoolPlatform/message/npool/inspire/mgr/v1/event"
 )
 
 // Event holds the schema definition for the Event entity.
@@ -37,9 +38,9 @@ func (Event) Fields() []ent.Field {
 			Optional().
 			Default(basetypes.UsedFor_DefaultUsedFor.String()),
 		field.
-			JSON("coupon_ids", []uuid.UUID{}).
+			JSON("coupons", []*npool.Coupon{}).
 			Optional().
-			Default([]uuid.UUID{}),
+			Default([]*npool.Coupon{}),
 		field.
 			Other("credits", decimal.Decimal{}).
 			SchemaType(map[string]string{

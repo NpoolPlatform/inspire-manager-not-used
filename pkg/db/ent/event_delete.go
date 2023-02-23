@@ -9,8 +9,9 @@ import (
 	"entgo.io/ent/dialect/sql"
 	"entgo.io/ent/dialect/sql/sqlgraph"
 	"entgo.io/ent/schema/field"
-	"github.com/NpoolPlatform/inspire-manager/pkg/db/ent/event"
 	"github.com/NpoolPlatform/inspire-manager/pkg/db/ent/predicate"
+
+	entevent "github.com/NpoolPlatform/inspire-manager/pkg/db/ent/event"
 )
 
 // EventDelete is the builder for deleting a Event entity.
@@ -70,10 +71,10 @@ func (ed *EventDelete) ExecX(ctx context.Context) int {
 func (ed *EventDelete) sqlExec(ctx context.Context) (int, error) {
 	_spec := &sqlgraph.DeleteSpec{
 		Node: &sqlgraph.NodeSpec{
-			Table: event.Table,
+			Table: entevent.Table,
 			ID: &sqlgraph.FieldSpec{
 				Type:   field.TypeUUID,
-				Column: event.FieldID,
+				Column: entevent.FieldID,
 			},
 		},
 	}
@@ -103,7 +104,7 @@ func (edo *EventDeleteOne) Exec(ctx context.Context) error {
 	case err != nil:
 		return err
 	case n == 0:
-		return &NotFoundError{event.Label}
+		return &NotFoundError{entevent.Label}
 	default:
 		return nil
 	}

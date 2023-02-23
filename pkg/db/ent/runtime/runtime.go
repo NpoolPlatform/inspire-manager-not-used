@@ -11,11 +11,12 @@ import (
 	"github.com/NpoolPlatform/inspire-manager/pkg/db/ent/coupondiscount"
 	"github.com/NpoolPlatform/inspire-manager/pkg/db/ent/couponfixamount"
 	"github.com/NpoolPlatform/inspire-manager/pkg/db/ent/couponspecialoffer"
-	"github.com/NpoolPlatform/inspire-manager/pkg/db/ent/event"
+	entevent "github.com/NpoolPlatform/inspire-manager/pkg/db/ent/event"
 	"github.com/NpoolPlatform/inspire-manager/pkg/db/ent/goodorderpercent"
 	"github.com/NpoolPlatform/inspire-manager/pkg/db/ent/invitationcode"
 	"github.com/NpoolPlatform/inspire-manager/pkg/db/ent/registration"
 	"github.com/NpoolPlatform/inspire-manager/pkg/db/ent/schema"
+	"github.com/NpoolPlatform/message/npool/inspire/mgr/v1/event"
 	"github.com/google/uuid"
 	"github.com/shopspring/decimal"
 
@@ -420,17 +421,24 @@ func init() {
 	// couponspecialoffer.DefaultID holds the default value on creation for the id field.
 	couponspecialoffer.DefaultID = couponspecialofferDescID.Default.(func() uuid.UUID)
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 	eventMixin := schema.Event{}.Mixin()
 	event.Policy = privacy.NewPolicies(eventMixin[0], schema.Event{})
 	event.Hooks[0] = func(next ent.Mutator) ent.Mutator {
+=======
+	enteventMixin := schema.Event{}.Mixin()
+	entevent.Policy = privacy.NewPolicies(enteventMixin[0], schema.Event{})
+	entevent.Hooks[0] = func(next ent.Mutator) ent.Mutator {
+>>>>>>> Support structure for coupon
 		return ent.MutateFunc(func(ctx context.Context, m ent.Mutation) (ent.Value, error) {
-			if err := event.Policy.EvalMutation(ctx, m); err != nil {
+			if err := entevent.Policy.EvalMutation(ctx, m); err != nil {
 				return nil, err
 			}
 			return next.Mutate(ctx, m)
 		})
 	}
+<<<<<<< HEAD
 	eventMixinFields0 := eventMixin[0].Fields()
 	_ = eventMixinFields0
 	eventFields := schema.Event{}.Fields()
@@ -478,6 +486,54 @@ func init() {
 	// event.DefaultID holds the default value on creation for the id field.
 	event.DefaultID = eventDescID.Default.(func() uuid.UUID)
 >>>>>>> Add max consecutive
+=======
+	enteventMixinFields0 := enteventMixin[0].Fields()
+	_ = enteventMixinFields0
+	enteventFields := schema.Event{}.Fields()
+	_ = enteventFields
+	// enteventDescCreatedAt is the schema descriptor for created_at field.
+	enteventDescCreatedAt := enteventMixinFields0[0].Descriptor()
+	// entevent.DefaultCreatedAt holds the default value on creation for the created_at field.
+	entevent.DefaultCreatedAt = enteventDescCreatedAt.Default.(func() uint32)
+	// enteventDescUpdatedAt is the schema descriptor for updated_at field.
+	enteventDescUpdatedAt := enteventMixinFields0[1].Descriptor()
+	// entevent.DefaultUpdatedAt holds the default value on creation for the updated_at field.
+	entevent.DefaultUpdatedAt = enteventDescUpdatedAt.Default.(func() uint32)
+	// entevent.UpdateDefaultUpdatedAt holds the default value on update for the updated_at field.
+	entevent.UpdateDefaultUpdatedAt = enteventDescUpdatedAt.UpdateDefault.(func() uint32)
+	// enteventDescDeletedAt is the schema descriptor for deleted_at field.
+	enteventDescDeletedAt := enteventMixinFields0[2].Descriptor()
+	// entevent.DefaultDeletedAt holds the default value on creation for the deleted_at field.
+	entevent.DefaultDeletedAt = enteventDescDeletedAt.Default.(func() uint32)
+	// enteventDescEventType is the schema descriptor for event_type field.
+	enteventDescEventType := enteventFields[2].Descriptor()
+	// entevent.DefaultEventType holds the default value on creation for the event_type field.
+	entevent.DefaultEventType = enteventDescEventType.Default.(string)
+	// enteventDescCoupons is the schema descriptor for coupons field.
+	enteventDescCoupons := enteventFields[3].Descriptor()
+	// entevent.DefaultCoupons holds the default value on creation for the coupons field.
+	entevent.DefaultCoupons = enteventDescCoupons.Default.([]*event.Coupon)
+	// enteventDescCredits is the schema descriptor for credits field.
+	enteventDescCredits := enteventFields[4].Descriptor()
+	// entevent.DefaultCredits holds the default value on creation for the credits field.
+	entevent.DefaultCredits = enteventDescCredits.Default.(decimal.Decimal)
+	// enteventDescCreditsPerUsd is the schema descriptor for credits_per_usd field.
+	enteventDescCreditsPerUsd := enteventFields[5].Descriptor()
+	// entevent.DefaultCreditsPerUsd holds the default value on creation for the credits_per_usd field.
+	entevent.DefaultCreditsPerUsd = enteventDescCreditsPerUsd.Default.(decimal.Decimal)
+	// enteventDescMaxConsecutive is the schema descriptor for max_consecutive field.
+	enteventDescMaxConsecutive := enteventFields[6].Descriptor()
+	// entevent.DefaultMaxConsecutive holds the default value on creation for the max_consecutive field.
+	entevent.DefaultMaxConsecutive = enteventDescMaxConsecutive.Default.(uint32)
+	// enteventDescGoodID is the schema descriptor for good_id field.
+	enteventDescGoodID := enteventFields[7].Descriptor()
+	// entevent.DefaultGoodID holds the default value on creation for the good_id field.
+	entevent.DefaultGoodID = enteventDescGoodID.Default.(func() uuid.UUID)
+	// enteventDescID is the schema descriptor for id field.
+	enteventDescID := enteventFields[0].Descriptor()
+	// entevent.DefaultID holds the default value on creation for the id field.
+	entevent.DefaultID = enteventDescID.Default.(func() uuid.UUID)
+>>>>>>> Support structure for coupon
 	goodorderpercentMixin := schema.GoodOrderPercent{}.Mixin()
 	goodorderpercent.Policy = privacy.NewPolicies(goodorderpercentMixin[0], schema.GoodOrderPercent{})
 	goodorderpercent.Hooks[0] = func(next ent.Mutator) ent.Mutator {
