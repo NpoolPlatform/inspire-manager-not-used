@@ -51,6 +51,9 @@ func CreateSet(c *ent.EventCreate, in *npool.EventReq) (*ent.EventCreate, error)
 	if in.MaxConsecutive != nil {
 		c.SetMaxConsecutive(in.GetMaxConsecutive())
 	}
+	if in.GoodID != nil {
+		c.SetGoodID(uuid.MustParse(in.GetGoodID()))
+	}
 	return c, nil
 }
 
@@ -232,6 +235,14 @@ func SetQueryConds(conds *npool.Conds, cli *ent.Client) (*ent.EventQuery, error)
 		switch conds.GetEventType().GetOp() {
 		case cruder.EQ:
 			stm.Where(event.EventType(basetypes.UsedFor(conds.GetEventType().GetValue()).String()))
+		default:
+			return nil, fmt.Errorf("invalid event field")
+		}
+	}
+	if conds.GoodID != nil {
+		switch conds.GetGoodID().GetOp() {
+		case cruder.EQ:
+			stm.Where(event.GoodID(uuid.MustParse(conds.GetGoodID().GetValue())))
 		default:
 			return nil, fmt.Errorf("invalid event field")
 		}

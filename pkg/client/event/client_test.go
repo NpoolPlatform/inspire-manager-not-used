@@ -43,6 +43,7 @@ var ret = npool.Event{
 	Credits:        "1.798",
 	CreditsPerUSD:  "1.789",
 	MaxConsecutive: 1,
+	GoodID:         uuid.UUID{}.String(),
 }
 
 var (
@@ -77,6 +78,7 @@ func createEvents(t *testing.T) {
 			CouponIDs:     []string{uuid.New().String(), uuid.New().String()},
 			Credits:       "1.7981",
 			CreditsPerUSD: "1.7892",
+			GoodID:        uuid.UUID{}.String(),
 		},
 		{
 			ID:            uuid.NewString(),
@@ -85,6 +87,7 @@ func createEvents(t *testing.T) {
 			CouponIDs:     []string{uuid.New().String(), uuid.New().String()},
 			Credits:       "1.7983",
 			CreditsPerUSD: "1.7894",
+			GoodID:        uuid.UUID{}.String(),
 		},
 	}
 
