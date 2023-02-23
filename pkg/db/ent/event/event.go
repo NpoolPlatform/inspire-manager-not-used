@@ -83,7 +83,7 @@ var (
 	// DefaultEventType holds the default value on creation for the "event_type" field.
 	DefaultEventType string
 	// DefaultCoupons holds the default value on creation for the "coupons" field.
-	DefaultCoupons []*event.Coupon
+	DefaultCoupons []event.Coupon
 	// DefaultCredits holds the default value on creation for the "credits" field.
 	DefaultCredits decimal.Decimal
 	// DefaultCreditsPerUsd holds the default value on creation for the "credits_per_usd" field.

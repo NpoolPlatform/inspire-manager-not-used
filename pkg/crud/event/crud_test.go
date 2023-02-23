@@ -35,9 +35,9 @@ var ret = ent.Event{
 	ID:        uuid.New(),
 	AppID:     uuid.New(),
 	EventType: basetypes.UsedFor_Signup.String(),
-	Coupons: []*npool.Coupon{
-		&npool.Coupon{ID: uuid.New().String(), CouponType: alloccoupmgrpb.CouponType_FixAmount}, //nolint
-		&npool.Coupon{ID: uuid.New().String(), CouponType: alloccoupmgrpb.CouponType_Discount},
+	Coupons: []npool.Coupon{
+		npool.Coupon{ID: uuid.New().String(), CouponType: alloccoupmgrpb.CouponType_FixAmount}, //nolint
+		npool.Coupon{ID: uuid.New().String(), CouponType: alloccoupmgrpb.CouponType_Discount},
 	},
 	Credits:        decimal.RequireFromString("1.798"),
 	CreditsPerUsd:  decimal.RequireFromString("1.789"),
@@ -53,13 +53,10 @@ var (
 	creditsPerUSD = ret.CreditsPerUsd.String()
 
 	req = npool.EventReq{
-		ID:        &id,
-		AppID:     &appID,
-		EventType: &evType,
-		Coupons: []*npool.Coupon{
-			&npool.Coupon{ID: uuid.New().String(), CouponType: alloccoupmgrpb.CouponType_FixAmount}, //nolint
-			&npool.Coupon{ID: uuid.New().String(), CouponType: alloccoupmgrpb.CouponType_Discount},
-		},
+		ID:            &id,
+		AppID:         &appID,
+		EventType:     &evType,
+		Coupons:       []*npool.Coupon{&ret.Coupons[0], &ret.Coupons[1]},
 		Credits:       &credits,
 		CreditsPerUSD: &creditsPerUSD,
 	}
@@ -83,9 +80,9 @@ func createBulk(t *testing.T) {
 			ID:        uuid.New(),
 			AppID:     uuid.New(),
 			EventType: basetypes.UsedFor_Signin.String(),
-			Coupons: []*npool.Coupon{
-				&npool.Coupon{ID: uuid.New().String(), CouponType: alloccoupmgrpb.CouponType_FixAmount}, //nolint
-				&npool.Coupon{ID: uuid.New().String(), CouponType: alloccoupmgrpb.CouponType_Discount},
+			Coupons: []npool.Coupon{
+				npool.Coupon{ID: uuid.New().String(), CouponType: alloccoupmgrpb.CouponType_FixAmount}, //nolint
+				npool.Coupon{ID: uuid.New().String(), CouponType: alloccoupmgrpb.CouponType_Discount},
 			},
 			Credits:        decimal.RequireFromString("1.7981"),
 			CreditsPerUsd:  decimal.RequireFromString("1.7892"),
@@ -96,9 +93,9 @@ func createBulk(t *testing.T) {
 			ID:        uuid.New(),
 			AppID:     uuid.New(),
 			EventType: basetypes.UsedFor_Signin.String(),
-			Coupons: []*npool.Coupon{
-				&npool.Coupon{ID: uuid.New().String(), CouponType: alloccoupmgrpb.CouponType_FixAmount}, //nolint
-				&npool.Coupon{ID: uuid.New().String(), CouponType: alloccoupmgrpb.CouponType_Discount},
+			Coupons: []npool.Coupon{
+				npool.Coupon{ID: uuid.New().String(), CouponType: alloccoupmgrpb.CouponType_FixAmount}, //nolint
+				npool.Coupon{ID: uuid.New().String(), CouponType: alloccoupmgrpb.CouponType_Discount},
 			},
 			Credits:        decimal.RequireFromString("1.7983"),
 			CreditsPerUsd:  decimal.RequireFromString("1.7894"),
@@ -120,7 +117,7 @@ func createBulk(t *testing.T) {
 			ID:             &_id,
 			AppID:          &_appID,
 			EventType:      &_evType,
-			Coupons:        _event.Coupons,
+			Coupons:        []*npool.Coupon{&_event.Coupons[0], &_event.Coupons[1]},
 			Credits:        &_credits,
 			CreditsPerUSD:  &_creditsPerUSD,
 			MaxConsecutive: &_event.MaxConsecutive,

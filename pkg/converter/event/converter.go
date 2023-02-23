@@ -12,11 +12,16 @@ func Ent2Grpc(row *ent.Event) *npool.Event {
 		return nil
 	}
 
+	coupons := []*npool.Coupon{}
+	for i, _ := range row.Coupons {
+		coupons = append(coupons, &row.Coupons[i])
+	}
+
 	ret := &npool.Event{
 		ID:             row.ID.String(),
 		AppID:          row.AppID.String(),
 		EventType:      basetypes.UsedFor(basetypes.UsedFor_value[row.EventType]),
-		Coupons:        row.Coupons,
+		Coupons:        coupons,
 		Credits:        row.Credits.String(),
 		CreditsPerUSD:  row.CreditsPerUsd.String(),
 		MaxConsecutive: row.MaxConsecutive,

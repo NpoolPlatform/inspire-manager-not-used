@@ -182,6 +182,7 @@ var (
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 		{Name: "start_at", Type: field.TypeUint32, Nullable: true, Default: 1.676614857e+09},
 =======
 		{Name: "start_at", Type: field.TypeUint32, Nullable: true, Default: 1677130324},
@@ -192,6 +193,9 @@ var (
 =======
 		{Name: "start_at", Type: field.TypeUint32, Nullable: true, Default: 1677140679},
 >>>>>>> Support structure for coupon
+=======
+		{Name: "start_at", Type: field.TypeUint32, Nullable: true, Default: 1677143010},
+>>>>>>> For unit test
 		{Name: "end_at", Type: field.TypeUint32, Nullable: true, Default: 0},
 	}
 	// GoodOrderPercentsTable holds the schema information for the "good_order_percents" table.

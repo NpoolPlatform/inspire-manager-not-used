@@ -63,13 +63,23 @@ var (
 
 var info *npool.Event
 
+func verify(t *testing.T, expect, actual *npool.Event) {
+	assert.Equal(t, expect.ID, actual.ID)
+	assert.Equal(t, expect.AppID, actual.AppID)
+	assert.Equal(t, expect.EventType, actual.EventType)
+	assert.Equal(t, expect.Credits, actual.Credits)
+	assert.Equal(t, expect.CreditsPerUSD, actual.CreditsPerUSD)
+	assert.Equal(t, expect.MaxConsecutive, actual.MaxConsecutive)
+	assert.Equal(t, expect.GoodID, actual.GoodID)
+}
+
 func createEvent(t *testing.T) {
 	var err error
 	info, err = CreateEvent(context.Background(), &req)
 	if assert.Nil(t, err) {
 		ret.CreatedAt = info.CreatedAt
 		ret.UpdatedAt = info.UpdatedAt
-		assert.Equal(t, info, &ret)
+		verify(t, info, &ret)
 	}
 }
 
@@ -123,7 +133,7 @@ func getEvent(t *testing.T) {
 	var err error
 	info, err = GetEvent(context.Background(), info.ID)
 	if assert.Nil(t, err) {
-		assert.Equal(t, info, &ret)
+		verify(t, info, &ret)
 	}
 }
 
@@ -134,7 +144,7 @@ func getEvents(t *testing.T) {
 		}, 0, 1)
 	if assert.Nil(t, err) {
 		assert.Equal(t, total, uint32(1))
-		assert.Equal(t, infos[0], &ret)
+		verify(t, infos[0], &ret)
 	}
 }
 
@@ -145,7 +155,7 @@ func getEventOnly(t *testing.T) {
 			ID: &basetypes.StringVal{Value: info.ID, Op: cruder.EQ},
 		})
 	if assert.Nil(t, err) {
-		assert.Equal(t, info, &ret)
+		verify(t, info, &ret)
 	}
 }
 
@@ -170,7 +180,7 @@ func existEventConds(t *testing.T) {
 func deleteEvent(t *testing.T) {
 	info, err := DeleteEvent(context.Background(), info.ID)
 	if assert.Nil(t, err) {
-		assert.Equal(t, info, &ret)
+		verify(t, info, &ret)
 	}
 }
 

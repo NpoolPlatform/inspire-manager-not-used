@@ -89,7 +89,7 @@ func (ec *EventCreate) SetNillableEventType(s *string) *EventCreate {
 }
 
 // SetCoupons sets the "coupons" field.
-func (ec *EventCreate) SetCoupons(e []*event.Coupon) *EventCreate {
+func (ec *EventCreate) SetCoupons(e []event.Coupon) *EventCreate {
 	ec.mutation.SetCoupons(e)
 	return ec
 }
@@ -571,7 +571,7 @@ func (u *EventUpsert) ClearEventType() *EventUpsert {
 }
 
 // SetCoupons sets the "coupons" field.
-func (u *EventUpsert) SetCoupons(v []*event.Coupon) *EventUpsert {
+func (u *EventUpsert) SetCoupons(v []event.Coupon) *EventUpsert {
 	u.Set(entevent.FieldCoupons, v)
 	return u
 }
@@ -815,7 +815,7 @@ func (u *EventUpsertOne) ClearEventType() *EventUpsertOne {
 }
 
 // SetCoupons sets the "coupons" field.
-func (u *EventUpsertOne) SetCoupons(v []*event.Coupon) *EventUpsertOne {
+func (u *EventUpsertOne) SetCoupons(v []event.Coupon) *EventUpsertOne {
 	return u.Update(func(s *EventUpsert) {
 		s.SetCoupons(v)
 	})
@@ -1241,7 +1241,7 @@ func (u *EventUpsertBulk) ClearEventType() *EventUpsertBulk {
 }
 
 // SetCoupons sets the "coupons" field.
-func (u *EventUpsertBulk) SetCoupons(v []*event.Coupon) *EventUpsertBulk {
+func (u *EventUpsertBulk) SetCoupons(v []event.Coupon) *EventUpsertBulk {
 	return u.Update(func(s *EventUpsert) {
 		s.SetCoupons(v)
 	})
