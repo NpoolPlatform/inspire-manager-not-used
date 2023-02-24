@@ -150,6 +150,20 @@ func (ec *EventCreate) SetNillableGoodID(u *uuid.UUID) *EventCreate {
 	return ec
 }
 
+// SetInviterLayers sets the "inviter_layers" field.
+func (ec *EventCreate) SetInviterLayers(u uint32) *EventCreate {
+	ec.mutation.SetInviterLayers(u)
+	return ec
+}
+
+// SetNillableInviterLayers sets the "inviter_layers" field if the given value is not nil.
+func (ec *EventCreate) SetNillableInviterLayers(u *uint32) *EventCreate {
+	if u != nil {
+		ec.SetInviterLayers(*u)
+	}
+	return ec
+}
+
 // SetID sets the "id" field.
 func (ec *EventCreate) SetID(u uuid.UUID) *EventCreate {
 	ec.mutation.SetID(u)
@@ -291,6 +305,10 @@ func (ec *EventCreate) defaults() error {
 		v := entevent.DefaultGoodID()
 		ec.mutation.SetGoodID(v)
 	}
+	if _, ok := ec.mutation.InviterLayers(); !ok {
+		v := entevent.DefaultInviterLayers
+		ec.mutation.SetInviterLayers(v)
+	}
 	if _, ok := ec.mutation.ID(); !ok {
 		if entevent.DefaultID == nil {
 			return fmt.Errorf("ent: uninitialized entevent.DefaultID (forgotten import ent/runtime?)")
@@ -431,6 +449,14 @@ func (ec *EventCreate) createSpec() (*Event, *sqlgraph.CreateSpec) {
 			Column: entevent.FieldGoodID,
 		})
 		_node.GoodID = value
+	}
+	if value, ok := ec.mutation.InviterLayers(); ok {
+		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
+			Type:   field.TypeUint32,
+			Value:  value,
+			Column: entevent.FieldInviterLayers,
+		})
+		_node.InviterLayers = value
 	}
 	return _node, _spec
 }
@@ -663,6 +689,30 @@ func (u *EventUpsert) UpdateGoodID() *EventUpsert {
 // ClearGoodID clears the value of the "good_id" field.
 func (u *EventUpsert) ClearGoodID() *EventUpsert {
 	u.SetNull(entevent.FieldGoodID)
+	return u
+}
+
+// SetInviterLayers sets the "inviter_layers" field.
+func (u *EventUpsert) SetInviterLayers(v uint32) *EventUpsert {
+	u.Set(entevent.FieldInviterLayers, v)
+	return u
+}
+
+// UpdateInviterLayers sets the "inviter_layers" field to the value that was provided on create.
+func (u *EventUpsert) UpdateInviterLayers() *EventUpsert {
+	u.SetExcluded(entevent.FieldInviterLayers)
+	return u
+}
+
+// AddInviterLayers adds v to the "inviter_layers" field.
+func (u *EventUpsert) AddInviterLayers(v uint32) *EventUpsert {
+	u.Add(entevent.FieldInviterLayers, v)
+	return u
+}
+
+// ClearInviterLayers clears the value of the "inviter_layers" field.
+func (u *EventUpsert) ClearInviterLayers() *EventUpsert {
+	u.SetNull(entevent.FieldInviterLayers)
 	return u
 }
 
@@ -923,6 +973,34 @@ func (u *EventUpsertOne) UpdateGoodID() *EventUpsertOne {
 func (u *EventUpsertOne) ClearGoodID() *EventUpsertOne {
 	return u.Update(func(s *EventUpsert) {
 		s.ClearGoodID()
+	})
+}
+
+// SetInviterLayers sets the "inviter_layers" field.
+func (u *EventUpsertOne) SetInviterLayers(v uint32) *EventUpsertOne {
+	return u.Update(func(s *EventUpsert) {
+		s.SetInviterLayers(v)
+	})
+}
+
+// AddInviterLayers adds v to the "inviter_layers" field.
+func (u *EventUpsertOne) AddInviterLayers(v uint32) *EventUpsertOne {
+	return u.Update(func(s *EventUpsert) {
+		s.AddInviterLayers(v)
+	})
+}
+
+// UpdateInviterLayers sets the "inviter_layers" field to the value that was provided on create.
+func (u *EventUpsertOne) UpdateInviterLayers() *EventUpsertOne {
+	return u.Update(func(s *EventUpsert) {
+		s.UpdateInviterLayers()
+	})
+}
+
+// ClearInviterLayers clears the value of the "inviter_layers" field.
+func (u *EventUpsertOne) ClearInviterLayers() *EventUpsertOne {
+	return u.Update(func(s *EventUpsert) {
+		s.ClearInviterLayers()
 	})
 }
 
@@ -1349,6 +1427,34 @@ func (u *EventUpsertBulk) UpdateGoodID() *EventUpsertBulk {
 func (u *EventUpsertBulk) ClearGoodID() *EventUpsertBulk {
 	return u.Update(func(s *EventUpsert) {
 		s.ClearGoodID()
+	})
+}
+
+// SetInviterLayers sets the "inviter_layers" field.
+func (u *EventUpsertBulk) SetInviterLayers(v uint32) *EventUpsertBulk {
+	return u.Update(func(s *EventUpsert) {
+		s.SetInviterLayers(v)
+	})
+}
+
+// AddInviterLayers adds v to the "inviter_layers" field.
+func (u *EventUpsertBulk) AddInviterLayers(v uint32) *EventUpsertBulk {
+	return u.Update(func(s *EventUpsert) {
+		s.AddInviterLayers(v)
+	})
+}
+
+// UpdateInviterLayers sets the "inviter_layers" field to the value that was provided on create.
+func (u *EventUpsertBulk) UpdateInviterLayers() *EventUpsertBulk {
+	return u.Update(func(s *EventUpsert) {
+		s.UpdateInviterLayers()
+	})
+}
+
+// ClearInviterLayers clears the value of the "inviter_layers" field.
+func (u *EventUpsertBulk) ClearInviterLayers() *EventUpsertBulk {
+	return u.Update(func(s *EventUpsert) {
+		s.ClearInviterLayers()
 	})
 }
 

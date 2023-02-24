@@ -47,6 +47,7 @@ var ret = npool.Event{
 	Credits:        "1.798",
 	CreditsPerUSD:  "1.789",
 	MaxConsecutive: 1,
+	InviterLayers:  1,
 	GoodID:         uuid.UUID{}.String(),
 }
 
@@ -70,6 +71,7 @@ func verify(t *testing.T, expect, actual *npool.Event) {
 	assert.Equal(t, expect.Credits, actual.Credits)
 	assert.Equal(t, expect.CreditsPerUSD, actual.CreditsPerUSD)
 	assert.Equal(t, expect.MaxConsecutive, actual.MaxConsecutive)
+	assert.Equal(t, expect.InviterLayers, actual.InviterLayers)
 	assert.Equal(t, expect.GoodID, actual.GoodID)
 }
 

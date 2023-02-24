@@ -143,6 +143,13 @@ func GoodID(v uuid.UUID) predicate.Event {
 	})
 }
 
+// InviterLayers applies equality check predicate on the "inviter_layers" field. It's identical to InviterLayersEQ.
+func InviterLayers(v uint32) predicate.Event {
+	return predicate.Event(func(s *sql.Selector) {
+		s.Where(sql.EQ(s.C(FieldInviterLayers), v))
+	})
+}
+
 // CreatedAtEQ applies the EQ predicate on the "created_at" field.
 func CreatedAtEQ(v uint32) predicate.Event {
 	return predicate.Event(func(s *sql.Selector) {
@@ -835,6 +842,84 @@ func GoodIDIsNil() predicate.Event {
 func GoodIDNotNil() predicate.Event {
 	return predicate.Event(func(s *sql.Selector) {
 		s.Where(sql.NotNull(s.C(FieldGoodID)))
+	})
+}
+
+// InviterLayersEQ applies the EQ predicate on the "inviter_layers" field.
+func InviterLayersEQ(v uint32) predicate.Event {
+	return predicate.Event(func(s *sql.Selector) {
+		s.Where(sql.EQ(s.C(FieldInviterLayers), v))
+	})
+}
+
+// InviterLayersNEQ applies the NEQ predicate on the "inviter_layers" field.
+func InviterLayersNEQ(v uint32) predicate.Event {
+	return predicate.Event(func(s *sql.Selector) {
+		s.Where(sql.NEQ(s.C(FieldInviterLayers), v))
+	})
+}
+
+// InviterLayersIn applies the In predicate on the "inviter_layers" field.
+func InviterLayersIn(vs ...uint32) predicate.Event {
+	v := make([]interface{}, len(vs))
+	for i := range v {
+		v[i] = vs[i]
+	}
+	return predicate.Event(func(s *sql.Selector) {
+		s.Where(sql.In(s.C(FieldInviterLayers), v...))
+	})
+}
+
+// InviterLayersNotIn applies the NotIn predicate on the "inviter_layers" field.
+func InviterLayersNotIn(vs ...uint32) predicate.Event {
+	v := make([]interface{}, len(vs))
+	for i := range v {
+		v[i] = vs[i]
+	}
+	return predicate.Event(func(s *sql.Selector) {
+		s.Where(sql.NotIn(s.C(FieldInviterLayers), v...))
+	})
+}
+
+// InviterLayersGT applies the GT predicate on the "inviter_layers" field.
+func InviterLayersGT(v uint32) predicate.Event {
+	return predicate.Event(func(s *sql.Selector) {
+		s.Where(sql.GT(s.C(FieldInviterLayers), v))
+	})
+}
+
+// InviterLayersGTE applies the GTE predicate on the "inviter_layers" field.
+func InviterLayersGTE(v uint32) predicate.Event {
+	return predicate.Event(func(s *sql.Selector) {
+		s.Where(sql.GTE(s.C(FieldInviterLayers), v))
+	})
+}
+
+// InviterLayersLT applies the LT predicate on the "inviter_layers" field.
+func InviterLayersLT(v uint32) predicate.Event {
+	return predicate.Event(func(s *sql.Selector) {
+		s.Where(sql.LT(s.C(FieldInviterLayers), v))
+	})
+}
+
+// InviterLayersLTE applies the LTE predicate on the "inviter_layers" field.
+func InviterLayersLTE(v uint32) predicate.Event {
+	return predicate.Event(func(s *sql.Selector) {
+		s.Where(sql.LTE(s.C(FieldInviterLayers), v))
+	})
+}
+
+// InviterLayersIsNil applies the IsNil predicate on the "inviter_layers" field.
+func InviterLayersIsNil() predicate.Event {
+	return predicate.Event(func(s *sql.Selector) {
+		s.Where(sql.IsNull(s.C(FieldInviterLayers)))
+	})
+}
+
+// InviterLayersNotNil applies the NotNil predicate on the "inviter_layers" field.
+func InviterLayersNotNil() predicate.Event {
+	return predicate.Event(func(s *sql.Selector) {
+		s.Where(sql.NotNull(s.C(FieldInviterLayers)))
 	})
 }
 

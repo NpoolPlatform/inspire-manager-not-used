@@ -34,6 +34,8 @@ const (
 	FieldMaxConsecutive = "max_consecutive"
 	// FieldGoodID holds the string denoting the good_id field in the database.
 	FieldGoodID = "good_id"
+	// FieldInviterLayers holds the string denoting the inviter_layers field in the database.
+	FieldInviterLayers = "inviter_layers"
 	// Table holds the table name of the event in the database.
 	Table = "events"
 )
@@ -51,6 +53,7 @@ var Columns = []string{
 	FieldCreditsPerUsd,
 	FieldMaxConsecutive,
 	FieldGoodID,
+	FieldInviterLayers,
 }
 
 // ValidColumn reports if the column name is valid (part of the table columns).
@@ -92,6 +95,8 @@ var (
 	DefaultMaxConsecutive uint32
 	// DefaultGoodID holds the default value on creation for the "good_id" field.
 	DefaultGoodID func() uuid.UUID
+	// DefaultInviterLayers holds the default value on creation for the "inviter_layers" field.
+	DefaultInviterLayers uint32
 	// DefaultID holds the default value on creation for the "id" field.
 	DefaultID func() uuid.UUID
 )

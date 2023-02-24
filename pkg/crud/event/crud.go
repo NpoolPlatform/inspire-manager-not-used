@@ -57,6 +57,9 @@ func CreateSet(c *ent.EventCreate, in *npool.EventReq) (*ent.EventCreate, error)
 	if in.GoodID != nil {
 		c.SetGoodID(uuid.MustParse(in.GetGoodID()))
 	}
+	if in.InviterLayers != nil {
+		c.SetInviterLayers(in.GetInviterLayers())
+	}
 	return c, nil
 }
 
@@ -147,6 +150,9 @@ func UpdateSet(info *ent.Event, in *npool.EventReq) (*ent.EventUpdateOne, error)
 	}
 	if in.MaxConsecutive != nil {
 		u.SetMaxConsecutive(in.GetMaxConsecutive())
+	}
+	if in.InviterLayers != nil {
+		u.SetInviterLayers(in.GetInviterLayers())
 	}
 
 	return u, nil

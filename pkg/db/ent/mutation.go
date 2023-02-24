@@ -7626,6 +7626,8 @@ type EventMutation struct {
 	max_consecutive    *uint32
 	addmax_consecutive *int32
 	good_id            *uuid.UUID
+	inviter_layers     *uint32
+	addinviter_layers  *int32
 	clearedFields      map[string]struct{}
 	done               bool
 	oldValue           func(context.Context) (*Event, error)
@@ -8255,6 +8257,76 @@ func (m *EventMutation) ResetGoodID() {
 	delete(m.clearedFields, entevent.FieldGoodID)
 }
 
+// SetInviterLayers sets the "inviter_layers" field.
+func (m *EventMutation) SetInviterLayers(u uint32) {
+	m.inviter_layers = &u
+	m.addinviter_layers = nil
+}
+
+// InviterLayers returns the value of the "inviter_layers" field in the mutation.
+func (m *EventMutation) InviterLayers() (r uint32, exists bool) {
+	v := m.inviter_layers
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldInviterLayers returns the old "inviter_layers" field's value of the Event entity.
+// If the Event object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *EventMutation) OldInviterLayers(ctx context.Context) (v uint32, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldInviterLayers is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldInviterLayers requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldInviterLayers: %w", err)
+	}
+	return oldValue.InviterLayers, nil
+}
+
+// AddInviterLayers adds u to the "inviter_layers" field.
+func (m *EventMutation) AddInviterLayers(u int32) {
+	if m.addinviter_layers != nil {
+		*m.addinviter_layers += u
+	} else {
+		m.addinviter_layers = &u
+	}
+}
+
+// AddedInviterLayers returns the value that was added to the "inviter_layers" field in this mutation.
+func (m *EventMutation) AddedInviterLayers() (r int32, exists bool) {
+	v := m.addinviter_layers
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// ClearInviterLayers clears the value of the "inviter_layers" field.
+func (m *EventMutation) ClearInviterLayers() {
+	m.inviter_layers = nil
+	m.addinviter_layers = nil
+	m.clearedFields[entevent.FieldInviterLayers] = struct{}{}
+}
+
+// InviterLayersCleared returns if the "inviter_layers" field was cleared in this mutation.
+func (m *EventMutation) InviterLayersCleared() bool {
+	_, ok := m.clearedFields[entevent.FieldInviterLayers]
+	return ok
+}
+
+// ResetInviterLayers resets all changes to the "inviter_layers" field.
+func (m *EventMutation) ResetInviterLayers() {
+	m.inviter_layers = nil
+	m.addinviter_layers = nil
+	delete(m.clearedFields, entevent.FieldInviterLayers)
+}
+
 // Where appends a list predicates to the EventMutation builder.
 func (m *EventMutation) Where(ps ...predicate.Event) {
 	m.predicates = append(m.predicates, ps...)
@@ -8274,7 +8346,7 @@ func (m *EventMutation) Type() string {
 // order to get all numeric fields that were incremented/decremented, call
 // AddedFields().
 func (m *EventMutation) Fields() []string {
-	fields := make([]string, 0, 10)
+	fields := make([]string, 0, 11)
 	if m.created_at != nil {
 		fields = append(fields, entevent.FieldCreatedAt)
 	}
@@ -8305,6 +8377,9 @@ func (m *EventMutation) Fields() []string {
 	if m.good_id != nil {
 		fields = append(fields, entevent.FieldGoodID)
 	}
+	if m.inviter_layers != nil {
+		fields = append(fields, entevent.FieldInviterLayers)
+	}
 	return fields
 }
 
@@ -8333,6 +8408,8 @@ func (m *EventMutation) Field(name string) (ent.Value, bool) {
 		return m.MaxConsecutive()
 	case entevent.FieldGoodID:
 		return m.GoodID()
+	case entevent.FieldInviterLayers:
+		return m.InviterLayers()
 	}
 	return nil, false
 }
@@ -8362,6 +8439,8 @@ func (m *EventMutation) OldField(ctx context.Context, name string) (ent.Value, e
 		return m.OldMaxConsecutive(ctx)
 	case entevent.FieldGoodID:
 		return m.OldGoodID(ctx)
+	case entevent.FieldInviterLayers:
+		return m.OldInviterLayers(ctx)
 	}
 	return nil, fmt.Errorf("unknown Event field %s", name)
 }
@@ -8441,6 +8520,13 @@ func (m *EventMutation) SetField(name string, value ent.Value) error {
 		}
 		m.SetGoodID(v)
 		return nil
+	case entevent.FieldInviterLayers:
+		v, ok := value.(uint32)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetInviterLayers(v)
+		return nil
 	}
 	return fmt.Errorf("unknown Event field %s", name)
 }
@@ -8461,6 +8547,9 @@ func (m *EventMutation) AddedFields() []string {
 	if m.addmax_consecutive != nil {
 		fields = append(fields, entevent.FieldMaxConsecutive)
 	}
+	if m.addinviter_layers != nil {
+		fields = append(fields, entevent.FieldInviterLayers)
+	}
 	return fields
 }
 
@@ -8477,6 +8566,8 @@ func (m *EventMutation) AddedField(name string) (ent.Value, bool) {
 		return m.AddedDeletedAt()
 	case entevent.FieldMaxConsecutive:
 		return m.AddedMaxConsecutive()
+	case entevent.FieldInviterLayers:
+		return m.AddedInviterLayers()
 	}
 	return nil, false
 }
@@ -8514,6 +8605,13 @@ func (m *EventMutation) AddField(name string, value ent.Value) error {
 		}
 		m.AddMaxConsecutive(v)
 		return nil
+	case entevent.FieldInviterLayers:
+		v, ok := value.(int32)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.AddInviterLayers(v)
+		return nil
 	}
 	return fmt.Errorf("unknown Event numeric field %s", name)
 }
@@ -8539,6 +8637,9 @@ func (m *EventMutation) ClearedFields() []string {
 	}
 	if m.FieldCleared(entevent.FieldGoodID) {
 		fields = append(fields, entevent.FieldGoodID)
+	}
+	if m.FieldCleared(entevent.FieldInviterLayers) {
+		fields = append(fields, entevent.FieldInviterLayers)
 	}
 	return fields
 }
@@ -8571,6 +8672,9 @@ func (m *EventMutation) ClearField(name string) error {
 		return nil
 	case entevent.FieldGoodID:
 		m.ClearGoodID()
+		return nil
+	case entevent.FieldInviterLayers:
+		m.ClearInviterLayers()
 		return nil
 	}
 	return fmt.Errorf("unknown Event nullable field %s", name)
@@ -8609,6 +8713,9 @@ func (m *EventMutation) ResetField(name string) error {
 		return nil
 	case entevent.FieldGoodID:
 		m.ResetGoodID()
+		return nil
+	case entevent.FieldInviterLayers:
+		m.ResetInviterLayers()
 		return nil
 	}
 	return fmt.Errorf("unknown Event field %s", name)

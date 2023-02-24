@@ -460,6 +460,10 @@ func init() {
 	enteventDescGoodID := enteventFields[7].Descriptor()
 	// entevent.DefaultGoodID holds the default value on creation for the good_id field.
 	entevent.DefaultGoodID = enteventDescGoodID.Default.(func() uuid.UUID)
+	// enteventDescInviterLayers is the schema descriptor for inviter_layers field.
+	enteventDescInviterLayers := enteventFields[8].Descriptor()
+	// entevent.DefaultInviterLayers holds the default value on creation for the inviter_layers field.
+	entevent.DefaultInviterLayers = enteventDescInviterLayers.Default.(uint32)
 	// enteventDescID is the schema descriptor for id field.
 	enteventDescID := enteventFields[0].Descriptor()
 	// entevent.DefaultID holds the default value on creation for the id field.
