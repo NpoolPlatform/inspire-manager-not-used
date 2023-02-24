@@ -42,6 +42,7 @@ var ret = ent.Event{
 	Credits:        decimal.RequireFromString("1.798"),
 	CreditsPerUsd:  decimal.RequireFromString("1.789"),
 	MaxConsecutive: 1,
+	InviterLayers:  1,
 	GoodID:         uuid.UUID{},
 }
 
@@ -87,6 +88,7 @@ func createBulk(t *testing.T) {
 			Credits:        decimal.RequireFromString("1.7981"),
 			CreditsPerUsd:  decimal.RequireFromString("1.7892"),
 			MaxConsecutive: 10,
+			InviterLayers:  10,
 			GoodID:         uuid.UUID{},
 		},
 		{
@@ -100,6 +102,7 @@ func createBulk(t *testing.T) {
 			Credits:        decimal.RequireFromString("1.7983"),
 			CreditsPerUsd:  decimal.RequireFromString("1.7894"),
 			MaxConsecutive: 11,
+			InviterLayers:  11,
 			GoodID:         uuid.UUID{},
 		},
 	}
@@ -121,6 +124,7 @@ func createBulk(t *testing.T) {
 			Credits:        &_credits,
 			CreditsPerUSD:  &_creditsPerUSD,
 			MaxConsecutive: &_event.MaxConsecutive,
+			InviterLayers:  &_event.InviterLayers,
 		})
 	}
 	infos, err := CreateBulk(context.Background(), reqs)

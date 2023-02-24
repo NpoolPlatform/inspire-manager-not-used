@@ -7868,6 +7868,8 @@ type GoodOrderPercentMutation struct {
 	max_consecutive    *uint32
 	addmax_consecutive *int32
 	good_id            *uuid.UUID
+	inviter_layers     *uint32
+	addinviter_layers  *int32
 	clearedFields      map[string]struct{}
 	done               bool
 	oldValue           func(context.Context) (*Event, error)
@@ -8703,6 +8705,76 @@ func (m *EventMutation) ResetGoodID() {
 	delete(m.clearedFields, entevent.FieldGoodID)
 }
 
+// SetInviterLayers sets the "inviter_layers" field.
+func (m *EventMutation) SetInviterLayers(u uint32) {
+	m.inviter_layers = &u
+	m.addinviter_layers = nil
+}
+
+// InviterLayers returns the value of the "inviter_layers" field in the mutation.
+func (m *EventMutation) InviterLayers() (r uint32, exists bool) {
+	v := m.inviter_layers
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldInviterLayers returns the old "inviter_layers" field's value of the Event entity.
+// If the Event object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *EventMutation) OldInviterLayers(ctx context.Context) (v uint32, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldInviterLayers is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldInviterLayers requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldInviterLayers: %w", err)
+	}
+	return oldValue.InviterLayers, nil
+}
+
+// AddInviterLayers adds u to the "inviter_layers" field.
+func (m *EventMutation) AddInviterLayers(u int32) {
+	if m.addinviter_layers != nil {
+		*m.addinviter_layers += u
+	} else {
+		m.addinviter_layers = &u
+	}
+}
+
+// AddedInviterLayers returns the value that was added to the "inviter_layers" field in this mutation.
+func (m *EventMutation) AddedInviterLayers() (r int32, exists bool) {
+	v := m.addinviter_layers
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// ClearInviterLayers clears the value of the "inviter_layers" field.
+func (m *EventMutation) ClearInviterLayers() {
+	m.inviter_layers = nil
+	m.addinviter_layers = nil
+	m.clearedFields[entevent.FieldInviterLayers] = struct{}{}
+}
+
+// InviterLayersCleared returns if the "inviter_layers" field was cleared in this mutation.
+func (m *EventMutation) InviterLayersCleared() bool {
+	_, ok := m.clearedFields[entevent.FieldInviterLayers]
+	return ok
+}
+
+// ResetInviterLayers resets all changes to the "inviter_layers" field.
+func (m *EventMutation) ResetInviterLayers() {
+	m.inviter_layers = nil
+	m.addinviter_layers = nil
+	delete(m.clearedFields, entevent.FieldInviterLayers)
+}
+
 // Where appends a list predicates to the EventMutation builder.
 func (m *EventMutation) Where(ps ...predicate.Event) {
 >>>>>>> Add max consecutive
@@ -8727,11 +8799,15 @@ func (m *GoodOrderPercentMutation) Fields() []string {
 =======
 func (m *EventMutation) Fields() []string {
 <<<<<<< HEAD
+<<<<<<< HEAD
 >>>>>>> Add max consecutive
 	fields := make([]string, 0, 9)
 =======
 	fields := make([]string, 0, 10)
 >>>>>>> Add GoodID in event
+=======
+	fields := make([]string, 0, 11)
+>>>>>>> Add affiliate purchase and inviter layers
 	if m.created_at != nil {
 <<<<<<< HEAD
 		fields = append(fields, goodorderpercent.FieldCreatedAt)
@@ -8789,6 +8865,9 @@ func (m *EventMutation) Fields() []string {
 	}
 	if m.good_id != nil {
 		fields = append(fields, entevent.FieldGoodID)
+	}
+	if m.inviter_layers != nil {
+		fields = append(fields, entevent.FieldInviterLayers)
 	}
 	return fields
 }
@@ -8849,7 +8928,12 @@ func (m *GoodOrderPercentMutation) Field(name string) (ent.Value, bool) {
 	case entevent.FieldGoodID:
 >>>>>>> Support structure for coupon
 		return m.GoodID()
+<<<<<<< HEAD
 >>>>>>> Add GoodID in event
+=======
+	case entevent.FieldInviterLayers:
+		return m.InviterLayers()
+>>>>>>> Add affiliate purchase and inviter layers
 	}
 	return nil, false
 }
@@ -8910,7 +8994,12 @@ func (m *GoodOrderPercentMutation) OldField(ctx context.Context, name string) (e
 	case entevent.FieldGoodID:
 >>>>>>> Support structure for coupon
 		return m.OldGoodID(ctx)
+<<<<<<< HEAD
 >>>>>>> Add GoodID in event
+=======
+	case entevent.FieldInviterLayers:
+		return m.OldInviterLayers(ctx)
+>>>>>>> Add affiliate purchase and inviter layers
 	}
 	return nil, fmt.Errorf("unknown GoodOrderPercent field %s", name)
 }
@@ -9034,6 +9123,13 @@ func (m *GoodOrderPercentMutation) SetField(name string, value ent.Value) error 
 		}
 		m.SetGoodID(v)
 		return nil
+	case entevent.FieldInviterLayers:
+		v, ok := value.(uint32)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetInviterLayers(v)
+		return nil
 	}
 	return fmt.Errorf("unknown GoodOrderPercent field %s", name)
 }
@@ -9070,6 +9166,9 @@ func (m *GoodOrderPercentMutation) AddedFields() []string {
 	if m.addmax_consecutive != nil {
 		fields = append(fields, entevent.FieldMaxConsecutive)
 	}
+	if m.addinviter_layers != nil {
+		fields = append(fields, entevent.FieldInviterLayers)
+	}
 	return fields
 }
 
@@ -9102,7 +9201,12 @@ func (m *GoodOrderPercentMutation) AddedField(name string) (ent.Value, bool) {
 	case entevent.FieldMaxConsecutive:
 >>>>>>> Support structure for coupon
 		return m.AddedMaxConsecutive()
+<<<<<<< HEAD
 >>>>>>> Add max consecutive
+=======
+	case entevent.FieldInviterLayers:
+		return m.AddedInviterLayers()
+>>>>>>> Add affiliate purchase and inviter layers
 	}
 	return nil, false
 }
@@ -9171,6 +9275,13 @@ func (m *GoodOrderPercentMutation) AddField(name string, value ent.Value) error 
 		m.AddMaxConsecutive(v)
 >>>>>>> Add max consecutive
 		return nil
+	case entevent.FieldInviterLayers:
+		v, ok := value.(int32)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.AddInviterLayers(v)
+		return nil
 	}
 	return fmt.Errorf("unknown GoodOrderPercent numeric field %s", name)
 }
@@ -9216,6 +9327,9 @@ func (m *GoodOrderPercentMutation) ClearedFields() []string {
 	}
 	if m.FieldCleared(entevent.FieldGoodID) {
 		fields = append(fields, entevent.FieldGoodID)
+	}
+	if m.FieldCleared(entevent.FieldInviterLayers) {
+		fields = append(fields, entevent.FieldInviterLayers)
 	}
 	return fields
 }
@@ -9268,6 +9382,9 @@ func (m *GoodOrderPercentMutation) ClearField(name string) error {
 		return nil
 	case entevent.FieldGoodID:
 		m.ClearGoodID()
+		return nil
+	case entevent.FieldInviterLayers:
+		m.ClearInviterLayers()
 		return nil
 	}
 	return fmt.Errorf("unknown GoodOrderPercent nullable field %s", name)
@@ -9335,6 +9452,9 @@ func (m *GoodOrderPercentMutation) ResetField(name string) error {
 		return nil
 	case entevent.FieldGoodID:
 		m.ResetGoodID()
+		return nil
+	case entevent.FieldInviterLayers:
+		m.ResetInviterLayers()
 		return nil
 	}
 	return fmt.Errorf("unknown GoodOrderPercent field %s", name)

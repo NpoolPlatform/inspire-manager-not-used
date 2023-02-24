@@ -212,6 +212,33 @@ func (eu *EventUpdate) ClearGoodID() *EventUpdate {
 	return eu
 }
 
+// SetInviterLayers sets the "inviter_layers" field.
+func (eu *EventUpdate) SetInviterLayers(u uint32) *EventUpdate {
+	eu.mutation.ResetInviterLayers()
+	eu.mutation.SetInviterLayers(u)
+	return eu
+}
+
+// SetNillableInviterLayers sets the "inviter_layers" field if the given value is not nil.
+func (eu *EventUpdate) SetNillableInviterLayers(u *uint32) *EventUpdate {
+	if u != nil {
+		eu.SetInviterLayers(*u)
+	}
+	return eu
+}
+
+// AddInviterLayers adds u to the "inviter_layers" field.
+func (eu *EventUpdate) AddInviterLayers(u int32) *EventUpdate {
+	eu.mutation.AddInviterLayers(u)
+	return eu
+}
+
+// ClearInviterLayers clears the value of the "inviter_layers" field.
+func (eu *EventUpdate) ClearInviterLayers() *EventUpdate {
+	eu.mutation.ClearInviterLayers()
+	return eu
+}
+
 // Mutation returns the EventMutation object of the builder.
 func (eu *EventUpdate) Mutation() *EventMutation {
 	return eu.mutation
@@ -444,6 +471,26 @@ func (eu *EventUpdate) sqlSave(ctx context.Context) (n int, err error) {
 			Column: entevent.FieldGoodID,
 		})
 	}
+	if value, ok := eu.mutation.InviterLayers(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeUint32,
+			Value:  value,
+			Column: entevent.FieldInviterLayers,
+		})
+	}
+	if value, ok := eu.mutation.AddedInviterLayers(); ok {
+		_spec.Fields.Add = append(_spec.Fields.Add, &sqlgraph.FieldSpec{
+			Type:   field.TypeUint32,
+			Value:  value,
+			Column: entevent.FieldInviterLayers,
+		})
+	}
+	if eu.mutation.InviterLayersCleared() {
+		_spec.Fields.Clear = append(_spec.Fields.Clear, &sqlgraph.FieldSpec{
+			Type:   field.TypeUint32,
+			Column: entevent.FieldInviterLayers,
+		})
+	}
 	_spec.Modifiers = eu.modifiers
 	if n, err = sqlgraph.UpdateNodes(ctx, eu.driver, _spec); err != nil {
 		if _, ok := err.(*sqlgraph.NotFoundError); ok {
@@ -642,6 +689,33 @@ func (euo *EventUpdateOne) SetNillableGoodID(u *uuid.UUID) *EventUpdateOne {
 // ClearGoodID clears the value of the "good_id" field.
 func (euo *EventUpdateOne) ClearGoodID() *EventUpdateOne {
 	euo.mutation.ClearGoodID()
+	return euo
+}
+
+// SetInviterLayers sets the "inviter_layers" field.
+func (euo *EventUpdateOne) SetInviterLayers(u uint32) *EventUpdateOne {
+	euo.mutation.ResetInviterLayers()
+	euo.mutation.SetInviterLayers(u)
+	return euo
+}
+
+// SetNillableInviterLayers sets the "inviter_layers" field if the given value is not nil.
+func (euo *EventUpdateOne) SetNillableInviterLayers(u *uint32) *EventUpdateOne {
+	if u != nil {
+		euo.SetInviterLayers(*u)
+	}
+	return euo
+}
+
+// AddInviterLayers adds u to the "inviter_layers" field.
+func (euo *EventUpdateOne) AddInviterLayers(u int32) *EventUpdateOne {
+	euo.mutation.AddInviterLayers(u)
+	return euo
+}
+
+// ClearInviterLayers clears the value of the "inviter_layers" field.
+func (euo *EventUpdateOne) ClearInviterLayers() *EventUpdateOne {
+	euo.mutation.ClearInviterLayers()
 	return euo
 }
 
@@ -905,6 +979,26 @@ func (euo *EventUpdateOne) sqlSave(ctx context.Context) (_node *Event, err error
 		_spec.Fields.Clear = append(_spec.Fields.Clear, &sqlgraph.FieldSpec{
 			Type:   field.TypeUUID,
 			Column: entevent.FieldGoodID,
+		})
+	}
+	if value, ok := euo.mutation.InviterLayers(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeUint32,
+			Value:  value,
+			Column: entevent.FieldInviterLayers,
+		})
+	}
+	if value, ok := euo.mutation.AddedInviterLayers(); ok {
+		_spec.Fields.Add = append(_spec.Fields.Add, &sqlgraph.FieldSpec{
+			Type:   field.TypeUint32,
+			Value:  value,
+			Column: entevent.FieldInviterLayers,
+		})
+	}
+	if euo.mutation.InviterLayersCleared() {
+		_spec.Fields.Clear = append(_spec.Fields.Clear, &sqlgraph.FieldSpec{
+			Type:   field.TypeUint32,
+			Column: entevent.FieldInviterLayers,
 		})
 	}
 	_spec.Modifiers = euo.modifiers

@@ -48,6 +48,7 @@ func ValidateCreate(in *npool.EventReq) error { //nolint
 	case basetypes.UsedFor_KYCApproved:
 	case basetypes.UsedFor_KYCRejected:
 	case basetypes.UsedFor_Purchase:
+	case basetypes.UsedFor_AffiliatePurchase:
 		if _, err := uuid.Parse(in.GetGoodID()); err != nil {
 			logger.Sugar().Errorw("ValidateCreate", "GoodID", in.GetGoodID(), "Error", err)
 			return err
@@ -120,6 +121,7 @@ func (s *Server) CreateEvent(ctx context.Context, in *npool.CreateEventRequest) 
 
 	switch _info.GetEventType() {
 	case basetypes.UsedFor_Purchase:
+	case basetypes.UsedFor_AffiliatePurchase:
 	default:
 		_info.GoodID = nil
 	}
@@ -166,6 +168,7 @@ func (s *Server) CreateEvents(ctx context.Context, in *npool.CreateEventsRequest
 	for _, info := range _infos {
 		switch info.GetEventType() {
 		case basetypes.UsedFor_Purchase:
+		case basetypes.UsedFor_AffiliatePurchase:
 		default:
 			info.GoodID = nil
 		}

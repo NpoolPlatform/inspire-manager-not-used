@@ -207,6 +207,7 @@ var schemaGraph = func() *sqlgraph.Schema {
 			entevent.FieldCreditsPerUsd:  {Type: field.TypeOther, Column: entevent.FieldCreditsPerUsd},
 			entevent.FieldMaxConsecutive: {Type: field.TypeUint32, Column: entevent.FieldMaxConsecutive},
 			entevent.FieldGoodID:         {Type: field.TypeUUID, Column: entevent.FieldGoodID},
+			entevent.FieldInviterLayers:  {Type: field.TypeUint32, Column: entevent.FieldInviterLayers},
 		},
 	}
 	graph.Nodes[7] = &sqlgraph.Node{
@@ -1021,6 +1022,11 @@ func (f *EventFilter) WhereMaxConsecutive(p entql.Uint32P) {
 // WhereGoodID applies the entql [16]byte predicate on the good_id field.
 func (f *EventFilter) WhereGoodID(p entql.ValueP) {
 	f.Where(p.Field(entevent.FieldGoodID))
+}
+
+// WhereInviterLayers applies the entql uint32 predicate on the inviter_layers field.
+func (f *EventFilter) WhereInviterLayers(p entql.Uint32P) {
+	f.Where(p.Field(entevent.FieldInviterLayers))
 }
 
 // addPredicate implements the predicateAdder interface.

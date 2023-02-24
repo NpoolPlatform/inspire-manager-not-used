@@ -25,6 +25,7 @@ func Ent2Grpc(row *ent.Event) *npool.Event {
 		Credits:        row.Credits.String(),
 		CreditsPerUSD:  row.CreditsPerUsd.String(),
 		MaxConsecutive: row.MaxConsecutive,
+		InviterLayers:  row.InviterLayers,
 		GoodID:         row.GoodID.String(),
 		CreatedAt:      row.CreatedAt,
 		UpdatedAt:      row.UpdatedAt,
