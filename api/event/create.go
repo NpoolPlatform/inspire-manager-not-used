@@ -48,6 +48,7 @@ func ValidateCreate(in *npool.EventReq) error { //nolint
 	case basetypes.UsedFor_KYCApproved:
 	case basetypes.UsedFor_KYCRejected:
 	case basetypes.UsedFor_Purchase:
+		fallthrough //nolint
 	case basetypes.UsedFor_AffiliatePurchase:
 		if _, err := uuid.Parse(in.GetGoodID()); err != nil {
 			logger.Sugar().Errorw("ValidateCreate", "GoodID", in.GetGoodID(), "Error", err)
