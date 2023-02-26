@@ -40,8 +40,8 @@ func CreateSet(c *ent.ArchivementGeneralCreate, in *npool.GeneralReq) *ent.Archi
 
 	c.SetTotalAmount(decimal.NewFromInt(0))
 	c.SetSelfAmount(decimal.NewFromInt(0))
-	c.SetTotalUnits(0)
-	c.SetSelfUnits(0)
+	c.SetTotalUnitsV1(decimal.NewFromInt(0))
+	c.SetSelfUnitsV1(decimal.NewFromInt(0))
 	c.SetTotalCommission(decimal.NewFromInt(0))
 	c.SetSelfCommission(decimal.NewFromInt(0))
 
@@ -106,6 +106,7 @@ func CreateBulk(ctx context.Context, in []*npool.GeneralReq) ([]*ent.Archivement
 	return rows, nil
 }
 
+//nolint:gocyclo
 func UpdateSet(info *ent.ArchivementGeneral, in *npool.GeneralReq) (u *ent.ArchivementGeneralUpdateOne, err error) {
 	totalAmount := decimal.NewFromInt(0)
 	if in.TotalAmount != nil {
@@ -150,10 +151,20 @@ func UpdateSet(info *ent.ArchivementGeneral, in *npool.GeneralReq) (u *ent.Archi
 		stm = stm.SetSelfAmount(selfAmount)
 	}
 	if in.TotalUnits != nil {
-		stm = stm.AddTotalUnits(int32(in.GetTotalUnits()))
+		totalUnits, err := decimal.NewFromString(in.GetTotalUnits())
+		if err != nil {
+			return nil, err
+		}
+		totalUnits = totalUnits.Add(info.TotalUnitsV1)
+		stm = stm.SetTotalUnitsV1(totalUnits)
 	}
 	if in.SelfUnits != nil {
-		stm = stm.AddSelfUnits(int32(in.GetSelfUnits()))
+		selfUnits, err := decimal.NewFromString(in.GetSelfUnits())
+		if err != nil {
+			return nil, err
+		}
+		selfUnits = selfUnits.Add(info.SelfUnitsV1)
+		stm = stm.SetSelfUnitsV1(selfUnits)
 	}
 	if in.TotalCommission != nil {
 		totalCommission = totalCommission.Add(info.TotalCommission)
@@ -322,25 +333,33 @@ func setQueryConds(conds *npool.Conds, cli *ent.Client) (*ent.ArchivementGeneral
 		}
 	}
 	if conds.TotalUnits != nil {
+		totalUnits, err := decimal.NewFromString(conds.GetTotalUnits().GetValue())
+		if err != nil {
+			return nil, err
+		}
 		switch conds.GetTotalUnits().GetOp() {
 		case cruder.LT:
-			stm.Where(archivementgeneral.TotalUnitsLT(conds.GetTotalUnits().GetValue()))
+			stm.Where(archivementgeneral.TotalUnitsV1LT(totalUnits))
 		case cruder.GT:
-			stm.Where(archivementgeneral.TotalUnitsGT(conds.GetTotalUnits().GetValue()))
+			stm.Where(archivementgeneral.TotalUnitsV1GT(totalUnits))
 		case cruder.EQ:
-			stm.Where(archivementgeneral.TotalUnitsEQ(conds.GetTotalUnits().GetValue()))
+			stm.Where(archivementgeneral.TotalUnitsV1EQ(totalUnits))
 		default:
 			return nil, fmt.Errorf("invalid general field")
 		}
 	}
 	if conds.SelfUnits != nil {
+		selfUnits, err := decimal.NewFromString(conds.GetSelfUnits().GetValue())
+		if err != nil {
+			return nil, err
+		}
 		switch conds.GetSelfUnits().GetOp() {
 		case cruder.LT:
-			stm.Where(archivementgeneral.SelfUnitsLT(conds.GetSelfUnits().GetValue()))
+			stm.Where(archivementgeneral.SelfUnitsV1LT(selfUnits))
 		case cruder.GT:
-			stm.Where(archivementgeneral.SelfUnitsGT(conds.GetSelfUnits().GetValue()))
+			stm.Where(archivementgeneral.SelfUnitsV1GT(selfUnits))
 		case cruder.EQ:
-			stm.Where(archivementgeneral.SelfUnitsEQ(conds.GetSelfUnits().GetValue()))
+			stm.Where(archivementgeneral.SelfUnitsV1EQ(selfUnits))
 		default:
 			return nil, fmt.Errorf("invalid general field")
 		}

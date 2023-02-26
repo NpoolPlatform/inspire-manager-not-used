@@ -136,10 +136,24 @@ func TotalUnits(v uint32) predicate.ArchivementGeneral {
 	})
 }
 
+// TotalUnitsV1 applies equality check predicate on the "total_units_v1" field. It's identical to TotalUnitsV1EQ.
+func TotalUnitsV1(v decimal.Decimal) predicate.ArchivementGeneral {
+	return predicate.ArchivementGeneral(func(s *sql.Selector) {
+		s.Where(sql.EQ(s.C(FieldTotalUnitsV1), v))
+	})
+}
+
 // SelfUnits applies equality check predicate on the "self_units" field. It's identical to SelfUnitsEQ.
 func SelfUnits(v uint32) predicate.ArchivementGeneral {
 	return predicate.ArchivementGeneral(func(s *sql.Selector) {
 		s.Where(sql.EQ(s.C(FieldSelfUnits), v))
+	})
+}
+
+// SelfUnitsV1 applies equality check predicate on the "self_units_v1" field. It's identical to SelfUnitsV1EQ.
+func SelfUnitsV1(v decimal.Decimal) predicate.ArchivementGeneral {
+	return predicate.ArchivementGeneral(func(s *sql.Selector) {
+		s.Where(sql.EQ(s.C(FieldSelfUnitsV1), v))
 	})
 }
 
@@ -753,6 +767,84 @@ func TotalUnitsNotNil() predicate.ArchivementGeneral {
 	})
 }
 
+// TotalUnitsV1EQ applies the EQ predicate on the "total_units_v1" field.
+func TotalUnitsV1EQ(v decimal.Decimal) predicate.ArchivementGeneral {
+	return predicate.ArchivementGeneral(func(s *sql.Selector) {
+		s.Where(sql.EQ(s.C(FieldTotalUnitsV1), v))
+	})
+}
+
+// TotalUnitsV1NEQ applies the NEQ predicate on the "total_units_v1" field.
+func TotalUnitsV1NEQ(v decimal.Decimal) predicate.ArchivementGeneral {
+	return predicate.ArchivementGeneral(func(s *sql.Selector) {
+		s.Where(sql.NEQ(s.C(FieldTotalUnitsV1), v))
+	})
+}
+
+// TotalUnitsV1In applies the In predicate on the "total_units_v1" field.
+func TotalUnitsV1In(vs ...decimal.Decimal) predicate.ArchivementGeneral {
+	v := make([]interface{}, len(vs))
+	for i := range v {
+		v[i] = vs[i]
+	}
+	return predicate.ArchivementGeneral(func(s *sql.Selector) {
+		s.Where(sql.In(s.C(FieldTotalUnitsV1), v...))
+	})
+}
+
+// TotalUnitsV1NotIn applies the NotIn predicate on the "total_units_v1" field.
+func TotalUnitsV1NotIn(vs ...decimal.Decimal) predicate.ArchivementGeneral {
+	v := make([]interface{}, len(vs))
+	for i := range v {
+		v[i] = vs[i]
+	}
+	return predicate.ArchivementGeneral(func(s *sql.Selector) {
+		s.Where(sql.NotIn(s.C(FieldTotalUnitsV1), v...))
+	})
+}
+
+// TotalUnitsV1GT applies the GT predicate on the "total_units_v1" field.
+func TotalUnitsV1GT(v decimal.Decimal) predicate.ArchivementGeneral {
+	return predicate.ArchivementGeneral(func(s *sql.Selector) {
+		s.Where(sql.GT(s.C(FieldTotalUnitsV1), v))
+	})
+}
+
+// TotalUnitsV1GTE applies the GTE predicate on the "total_units_v1" field.
+func TotalUnitsV1GTE(v decimal.Decimal) predicate.ArchivementGeneral {
+	return predicate.ArchivementGeneral(func(s *sql.Selector) {
+		s.Where(sql.GTE(s.C(FieldTotalUnitsV1), v))
+	})
+}
+
+// TotalUnitsV1LT applies the LT predicate on the "total_units_v1" field.
+func TotalUnitsV1LT(v decimal.Decimal) predicate.ArchivementGeneral {
+	return predicate.ArchivementGeneral(func(s *sql.Selector) {
+		s.Where(sql.LT(s.C(FieldTotalUnitsV1), v))
+	})
+}
+
+// TotalUnitsV1LTE applies the LTE predicate on the "total_units_v1" field.
+func TotalUnitsV1LTE(v decimal.Decimal) predicate.ArchivementGeneral {
+	return predicate.ArchivementGeneral(func(s *sql.Selector) {
+		s.Where(sql.LTE(s.C(FieldTotalUnitsV1), v))
+	})
+}
+
+// TotalUnitsV1IsNil applies the IsNil predicate on the "total_units_v1" field.
+func TotalUnitsV1IsNil() predicate.ArchivementGeneral {
+	return predicate.ArchivementGeneral(func(s *sql.Selector) {
+		s.Where(sql.IsNull(s.C(FieldTotalUnitsV1)))
+	})
+}
+
+// TotalUnitsV1NotNil applies the NotNil predicate on the "total_units_v1" field.
+func TotalUnitsV1NotNil() predicate.ArchivementGeneral {
+	return predicate.ArchivementGeneral(func(s *sql.Selector) {
+		s.Where(sql.NotNull(s.C(FieldTotalUnitsV1)))
+	})
+}
+
 // SelfUnitsEQ applies the EQ predicate on the "self_units" field.
 func SelfUnitsEQ(v uint32) predicate.ArchivementGeneral {
 	return predicate.ArchivementGeneral(func(s *sql.Selector) {
@@ -828,6 +920,84 @@ func SelfUnitsIsNil() predicate.ArchivementGeneral {
 func SelfUnitsNotNil() predicate.ArchivementGeneral {
 	return predicate.ArchivementGeneral(func(s *sql.Selector) {
 		s.Where(sql.NotNull(s.C(FieldSelfUnits)))
+	})
+}
+
+// SelfUnitsV1EQ applies the EQ predicate on the "self_units_v1" field.
+func SelfUnitsV1EQ(v decimal.Decimal) predicate.ArchivementGeneral {
+	return predicate.ArchivementGeneral(func(s *sql.Selector) {
+		s.Where(sql.EQ(s.C(FieldSelfUnitsV1), v))
+	})
+}
+
+// SelfUnitsV1NEQ applies the NEQ predicate on the "self_units_v1" field.
+func SelfUnitsV1NEQ(v decimal.Decimal) predicate.ArchivementGeneral {
+	return predicate.ArchivementGeneral(func(s *sql.Selector) {
+		s.Where(sql.NEQ(s.C(FieldSelfUnitsV1), v))
+	})
+}
+
+// SelfUnitsV1In applies the In predicate on the "self_units_v1" field.
+func SelfUnitsV1In(vs ...decimal.Decimal) predicate.ArchivementGeneral {
+	v := make([]interface{}, len(vs))
+	for i := range v {
+		v[i] = vs[i]
+	}
+	return predicate.ArchivementGeneral(func(s *sql.Selector) {
+		s.Where(sql.In(s.C(FieldSelfUnitsV1), v...))
+	})
+}
+
+// SelfUnitsV1NotIn applies the NotIn predicate on the "self_units_v1" field.
+func SelfUnitsV1NotIn(vs ...decimal.Decimal) predicate.ArchivementGeneral {
+	v := make([]interface{}, len(vs))
+	for i := range v {
+		v[i] = vs[i]
+	}
+	return predicate.ArchivementGeneral(func(s *sql.Selector) {
+		s.Where(sql.NotIn(s.C(FieldSelfUnitsV1), v...))
+	})
+}
+
+// SelfUnitsV1GT applies the GT predicate on the "self_units_v1" field.
+func SelfUnitsV1GT(v decimal.Decimal) predicate.ArchivementGeneral {
+	return predicate.ArchivementGeneral(func(s *sql.Selector) {
+		s.Where(sql.GT(s.C(FieldSelfUnitsV1), v))
+	})
+}
+
+// SelfUnitsV1GTE applies the GTE predicate on the "self_units_v1" field.
+func SelfUnitsV1GTE(v decimal.Decimal) predicate.ArchivementGeneral {
+	return predicate.ArchivementGeneral(func(s *sql.Selector) {
+		s.Where(sql.GTE(s.C(FieldSelfUnitsV1), v))
+	})
+}
+
+// SelfUnitsV1LT applies the LT predicate on the "self_units_v1" field.
+func SelfUnitsV1LT(v decimal.Decimal) predicate.ArchivementGeneral {
+	return predicate.ArchivementGeneral(func(s *sql.Selector) {
+		s.Where(sql.LT(s.C(FieldSelfUnitsV1), v))
+	})
+}
+
+// SelfUnitsV1LTE applies the LTE predicate on the "self_units_v1" field.
+func SelfUnitsV1LTE(v decimal.Decimal) predicate.ArchivementGeneral {
+	return predicate.ArchivementGeneral(func(s *sql.Selector) {
+		s.Where(sql.LTE(s.C(FieldSelfUnitsV1), v))
+	})
+}
+
+// SelfUnitsV1IsNil applies the IsNil predicate on the "self_units_v1" field.
+func SelfUnitsV1IsNil() predicate.ArchivementGeneral {
+	return predicate.ArchivementGeneral(func(s *sql.Selector) {
+		s.Where(sql.IsNull(s.C(FieldSelfUnitsV1)))
+	})
+}
+
+// SelfUnitsV1NotNil applies the NotNil predicate on the "self_units_v1" field.
+func SelfUnitsV1NotNil() predicate.ArchivementGeneral {
+	return predicate.ArchivementGeneral(func(s *sql.Selector) {
+		s.Where(sql.NotNull(s.C(FieldSelfUnitsV1)))
 	})
 }
 

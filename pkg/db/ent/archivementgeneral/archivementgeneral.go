@@ -29,8 +29,12 @@ const (
 	FieldCoinTypeID = "coin_type_id"
 	// FieldTotalUnits holds the string denoting the total_units field in the database.
 	FieldTotalUnits = "total_units"
+	// FieldTotalUnitsV1 holds the string denoting the total_units_v1 field in the database.
+	FieldTotalUnitsV1 = "total_units_v1"
 	// FieldSelfUnits holds the string denoting the self_units field in the database.
 	FieldSelfUnits = "self_units"
+	// FieldSelfUnitsV1 holds the string denoting the self_units_v1 field in the database.
+	FieldSelfUnitsV1 = "self_units_v1"
 	// FieldTotalAmount holds the string denoting the total_amount field in the database.
 	FieldTotalAmount = "total_amount"
 	// FieldSelfAmount holds the string denoting the self_amount field in the database.
@@ -54,7 +58,9 @@ var Columns = []string{
 	FieldGoodID,
 	FieldCoinTypeID,
 	FieldTotalUnits,
+	FieldTotalUnitsV1,
 	FieldSelfUnits,
+	FieldSelfUnitsV1,
 	FieldTotalAmount,
 	FieldSelfAmount,
 	FieldTotalCommission,
@@ -98,8 +104,12 @@ var (
 	DefaultCoinTypeID func() uuid.UUID
 	// DefaultTotalUnits holds the default value on creation for the "total_units" field.
 	DefaultTotalUnits uint32
+	// DefaultTotalUnitsV1 holds the default value on creation for the "total_units_v1" field.
+	DefaultTotalUnitsV1 decimal.Decimal
 	// DefaultSelfUnits holds the default value on creation for the "self_units" field.
 	DefaultSelfUnits uint32
+	// DefaultSelfUnitsV1 holds the default value on creation for the "self_units_v1" field.
+	DefaultSelfUnitsV1 decimal.Decimal
 	// DefaultTotalAmount holds the default value on creation for the "total_amount" field.
 	DefaultTotalAmount decimal.Decimal
 	// DefaultSelfAmount holds the default value on creation for the "self_amount" field.

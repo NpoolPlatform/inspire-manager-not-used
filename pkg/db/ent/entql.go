@@ -47,6 +47,7 @@ var schemaGraph = func() *sqlgraph.Schema {
 			archivementdetail.FieldPaymentCoinTypeID:      {Type: field.TypeUUID, Column: archivementdetail.FieldPaymentCoinTypeID},
 			archivementdetail.FieldPaymentCoinUsdCurrency: {Type: field.TypeOther, Column: archivementdetail.FieldPaymentCoinUsdCurrency},
 			archivementdetail.FieldUnits:                  {Type: field.TypeUint32, Column: archivementdetail.FieldUnits},
+			archivementdetail.FieldUnitsV1:                {Type: field.TypeOther, Column: archivementdetail.FieldUnitsV1},
 			archivementdetail.FieldAmount:                 {Type: field.TypeOther, Column: archivementdetail.FieldAmount},
 			archivementdetail.FieldUsdAmount:              {Type: field.TypeOther, Column: archivementdetail.FieldUsdAmount},
 			archivementdetail.FieldCommission:             {Type: field.TypeOther, Column: archivementdetail.FieldCommission},
@@ -71,7 +72,9 @@ var schemaGraph = func() *sqlgraph.Schema {
 			archivementgeneral.FieldGoodID:          {Type: field.TypeUUID, Column: archivementgeneral.FieldGoodID},
 			archivementgeneral.FieldCoinTypeID:      {Type: field.TypeUUID, Column: archivementgeneral.FieldCoinTypeID},
 			archivementgeneral.FieldTotalUnits:      {Type: field.TypeUint32, Column: archivementgeneral.FieldTotalUnits},
+			archivementgeneral.FieldTotalUnitsV1:    {Type: field.TypeOther, Column: archivementgeneral.FieldTotalUnitsV1},
 			archivementgeneral.FieldSelfUnits:       {Type: field.TypeUint32, Column: archivementgeneral.FieldSelfUnits},
+			archivementgeneral.FieldSelfUnitsV1:     {Type: field.TypeOther, Column: archivementgeneral.FieldSelfUnitsV1},
 			archivementgeneral.FieldTotalAmount:     {Type: field.TypeOther, Column: archivementgeneral.FieldTotalAmount},
 			archivementgeneral.FieldSelfAmount:      {Type: field.TypeOther, Column: archivementgeneral.FieldSelfAmount},
 			archivementgeneral.FieldTotalCommission: {Type: field.TypeOther, Column: archivementgeneral.FieldTotalCommission},
@@ -355,6 +358,11 @@ func (f *ArchivementDetailFilter) WhereUnits(p entql.Uint32P) {
 	f.Where(p.Field(archivementdetail.FieldUnits))
 }
 
+// WhereUnitsV1 applies the entql other predicate on the units_v1 field.
+func (f *ArchivementDetailFilter) WhereUnitsV1(p entql.OtherP) {
+	f.Where(p.Field(archivementdetail.FieldUnitsV1))
+}
+
 // WhereAmount applies the entql other predicate on the amount field.
 func (f *ArchivementDetailFilter) WhereAmount(p entql.OtherP) {
 	f.Where(p.Field(archivementdetail.FieldAmount))
@@ -450,9 +458,19 @@ func (f *ArchivementGeneralFilter) WhereTotalUnits(p entql.Uint32P) {
 	f.Where(p.Field(archivementgeneral.FieldTotalUnits))
 }
 
+// WhereTotalUnitsV1 applies the entql other predicate on the total_units_v1 field.
+func (f *ArchivementGeneralFilter) WhereTotalUnitsV1(p entql.OtherP) {
+	f.Where(p.Field(archivementgeneral.FieldTotalUnitsV1))
+}
+
 // WhereSelfUnits applies the entql uint32 predicate on the self_units field.
 func (f *ArchivementGeneralFilter) WhereSelfUnits(p entql.Uint32P) {
 	f.Where(p.Field(archivementgeneral.FieldSelfUnits))
+}
+
+// WhereSelfUnitsV1 applies the entql other predicate on the self_units_v1 field.
+func (f *ArchivementGeneralFilter) WhereSelfUnitsV1(p entql.OtherP) {
+	f.Where(p.Field(archivementgeneral.FieldSelfUnitsV1))
 }
 
 // WhereTotalAmount applies the entql other predicate on the total_amount field.

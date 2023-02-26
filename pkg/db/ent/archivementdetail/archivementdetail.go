@@ -41,6 +41,8 @@ const (
 	FieldPaymentCoinUsdCurrency = "payment_coin_usd_currency"
 	// FieldUnits holds the string denoting the units field in the database.
 	FieldUnits = "units"
+	// FieldUnitsV1 holds the string denoting the units_v1 field in the database.
+	FieldUnitsV1 = "units_v1"
 	// FieldAmount holds the string denoting the amount field in the database.
 	FieldAmount = "amount"
 	// FieldUsdAmount holds the string denoting the usd_amount field in the database.
@@ -68,6 +70,7 @@ var Columns = []string{
 	FieldPaymentCoinTypeID,
 	FieldPaymentCoinUsdCurrency,
 	FieldUnits,
+	FieldUnitsV1,
 	FieldAmount,
 	FieldUsdAmount,
 	FieldCommission,
@@ -122,6 +125,8 @@ var (
 	DefaultPaymentCoinUsdCurrency decimal.Decimal
 	// DefaultUnits holds the default value on creation for the "units" field.
 	DefaultUnits uint32
+	// DefaultUnitsV1 holds the default value on creation for the "units_v1" field.
+	DefaultUnitsV1 decimal.Decimal
 	// DefaultAmount holds the default value on creation for the "amount" field.
 	DefaultAmount decimal.Decimal
 	// DefaultUsdAmount holds the default value on creation for the "usd_amount" field.

@@ -39,6 +39,8 @@ var entity = ent.ArchivementGeneral{
 	SelfAmount:      decimal.NewFromInt(0),
 	TotalUnits:      0,
 	SelfUnits:       0,
+	TotalUnitsV1:    decimal.NewFromInt(0),
+	SelfUnitsV1:     decimal.NewFromInt(0),
 	TotalCommission: decimal.NewFromInt(0),
 	SelfCommission:  decimal.NewFromInt(0),
 }
@@ -51,8 +53,8 @@ var (
 	coinTypeID      = entity.CoinTypeID.String()
 	totalAmount     = entity.TotalAmount.String()
 	selfAmount      = entity.SelfAmount.String()
-	totalUnits      = entity.TotalUnits
-	selfUnits       = entity.SelfUnits
+	totalUnits      = entity.TotalUnitsV1.String()
+	selfUnits       = entity.SelfUnitsV1.String()
 	totalCommission = entity.TotalCommission.String()
 	selfCommission  = entity.SelfCommission.String()
 
@@ -97,6 +99,8 @@ func createBulk(t *testing.T) {
 			SelfUnits:       1,
 			TotalCommission: decimal.NewFromInt(0),
 			SelfCommission:  decimal.NewFromInt(0),
+			TotalUnitsV1:    decimal.NewFromInt(0),
+			SelfUnitsV1:     decimal.NewFromInt(0),
 		},
 		{
 			ID:              uuid.New(),
@@ -110,6 +114,8 @@ func createBulk(t *testing.T) {
 			SelfUnits:       0,
 			TotalCommission: decimal.NewFromInt(0),
 			SelfCommission:  decimal.NewFromInt(0),
+			TotalUnitsV1:    decimal.NewFromInt(0),
+			SelfUnitsV1:     decimal.NewFromInt(0),
 		},
 	}
 
@@ -122,8 +128,8 @@ func createBulk(t *testing.T) {
 		_coinTypeID := _entity.CoinTypeID.String()
 		_totalAmount := _entity.TotalAmount.String()
 		_selfAmount := _entity.SelfAmount.String()
-		_totalUnits := _entity.TotalUnits
-		_selfUnits := _entity.SelfUnits
+		_totalUnits := _entity.TotalUnitsV1.String()
+		_selfUnits := _entity.SelfUnitsV1.String()
 		_totalCommission := _entity.TotalCommission.String()
 		_selfCommission := _entity.SelfCommission.String()
 
@@ -149,16 +155,16 @@ func createBulk(t *testing.T) {
 
 func add(t *testing.T) {
 	totalAmount = "30"
-	totalUnits = 10
-	selfUnits = 10
+	totalUnits = decimal.NewFromInt(10).String()
+	selfUnits = decimal.NewFromInt(10).String()
 
 	req.TotalAmount = &totalAmount
 	req.SelfUnits = &selfUnits
 	req.TotalUnits = &totalUnits
 
 	entity.TotalAmount, _ = decimal.NewFromString(totalAmount)
-	entity.TotalUnits = totalUnits
-	entity.SelfUnits = selfUnits
+	entity.TotalUnitsV1 = decimal.NewFromInt(10)
+	entity.SelfUnitsV1 = decimal.NewFromInt(10)
 
 	info, err := AddFields(context.Background(), &req)
 	if assert.Nil(t, err) {
