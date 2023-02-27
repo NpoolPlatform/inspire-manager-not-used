@@ -66,7 +66,6 @@ func ValidateCreate(in *npool.EventReq) error { //nolint
 		switch coupon.GetCouponType() {
 		case alloccoupmgrpb.CouponType_FixAmount:
 		case alloccoupmgrpb.CouponType_Discount:
-		case alloccoupmgrpb.CouponType_SpecialOffer:
 		case alloccoupmgrpb.CouponType_ThresholdFixAmount:
 		case alloccoupmgrpb.CouponType_ThresholdDiscount:
 		case alloccoupmgrpb.CouponType_GoodFixAmount:
