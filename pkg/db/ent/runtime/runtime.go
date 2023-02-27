@@ -420,17 +420,9 @@ func init() {
 	couponspecialofferDescID := couponspecialofferFields[0].Descriptor()
 	// couponspecialoffer.DefaultID holds the default value on creation for the id field.
 	couponspecialoffer.DefaultID = couponspecialofferDescID.Default.(func() uuid.UUID)
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
-	eventMixin := schema.Event{}.Mixin()
-	event.Policy = privacy.NewPolicies(eventMixin[0], schema.Event{})
-	event.Hooks[0] = func(next ent.Mutator) ent.Mutator {
-=======
 	enteventMixin := schema.Event{}.Mixin()
 	entevent.Policy = privacy.NewPolicies(enteventMixin[0], schema.Event{})
 	entevent.Hooks[0] = func(next ent.Mutator) ent.Mutator {
->>>>>>> Support structure for coupon
 		return ent.MutateFunc(func(ctx context.Context, m ent.Mutation) (ent.Value, error) {
 			if err := entevent.Policy.EvalMutation(ctx, m); err != nil {
 				return nil, err
@@ -438,55 +430,6 @@ func init() {
 			return next.Mutate(ctx, m)
 		})
 	}
-<<<<<<< HEAD
-	eventMixinFields0 := eventMixin[0].Fields()
-	_ = eventMixinFields0
-	eventFields := schema.Event{}.Fields()
-	_ = eventFields
-	// eventDescCreatedAt is the schema descriptor for created_at field.
-	eventDescCreatedAt := eventMixinFields0[0].Descriptor()
-	// event.DefaultCreatedAt holds the default value on creation for the created_at field.
-	event.DefaultCreatedAt = eventDescCreatedAt.Default.(func() uint32)
-	// eventDescUpdatedAt is the schema descriptor for updated_at field.
-	eventDescUpdatedAt := eventMixinFields0[1].Descriptor()
-	// event.DefaultUpdatedAt holds the default value on creation for the updated_at field.
-	event.DefaultUpdatedAt = eventDescUpdatedAt.Default.(func() uint32)
-	// event.UpdateDefaultUpdatedAt holds the default value on update for the updated_at field.
-	event.UpdateDefaultUpdatedAt = eventDescUpdatedAt.UpdateDefault.(func() uint32)
-	// eventDescDeletedAt is the schema descriptor for deleted_at field.
-	eventDescDeletedAt := eventMixinFields0[2].Descriptor()
-	// event.DefaultDeletedAt holds the default value on creation for the deleted_at field.
-	event.DefaultDeletedAt = eventDescDeletedAt.Default.(func() uint32)
-	// eventDescEventType is the schema descriptor for event_type field.
-	eventDescEventType := eventFields[2].Descriptor()
-	// event.DefaultEventType holds the default value on creation for the event_type field.
-	event.DefaultEventType = eventDescEventType.Default.(string)
-	// eventDescCouponIds is the schema descriptor for coupon_ids field.
-	eventDescCouponIds := eventFields[3].Descriptor()
-	// event.DefaultCouponIds holds the default value on creation for the coupon_ids field.
-	event.DefaultCouponIds = eventDescCouponIds.Default.([]uuid.UUID)
-	// eventDescCredits is the schema descriptor for credits field.
-	eventDescCredits := eventFields[4].Descriptor()
-	// event.DefaultCredits holds the default value on creation for the credits field.
-	event.DefaultCredits = eventDescCredits.Default.(decimal.Decimal)
-	// eventDescCreditsPerUsd is the schema descriptor for credits_per_usd field.
-	eventDescCreditsPerUsd := eventFields[5].Descriptor()
-	// event.DefaultCreditsPerUsd holds the default value on creation for the credits_per_usd field.
-	event.DefaultCreditsPerUsd = eventDescCreditsPerUsd.Default.(decimal.Decimal)
-	// eventDescMaxConsecutive is the schema descriptor for max_consecutive field.
-	eventDescMaxConsecutive := eventFields[6].Descriptor()
-	// event.DefaultMaxConsecutive holds the default value on creation for the max_consecutive field.
-	event.DefaultMaxConsecutive = eventDescMaxConsecutive.Default.(uint32)
-	// eventDescGoodID is the schema descriptor for good_id field.
-	eventDescGoodID := eventFields[7].Descriptor()
-	// event.DefaultGoodID holds the default value on creation for the good_id field.
-	event.DefaultGoodID = eventDescGoodID.Default.(func() uuid.UUID)
-	// eventDescID is the schema descriptor for id field.
-	eventDescID := eventFields[0].Descriptor()
-	// event.DefaultID holds the default value on creation for the id field.
-	event.DefaultID = eventDescID.Default.(func() uuid.UUID)
->>>>>>> Add max consecutive
-=======
 	enteventMixinFields0 := enteventMixin[0].Fields()
 	_ = enteventMixinFields0
 	enteventFields := schema.Event{}.Fields()
@@ -537,7 +480,6 @@ func init() {
 	enteventDescID := enteventFields[0].Descriptor()
 	// entevent.DefaultID holds the default value on creation for the id field.
 	entevent.DefaultID = enteventDescID.Default.(func() uuid.UUID)
->>>>>>> Support structure for coupon
 	goodorderpercentMixin := schema.GoodOrderPercent{}.Mixin()
 	goodorderpercent.Policy = privacy.NewPolicies(goodorderpercentMixin[0], schema.GoodOrderPercent{})
 	goodorderpercent.Hooks[0] = func(next ent.Mutator) ent.Mutator {
@@ -666,54 +608,6 @@ func init() {
 	registrationDescID := registrationFields[0].Descriptor()
 	// registration.DefaultID holds the default value on creation for the id field.
 	registration.DefaultID = registrationDescID.Default.(func() uuid.UUID)
-	eventMixin := schema.Event{}.Mixin()
-	event.Policy = privacy.NewPolicies(eventMixin[0], schema.Event{})
-	event.Hooks[0] = func(next ent.Mutator) ent.Mutator {
-		return ent.MutateFunc(func(ctx context.Context, m ent.Mutation) (ent.Value, error) {
-			if err := event.Policy.EvalMutation(ctx, m); err != nil {
-				return nil, err
-			}
-			return next.Mutate(ctx, m)
-		})
-	}
-	eventMixinFields0 := eventMixin[0].Fields()
-	_ = eventMixinFields0
-	eventFields := schema.Event{}.Fields()
-	_ = eventFields
-	// eventDescCreatedAt is the schema descriptor for created_at field.
-	eventDescCreatedAt := eventMixinFields0[0].Descriptor()
-	// event.DefaultCreatedAt holds the default value on creation for the created_at field.
-	event.DefaultCreatedAt = eventDescCreatedAt.Default.(func() uint32)
-	// eventDescUpdatedAt is the schema descriptor for updated_at field.
-	eventDescUpdatedAt := eventMixinFields0[1].Descriptor()
-	// event.DefaultUpdatedAt holds the default value on creation for the updated_at field.
-	event.DefaultUpdatedAt = eventDescUpdatedAt.Default.(func() uint32)
-	// event.UpdateDefaultUpdatedAt holds the default value on update for the updated_at field.
-	event.UpdateDefaultUpdatedAt = eventDescUpdatedAt.UpdateDefault.(func() uint32)
-	// eventDescDeletedAt is the schema descriptor for deleted_at field.
-	eventDescDeletedAt := eventMixinFields0[2].Descriptor()
-	// event.DefaultDeletedAt holds the default value on creation for the deleted_at field.
-	event.DefaultDeletedAt = eventDescDeletedAt.Default.(func() uint32)
-	// eventDescEventType is the schema descriptor for event_type field.
-	eventDescEventType := eventFields[2].Descriptor()
-	// event.DefaultEventType holds the default value on creation for the event_type field.
-	event.DefaultEventType = eventDescEventType.Default.(string)
-	// eventDescCouponIds is the schema descriptor for coupon_ids field.
-	eventDescCouponIds := eventFields[3].Descriptor()
-	// event.DefaultCouponIds holds the default value on creation for the coupon_ids field.
-	event.DefaultCouponIds = eventDescCouponIds.Default.([]uuid.UUID)
-	// eventDescCredits is the schema descriptor for credits field.
-	eventDescCredits := eventFields[4].Descriptor()
-	// event.DefaultCredits holds the default value on creation for the credits field.
-	event.DefaultCredits = eventDescCredits.Default.(decimal.Decimal)
-	// eventDescCreditsPerUsd is the schema descriptor for credits_per_usd field.
-	eventDescCreditsPerUsd := eventFields[5].Descriptor()
-	// event.DefaultCreditsPerUsd holds the default value on creation for the credits_per_usd field.
-	event.DefaultCreditsPerUsd = eventDescCreditsPerUsd.Default.(decimal.Decimal)
-	// eventDescID is the schema descriptor for id field.
-	eventDescID := eventFields[0].Descriptor()
-	// event.DefaultID holds the default value on creation for the id field.
-	event.DefaultID = eventDescID.Default.(func() uuid.UUID)
 }
 
 const (

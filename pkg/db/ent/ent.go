@@ -46,14 +46,10 @@ func columnChecker(table string) func(string) error {
 		coupondiscount.Table:     coupondiscount.ValidColumn,
 		couponfixamount.Table:    couponfixamount.ValidColumn,
 		couponspecialoffer.Table: couponspecialoffer.ValidColumn,
-<<<<<<< HEAD
-=======
 		entevent.Table:           entevent.ValidColumn,
->>>>>>> Support structure for coupon
 		goodorderpercent.Table:   goodorderpercent.ValidColumn,
 		invitationcode.Table:     invitationcode.ValidColumn,
 		registration.Table:       registration.ValidColumn,
-		event.Table:              event.ValidColumn,
 	}
 	check, ok := checks[table]
 	if !ok {
