@@ -54,6 +54,8 @@ func ValidateConds(conds *npool.Conds) error { //nolint
 		case basetypes.UsedFor_DepositReceived:
 		case basetypes.UsedFor_KYCApproved:
 		case basetypes.UsedFor_KYCRejected:
+		case basetypes.UsedFor_Purchase:
+		case basetypes.UsedFor_AffiliatePurchase:
 		default:
 			logger.Sugar().Errorw("ValidateConds", "EventType", conds.GetEventType().GetValue())
 			return fmt.Errorf("eventtype is invalid")
