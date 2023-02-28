@@ -77,13 +77,17 @@ func ValidateCreate(in *npool.EventReq) error { //nolint
 			return fmt.Errorf("coupontype is invalid")
 		}
 	}
-	if _, err := decimal.NewFromString(in.GetCredits()); err != nil {
-		logger.Sugar().Errorw("ValidateCreate", "Credits", in.GetCredits(), "Error", err)
-		return err
+	if in.Credits != nil {
+		if _, err := decimal.NewFromString(in.GetCredits()); err != nil {
+			logger.Sugar().Errorw("ValidateCreate", "Credits", in.GetCredits(), "Error", err)
+			return err
+		}
 	}
-	if _, err := decimal.NewFromString(in.GetCreditsPerUSD()); err != nil {
-		logger.Sugar().Errorw("ValidateCreate", "CreditsPerUSD", in.GetCreditsPerUSD(), "Error", err)
-		return err
+	if in.CreditsPerUSD != nil {
+		if _, err := decimal.NewFromString(in.GetCreditsPerUSD()); err != nil {
+			logger.Sugar().Errorw("ValidateCreate", "CreditsPerUSD", in.GetCreditsPerUSD(), "Error", err)
+			return err
+		}
 	}
 	return nil
 }
