@@ -17,6 +17,7 @@ import (
 	"github.com/NpoolPlatform/inspire-manager/pkg/db/ent/coupondiscount"
 	"github.com/NpoolPlatform/inspire-manager/pkg/db/ent/couponfixamount"
 	"github.com/NpoolPlatform/inspire-manager/pkg/db/ent/couponspecialoffer"
+	entevent "github.com/NpoolPlatform/inspire-manager/pkg/db/ent/event"
 	"github.com/NpoolPlatform/inspire-manager/pkg/db/ent/goodorderpercent"
 	"github.com/NpoolPlatform/inspire-manager/pkg/db/ent/invitationcode"
 	"github.com/NpoolPlatform/inspire-manager/pkg/db/ent/registration"
@@ -42,6 +43,8 @@ type Client struct {
 	CouponFixAmount *CouponFixAmountClient
 	// CouponSpecialOffer is the client for interacting with the CouponSpecialOffer builders.
 	CouponSpecialOffer *CouponSpecialOfferClient
+	// Event is the client for interacting with the Event builders.
+	Event *EventClient
 	// GoodOrderPercent is the client for interacting with the GoodOrderPercent builders.
 	GoodOrderPercent *GoodOrderPercentClient
 	// InvitationCode is the client for interacting with the InvitationCode builders.
@@ -67,6 +70,7 @@ func (c *Client) init() {
 	c.CouponDiscount = NewCouponDiscountClient(c.config)
 	c.CouponFixAmount = NewCouponFixAmountClient(c.config)
 	c.CouponSpecialOffer = NewCouponSpecialOfferClient(c.config)
+	c.Event = NewEventClient(c.config)
 	c.GoodOrderPercent = NewGoodOrderPercentClient(c.config)
 	c.InvitationCode = NewInvitationCodeClient(c.config)
 	c.Registration = NewRegistrationClient(c.config)
@@ -109,6 +113,7 @@ func (c *Client) Tx(ctx context.Context) (*Tx, error) {
 		CouponDiscount:     NewCouponDiscountClient(cfg),
 		CouponFixAmount:    NewCouponFixAmountClient(cfg),
 		CouponSpecialOffer: NewCouponSpecialOfferClient(cfg),
+		Event:              NewEventClient(cfg),
 		GoodOrderPercent:   NewGoodOrderPercentClient(cfg),
 		InvitationCode:     NewInvitationCodeClient(cfg),
 		Registration:       NewRegistrationClient(cfg),
@@ -137,6 +142,7 @@ func (c *Client) BeginTx(ctx context.Context, opts *sql.TxOptions) (*Tx, error) 
 		CouponDiscount:     NewCouponDiscountClient(cfg),
 		CouponFixAmount:    NewCouponFixAmountClient(cfg),
 		CouponSpecialOffer: NewCouponSpecialOfferClient(cfg),
+		Event:              NewEventClient(cfg),
 		GoodOrderPercent:   NewGoodOrderPercentClient(cfg),
 		InvitationCode:     NewInvitationCodeClient(cfg),
 		Registration:       NewRegistrationClient(cfg),
@@ -175,6 +181,7 @@ func (c *Client) Use(hooks ...Hook) {
 	c.CouponDiscount.Use(hooks...)
 	c.CouponFixAmount.Use(hooks...)
 	c.CouponSpecialOffer.Use(hooks...)
+	c.Event.Use(hooks...)
 	c.GoodOrderPercent.Use(hooks...)
 	c.InvitationCode.Use(hooks...)
 	c.Registration.Use(hooks...)
@@ -724,6 +731,97 @@ func (c *CouponSpecialOfferClient) GetX(ctx context.Context, id uuid.UUID) *Coup
 func (c *CouponSpecialOfferClient) Hooks() []Hook {
 	hooks := c.hooks.CouponSpecialOffer
 	return append(hooks[:len(hooks):len(hooks)], couponspecialoffer.Hooks[:]...)
+}
+
+// EventClient is a client for the Event schema.
+type EventClient struct {
+	config
+}
+
+// NewEventClient returns a client for the Event from the given config.
+func NewEventClient(c config) *EventClient {
+	return &EventClient{config: c}
+}
+
+// Use adds a list of mutation hooks to the hooks stack.
+// A call to `Use(f, g, h)` equals to `entevent.Hooks(f(g(h())))`.
+func (c *EventClient) Use(hooks ...Hook) {
+	c.hooks.Event = append(c.hooks.Event, hooks...)
+}
+
+// Create returns a builder for creating a Event entity.
+func (c *EventClient) Create() *EventCreate {
+	mutation := newEventMutation(c.config, OpCreate)
+	return &EventCreate{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// CreateBulk returns a builder for creating a bulk of Event entities.
+func (c *EventClient) CreateBulk(builders ...*EventCreate) *EventCreateBulk {
+	return &EventCreateBulk{config: c.config, builders: builders}
+}
+
+// Update returns an update builder for Event.
+func (c *EventClient) Update() *EventUpdate {
+	mutation := newEventMutation(c.config, OpUpdate)
+	return &EventUpdate{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// UpdateOne returns an update builder for the given entity.
+func (c *EventClient) UpdateOne(e *Event) *EventUpdateOne {
+	mutation := newEventMutation(c.config, OpUpdateOne, withEvent(e))
+	return &EventUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// UpdateOneID returns an update builder for the given id.
+func (c *EventClient) UpdateOneID(id uuid.UUID) *EventUpdateOne {
+	mutation := newEventMutation(c.config, OpUpdateOne, withEventID(id))
+	return &EventUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// Delete returns a delete builder for Event.
+func (c *EventClient) Delete() *EventDelete {
+	mutation := newEventMutation(c.config, OpDelete)
+	return &EventDelete{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// DeleteOne returns a builder for deleting the given entity.
+func (c *EventClient) DeleteOne(e *Event) *EventDeleteOne {
+	return c.DeleteOneID(e.ID)
+}
+
+// DeleteOne returns a builder for deleting the given entity by its id.
+func (c *EventClient) DeleteOneID(id uuid.UUID) *EventDeleteOne {
+	builder := c.Delete().Where(entevent.ID(id))
+	builder.mutation.id = &id
+	builder.mutation.op = OpDeleteOne
+	return &EventDeleteOne{builder}
+}
+
+// Query returns a query builder for Event.
+func (c *EventClient) Query() *EventQuery {
+	return &EventQuery{
+		config: c.config,
+	}
+}
+
+// Get returns a Event entity by its id.
+func (c *EventClient) Get(ctx context.Context, id uuid.UUID) (*Event, error) {
+	return c.Query().Where(entevent.ID(id)).Only(ctx)
+}
+
+// GetX is like Get, but panics if an error occurs.
+func (c *EventClient) GetX(ctx context.Context, id uuid.UUID) *Event {
+	obj, err := c.Get(ctx, id)
+	if err != nil {
+		panic(err)
+	}
+	return obj
+}
+
+// Hooks returns the client hooks.
+func (c *EventClient) Hooks() []Hook {
+	hooks := c.hooks.Event
+	return append(hooks[:len(hooks):len(hooks)], entevent.Hooks[:]...)
 }
 
 // GoodOrderPercentClient is a client for the GoodOrderPercent schema.

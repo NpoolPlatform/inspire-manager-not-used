@@ -14,10 +14,12 @@ import (
 	"github.com/NpoolPlatform/inspire-manager/pkg/db/ent/coupondiscount"
 	"github.com/NpoolPlatform/inspire-manager/pkg/db/ent/couponfixamount"
 	"github.com/NpoolPlatform/inspire-manager/pkg/db/ent/couponspecialoffer"
+	entevent "github.com/NpoolPlatform/inspire-manager/pkg/db/ent/event"
 	"github.com/NpoolPlatform/inspire-manager/pkg/db/ent/goodorderpercent"
 	"github.com/NpoolPlatform/inspire-manager/pkg/db/ent/invitationcode"
 	"github.com/NpoolPlatform/inspire-manager/pkg/db/ent/predicate"
 	"github.com/NpoolPlatform/inspire-manager/pkg/db/ent/registration"
+	"github.com/NpoolPlatform/message/npool/inspire/mgr/v1/event"
 	"github.com/google/uuid"
 	"github.com/shopspring/decimal"
 
@@ -39,6 +41,7 @@ const (
 	TypeCouponDiscount     = "CouponDiscount"
 	TypeCouponFixAmount    = "CouponFixAmount"
 	TypeCouponSpecialOffer = "CouponSpecialOffer"
+	TypeEvent              = "Event"
 	TypeGoodOrderPercent   = "GoodOrderPercent"
 	TypeInvitationCode     = "InvitationCode"
 	TypeRegistration       = "Registration"
@@ -7820,6 +7823,1169 @@ func (m *CouponSpecialOfferMutation) ClearEdge(name string) error {
 // It returns an error if the edge is not defined in the schema.
 func (m *CouponSpecialOfferMutation) ResetEdge(name string) error {
 	return fmt.Errorf("unknown CouponSpecialOffer edge %s", name)
+}
+
+// EventMutation represents an operation that mutates the Event nodes in the graph.
+type EventMutation struct {
+	config
+	op                 Op
+	typ                string
+	id                 *uuid.UUID
+	created_at         *uint32
+	addcreated_at      *int32
+	updated_at         *uint32
+	addupdated_at      *int32
+	deleted_at         *uint32
+	adddeleted_at      *int32
+	app_id             *uuid.UUID
+	event_type         *string
+	coupons            *[]event.Coupon
+	credits            *decimal.Decimal
+	credits_per_usd    *decimal.Decimal
+	max_consecutive    *uint32
+	addmax_consecutive *int32
+	good_id            *uuid.UUID
+	inviter_layers     *uint32
+	addinviter_layers  *int32
+	clearedFields      map[string]struct{}
+	done               bool
+	oldValue           func(context.Context) (*Event, error)
+	predicates         []predicate.Event
+}
+
+var _ ent.Mutation = (*EventMutation)(nil)
+
+// eventOption allows management of the mutation configuration using functional options.
+type eventOption func(*EventMutation)
+
+// newEventMutation creates new mutation for the Event entity.
+func newEventMutation(c config, op Op, opts ...eventOption) *EventMutation {
+	m := &EventMutation{
+		config:        c,
+		op:            op,
+		typ:           TypeEvent,
+		clearedFields: make(map[string]struct{}),
+	}
+	for _, opt := range opts {
+		opt(m)
+	}
+	return m
+}
+
+// withEventID sets the ID field of the mutation.
+func withEventID(id uuid.UUID) eventOption {
+	return func(m *EventMutation) {
+		var (
+			err   error
+			once  sync.Once
+			value *Event
+		)
+		m.oldValue = func(ctx context.Context) (*Event, error) {
+			once.Do(func() {
+				if m.done {
+					err = errors.New("querying old values post mutation is not allowed")
+				} else {
+					value, err = m.Client().Event.Get(ctx, id)
+				}
+			})
+			return value, err
+		}
+		m.id = &id
+	}
+}
+
+// withEvent sets the old Event of the mutation.
+func withEvent(node *Event) eventOption {
+	return func(m *EventMutation) {
+		m.oldValue = func(context.Context) (*Event, error) {
+			return node, nil
+		}
+		m.id = &node.ID
+	}
+}
+
+// Client returns a new `ent.Client` from the mutation. If the mutation was
+// executed in a transaction (ent.Tx), a transactional client is returned.
+func (m EventMutation) Client() *Client {
+	client := &Client{config: m.config}
+	client.init()
+	return client
+}
+
+// Tx returns an `ent.Tx` for mutations that were executed in transactions;
+// it returns an error otherwise.
+func (m EventMutation) Tx() (*Tx, error) {
+	if _, ok := m.driver.(*txDriver); !ok {
+		return nil, errors.New("ent: mutation is not running in a transaction")
+	}
+	tx := &Tx{config: m.config}
+	tx.init()
+	return tx, nil
+}
+
+// SetID sets the value of the id field. Note that this
+// operation is only accepted on creation of Event entities.
+func (m *EventMutation) SetID(id uuid.UUID) {
+	m.id = &id
+}
+
+// ID returns the ID value in the mutation. Note that the ID is only available
+// if it was provided to the builder or after it was returned from the database.
+func (m *EventMutation) ID() (id uuid.UUID, exists bool) {
+	if m.id == nil {
+		return
+	}
+	return *m.id, true
+}
+
+// IDs queries the database and returns the entity ids that match the mutation's predicate.
+// That means, if the mutation is applied within a transaction with an isolation level such
+// as sql.LevelSerializable, the returned ids match the ids of the rows that will be updated
+// or updated by the mutation.
+func (m *EventMutation) IDs(ctx context.Context) ([]uuid.UUID, error) {
+	switch {
+	case m.op.Is(OpUpdateOne | OpDeleteOne):
+		id, exists := m.ID()
+		if exists {
+			return []uuid.UUID{id}, nil
+		}
+		fallthrough
+	case m.op.Is(OpUpdate | OpDelete):
+		return m.Client().Event.Query().Where(m.predicates...).IDs(ctx)
+	default:
+		return nil, fmt.Errorf("IDs is not allowed on %s operations", m.op)
+	}
+}
+
+// SetCreatedAt sets the "created_at" field.
+func (m *EventMutation) SetCreatedAt(u uint32) {
+	m.created_at = &u
+	m.addcreated_at = nil
+}
+
+// CreatedAt returns the value of the "created_at" field in the mutation.
+func (m *EventMutation) CreatedAt() (r uint32, exists bool) {
+	v := m.created_at
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldCreatedAt returns the old "created_at" field's value of the Event entity.
+// If the Event object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *EventMutation) OldCreatedAt(ctx context.Context) (v uint32, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldCreatedAt is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldCreatedAt requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldCreatedAt: %w", err)
+	}
+	return oldValue.CreatedAt, nil
+}
+
+// AddCreatedAt adds u to the "created_at" field.
+func (m *EventMutation) AddCreatedAt(u int32) {
+	if m.addcreated_at != nil {
+		*m.addcreated_at += u
+	} else {
+		m.addcreated_at = &u
+	}
+}
+
+// AddedCreatedAt returns the value that was added to the "created_at" field in this mutation.
+func (m *EventMutation) AddedCreatedAt() (r int32, exists bool) {
+	v := m.addcreated_at
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// ResetCreatedAt resets all changes to the "created_at" field.
+func (m *EventMutation) ResetCreatedAt() {
+	m.created_at = nil
+	m.addcreated_at = nil
+}
+
+// SetUpdatedAt sets the "updated_at" field.
+func (m *EventMutation) SetUpdatedAt(u uint32) {
+	m.updated_at = &u
+	m.addupdated_at = nil
+}
+
+// UpdatedAt returns the value of the "updated_at" field in the mutation.
+func (m *EventMutation) UpdatedAt() (r uint32, exists bool) {
+	v := m.updated_at
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldUpdatedAt returns the old "updated_at" field's value of the Event entity.
+// If the Event object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *EventMutation) OldUpdatedAt(ctx context.Context) (v uint32, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldUpdatedAt is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldUpdatedAt requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldUpdatedAt: %w", err)
+	}
+	return oldValue.UpdatedAt, nil
+}
+
+// AddUpdatedAt adds u to the "updated_at" field.
+func (m *EventMutation) AddUpdatedAt(u int32) {
+	if m.addupdated_at != nil {
+		*m.addupdated_at += u
+	} else {
+		m.addupdated_at = &u
+	}
+}
+
+// AddedUpdatedAt returns the value that was added to the "updated_at" field in this mutation.
+func (m *EventMutation) AddedUpdatedAt() (r int32, exists bool) {
+	v := m.addupdated_at
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// ResetUpdatedAt resets all changes to the "updated_at" field.
+func (m *EventMutation) ResetUpdatedAt() {
+	m.updated_at = nil
+	m.addupdated_at = nil
+}
+
+// SetDeletedAt sets the "deleted_at" field.
+func (m *EventMutation) SetDeletedAt(u uint32) {
+	m.deleted_at = &u
+	m.adddeleted_at = nil
+}
+
+// DeletedAt returns the value of the "deleted_at" field in the mutation.
+func (m *EventMutation) DeletedAt() (r uint32, exists bool) {
+	v := m.deleted_at
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldDeletedAt returns the old "deleted_at" field's value of the Event entity.
+// If the Event object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *EventMutation) OldDeletedAt(ctx context.Context) (v uint32, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldDeletedAt is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldDeletedAt requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldDeletedAt: %w", err)
+	}
+	return oldValue.DeletedAt, nil
+}
+
+// AddDeletedAt adds u to the "deleted_at" field.
+func (m *EventMutation) AddDeletedAt(u int32) {
+	if m.adddeleted_at != nil {
+		*m.adddeleted_at += u
+	} else {
+		m.adddeleted_at = &u
+	}
+}
+
+// AddedDeletedAt returns the value that was added to the "deleted_at" field in this mutation.
+func (m *EventMutation) AddedDeletedAt() (r int32, exists bool) {
+	v := m.adddeleted_at
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// ResetDeletedAt resets all changes to the "deleted_at" field.
+func (m *EventMutation) ResetDeletedAt() {
+	m.deleted_at = nil
+	m.adddeleted_at = nil
+}
+
+// SetAppID sets the "app_id" field.
+func (m *EventMutation) SetAppID(u uuid.UUID) {
+	m.app_id = &u
+}
+
+// AppID returns the value of the "app_id" field in the mutation.
+func (m *EventMutation) AppID() (r uuid.UUID, exists bool) {
+	v := m.app_id
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldAppID returns the old "app_id" field's value of the Event entity.
+// If the Event object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *EventMutation) OldAppID(ctx context.Context) (v uuid.UUID, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldAppID is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldAppID requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldAppID: %w", err)
+	}
+	return oldValue.AppID, nil
+}
+
+// ResetAppID resets all changes to the "app_id" field.
+func (m *EventMutation) ResetAppID() {
+	m.app_id = nil
+}
+
+// SetEventType sets the "event_type" field.
+func (m *EventMutation) SetEventType(s string) {
+	m.event_type = &s
+}
+
+// EventType returns the value of the "event_type" field in the mutation.
+func (m *EventMutation) EventType() (r string, exists bool) {
+	v := m.event_type
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldEventType returns the old "event_type" field's value of the Event entity.
+// If the Event object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *EventMutation) OldEventType(ctx context.Context) (v string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldEventType is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldEventType requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldEventType: %w", err)
+	}
+	return oldValue.EventType, nil
+}
+
+// ClearEventType clears the value of the "event_type" field.
+func (m *EventMutation) ClearEventType() {
+	m.event_type = nil
+	m.clearedFields[entevent.FieldEventType] = struct{}{}
+}
+
+// EventTypeCleared returns if the "event_type" field was cleared in this mutation.
+func (m *EventMutation) EventTypeCleared() bool {
+	_, ok := m.clearedFields[entevent.FieldEventType]
+	return ok
+}
+
+// ResetEventType resets all changes to the "event_type" field.
+func (m *EventMutation) ResetEventType() {
+	m.event_type = nil
+	delete(m.clearedFields, entevent.FieldEventType)
+}
+
+// SetCoupons sets the "coupons" field.
+func (m *EventMutation) SetCoupons(e []event.Coupon) {
+	m.coupons = &e
+}
+
+// Coupons returns the value of the "coupons" field in the mutation.
+func (m *EventMutation) Coupons() (r []event.Coupon, exists bool) {
+	v := m.coupons
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldCoupons returns the old "coupons" field's value of the Event entity.
+// If the Event object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *EventMutation) OldCoupons(ctx context.Context) (v []event.Coupon, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldCoupons is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldCoupons requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldCoupons: %w", err)
+	}
+	return oldValue.Coupons, nil
+}
+
+// ClearCoupons clears the value of the "coupons" field.
+func (m *EventMutation) ClearCoupons() {
+	m.coupons = nil
+	m.clearedFields[entevent.FieldCoupons] = struct{}{}
+}
+
+// CouponsCleared returns if the "coupons" field was cleared in this mutation.
+func (m *EventMutation) CouponsCleared() bool {
+	_, ok := m.clearedFields[entevent.FieldCoupons]
+	return ok
+}
+
+// ResetCoupons resets all changes to the "coupons" field.
+func (m *EventMutation) ResetCoupons() {
+	m.coupons = nil
+	delete(m.clearedFields, entevent.FieldCoupons)
+}
+
+// SetCredits sets the "credits" field.
+func (m *EventMutation) SetCredits(d decimal.Decimal) {
+	m.credits = &d
+}
+
+// Credits returns the value of the "credits" field in the mutation.
+func (m *EventMutation) Credits() (r decimal.Decimal, exists bool) {
+	v := m.credits
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldCredits returns the old "credits" field's value of the Event entity.
+// If the Event object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *EventMutation) OldCredits(ctx context.Context) (v decimal.Decimal, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldCredits is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldCredits requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldCredits: %w", err)
+	}
+	return oldValue.Credits, nil
+}
+
+// ClearCredits clears the value of the "credits" field.
+func (m *EventMutation) ClearCredits() {
+	m.credits = nil
+	m.clearedFields[entevent.FieldCredits] = struct{}{}
+}
+
+// CreditsCleared returns if the "credits" field was cleared in this mutation.
+func (m *EventMutation) CreditsCleared() bool {
+	_, ok := m.clearedFields[entevent.FieldCredits]
+	return ok
+}
+
+// ResetCredits resets all changes to the "credits" field.
+func (m *EventMutation) ResetCredits() {
+	m.credits = nil
+	delete(m.clearedFields, entevent.FieldCredits)
+}
+
+// SetCreditsPerUsd sets the "credits_per_usd" field.
+func (m *EventMutation) SetCreditsPerUsd(d decimal.Decimal) {
+	m.credits_per_usd = &d
+}
+
+// CreditsPerUsd returns the value of the "credits_per_usd" field in the mutation.
+func (m *EventMutation) CreditsPerUsd() (r decimal.Decimal, exists bool) {
+	v := m.credits_per_usd
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldCreditsPerUsd returns the old "credits_per_usd" field's value of the Event entity.
+// If the Event object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *EventMutation) OldCreditsPerUsd(ctx context.Context) (v decimal.Decimal, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldCreditsPerUsd is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldCreditsPerUsd requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldCreditsPerUsd: %w", err)
+	}
+	return oldValue.CreditsPerUsd, nil
+}
+
+// ClearCreditsPerUsd clears the value of the "credits_per_usd" field.
+func (m *EventMutation) ClearCreditsPerUsd() {
+	m.credits_per_usd = nil
+	m.clearedFields[entevent.FieldCreditsPerUsd] = struct{}{}
+}
+
+// CreditsPerUsdCleared returns if the "credits_per_usd" field was cleared in this mutation.
+func (m *EventMutation) CreditsPerUsdCleared() bool {
+	_, ok := m.clearedFields[entevent.FieldCreditsPerUsd]
+	return ok
+}
+
+// ResetCreditsPerUsd resets all changes to the "credits_per_usd" field.
+func (m *EventMutation) ResetCreditsPerUsd() {
+	m.credits_per_usd = nil
+	delete(m.clearedFields, entevent.FieldCreditsPerUsd)
+}
+
+// SetMaxConsecutive sets the "max_consecutive" field.
+func (m *EventMutation) SetMaxConsecutive(u uint32) {
+	m.max_consecutive = &u
+	m.addmax_consecutive = nil
+}
+
+// MaxConsecutive returns the value of the "max_consecutive" field in the mutation.
+func (m *EventMutation) MaxConsecutive() (r uint32, exists bool) {
+	v := m.max_consecutive
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldMaxConsecutive returns the old "max_consecutive" field's value of the Event entity.
+// If the Event object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *EventMutation) OldMaxConsecutive(ctx context.Context) (v uint32, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldMaxConsecutive is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldMaxConsecutive requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldMaxConsecutive: %w", err)
+	}
+	return oldValue.MaxConsecutive, nil
+}
+
+// AddMaxConsecutive adds u to the "max_consecutive" field.
+func (m *EventMutation) AddMaxConsecutive(u int32) {
+	if m.addmax_consecutive != nil {
+		*m.addmax_consecutive += u
+	} else {
+		m.addmax_consecutive = &u
+	}
+}
+
+// AddedMaxConsecutive returns the value that was added to the "max_consecutive" field in this mutation.
+func (m *EventMutation) AddedMaxConsecutive() (r int32, exists bool) {
+	v := m.addmax_consecutive
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// ClearMaxConsecutive clears the value of the "max_consecutive" field.
+func (m *EventMutation) ClearMaxConsecutive() {
+	m.max_consecutive = nil
+	m.addmax_consecutive = nil
+	m.clearedFields[entevent.FieldMaxConsecutive] = struct{}{}
+}
+
+// MaxConsecutiveCleared returns if the "max_consecutive" field was cleared in this mutation.
+func (m *EventMutation) MaxConsecutiveCleared() bool {
+	_, ok := m.clearedFields[entevent.FieldMaxConsecutive]
+	return ok
+}
+
+// ResetMaxConsecutive resets all changes to the "max_consecutive" field.
+func (m *EventMutation) ResetMaxConsecutive() {
+	m.max_consecutive = nil
+	m.addmax_consecutive = nil
+	delete(m.clearedFields, entevent.FieldMaxConsecutive)
+}
+
+// SetGoodID sets the "good_id" field.
+func (m *EventMutation) SetGoodID(u uuid.UUID) {
+	m.good_id = &u
+}
+
+// GoodID returns the value of the "good_id" field in the mutation.
+func (m *EventMutation) GoodID() (r uuid.UUID, exists bool) {
+	v := m.good_id
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldGoodID returns the old "good_id" field's value of the Event entity.
+// If the Event object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *EventMutation) OldGoodID(ctx context.Context) (v uuid.UUID, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldGoodID is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldGoodID requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldGoodID: %w", err)
+	}
+	return oldValue.GoodID, nil
+}
+
+// ClearGoodID clears the value of the "good_id" field.
+func (m *EventMutation) ClearGoodID() {
+	m.good_id = nil
+	m.clearedFields[entevent.FieldGoodID] = struct{}{}
+}
+
+// GoodIDCleared returns if the "good_id" field was cleared in this mutation.
+func (m *EventMutation) GoodIDCleared() bool {
+	_, ok := m.clearedFields[entevent.FieldGoodID]
+	return ok
+}
+
+// ResetGoodID resets all changes to the "good_id" field.
+func (m *EventMutation) ResetGoodID() {
+	m.good_id = nil
+	delete(m.clearedFields, entevent.FieldGoodID)
+}
+
+// SetInviterLayers sets the "inviter_layers" field.
+func (m *EventMutation) SetInviterLayers(u uint32) {
+	m.inviter_layers = &u
+	m.addinviter_layers = nil
+}
+
+// InviterLayers returns the value of the "inviter_layers" field in the mutation.
+func (m *EventMutation) InviterLayers() (r uint32, exists bool) {
+	v := m.inviter_layers
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldInviterLayers returns the old "inviter_layers" field's value of the Event entity.
+// If the Event object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *EventMutation) OldInviterLayers(ctx context.Context) (v uint32, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldInviterLayers is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldInviterLayers requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldInviterLayers: %w", err)
+	}
+	return oldValue.InviterLayers, nil
+}
+
+// AddInviterLayers adds u to the "inviter_layers" field.
+func (m *EventMutation) AddInviterLayers(u int32) {
+	if m.addinviter_layers != nil {
+		*m.addinviter_layers += u
+	} else {
+		m.addinviter_layers = &u
+	}
+}
+
+// AddedInviterLayers returns the value that was added to the "inviter_layers" field in this mutation.
+func (m *EventMutation) AddedInviterLayers() (r int32, exists bool) {
+	v := m.addinviter_layers
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// ClearInviterLayers clears the value of the "inviter_layers" field.
+func (m *EventMutation) ClearInviterLayers() {
+	m.inviter_layers = nil
+	m.addinviter_layers = nil
+	m.clearedFields[entevent.FieldInviterLayers] = struct{}{}
+}
+
+// InviterLayersCleared returns if the "inviter_layers" field was cleared in this mutation.
+func (m *EventMutation) InviterLayersCleared() bool {
+	_, ok := m.clearedFields[entevent.FieldInviterLayers]
+	return ok
+}
+
+// ResetInviterLayers resets all changes to the "inviter_layers" field.
+func (m *EventMutation) ResetInviterLayers() {
+	m.inviter_layers = nil
+	m.addinviter_layers = nil
+	delete(m.clearedFields, entevent.FieldInviterLayers)
+}
+
+// Where appends a list predicates to the EventMutation builder.
+func (m *EventMutation) Where(ps ...predicate.Event) {
+	m.predicates = append(m.predicates, ps...)
+}
+
+// Op returns the operation name.
+func (m *EventMutation) Op() Op {
+	return m.op
+}
+
+// Type returns the node type of this mutation (Event).
+func (m *EventMutation) Type() string {
+	return m.typ
+}
+
+// Fields returns all fields that were changed during this mutation. Note that in
+// order to get all numeric fields that were incremented/decremented, call
+// AddedFields().
+func (m *EventMutation) Fields() []string {
+	fields := make([]string, 0, 11)
+	if m.created_at != nil {
+		fields = append(fields, entevent.FieldCreatedAt)
+	}
+	if m.updated_at != nil {
+		fields = append(fields, entevent.FieldUpdatedAt)
+	}
+	if m.deleted_at != nil {
+		fields = append(fields, entevent.FieldDeletedAt)
+	}
+	if m.app_id != nil {
+		fields = append(fields, entevent.FieldAppID)
+	}
+	if m.event_type != nil {
+		fields = append(fields, entevent.FieldEventType)
+	}
+	if m.coupons != nil {
+		fields = append(fields, entevent.FieldCoupons)
+	}
+	if m.credits != nil {
+		fields = append(fields, entevent.FieldCredits)
+	}
+	if m.credits_per_usd != nil {
+		fields = append(fields, entevent.FieldCreditsPerUsd)
+	}
+	if m.max_consecutive != nil {
+		fields = append(fields, entevent.FieldMaxConsecutive)
+	}
+	if m.good_id != nil {
+		fields = append(fields, entevent.FieldGoodID)
+	}
+	if m.inviter_layers != nil {
+		fields = append(fields, entevent.FieldInviterLayers)
+	}
+	return fields
+}
+
+// Field returns the value of a field with the given name. The second boolean
+// return value indicates that this field was not set, or was not defined in the
+// schema.
+func (m *EventMutation) Field(name string) (ent.Value, bool) {
+	switch name {
+	case entevent.FieldCreatedAt:
+		return m.CreatedAt()
+	case entevent.FieldUpdatedAt:
+		return m.UpdatedAt()
+	case entevent.FieldDeletedAt:
+		return m.DeletedAt()
+	case entevent.FieldAppID:
+		return m.AppID()
+	case entevent.FieldEventType:
+		return m.EventType()
+	case entevent.FieldCoupons:
+		return m.Coupons()
+	case entevent.FieldCredits:
+		return m.Credits()
+	case entevent.FieldCreditsPerUsd:
+		return m.CreditsPerUsd()
+	case entevent.FieldMaxConsecutive:
+		return m.MaxConsecutive()
+	case entevent.FieldGoodID:
+		return m.GoodID()
+	case entevent.FieldInviterLayers:
+		return m.InviterLayers()
+	}
+	return nil, false
+}
+
+// OldField returns the old value of the field from the database. An error is
+// returned if the mutation operation is not UpdateOne, or the query to the
+// database failed.
+func (m *EventMutation) OldField(ctx context.Context, name string) (ent.Value, error) {
+	switch name {
+	case entevent.FieldCreatedAt:
+		return m.OldCreatedAt(ctx)
+	case entevent.FieldUpdatedAt:
+		return m.OldUpdatedAt(ctx)
+	case entevent.FieldDeletedAt:
+		return m.OldDeletedAt(ctx)
+	case entevent.FieldAppID:
+		return m.OldAppID(ctx)
+	case entevent.FieldEventType:
+		return m.OldEventType(ctx)
+	case entevent.FieldCoupons:
+		return m.OldCoupons(ctx)
+	case entevent.FieldCredits:
+		return m.OldCredits(ctx)
+	case entevent.FieldCreditsPerUsd:
+		return m.OldCreditsPerUsd(ctx)
+	case entevent.FieldMaxConsecutive:
+		return m.OldMaxConsecutive(ctx)
+	case entevent.FieldGoodID:
+		return m.OldGoodID(ctx)
+	case entevent.FieldInviterLayers:
+		return m.OldInviterLayers(ctx)
+	}
+	return nil, fmt.Errorf("unknown Event field %s", name)
+}
+
+// SetField sets the value of a field with the given name. It returns an error if
+// the field is not defined in the schema, or if the type mismatched the field
+// type.
+func (m *EventMutation) SetField(name string, value ent.Value) error {
+	switch name {
+	case entevent.FieldCreatedAt:
+		v, ok := value.(uint32)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetCreatedAt(v)
+		return nil
+	case entevent.FieldUpdatedAt:
+		v, ok := value.(uint32)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetUpdatedAt(v)
+		return nil
+	case entevent.FieldDeletedAt:
+		v, ok := value.(uint32)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetDeletedAt(v)
+		return nil
+	case entevent.FieldAppID:
+		v, ok := value.(uuid.UUID)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetAppID(v)
+		return nil
+	case entevent.FieldEventType:
+		v, ok := value.(string)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetEventType(v)
+		return nil
+	case entevent.FieldCoupons:
+		v, ok := value.([]event.Coupon)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetCoupons(v)
+		return nil
+	case entevent.FieldCredits:
+		v, ok := value.(decimal.Decimal)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetCredits(v)
+		return nil
+	case entevent.FieldCreditsPerUsd:
+		v, ok := value.(decimal.Decimal)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetCreditsPerUsd(v)
+		return nil
+	case entevent.FieldMaxConsecutive:
+		v, ok := value.(uint32)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetMaxConsecutive(v)
+		return nil
+	case entevent.FieldGoodID:
+		v, ok := value.(uuid.UUID)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetGoodID(v)
+		return nil
+	case entevent.FieldInviterLayers:
+		v, ok := value.(uint32)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetInviterLayers(v)
+		return nil
+	}
+	return fmt.Errorf("unknown Event field %s", name)
+}
+
+// AddedFields returns all numeric fields that were incremented/decremented during
+// this mutation.
+func (m *EventMutation) AddedFields() []string {
+	var fields []string
+	if m.addcreated_at != nil {
+		fields = append(fields, entevent.FieldCreatedAt)
+	}
+	if m.addupdated_at != nil {
+		fields = append(fields, entevent.FieldUpdatedAt)
+	}
+	if m.adddeleted_at != nil {
+		fields = append(fields, entevent.FieldDeletedAt)
+	}
+	if m.addmax_consecutive != nil {
+		fields = append(fields, entevent.FieldMaxConsecutive)
+	}
+	if m.addinviter_layers != nil {
+		fields = append(fields, entevent.FieldInviterLayers)
+	}
+	return fields
+}
+
+// AddedField returns the numeric value that was incremented/decremented on a field
+// with the given name. The second boolean return value indicates that this field
+// was not set, or was not defined in the schema.
+func (m *EventMutation) AddedField(name string) (ent.Value, bool) {
+	switch name {
+	case entevent.FieldCreatedAt:
+		return m.AddedCreatedAt()
+	case entevent.FieldUpdatedAt:
+		return m.AddedUpdatedAt()
+	case entevent.FieldDeletedAt:
+		return m.AddedDeletedAt()
+	case entevent.FieldMaxConsecutive:
+		return m.AddedMaxConsecutive()
+	case entevent.FieldInviterLayers:
+		return m.AddedInviterLayers()
+	}
+	return nil, false
+}
+
+// AddField adds the value to the field with the given name. It returns an error if
+// the field is not defined in the schema, or if the type mismatched the field
+// type.
+func (m *EventMutation) AddField(name string, value ent.Value) error {
+	switch name {
+	case entevent.FieldCreatedAt:
+		v, ok := value.(int32)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.AddCreatedAt(v)
+		return nil
+	case entevent.FieldUpdatedAt:
+		v, ok := value.(int32)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.AddUpdatedAt(v)
+		return nil
+	case entevent.FieldDeletedAt:
+		v, ok := value.(int32)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.AddDeletedAt(v)
+		return nil
+	case entevent.FieldMaxConsecutive:
+		v, ok := value.(int32)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.AddMaxConsecutive(v)
+		return nil
+	case entevent.FieldInviterLayers:
+		v, ok := value.(int32)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.AddInviterLayers(v)
+		return nil
+	}
+	return fmt.Errorf("unknown Event numeric field %s", name)
+}
+
+// ClearedFields returns all nullable fields that were cleared during this
+// mutation.
+func (m *EventMutation) ClearedFields() []string {
+	var fields []string
+	if m.FieldCleared(entevent.FieldEventType) {
+		fields = append(fields, entevent.FieldEventType)
+	}
+	if m.FieldCleared(entevent.FieldCoupons) {
+		fields = append(fields, entevent.FieldCoupons)
+	}
+	if m.FieldCleared(entevent.FieldCredits) {
+		fields = append(fields, entevent.FieldCredits)
+	}
+	if m.FieldCleared(entevent.FieldCreditsPerUsd) {
+		fields = append(fields, entevent.FieldCreditsPerUsd)
+	}
+	if m.FieldCleared(entevent.FieldMaxConsecutive) {
+		fields = append(fields, entevent.FieldMaxConsecutive)
+	}
+	if m.FieldCleared(entevent.FieldGoodID) {
+		fields = append(fields, entevent.FieldGoodID)
+	}
+	if m.FieldCleared(entevent.FieldInviterLayers) {
+		fields = append(fields, entevent.FieldInviterLayers)
+	}
+	return fields
+}
+
+// FieldCleared returns a boolean indicating if a field with the given name was
+// cleared in this mutation.
+func (m *EventMutation) FieldCleared(name string) bool {
+	_, ok := m.clearedFields[name]
+	return ok
+}
+
+// ClearField clears the value of the field with the given name. It returns an
+// error if the field is not defined in the schema.
+func (m *EventMutation) ClearField(name string) error {
+	switch name {
+	case entevent.FieldEventType:
+		m.ClearEventType()
+		return nil
+	case entevent.FieldCoupons:
+		m.ClearCoupons()
+		return nil
+	case entevent.FieldCredits:
+		m.ClearCredits()
+		return nil
+	case entevent.FieldCreditsPerUsd:
+		m.ClearCreditsPerUsd()
+		return nil
+	case entevent.FieldMaxConsecutive:
+		m.ClearMaxConsecutive()
+		return nil
+	case entevent.FieldGoodID:
+		m.ClearGoodID()
+		return nil
+	case entevent.FieldInviterLayers:
+		m.ClearInviterLayers()
+		return nil
+	}
+	return fmt.Errorf("unknown Event nullable field %s", name)
+}
+
+// ResetField resets all changes in the mutation for the field with the given name.
+// It returns an error if the field is not defined in the schema.
+func (m *EventMutation) ResetField(name string) error {
+	switch name {
+	case entevent.FieldCreatedAt:
+		m.ResetCreatedAt()
+		return nil
+	case entevent.FieldUpdatedAt:
+		m.ResetUpdatedAt()
+		return nil
+	case entevent.FieldDeletedAt:
+		m.ResetDeletedAt()
+		return nil
+	case entevent.FieldAppID:
+		m.ResetAppID()
+		return nil
+	case entevent.FieldEventType:
+		m.ResetEventType()
+		return nil
+	case entevent.FieldCoupons:
+		m.ResetCoupons()
+		return nil
+	case entevent.FieldCredits:
+		m.ResetCredits()
+		return nil
+	case entevent.FieldCreditsPerUsd:
+		m.ResetCreditsPerUsd()
+		return nil
+	case entevent.FieldMaxConsecutive:
+		m.ResetMaxConsecutive()
+		return nil
+	case entevent.FieldGoodID:
+		m.ResetGoodID()
+		return nil
+	case entevent.FieldInviterLayers:
+		m.ResetInviterLayers()
+		return nil
+	}
+	return fmt.Errorf("unknown Event field %s", name)
+}
+
+// AddedEdges returns all edge names that were set/added in this mutation.
+func (m *EventMutation) AddedEdges() []string {
+	edges := make([]string, 0, 0)
+	return edges
+}
+
+// AddedIDs returns all IDs (to other nodes) that were added for the given edge
+// name in this mutation.
+func (m *EventMutation) AddedIDs(name string) []ent.Value {
+	return nil
+}
+
+// RemovedEdges returns all edge names that were removed in this mutation.
+func (m *EventMutation) RemovedEdges() []string {
+	edges := make([]string, 0, 0)
+	return edges
+}
+
+// RemovedIDs returns all IDs (to other nodes) that were removed for the edge with
+// the given name in this mutation.
+func (m *EventMutation) RemovedIDs(name string) []ent.Value {
+	return nil
+}
+
+// ClearedEdges returns all edge names that were cleared in this mutation.
+func (m *EventMutation) ClearedEdges() []string {
+	edges := make([]string, 0, 0)
+	return edges
+}
+
+// EdgeCleared returns a boolean which indicates if the edge with the given name
+// was cleared in this mutation.
+func (m *EventMutation) EdgeCleared(name string) bool {
+	return false
+}
+
+// ClearEdge clears the value of the edge with the given name. It returns an error
+// if that edge is not defined in the schema.
+func (m *EventMutation) ClearEdge(name string) error {
+	return fmt.Errorf("unknown Event unique edge %s", name)
+}
+
+// ResetEdge resets all changes to the edge with the given name in this mutation.
+// It returns an error if the edge is not defined in the schema.
+func (m *EventMutation) ResetEdge(name string) error {
+	return fmt.Errorf("unknown Event edge %s", name)
 }
 
 // GoodOrderPercentMutation represents an operation that mutates the GoodOrderPercent nodes in the graph.
