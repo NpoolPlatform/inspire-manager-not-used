@@ -35,7 +35,7 @@ func init() {
 	}
 }
 
-var appDate = npool.Allocated{
+var ret = npool.Allocated{
 	ID:         uuid.NewString(),
 	AppID:      uuid.NewString(),
 	UserID:     uuid.NewString(),
@@ -45,12 +45,12 @@ var appDate = npool.Allocated{
 }
 
 var (
-	appInfo = npool.AllocatedReq{
-		ID:         &appDate.ID,
-		AppID:      &appDate.AppID,
-		UserID:     &appDate.UserID,
-		CouponType: &appDate.CouponType,
-		CouponID:   &appDate.CouponID,
+	req = npool.AllocatedReq{
+		ID:         &ret.ID,
+		AppID:      &ret.AppID,
+		UserID:     &ret.UserID,
+		CouponType: &ret.CouponType,
+		CouponID:   &ret.CouponID,
 	}
 )
 
@@ -58,16 +58,16 @@ var info *npool.Allocated
 
 func createAllocated(t *testing.T) {
 	var err error
-	info, err = CreateAllocated(context.Background(), &appInfo)
+	info, err = CreateAllocated(context.Background(), &req)
 	if assert.Nil(t, err) {
-		appDate.CreatedAt = info.CreatedAt
-		appDate.UpdatedAt = info.UpdatedAt
-		assert.Equal(t, info, &appDate)
+		ret.CreatedAt = info.CreatedAt
+		ret.UpdatedAt = info.UpdatedAt
+		assert.Equal(t, info, &ret)
 	}
 }
 
 func createAllocateds(t *testing.T) {
-	appDates := []npool.Allocated{
+	rets := []npool.Allocated{
 		{
 			ID:         uuid.NewString(),
 			AppID:      uuid.NewString(),
@@ -85,13 +85,13 @@ func createAllocateds(t *testing.T) {
 	}
 
 	apps := []*npool.AllocatedReq{}
-	for key := range appDates {
+	for key := range rets {
 		apps = append(apps, &npool.AllocatedReq{
-			ID:         &appDates[key].ID,
-			AppID:      &appDates[key].AppID,
-			UserID:     &appDates[key].UserID,
-			CouponType: &appDates[key].CouponType,
-			CouponID:   &appDates[key].CouponID,
+			ID:         &rets[key].ID,
+			AppID:      &rets[key].AppID,
+			UserID:     &rets[key].UserID,
+			CouponType: &rets[key].CouponType,
+			CouponID:   &rets[key].CouponID,
 		})
 	}
 
@@ -105,7 +105,7 @@ func getAllocated(t *testing.T) {
 	var err error
 	info, err = GetAllocated(context.Background(), info.ID)
 	if assert.Nil(t, err) {
-		assert.Equal(t, info, &appDate)
+		assert.Equal(t, info, &ret)
 	}
 }
 
@@ -119,7 +119,7 @@ func getAllocateds(t *testing.T) {
 		}, 0, 1)
 	if assert.Nil(t, err) {
 		assert.Equal(t, total, uint32(1))
-		assert.Equal(t, infos[0], &appDate)
+		assert.Equal(t, infos[0], &ret)
 	}
 }
 
@@ -133,7 +133,7 @@ func getAllocatedOnly(t *testing.T) {
 			},
 		})
 	if assert.Nil(t, err) {
-		assert.Equal(t, info, &appDate)
+		assert.Equal(t, info, &ret)
 	}
 }
 
@@ -161,7 +161,8 @@ func existAllocatedConds(t *testing.T) {
 func deleteAllocated(t *testing.T) {
 	info, err := DeleteAllocated(context.Background(), info.ID)
 	if assert.Nil(t, err) {
-		assert.Equal(t, info, &appDate)
+		ret.UpdatedAt = info.UpdatedAt
+		assert.Equal(t, info, &ret)
 	}
 }
 
