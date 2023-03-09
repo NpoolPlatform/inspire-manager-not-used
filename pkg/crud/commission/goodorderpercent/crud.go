@@ -1,3 +1,4 @@
+//nolint:dupl
 package goodorderpercent
 
 import (
@@ -230,10 +231,28 @@ func SetQueryConds(conds *npool.Conds, cli *ent.Client) (*ent.GoodOrderPercentQu
 	}
 	if conds.EndAt != nil {
 		switch conds.GetEndAt().GetOp() {
+		case cruder.LT:
+			stm.Where(goodorderpercent.EndAtLT(conds.GetEndAt().GetValue()))
+		case cruder.GT:
+			stm.Where(goodorderpercent.EndAtGT(conds.GetEndAt().GetValue()))
 		case cruder.EQ:
 			stm.Where(goodorderpercent.EndAt(conds.GetEndAt().GetValue()))
 		case cruder.NEQ:
 			stm.Where(goodorderpercent.EndAtNEQ(conds.GetEndAt().GetValue()))
+		default:
+			return nil, fmt.Errorf("invalid goodorderpercent field")
+		}
+	}
+	if conds.StartAt != nil {
+		switch conds.GetStartAt().GetOp() {
+		case cruder.LT:
+			stm.Where(goodorderpercent.StartAtLT(conds.GetStartAt().GetValue()))
+		case cruder.GT:
+			stm.Where(goodorderpercent.StartAtGT(conds.GetStartAt().GetValue()))
+		case cruder.EQ:
+			stm.Where(goodorderpercent.StartAt(conds.GetStartAt().GetValue()))
+		case cruder.NEQ:
+			stm.Where(goodorderpercent.StartAtNEQ(conds.GetStartAt().GetValue()))
 		default:
 			return nil, fmt.Errorf("invalid goodorderpercent field")
 		}
