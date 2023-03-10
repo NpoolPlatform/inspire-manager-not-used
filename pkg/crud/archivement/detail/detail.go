@@ -212,6 +212,18 @@ func setQueryConds(conds *npool.Conds, cli *ent.Client) (*ent.ArchivementDetailQ
 			return nil, fmt.Errorf("invalid detail field")
 		}
 	}
+	if len(conds.GetUserIDs().GetValue()) > 0 {
+		ids := []uuid.UUID{}
+		for _, id := range conds.GetUserIDs().GetValue() {
+			ids = append(ids, uuid.MustParse(id))
+		}
+		switch conds.GetUserIDs().GetOp() {
+		case cruder.IN:
+			stm.Where(archivementdetail.UserIDIn(ids...))
+		default:
+			return nil, fmt.Errorf("invalid detail field")
+		}
+	}
 	if conds.DirectContributorID != nil {
 		switch conds.GetDirectContributorID().GetOp() {
 		case cruder.EQ:
