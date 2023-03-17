@@ -1,56 +1,70 @@
-//nolint:dupl
-package goodorderpercent
+package event
 
 import (
 	"context"
 	"fmt"
 	"time"
 
-	"github.com/shopspring/decimal"
+	entevent "github.com/NpoolPlatform/inspire-manager/pkg/db/ent/event"
+	tracer "github.com/NpoolPlatform/inspire-manager/pkg/tracer/event"
 
 	constant "github.com/NpoolPlatform/inspire-manager/pkg/message/const"
 	commontracer "github.com/NpoolPlatform/inspire-manager/pkg/tracer"
-	tracer "github.com/NpoolPlatform/inspire-manager/pkg/tracer/commission/goodorderpercent"
 
 	"go.opentelemetry.io/otel"
 	"go.opentelemetry.io/otel/codes"
 
 	"github.com/NpoolPlatform/inspire-manager/pkg/db"
 	"github.com/NpoolPlatform/inspire-manager/pkg/db/ent"
-	"github.com/NpoolPlatform/inspire-manager/pkg/db/ent/goodorderpercent"
 	"github.com/NpoolPlatform/libent-cruder/pkg/cruder"
-	npool "github.com/NpoolPlatform/message/npool/inspire/mgr/v1/commission/goodorderpercent"
+
+	basetypes "github.com/NpoolPlatform/message/npool/basetypes/v1"
+	npool "github.com/NpoolPlatform/message/npool/inspire/mgr/v1/event"
 
 	"github.com/google/uuid"
+	"github.com/shopspring/decimal"
 )
 
-func CreateSet(c *ent.GoodOrderPercentCreate, in *npool.OrderPercentReq) (*ent.GoodOrderPercentCreate, error) {
+func CreateSet(c *ent.EventCreate, in *npool.EventReq) (*ent.EventCreate, error) {
 	if in.ID != nil {
 		c.SetID(uuid.MustParse(in.GetID()))
 	}
 	if in.AppID != nil {
 		c.SetAppID(uuid.MustParse(in.GetAppID()))
 	}
-	if in.UserID != nil {
-		c.SetUserID(uuid.MustParse(in.GetUserID()))
+	if in.EventType != nil {
+		c.SetEventType(in.GetEventType().String())
+	}
+	if len(in.GetCoupons()) > 0 {
+		coupons := []npool.Coupon{}
+		for _, coup := range in.GetCoupons() {
+			coupons = append(coupons, npool.Coupon{
+				ID:         coup.ID,
+				CouponType: coup.CouponType,
+			})
+		}
+		c.SetCoupons(coupons)
+	}
+	if in.Credits != nil {
+		c.SetCredits(decimal.RequireFromString(in.GetCredits()))
+	}
+	if in.CreditsPerUSD != nil {
+		c.SetCreditsPerUsd(decimal.RequireFromString(in.GetCreditsPerUSD()))
+	}
+	if in.MaxConsecutive != nil {
+		c.SetMaxConsecutive(in.GetMaxConsecutive())
 	}
 	if in.GoodID != nil {
 		c.SetGoodID(uuid.MustParse(in.GetGoodID()))
 	}
-	if in.Percent != nil {
-		c.SetPercent(decimal.RequireFromString(in.GetPercent()))
+	if in.InviterLayers != nil {
+		c.SetInviterLayers(in.GetInviterLayers())
 	}
-	c.SetEndAt(uint32(time.Now().Unix()))
-	if in.StartAt != nil {
-		c.SetStartAt(in.GetStartAt())
-	}
-	c.SetEndAt(0)
-
 	return c, nil
 }
 
-func Create(ctx context.Context, in *npool.OrderPercentReq) (*ent.GoodOrderPercent, error) {
-	var info *ent.GoodOrderPercent
+func Create(ctx context.Context, in *npool.EventReq) (*ent.Event, error) {
+	var info *ent.Event
 	var err error
 
 	_, span := otel.Tracer(constant.ServiceName).Start(ctx, "Create")
@@ -66,12 +80,12 @@ func Create(ctx context.Context, in *npool.OrderPercentReq) (*ent.GoodOrderPerce
 	span = tracer.Trace(span, in)
 
 	err = db.WithClient(ctx, func(_ctx context.Context, cli *ent.Client) error {
-		c, err := CreateSet(cli.GoodOrderPercent.Create(), in)
+		c := cli.Event.Create()
+		stm, err := CreateSet(c, in)
 		if err != nil {
 			return err
 		}
-
-		info, err = c.Save(_ctx)
+		info, err = stm.Save(_ctx)
 		return err
 	})
 	if err != nil {
@@ -81,7 +95,7 @@ func Create(ctx context.Context, in *npool.OrderPercentReq) (*ent.GoodOrderPerce
 	return info, nil
 }
 
-func CreateBulk(ctx context.Context, in []*npool.OrderPercentReq) ([]*ent.GoodOrderPercent, error) {
+func CreateBulk(ctx context.Context, in []*npool.EventReq) ([]*ent.Event, error) {
 	var err error
 
 	_, span := otel.Tracer(constant.ServiceName).Start(ctx, "CreateBulk")
@@ -96,16 +110,17 @@ func CreateBulk(ctx context.Context, in []*npool.OrderPercentReq) ([]*ent.GoodOr
 
 	span = tracer.TraceMany(span, in)
 
-	rows := []*ent.GoodOrderPercent{}
+	rows := []*ent.Event{}
 	err = db.WithTx(ctx, func(_ctx context.Context, tx *ent.Tx) error {
-		bulk := make([]*ent.GoodOrderPercentCreate, len(in))
+		bulk := make([]*ent.EventCreate, len(in))
 		for i, info := range in {
-			bulk[i], err = CreateSet(tx.GoodOrderPercent.Create(), info)
+			bulk[i] = tx.Event.Create()
+			bulk[i], err = CreateSet(bulk[i], info)
 			if err != nil {
 				return err
 			}
 		}
-		rows, err = tx.GoodOrderPercent.CreateBulk(bulk...).Save(_ctx)
+		rows, err = tx.Event.CreateBulk(bulk...).Save(_ctx)
 		return err
 	})
 	if err != nil {
@@ -114,24 +129,37 @@ func CreateBulk(ctx context.Context, in []*npool.OrderPercentReq) ([]*ent.GoodOr
 	return rows, nil
 }
 
-func UpdateSet(info *ent.GoodOrderPercent, in *npool.OrderPercentReq) *ent.GoodOrderPercentUpdateOne {
-	stm := info.Update()
+func UpdateSet(info *ent.Event, in *npool.EventReq) (*ent.EventUpdateOne, error) {
+	u := info.Update()
 
-	if in.Percent != nil {
-		stm = stm.SetPercent(decimal.RequireFromString(in.GetPercent()))
+	if in.Coupons != nil {
+		coupons := []npool.Coupon{}
+		for _, coup := range in.GetCoupons() {
+			coupons = append(coupons, npool.Coupon{
+				ID:         coup.ID,
+				CouponType: coup.CouponType,
+			})
+		}
+		u.SetCoupons(coupons)
 	}
-	if in.StartAt != nil {
-		stm = stm.SetStartAt(in.GetStartAt())
+	if in.Credits != nil {
+		u.SetCredits(decimal.RequireFromString(in.GetCredits()))
 	}
-	if in.EndAt != nil {
-		stm = stm.SetEndAt(in.GetEndAt())
+	if in.CreditsPerUSD != nil {
+		u.SetCreditsPerUsd(decimal.RequireFromString(in.GetCreditsPerUSD()))
+	}
+	if in.MaxConsecutive != nil {
+		u.SetMaxConsecutive(in.GetMaxConsecutive())
+	}
+	if in.InviterLayers != nil {
+		u.SetInviterLayers(in.GetInviterLayers())
 	}
 
-	return stm
+	return u, nil
 }
 
-func Update(ctx context.Context, in *npool.OrderPercentReq) (*ent.GoodOrderPercent, error) {
-	var info *ent.GoodOrderPercent
+func Update(ctx context.Context, in *npool.EventReq) (*ent.Event, error) {
+	var info *ent.Event
 	var err error
 
 	_, span := otel.Tracer(constant.ServiceName).Start(ctx, "Update")
@@ -147,29 +175,28 @@ func Update(ctx context.Context, in *npool.OrderPercentReq) (*ent.GoodOrderPerce
 	span = tracer.Trace(span, in)
 
 	err = db.WithTx(ctx, func(_ctx context.Context, tx *ent.Tx) error {
-		info, err = tx.GoodOrderPercent.Query().Where(goodorderpercent.ID(uuid.MustParse(in.GetID()))).ForUpdate().Only(_ctx)
+		info, err = tx.Event.Query().Where(entevent.ID(uuid.MustParse(in.GetID()))).ForUpdate().Only(_ctx)
 		if err != nil {
-			return fmt.Errorf("fail query goodorderpercent: %v", err)
+			return err
 		}
 
-		stm := UpdateSet(info, in)
+		stm, err := UpdateSet(info, in)
+		if err != nil {
+			return err
+		}
 
 		info, err = stm.Save(_ctx)
-		if err != nil {
-			return fmt.Errorf("fail update goodorderpercent: %v", err)
-		}
-
-		return nil
+		return err
 	})
 	if err != nil {
-		return nil, fmt.Errorf("fail update goodorderpercent: %v", err)
+		return nil, err
 	}
 
 	return info, nil
 }
 
-func Row(ctx context.Context, id uuid.UUID) (*ent.GoodOrderPercent, error) {
-	var info *ent.GoodOrderPercent
+func Row(ctx context.Context, id uuid.UUID) (*ent.Event, error) {
+	var info *ent.Event
 	var err error
 
 	_, span := otel.Tracer(constant.ServiceName).Start(ctx, "Row")
@@ -185,7 +212,7 @@ func Row(ctx context.Context, id uuid.UUID) (*ent.GoodOrderPercent, error) {
 	span = commontracer.TraceID(span, id.String())
 
 	err = db.WithClient(ctx, func(_ctx context.Context, cli *ent.Client) error {
-		info, err = cli.GoodOrderPercent.Query().Where(goodorderpercent.ID(id)).Only(_ctx)
+		info, err = cli.Event.Query().Where(entevent.ID(id)).Only(_ctx)
 		return err
 	})
 	if err != nil {
@@ -195,96 +222,47 @@ func Row(ctx context.Context, id uuid.UUID) (*ent.GoodOrderPercent, error) {
 	return info, nil
 }
 
-func SetQueryConds(conds *npool.Conds, cli *ent.Client) (*ent.GoodOrderPercentQuery, error) { //nolint
-	stm := cli.GoodOrderPercent.Query()
+func SetQueryConds(conds *npool.Conds, cli *ent.Client) (*ent.EventQuery, error) {
+	stm := cli.Event.Query()
+	if conds == nil {
+		return stm, nil
+	}
 	if conds.ID != nil {
 		switch conds.GetID().GetOp() {
 		case cruder.EQ:
-			stm.Where(goodorderpercent.ID(uuid.MustParse(conds.GetID().GetValue())))
+			stm.Where(entevent.ID(uuid.MustParse(conds.GetID().GetValue())))
 		default:
-			return nil, fmt.Errorf("invalid goodorderpercent field")
+			return nil, fmt.Errorf("invalid event field")
 		}
 	}
 	if conds.AppID != nil {
 		switch conds.GetAppID().GetOp() {
 		case cruder.EQ:
-			stm.Where(goodorderpercent.AppID(uuid.MustParse(conds.GetAppID().GetValue())))
+			stm.Where(entevent.AppID(uuid.MustParse(conds.GetAppID().GetValue())))
 		default:
-			return nil, fmt.Errorf("invalid goodorderpercent field")
+			return nil, fmt.Errorf("invalid event field")
 		}
 	}
-	if conds.UserID != nil {
-		switch conds.GetUserID().GetOp() {
+	if conds.EventType != nil {
+		switch conds.GetEventType().GetOp() {
 		case cruder.EQ:
-			stm.Where(goodorderpercent.UserID(uuid.MustParse(conds.GetUserID().GetValue())))
+			stm.Where(entevent.EventType(basetypes.UsedFor(conds.GetEventType().GetValue()).String()))
 		default:
-			return nil, fmt.Errorf("invalid goodorderpercent field")
+			return nil, fmt.Errorf("invalid event field")
 		}
 	}
 	if conds.GoodID != nil {
 		switch conds.GetGoodID().GetOp() {
 		case cruder.EQ:
-			stm.Where(goodorderpercent.GoodID(uuid.MustParse(conds.GetGoodID().GetValue())))
+			stm.Where(entevent.GoodID(uuid.MustParse(conds.GetGoodID().GetValue())))
 		default:
-			return nil, fmt.Errorf("invalid goodorderpercent field")
-		}
-	}
-	if conds.EndAt != nil {
-		switch conds.GetEndAt().GetOp() {
-		case cruder.LT:
-			stm.Where(goodorderpercent.EndAtLT(conds.GetEndAt().GetValue()))
-		case cruder.GT:
-			stm.Where(goodorderpercent.EndAtGT(conds.GetEndAt().GetValue()))
-		case cruder.EQ:
-			stm.Where(goodorderpercent.EndAt(conds.GetEndAt().GetValue()))
-		case cruder.NEQ:
-			stm.Where(goodorderpercent.EndAtNEQ(conds.GetEndAt().GetValue()))
-		default:
-			return nil, fmt.Errorf("invalid goodorderpercent field")
-		}
-	}
-	if conds.StartAt != nil {
-		switch conds.GetStartAt().GetOp() {
-		case cruder.LT:
-			stm.Where(goodorderpercent.StartAtLT(conds.GetStartAt().GetValue()))
-		case cruder.GT:
-			stm.Where(goodorderpercent.StartAtGT(conds.GetStartAt().GetValue()))
-		case cruder.EQ:
-			stm.Where(goodorderpercent.StartAt(conds.GetStartAt().GetValue()))
-		case cruder.NEQ:
-			stm.Where(goodorderpercent.StartAtNEQ(conds.GetStartAt().GetValue()))
-		default:
-			return nil, fmt.Errorf("invalid goodorderpercent field")
-		}
-	}
-	if len(conds.GetUserIDs().GetValue()) > 0 {
-		ids := []uuid.UUID{}
-		for _, id := range conds.GetUserIDs().GetValue() {
-			ids = append(ids, uuid.MustParse(id))
-		}
-		switch conds.GetUserIDs().GetOp() {
-		case cruder.IN:
-			stm.Where(goodorderpercent.UserIDIn(ids...))
-		default:
-			return nil, fmt.Errorf("invalid goodorderpercent field")
-		}
-	}
-	if len(conds.GetGoodIDs().GetValue()) > 0 {
-		ids := []uuid.UUID{}
-		for _, id := range conds.GetGoodIDs().GetValue() {
-			ids = append(ids, uuid.MustParse(id))
-		}
-		switch conds.GetGoodIDs().GetOp() {
-		case cruder.IN:
-			stm.Where(goodorderpercent.GoodIDIn(ids...))
-		default:
-			return nil, fmt.Errorf("invalid goodorderpercent field")
+			return nil, fmt.Errorf("invalid event field")
 		}
 	}
 	return stm, nil
 }
 
-func Rows(ctx context.Context, conds *npool.Conds, offset, limit int) ([]*ent.GoodOrderPercent, int, error) {
+func Rows(ctx context.Context, conds *npool.Conds, offset, limit int) ([]*ent.Event, int, error) {
 	var err error
 
 	_, span := otel.Tracer(constant.ServiceName).Start(ctx, "Rows")
@@ -300,7 +278,7 @@ func Rows(ctx context.Context, conds *npool.Conds, offset, limit int) ([]*ent.Go
 	span = tracer.TraceConds(span, conds)
 	span = commontracer.TraceOffsetLimit(span, offset, limit)
 
-	rows := []*ent.GoodOrderPercent{}
+	rows := []*ent.Event{}
 	var total int
 	err = db.WithClient(ctx, func(_ctx context.Context, cli *ent.Client) error {
 		stm, err := SetQueryConds(conds, cli)
@@ -315,7 +293,7 @@ func Rows(ctx context.Context, conds *npool.Conds, offset, limit int) ([]*ent.Go
 
 		rows, err = stm.
 			Offset(offset).
-			Order(ent.Desc(goodorderpercent.FieldUpdatedAt)).
+			Order(ent.Desc(entevent.FieldUpdatedAt)).
 			Limit(limit).
 			All(_ctx)
 		if err != nil {
@@ -330,8 +308,8 @@ func Rows(ctx context.Context, conds *npool.Conds, offset, limit int) ([]*ent.Go
 	return rows, total, nil
 }
 
-func RowOnly(ctx context.Context, conds *npool.Conds) (*ent.GoodOrderPercent, error) {
-	var info *ent.GoodOrderPercent
+func RowOnly(ctx context.Context, conds *npool.Conds) (*ent.Event, error) {
+	var info *ent.Event
 	var err error
 
 	_, span := otel.Tracer(constant.ServiceName).Start(ctx, "RowOnly")
@@ -421,7 +399,7 @@ func Exist(ctx context.Context, id uuid.UUID) (bool, error) {
 	span = commontracer.TraceID(span, id.String())
 
 	err = db.WithClient(ctx, func(_ctx context.Context, cli *ent.Client) error {
-		exist, err = cli.GoodOrderPercent.Query().Where(goodorderpercent.ID(id)).Exist(_ctx)
+		exist, err = cli.Event.Query().Where(entevent.ID(id)).Exist(_ctx)
 		return err
 	})
 	if err != nil {
@@ -467,8 +445,8 @@ func ExistConds(ctx context.Context, conds *npool.Conds) (bool, error) {
 	return exist, nil
 }
 
-func Delete(ctx context.Context, id uuid.UUID) (*ent.GoodOrderPercent, error) {
-	var info *ent.GoodOrderPercent
+func Delete(ctx context.Context, id string) (*ent.Event, error) {
+	var info *ent.Event
 	var err error
 
 	_, span := otel.Tracer(constant.ServiceName).Start(ctx, "Delete")
@@ -481,10 +459,10 @@ func Delete(ctx context.Context, id uuid.UUID) (*ent.GoodOrderPercent, error) {
 		}
 	}()
 
-	span = commontracer.TraceID(span, id.String())
+	span = commontracer.TraceID(span, id)
 
 	err = db.WithClient(ctx, func(_ctx context.Context, cli *ent.Client) error {
-		info, err = cli.GoodOrderPercent.UpdateOneID(id).
+		info, err = cli.Event.UpdateOneID(uuid.MustParse(id)).
 			SetDeletedAt(uint32(time.Now().Unix())).
 			Save(_ctx)
 		return err

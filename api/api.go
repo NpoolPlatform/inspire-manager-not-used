@@ -12,6 +12,7 @@ import (
 	"github.com/NpoolPlatform/inspire-manager/api/coupon/discount"
 	"github.com/NpoolPlatform/inspire-manager/api/coupon/fixamount"
 	"github.com/NpoolPlatform/inspire-manager/api/coupon/specialoffer"
+	"github.com/NpoolPlatform/inspire-manager/api/event"
 	"github.com/NpoolPlatform/inspire-manager/api/invitation/invitationcode"
 	"github.com/NpoolPlatform/inspire-manager/api/invitation/registration"
 
@@ -37,6 +38,7 @@ func Register(server grpc.ServiceRegistrar) {
 	registration.Register(server)
 	goodorderpercent.Register(server)
 	goodordervaluepercent.Register(server)
+	event.Register(server)
 }
 
 func RegisterGateway(mux *runtime.ServeMux, endpoint string, opts []grpc.DialOption) error {
