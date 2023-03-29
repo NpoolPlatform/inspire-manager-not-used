@@ -18,6 +18,7 @@ import (
 	"github.com/NpoolPlatform/inspire-manager/pkg/db/ent/couponspecialoffer"
 	entevent "github.com/NpoolPlatform/inspire-manager/pkg/db/ent/event"
 	"github.com/NpoolPlatform/inspire-manager/pkg/db/ent/goodorderpercent"
+	"github.com/NpoolPlatform/inspire-manager/pkg/db/ent/goodordervaluepercent"
 	"github.com/NpoolPlatform/inspire-manager/pkg/db/ent/invitationcode"
 	"github.com/NpoolPlatform/inspire-manager/pkg/db/ent/registration"
 )
@@ -40,16 +41,17 @@ type OrderFunc func(*sql.Selector)
 // columnChecker returns a function indicates if the column exists in the given column.
 func columnChecker(table string) func(string) error {
 	checks := map[string]func(string) bool{
-		archivementdetail.Table:  archivementdetail.ValidColumn,
-		archivementgeneral.Table: archivementgeneral.ValidColumn,
-		couponallocated.Table:    couponallocated.ValidColumn,
-		coupondiscount.Table:     coupondiscount.ValidColumn,
-		couponfixamount.Table:    couponfixamount.ValidColumn,
-		couponspecialoffer.Table: couponspecialoffer.ValidColumn,
-		entevent.Table:           entevent.ValidColumn,
-		goodorderpercent.Table:   goodorderpercent.ValidColumn,
-		invitationcode.Table:     invitationcode.ValidColumn,
-		registration.Table:       registration.ValidColumn,
+		archivementdetail.Table:     archivementdetail.ValidColumn,
+		archivementgeneral.Table:    archivementgeneral.ValidColumn,
+		couponallocated.Table:       couponallocated.ValidColumn,
+		coupondiscount.Table:        coupondiscount.ValidColumn,
+		couponfixamount.Table:       couponfixamount.ValidColumn,
+		couponspecialoffer.Table:    couponspecialoffer.ValidColumn,
+		entevent.Table:              entevent.ValidColumn,
+		goodorderpercent.Table:      goodorderpercent.ValidColumn,
+		goodordervaluepercent.Table: goodordervaluepercent.ValidColumn,
+		invitationcode.Table:        invitationcode.ValidColumn,
+		registration.Table:          registration.ValidColumn,
 	}
 	check, ok := checks[table]
 	if !ok {

@@ -13,19 +13,19 @@ import (
 	"github.com/google/uuid"
 )
 
-// GoodOrderPercent holds the schema definition for the GoodOrderPercent entity.
-type GoodOrderPercent struct {
+// GoodOrderValuePercent holds the schema definition for the GoodOrderValuePercent entity.
+type GoodOrderValuePercent struct {
 	ent.Schema
 }
 
-func (GoodOrderPercent) Mixin() []ent.Mixin {
+func (GoodOrderValuePercent) Mixin() []ent.Mixin {
 	return []ent.Mixin{
 		mixin.TimeMixin{},
 	}
 }
 
-// Fields of the GoodOrderPercent.
-func (GoodOrderPercent) Fields() []ent.Field {
+// Fields of the GoodOrderValuePercent.
+func (GoodOrderValuePercent) Fields() []ent.Field {
 	return []ent.Field{
 		field.
 			UUID("id", uuid.UUID{}).
@@ -61,12 +61,12 @@ func (GoodOrderPercent) Fields() []ent.Field {
 	}
 }
 
-// Edges of the GoodOrderPercent.
-func (GoodOrderPercent) Edges() []ent.Edge {
+// Edges of the GoodOrderValuePercent.
+func (GoodOrderValuePercent) Edges() []ent.Edge {
 	return nil
 }
 
-// Indexes of the GoodOrderPercent.
-func (GoodOrderPercent) Indexes() []ent.Index {
+// Indexes of the GoodOrderValuePercent.
+func (GoodOrderValuePercent) Indexes() []ent.Index {
 	return nil
 }

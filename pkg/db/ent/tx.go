@@ -30,6 +30,8 @@ type Tx struct {
 	Event *EventClient
 	// GoodOrderPercent is the client for interacting with the GoodOrderPercent builders.
 	GoodOrderPercent *GoodOrderPercentClient
+	// GoodOrderValuePercent is the client for interacting with the GoodOrderValuePercent builders.
+	GoodOrderValuePercent *GoodOrderValuePercentClient
 	// InvitationCode is the client for interacting with the InvitationCode builders.
 	InvitationCode *InvitationCodeClient
 	// Registration is the client for interacting with the Registration builders.
@@ -177,6 +179,7 @@ func (tx *Tx) init() {
 	tx.CouponSpecialOffer = NewCouponSpecialOfferClient(tx.config)
 	tx.Event = NewEventClient(tx.config)
 	tx.GoodOrderPercent = NewGoodOrderPercentClient(tx.config)
+	tx.GoodOrderValuePercent = NewGoodOrderValuePercentClient(tx.config)
 	tx.InvitationCode = NewInvitationCodeClient(tx.config)
 	tx.Registration = NewRegistrationClient(tx.config)
 }
