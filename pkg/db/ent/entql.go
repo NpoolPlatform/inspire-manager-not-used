@@ -23,7 +23,7 @@ import (
 
 // schemaGraph holds a representation of ent/schema at runtime.
 var schemaGraph = func() *sqlgraph.Schema {
-	graph := &sqlgraph.Schema{Nodes: make([]*sqlgraph.Node, 10)}
+	graph := &sqlgraph.Schema{Nodes: make([]*sqlgraph.Node, 11)}
 	graph.Nodes[0] = &sqlgraph.Node{
 		NodeSpec: sqlgraph.NodeSpec{
 			Table:   archivementdetail.Table,
@@ -248,7 +248,7 @@ var schemaGraph = func() *sqlgraph.Schema {
 			goodordervaluepercent.FieldEndAt:     {Type: field.TypeUint32, Column: goodordervaluepercent.FieldEndAt},
 		},
 	}
-	graph.Nodes[8] = &sqlgraph.Node{
+	graph.Nodes[9] = &sqlgraph.Node{
 		NodeSpec: sqlgraph.NodeSpec{
 			Table:   invitationcode.Table,
 			Columns: invitationcode.Columns,
@@ -268,7 +268,7 @@ var schemaGraph = func() *sqlgraph.Schema {
 			invitationcode.FieldDisabled:       {Type: field.TypeBool, Column: invitationcode.FieldDisabled},
 		},
 	}
-	graph.Nodes[9] = &sqlgraph.Node{
+	graph.Nodes[10] = &sqlgraph.Node{
 		NodeSpec: sqlgraph.NodeSpec{
 			Table:   registration.Table,
 			Columns: registration.Columns,
@@ -1135,7 +1135,7 @@ type GoodOrderValuePercentFilter struct {
 // Where applies the entql predicate on the query filter.
 func (f *GoodOrderValuePercentFilter) Where(p entql.P) {
 	f.addPredicate(func(s *sql.Selector) {
-		if err := schemaGraph.EvalP(schemaGraph.Nodes[7].Type, p, s); err != nil {
+		if err := schemaGraph.EvalP(schemaGraph.Nodes[8].Type, p, s); err != nil {
 			s.AddError(err)
 		}
 	})
@@ -1220,7 +1220,7 @@ type InvitationCodeFilter struct {
 // Where applies the entql predicate on the query filter.
 func (f *InvitationCodeFilter) Where(p entql.P) {
 	f.addPredicate(func(s *sql.Selector) {
-		if err := schemaGraph.EvalP(schemaGraph.Nodes[8].Type, p, s); err != nil {
+		if err := schemaGraph.EvalP(schemaGraph.Nodes[9].Type, p, s); err != nil {
 			s.AddError(err)
 		}
 	})
@@ -1295,7 +1295,7 @@ type RegistrationFilter struct {
 // Where applies the entql predicate on the query filter.
 func (f *RegistrationFilter) Where(p entql.P) {
 	f.addPredicate(func(s *sql.Selector) {
-		if err := schemaGraph.EvalP(schemaGraph.Nodes[9].Type, p, s); err != nil {
+		if err := schemaGraph.EvalP(schemaGraph.Nodes[10].Type, p, s); err != nil {
 			s.AddError(err)
 		}
 	})
