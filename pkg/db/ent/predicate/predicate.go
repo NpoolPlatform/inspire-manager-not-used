@@ -36,5 +36,8 @@ type GoodOrderValuePercent func(*sql.Selector)
 // InvitationCode is the predicate function for invitationcode builders.
 type InvitationCode func(*sql.Selector)
 
+// PubsubMessgae is the predicate function for pubsubmessgae builders.
+type PubsubMessgae func(*sql.Selector)
+
 // Registration is the predicate function for registration builders.
 type Registration func(*sql.Selector)

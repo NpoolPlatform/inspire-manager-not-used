@@ -15,6 +15,7 @@ import (
 	"github.com/NpoolPlatform/inspire-manager/pkg/db/ent/goodorderpercent"
 	"github.com/NpoolPlatform/inspire-manager/pkg/db/ent/goodordervaluepercent"
 	"github.com/NpoolPlatform/inspire-manager/pkg/db/ent/invitationcode"
+	"github.com/NpoolPlatform/inspire-manager/pkg/db/ent/pubsubmessgae"
 	"github.com/NpoolPlatform/inspire-manager/pkg/db/ent/registration"
 	"github.com/NpoolPlatform/inspire-manager/pkg/db/ent/schema"
 	"github.com/NpoolPlatform/message/npool/inspire/mgr/v1/event"
@@ -633,6 +634,34 @@ func init() {
 	invitationcodeDescID := invitationcodeFields[0].Descriptor()
 	// invitationcode.DefaultID holds the default value on creation for the id field.
 	invitationcode.DefaultID = invitationcodeDescID.Default.(func() uuid.UUID)
+	pubsubmessgaeMixin := schema.PubsubMessgae{}.Mixin()
+	pubsubmessgae.Policy = privacy.NewPolicies(pubsubmessgaeMixin[0], schema.PubsubMessgae{})
+	pubsubmessgae.Hooks[0] = func(next ent.Mutator) ent.Mutator {
+		return ent.MutateFunc(func(ctx context.Context, m ent.Mutation) (ent.Value, error) {
+			if err := pubsubmessgae.Policy.EvalMutation(ctx, m); err != nil {
+				return nil, err
+			}
+			return next.Mutate(ctx, m)
+		})
+	}
+	pubsubmessgaeMixinFields0 := pubsubmessgaeMixin[0].Fields()
+	_ = pubsubmessgaeMixinFields0
+	pubsubmessgaeFields := schema.PubsubMessgae{}.Fields()
+	_ = pubsubmessgaeFields
+	// pubsubmessgaeDescCreatedAt is the schema descriptor for created_at field.
+	pubsubmessgaeDescCreatedAt := pubsubmessgaeMixinFields0[0].Descriptor()
+	// pubsubmessgae.DefaultCreatedAt holds the default value on creation for the created_at field.
+	pubsubmessgae.DefaultCreatedAt = pubsubmessgaeDescCreatedAt.Default.(func() uint32)
+	// pubsubmessgaeDescUpdatedAt is the schema descriptor for updated_at field.
+	pubsubmessgaeDescUpdatedAt := pubsubmessgaeMixinFields0[1].Descriptor()
+	// pubsubmessgae.DefaultUpdatedAt holds the default value on creation for the updated_at field.
+	pubsubmessgae.DefaultUpdatedAt = pubsubmessgaeDescUpdatedAt.Default.(func() uint32)
+	// pubsubmessgae.UpdateDefaultUpdatedAt holds the default value on update for the updated_at field.
+	pubsubmessgae.UpdateDefaultUpdatedAt = pubsubmessgaeDescUpdatedAt.UpdateDefault.(func() uint32)
+	// pubsubmessgaeDescDeletedAt is the schema descriptor for deleted_at field.
+	pubsubmessgaeDescDeletedAt := pubsubmessgaeMixinFields0[2].Descriptor()
+	// pubsubmessgae.DefaultDeletedAt holds the default value on creation for the deleted_at field.
+	pubsubmessgae.DefaultDeletedAt = pubsubmessgaeDescDeletedAt.Default.(func() uint32)
 	registrationMixin := schema.Registration{}.Mixin()
 	registration.Policy = privacy.NewPolicies(registrationMixin[0], schema.Registration{})
 	registration.Hooks[0] = func(next ent.Mutator) ent.Mutator {

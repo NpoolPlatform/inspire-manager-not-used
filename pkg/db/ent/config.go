@@ -38,6 +38,7 @@ type hooks struct {
 	GoodOrderPercent      []ent.Hook
 	GoodOrderValuePercent []ent.Hook
 	InvitationCode        []ent.Hook
+	PubsubMessgae         []ent.Hook
 	Registration          []ent.Hook
 }
 

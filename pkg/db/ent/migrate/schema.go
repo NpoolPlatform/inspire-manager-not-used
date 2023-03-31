@@ -177,7 +177,7 @@ var (
 		{Name: "user_id", Type: field.TypeUUID, Nullable: true},
 		{Name: "good_id", Type: field.TypeUUID, Nullable: true},
 		{Name: "percent", Type: field.TypeOther, Nullable: true, SchemaType: map[string]string{"mysql": "decimal(37,18)"}},
-		{Name: "start_at", Type: field.TypeUint32, Nullable: true, Default: 1680073199},
+		{Name: "start_at", Type: field.TypeUint32, Nullable: true, Default: 1680257712},
 		{Name: "end_at", Type: field.TypeUint32, Nullable: true, Default: 0},
 	}
 	// GoodOrderPercentsTable holds the schema information for the "good_order_percents" table.
@@ -196,7 +196,7 @@ var (
 		{Name: "user_id", Type: field.TypeUUID, Nullable: true},
 		{Name: "good_id", Type: field.TypeUUID, Nullable: true},
 		{Name: "percent", Type: field.TypeOther, Nullable: true, SchemaType: map[string]string{"mysql": "decimal(37,18)"}},
-		{Name: "start_at", Type: field.TypeUint32, Nullable: true, Default: 1680073199},
+		{Name: "start_at", Type: field.TypeUint32, Nullable: true, Default: 1680257712},
 		{Name: "end_at", Type: field.TypeUint32, Nullable: true, Default: 0},
 	}
 	// GoodOrderValuePercentsTable holds the schema information for the "good_order_value_percents" table.
@@ -221,6 +221,30 @@ var (
 		Name:       "invitation_codes",
 		Columns:    InvitationCodesColumns,
 		PrimaryKey: []*schema.Column{InvitationCodesColumns[0]},
+	}
+	// PubsubMessgaesColumns holds the columns for the "pubsub_messgaes" table.
+	PubsubMessgaesColumns = []*schema.Column{
+		{Name: "id", Type: field.TypeInt, Increment: true},
+		{Name: "created_at", Type: field.TypeUint32},
+		{Name: "updated_at", Type: field.TypeUint32},
+		{Name: "deleted_at", Type: field.TypeUint32},
+		{Name: "unique_id", Type: field.TypeUUID, Unique: true},
+		{Name: "message_id", Type: field.TypeString},
+		{Name: "sender", Type: field.TypeString},
+		{Name: "body", Type: field.TypeBytes},
+	}
+	// PubsubMessgaesTable holds the schema information for the "pubsub_messgaes" table.
+	PubsubMessgaesTable = &schema.Table{
+		Name:       "pubsub_messgaes",
+		Columns:    PubsubMessgaesColumns,
+		PrimaryKey: []*schema.Column{PubsubMessgaesColumns[0]},
+		Indexes: []*schema.Index{
+			{
+				Name:    "pubsubmessgae_unique_id_message_id",
+				Unique:  false,
+				Columns: []*schema.Column{PubsubMessgaesColumns[4], PubsubMessgaesColumns[5]},
+			},
+		},
 	}
 	// RegistrationsColumns holds the columns for the "registrations" table.
 	RegistrationsColumns = []*schema.Column{
@@ -250,6 +274,7 @@ var (
 		GoodOrderPercentsTable,
 		GoodOrderValuePercentsTable,
 		InvitationCodesTable,
+		PubsubMessgaesTable,
 		RegistrationsTable,
 	}
 )

@@ -21,6 +21,7 @@ import (
 	"github.com/NpoolPlatform/inspire-manager/pkg/db/ent/goodorderpercent"
 	"github.com/NpoolPlatform/inspire-manager/pkg/db/ent/goodordervaluepercent"
 	"github.com/NpoolPlatform/inspire-manager/pkg/db/ent/invitationcode"
+	"github.com/NpoolPlatform/inspire-manager/pkg/db/ent/pubsubmessgae"
 	"github.com/NpoolPlatform/inspire-manager/pkg/db/ent/registration"
 
 	"entgo.io/ent/dialect"
@@ -52,6 +53,8 @@ type Client struct {
 	GoodOrderValuePercent *GoodOrderValuePercentClient
 	// InvitationCode is the client for interacting with the InvitationCode builders.
 	InvitationCode *InvitationCodeClient
+	// PubsubMessgae is the client for interacting with the PubsubMessgae builders.
+	PubsubMessgae *PubsubMessgaeClient
 	// Registration is the client for interacting with the Registration builders.
 	Registration *RegistrationClient
 }
@@ -77,6 +80,7 @@ func (c *Client) init() {
 	c.GoodOrderPercent = NewGoodOrderPercentClient(c.config)
 	c.GoodOrderValuePercent = NewGoodOrderValuePercentClient(c.config)
 	c.InvitationCode = NewInvitationCodeClient(c.config)
+	c.PubsubMessgae = NewPubsubMessgaeClient(c.config)
 	c.Registration = NewRegistrationClient(c.config)
 }
 
@@ -121,6 +125,7 @@ func (c *Client) Tx(ctx context.Context) (*Tx, error) {
 		GoodOrderPercent:      NewGoodOrderPercentClient(cfg),
 		GoodOrderValuePercent: NewGoodOrderValuePercentClient(cfg),
 		InvitationCode:        NewInvitationCodeClient(cfg),
+		PubsubMessgae:         NewPubsubMessgaeClient(cfg),
 		Registration:          NewRegistrationClient(cfg),
 	}, nil
 }
@@ -151,6 +156,7 @@ func (c *Client) BeginTx(ctx context.Context, opts *sql.TxOptions) (*Tx, error) 
 		GoodOrderPercent:      NewGoodOrderPercentClient(cfg),
 		GoodOrderValuePercent: NewGoodOrderValuePercentClient(cfg),
 		InvitationCode:        NewInvitationCodeClient(cfg),
+		PubsubMessgae:         NewPubsubMessgaeClient(cfg),
 		Registration:          NewRegistrationClient(cfg),
 	}, nil
 }
@@ -191,6 +197,7 @@ func (c *Client) Use(hooks ...Hook) {
 	c.GoodOrderPercent.Use(hooks...)
 	c.GoodOrderValuePercent.Use(hooks...)
 	c.InvitationCode.Use(hooks...)
+	c.PubsubMessgae.Use(hooks...)
 	c.Registration.Use(hooks...)
 }
 
@@ -1102,6 +1109,97 @@ func (c *InvitationCodeClient) GetX(ctx context.Context, id uuid.UUID) *Invitati
 func (c *InvitationCodeClient) Hooks() []Hook {
 	hooks := c.hooks.InvitationCode
 	return append(hooks[:len(hooks):len(hooks)], invitationcode.Hooks[:]...)
+}
+
+// PubsubMessgaeClient is a client for the PubsubMessgae schema.
+type PubsubMessgaeClient struct {
+	config
+}
+
+// NewPubsubMessgaeClient returns a client for the PubsubMessgae from the given config.
+func NewPubsubMessgaeClient(c config) *PubsubMessgaeClient {
+	return &PubsubMessgaeClient{config: c}
+}
+
+// Use adds a list of mutation hooks to the hooks stack.
+// A call to `Use(f, g, h)` equals to `pubsubmessgae.Hooks(f(g(h())))`.
+func (c *PubsubMessgaeClient) Use(hooks ...Hook) {
+	c.hooks.PubsubMessgae = append(c.hooks.PubsubMessgae, hooks...)
+}
+
+// Create returns a builder for creating a PubsubMessgae entity.
+func (c *PubsubMessgaeClient) Create() *PubsubMessgaeCreate {
+	mutation := newPubsubMessgaeMutation(c.config, OpCreate)
+	return &PubsubMessgaeCreate{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// CreateBulk returns a builder for creating a bulk of PubsubMessgae entities.
+func (c *PubsubMessgaeClient) CreateBulk(builders ...*PubsubMessgaeCreate) *PubsubMessgaeCreateBulk {
+	return &PubsubMessgaeCreateBulk{config: c.config, builders: builders}
+}
+
+// Update returns an update builder for PubsubMessgae.
+func (c *PubsubMessgaeClient) Update() *PubsubMessgaeUpdate {
+	mutation := newPubsubMessgaeMutation(c.config, OpUpdate)
+	return &PubsubMessgaeUpdate{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// UpdateOne returns an update builder for the given entity.
+func (c *PubsubMessgaeClient) UpdateOne(pm *PubsubMessgae) *PubsubMessgaeUpdateOne {
+	mutation := newPubsubMessgaeMutation(c.config, OpUpdateOne, withPubsubMessgae(pm))
+	return &PubsubMessgaeUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// UpdateOneID returns an update builder for the given id.
+func (c *PubsubMessgaeClient) UpdateOneID(id int) *PubsubMessgaeUpdateOne {
+	mutation := newPubsubMessgaeMutation(c.config, OpUpdateOne, withPubsubMessgaeID(id))
+	return &PubsubMessgaeUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// Delete returns a delete builder for PubsubMessgae.
+func (c *PubsubMessgaeClient) Delete() *PubsubMessgaeDelete {
+	mutation := newPubsubMessgaeMutation(c.config, OpDelete)
+	return &PubsubMessgaeDelete{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// DeleteOne returns a builder for deleting the given entity.
+func (c *PubsubMessgaeClient) DeleteOne(pm *PubsubMessgae) *PubsubMessgaeDeleteOne {
+	return c.DeleteOneID(pm.ID)
+}
+
+// DeleteOne returns a builder for deleting the given entity by its id.
+func (c *PubsubMessgaeClient) DeleteOneID(id int) *PubsubMessgaeDeleteOne {
+	builder := c.Delete().Where(pubsubmessgae.ID(id))
+	builder.mutation.id = &id
+	builder.mutation.op = OpDeleteOne
+	return &PubsubMessgaeDeleteOne{builder}
+}
+
+// Query returns a query builder for PubsubMessgae.
+func (c *PubsubMessgaeClient) Query() *PubsubMessgaeQuery {
+	return &PubsubMessgaeQuery{
+		config: c.config,
+	}
+}
+
+// Get returns a PubsubMessgae entity by its id.
+func (c *PubsubMessgaeClient) Get(ctx context.Context, id int) (*PubsubMessgae, error) {
+	return c.Query().Where(pubsubmessgae.ID(id)).Only(ctx)
+}
+
+// GetX is like Get, but panics if an error occurs.
+func (c *PubsubMessgaeClient) GetX(ctx context.Context, id int) *PubsubMessgae {
+	obj, err := c.Get(ctx, id)
+	if err != nil {
+		panic(err)
+	}
+	return obj
+}
+
+// Hooks returns the client hooks.
+func (c *PubsubMessgaeClient) Hooks() []Hook {
+	hooks := c.hooks.PubsubMessgae
+	return append(hooks[:len(hooks):len(hooks)], pubsubmessgae.Hooks[:]...)
 }
 
 // RegistrationClient is a client for the Registration schema.
