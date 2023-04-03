@@ -30,8 +30,8 @@ type PubsubMessgae struct {
 	Body []byte `json:"body,omitempty"`
 	// State holds the value of the "state" field.
 	State string `json:"state,omitempty"`
-	// ResponseID holds the value of the "response_id" field.
-	ResponseID uuid.UUID `json:"response_id,omitempty"`
+	// ResponseToID holds the value of the "response_to_id" field.
+	ResponseToID uuid.UUID `json:"response_to_id,omitempty"`
 	// ErrorMessage holds the value of the "error_message" field.
 	ErrorMessage string `json:"error_message,omitempty"`
 }
@@ -47,7 +47,7 @@ func (*PubsubMessgae) scanValues(columns []string) ([]interface{}, error) {
 			values[i] = new(sql.NullInt64)
 		case pubsubmessgae.FieldMessageID, pubsubmessgae.FieldSender, pubsubmessgae.FieldState, pubsubmessgae.FieldErrorMessage:
 			values[i] = new(sql.NullString)
-		case pubsubmessgae.FieldID, pubsubmessgae.FieldResponseID:
+		case pubsubmessgae.FieldID, pubsubmessgae.FieldResponseToID:
 			values[i] = new(uuid.UUID)
 		default:
 			return nil, fmt.Errorf("unexpected column %q for type PubsubMessgae", columns[i])
@@ -112,11 +112,11 @@ func (pm *PubsubMessgae) assignValues(columns []string, values []interface{}) er
 			} else if value.Valid {
 				pm.State = value.String
 			}
-		case pubsubmessgae.FieldResponseID:
+		case pubsubmessgae.FieldResponseToID:
 			if value, ok := values[i].(*uuid.UUID); !ok {
-				return fmt.Errorf("unexpected type %T for field response_id", values[i])
+				return fmt.Errorf("unexpected type %T for field response_to_id", values[i])
 			} else if value != nil {
-				pm.ResponseID = *value
+				pm.ResponseToID = *value
 			}
 		case pubsubmessgae.FieldErrorMessage:
 			if value, ok := values[i].(*sql.NullString); !ok {
@@ -173,8 +173,8 @@ func (pm *PubsubMessgae) String() string {
 	builder.WriteString("state=")
 	builder.WriteString(pm.State)
 	builder.WriteString(", ")
-	builder.WriteString("response_id=")
-	builder.WriteString(fmt.Sprintf("%v", pm.ResponseID))
+	builder.WriteString("response_to_id=")
+	builder.WriteString(fmt.Sprintf("%v", pm.ResponseToID))
 	builder.WriteString(", ")
 	builder.WriteString("error_message=")
 	builder.WriteString(pm.ErrorMessage)

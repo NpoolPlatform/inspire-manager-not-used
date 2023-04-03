@@ -177,7 +177,7 @@ var (
 		{Name: "user_id", Type: field.TypeUUID, Nullable: true},
 		{Name: "good_id", Type: field.TypeUUID, Nullable: true},
 		{Name: "percent", Type: field.TypeOther, Nullable: true, SchemaType: map[string]string{"mysql": "decimal(37,18)"}},
-		{Name: "start_at", Type: field.TypeUint32, Nullable: true, Default: 1680510304},
+		{Name: "start_at", Type: field.TypeUint32, Nullable: true, Default: 1680510930},
 		{Name: "end_at", Type: field.TypeUint32, Nullable: true, Default: 0},
 	}
 	// GoodOrderPercentsTable holds the schema information for the "good_order_percents" table.
@@ -196,7 +196,7 @@ var (
 		{Name: "user_id", Type: field.TypeUUID, Nullable: true},
 		{Name: "good_id", Type: field.TypeUUID, Nullable: true},
 		{Name: "percent", Type: field.TypeOther, Nullable: true, SchemaType: map[string]string{"mysql": "decimal(37,18)"}},
-		{Name: "start_at", Type: field.TypeUint32, Nullable: true, Default: 1680510304},
+		{Name: "start_at", Type: field.TypeUint32, Nullable: true, Default: 1680510930},
 		{Name: "end_at", Type: field.TypeUint32, Nullable: true, Default: 0},
 	}
 	// GoodOrderValuePercentsTable holds the schema information for the "good_order_value_percents" table.
@@ -232,7 +232,7 @@ var (
 		{Name: "sender", Type: field.TypeString},
 		{Name: "body", Type: field.TypeBytes},
 		{Name: "state", Type: field.TypeString},
-		{Name: "response_id", Type: field.TypeUUID, Unique: true},
+		{Name: "response_to_id", Type: field.TypeUUID, Unique: true},
 		{Name: "error_message", Type: field.TypeString, Nullable: true, Default: ""},
 	}
 	// PubsubMessgaesTable holds the schema information for the "pubsub_messgaes" table.
@@ -242,7 +242,7 @@ var (
 		PrimaryKey: []*schema.Column{PubsubMessgaesColumns[0]},
 		Indexes: []*schema.Index{
 			{
-				Name:    "pubsubmessgae_message_id_response_id",
+				Name:    "pubsubmessgae_message_id_response_to_id",
 				Unique:  false,
 				Columns: []*schema.Column{PubsubMessgaesColumns[4], PubsubMessgaesColumns[8]},
 			},

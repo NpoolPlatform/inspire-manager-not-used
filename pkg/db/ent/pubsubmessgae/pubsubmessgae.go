@@ -25,8 +25,8 @@ const (
 	FieldBody = "body"
 	// FieldState holds the string denoting the state field in the database.
 	FieldState = "state"
-	// FieldResponseID holds the string denoting the response_id field in the database.
-	FieldResponseID = "response_id"
+	// FieldResponseToID holds the string denoting the response_to_id field in the database.
+	FieldResponseToID = "response_to_id"
 	// FieldErrorMessage holds the string denoting the error_message field in the database.
 	FieldErrorMessage = "error_message"
 	// Table holds the table name of the pubsubmessgae in the database.
@@ -43,7 +43,7 @@ var Columns = []string{
 	FieldSender,
 	FieldBody,
 	FieldState,
-	FieldResponseID,
+	FieldResponseToID,
 	FieldErrorMessage,
 }
 

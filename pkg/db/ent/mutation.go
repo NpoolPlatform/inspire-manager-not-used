@@ -11851,25 +11851,25 @@ func (m *InvitationCodeMutation) ResetEdge(name string) error {
 // PubsubMessgaeMutation represents an operation that mutates the PubsubMessgae nodes in the graph.
 type PubsubMessgaeMutation struct {
 	config
-	op            Op
-	typ           string
-	id            *uuid.UUID
-	created_at    *uint32
-	addcreated_at *int32
-	updated_at    *uint32
-	addupdated_at *int32
-	deleted_at    *uint32
-	adddeleted_at *int32
-	message_id    *string
-	sender        *string
-	body          *[]byte
-	state         *string
-	response_id   *uuid.UUID
-	error_message *string
-	clearedFields map[string]struct{}
-	done          bool
-	oldValue      func(context.Context) (*PubsubMessgae, error)
-	predicates    []predicate.PubsubMessgae
+	op             Op
+	typ            string
+	id             *uuid.UUID
+	created_at     *uint32
+	addcreated_at  *int32
+	updated_at     *uint32
+	addupdated_at  *int32
+	deleted_at     *uint32
+	adddeleted_at  *int32
+	message_id     *string
+	sender         *string
+	body           *[]byte
+	state          *string
+	response_to_id *uuid.UUID
+	error_message  *string
+	clearedFields  map[string]struct{}
+	done           bool
+	oldValue       func(context.Context) (*PubsubMessgae, error)
+	predicates     []predicate.PubsubMessgae
 }
 
 var _ ent.Mutation = (*PubsubMessgaeMutation)(nil)
@@ -12288,40 +12288,40 @@ func (m *PubsubMessgaeMutation) ResetState() {
 	m.state = nil
 }
 
-// SetResponseID sets the "response_id" field.
-func (m *PubsubMessgaeMutation) SetResponseID(u uuid.UUID) {
-	m.response_id = &u
+// SetResponseToID sets the "response_to_id" field.
+func (m *PubsubMessgaeMutation) SetResponseToID(u uuid.UUID) {
+	m.response_to_id = &u
 }
 
-// ResponseID returns the value of the "response_id" field in the mutation.
-func (m *PubsubMessgaeMutation) ResponseID() (r uuid.UUID, exists bool) {
-	v := m.response_id
+// ResponseToID returns the value of the "response_to_id" field in the mutation.
+func (m *PubsubMessgaeMutation) ResponseToID() (r uuid.UUID, exists bool) {
+	v := m.response_to_id
 	if v == nil {
 		return
 	}
 	return *v, true
 }
 
-// OldResponseID returns the old "response_id" field's value of the PubsubMessgae entity.
+// OldResponseToID returns the old "response_to_id" field's value of the PubsubMessgae entity.
 // If the PubsubMessgae object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *PubsubMessgaeMutation) OldResponseID(ctx context.Context) (v uuid.UUID, err error) {
+func (m *PubsubMessgaeMutation) OldResponseToID(ctx context.Context) (v uuid.UUID, err error) {
 	if !m.op.Is(OpUpdateOne) {
-		return v, errors.New("OldResponseID is only allowed on UpdateOne operations")
+		return v, errors.New("OldResponseToID is only allowed on UpdateOne operations")
 	}
 	if m.id == nil || m.oldValue == nil {
-		return v, errors.New("OldResponseID requires an ID field in the mutation")
+		return v, errors.New("OldResponseToID requires an ID field in the mutation")
 	}
 	oldValue, err := m.oldValue(ctx)
 	if err != nil {
-		return v, fmt.Errorf("querying old value for OldResponseID: %w", err)
+		return v, fmt.Errorf("querying old value for OldResponseToID: %w", err)
 	}
-	return oldValue.ResponseID, nil
+	return oldValue.ResponseToID, nil
 }
 
-// ResetResponseID resets all changes to the "response_id" field.
-func (m *PubsubMessgaeMutation) ResetResponseID() {
-	m.response_id = nil
+// ResetResponseToID resets all changes to the "response_to_id" field.
+func (m *PubsubMessgaeMutation) ResetResponseToID() {
+	m.response_to_id = nil
 }
 
 // SetErrorMessage sets the "error_message" field.
@@ -12414,8 +12414,8 @@ func (m *PubsubMessgaeMutation) Fields() []string {
 	if m.state != nil {
 		fields = append(fields, pubsubmessgae.FieldState)
 	}
-	if m.response_id != nil {
-		fields = append(fields, pubsubmessgae.FieldResponseID)
+	if m.response_to_id != nil {
+		fields = append(fields, pubsubmessgae.FieldResponseToID)
 	}
 	if m.error_message != nil {
 		fields = append(fields, pubsubmessgae.FieldErrorMessage)
@@ -12442,8 +12442,8 @@ func (m *PubsubMessgaeMutation) Field(name string) (ent.Value, bool) {
 		return m.Body()
 	case pubsubmessgae.FieldState:
 		return m.State()
-	case pubsubmessgae.FieldResponseID:
-		return m.ResponseID()
+	case pubsubmessgae.FieldResponseToID:
+		return m.ResponseToID()
 	case pubsubmessgae.FieldErrorMessage:
 		return m.ErrorMessage()
 	}
@@ -12469,8 +12469,8 @@ func (m *PubsubMessgaeMutation) OldField(ctx context.Context, name string) (ent.
 		return m.OldBody(ctx)
 	case pubsubmessgae.FieldState:
 		return m.OldState(ctx)
-	case pubsubmessgae.FieldResponseID:
-		return m.OldResponseID(ctx)
+	case pubsubmessgae.FieldResponseToID:
+		return m.OldResponseToID(ctx)
 	case pubsubmessgae.FieldErrorMessage:
 		return m.OldErrorMessage(ctx)
 	}
@@ -12531,12 +12531,12 @@ func (m *PubsubMessgaeMutation) SetField(name string, value ent.Value) error {
 		}
 		m.SetState(v)
 		return nil
-	case pubsubmessgae.FieldResponseID:
+	case pubsubmessgae.FieldResponseToID:
 		v, ok := value.(uuid.UUID)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
-		m.SetResponseID(v)
+		m.SetResponseToID(v)
 		return nil
 	case pubsubmessgae.FieldErrorMessage:
 		v, ok := value.(string)
@@ -12663,8 +12663,8 @@ func (m *PubsubMessgaeMutation) ResetField(name string) error {
 	case pubsubmessgae.FieldState:
 		m.ResetState()
 		return nil
-	case pubsubmessgae.FieldResponseID:
-		m.ResetResponseID()
+	case pubsubmessgae.FieldResponseToID:
+		m.ResetResponseToID()
 		return nil
 	case pubsubmessgae.FieldErrorMessage:
 		m.ResetErrorMessage()

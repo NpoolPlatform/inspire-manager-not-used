@@ -108,9 +108,9 @@ func (pmu *PubsubMessgaeUpdate) SetState(s string) *PubsubMessgaeUpdate {
 	return pmu
 }
 
-// SetResponseID sets the "response_id" field.
-func (pmu *PubsubMessgaeUpdate) SetResponseID(u uuid.UUID) *PubsubMessgaeUpdate {
-	pmu.mutation.SetResponseID(u)
+// SetResponseToID sets the "response_to_id" field.
+func (pmu *PubsubMessgaeUpdate) SetResponseToID(u uuid.UUID) *PubsubMessgaeUpdate {
+	pmu.mutation.SetResponseToID(u)
 	return pmu
 }
 
@@ -302,11 +302,11 @@ func (pmu *PubsubMessgaeUpdate) sqlSave(ctx context.Context) (n int, err error) 
 			Column: pubsubmessgae.FieldState,
 		})
 	}
-	if value, ok := pmu.mutation.ResponseID(); ok {
+	if value, ok := pmu.mutation.ResponseToID(); ok {
 		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
 			Type:   field.TypeUUID,
 			Value:  value,
-			Column: pubsubmessgae.FieldResponseID,
+			Column: pubsubmessgae.FieldResponseToID,
 		})
 	}
 	if value, ok := pmu.mutation.ErrorMessage(); ok {
@@ -422,9 +422,9 @@ func (pmuo *PubsubMessgaeUpdateOne) SetState(s string) *PubsubMessgaeUpdateOne {
 	return pmuo
 }
 
-// SetResponseID sets the "response_id" field.
-func (pmuo *PubsubMessgaeUpdateOne) SetResponseID(u uuid.UUID) *PubsubMessgaeUpdateOne {
-	pmuo.mutation.SetResponseID(u)
+// SetResponseToID sets the "response_to_id" field.
+func (pmuo *PubsubMessgaeUpdateOne) SetResponseToID(u uuid.UUID) *PubsubMessgaeUpdateOne {
+	pmuo.mutation.SetResponseToID(u)
 	return pmuo
 }
 
@@ -646,11 +646,11 @@ func (pmuo *PubsubMessgaeUpdateOne) sqlSave(ctx context.Context) (_node *PubsubM
 			Column: pubsubmessgae.FieldState,
 		})
 	}
-	if value, ok := pmuo.mutation.ResponseID(); ok {
+	if value, ok := pmuo.mutation.ResponseToID(); ok {
 		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
 			Type:   field.TypeUUID,
 			Value:  value,
-			Column: pubsubmessgae.FieldResponseID,
+			Column: pubsubmessgae.FieldResponseToID,
 		})
 	}
 	if value, ok := pmuo.mutation.ErrorMessage(); ok {

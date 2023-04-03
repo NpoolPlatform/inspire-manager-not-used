@@ -30,7 +30,7 @@ func CreateSet(
 	c.SetBody(body)
 	c.SetState(state)
 	if responseID != nil {
-		c.SetResponseID(*responseID)
+		c.SetResponseToID(*responseID)
 	}
 	if errorMessage != nil {
 		c.SetErrorMessage(*errorMessage)

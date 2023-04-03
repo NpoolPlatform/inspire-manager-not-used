@@ -128,10 +128,10 @@ func State(v string) predicate.PubsubMessgae {
 	})
 }
 
-// ResponseID applies equality check predicate on the "response_id" field. It's identical to ResponseIDEQ.
-func ResponseID(v uuid.UUID) predicate.PubsubMessgae {
+// ResponseToID applies equality check predicate on the "response_to_id" field. It's identical to ResponseToIDEQ.
+func ResponseToID(v uuid.UUID) predicate.PubsubMessgae {
 	return predicate.PubsubMessgae(func(s *sql.Selector) {
-		s.Where(sql.EQ(s.C(FieldResponseID), v))
+		s.Where(sql.EQ(s.C(FieldResponseToID), v))
 	})
 }
 
@@ -695,67 +695,67 @@ func StateContainsFold(v string) predicate.PubsubMessgae {
 	})
 }
 
-// ResponseIDEQ applies the EQ predicate on the "response_id" field.
-func ResponseIDEQ(v uuid.UUID) predicate.PubsubMessgae {
+// ResponseToIDEQ applies the EQ predicate on the "response_to_id" field.
+func ResponseToIDEQ(v uuid.UUID) predicate.PubsubMessgae {
 	return predicate.PubsubMessgae(func(s *sql.Selector) {
-		s.Where(sql.EQ(s.C(FieldResponseID), v))
+		s.Where(sql.EQ(s.C(FieldResponseToID), v))
 	})
 }
 
-// ResponseIDNEQ applies the NEQ predicate on the "response_id" field.
-func ResponseIDNEQ(v uuid.UUID) predicate.PubsubMessgae {
+// ResponseToIDNEQ applies the NEQ predicate on the "response_to_id" field.
+func ResponseToIDNEQ(v uuid.UUID) predicate.PubsubMessgae {
 	return predicate.PubsubMessgae(func(s *sql.Selector) {
-		s.Where(sql.NEQ(s.C(FieldResponseID), v))
+		s.Where(sql.NEQ(s.C(FieldResponseToID), v))
 	})
 }
 
-// ResponseIDIn applies the In predicate on the "response_id" field.
-func ResponseIDIn(vs ...uuid.UUID) predicate.PubsubMessgae {
+// ResponseToIDIn applies the In predicate on the "response_to_id" field.
+func ResponseToIDIn(vs ...uuid.UUID) predicate.PubsubMessgae {
 	v := make([]interface{}, len(vs))
 	for i := range v {
 		v[i] = vs[i]
 	}
 	return predicate.PubsubMessgae(func(s *sql.Selector) {
-		s.Where(sql.In(s.C(FieldResponseID), v...))
+		s.Where(sql.In(s.C(FieldResponseToID), v...))
 	})
 }
 
-// ResponseIDNotIn applies the NotIn predicate on the "response_id" field.
-func ResponseIDNotIn(vs ...uuid.UUID) predicate.PubsubMessgae {
+// ResponseToIDNotIn applies the NotIn predicate on the "response_to_id" field.
+func ResponseToIDNotIn(vs ...uuid.UUID) predicate.PubsubMessgae {
 	v := make([]interface{}, len(vs))
 	for i := range v {
 		v[i] = vs[i]
 	}
 	return predicate.PubsubMessgae(func(s *sql.Selector) {
-		s.Where(sql.NotIn(s.C(FieldResponseID), v...))
+		s.Where(sql.NotIn(s.C(FieldResponseToID), v...))
 	})
 }
 
-// ResponseIDGT applies the GT predicate on the "response_id" field.
-func ResponseIDGT(v uuid.UUID) predicate.PubsubMessgae {
+// ResponseToIDGT applies the GT predicate on the "response_to_id" field.
+func ResponseToIDGT(v uuid.UUID) predicate.PubsubMessgae {
 	return predicate.PubsubMessgae(func(s *sql.Selector) {
-		s.Where(sql.GT(s.C(FieldResponseID), v))
+		s.Where(sql.GT(s.C(FieldResponseToID), v))
 	})
 }
 
-// ResponseIDGTE applies the GTE predicate on the "response_id" field.
-func ResponseIDGTE(v uuid.UUID) predicate.PubsubMessgae {
+// ResponseToIDGTE applies the GTE predicate on the "response_to_id" field.
+func ResponseToIDGTE(v uuid.UUID) predicate.PubsubMessgae {
 	return predicate.PubsubMessgae(func(s *sql.Selector) {
-		s.Where(sql.GTE(s.C(FieldResponseID), v))
+		s.Where(sql.GTE(s.C(FieldResponseToID), v))
 	})
 }
 
-// ResponseIDLT applies the LT predicate on the "response_id" field.
-func ResponseIDLT(v uuid.UUID) predicate.PubsubMessgae {
+// ResponseToIDLT applies the LT predicate on the "response_to_id" field.
+func ResponseToIDLT(v uuid.UUID) predicate.PubsubMessgae {
 	return predicate.PubsubMessgae(func(s *sql.Selector) {
-		s.Where(sql.LT(s.C(FieldResponseID), v))
+		s.Where(sql.LT(s.C(FieldResponseToID), v))
 	})
 }
 
-// ResponseIDLTE applies the LTE predicate on the "response_id" field.
-func ResponseIDLTE(v uuid.UUID) predicate.PubsubMessgae {
+// ResponseToIDLTE applies the LTE predicate on the "response_to_id" field.
+func ResponseToIDLTE(v uuid.UUID) predicate.PubsubMessgae {
 	return predicate.PubsubMessgae(func(s *sql.Selector) {
-		s.Where(sql.LTE(s.C(FieldResponseID), v))
+		s.Where(sql.LTE(s.C(FieldResponseToID), v))
 	})
 }
 

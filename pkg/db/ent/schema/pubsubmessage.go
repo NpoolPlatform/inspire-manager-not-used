@@ -34,7 +34,7 @@ func (PubsubMessgae) Fields() []ent.Field {
 		field.
 			String("state"),
 		field.
-			UUID("response_id", uuid.UUID{}).
+			UUID("response_to_id", uuid.UUID{}).
 			Unique(),
 		field.
 			String("error_message").
@@ -50,6 +50,6 @@ func (PubsubMessgae) Edges() []ent.Edge {
 
 func (PubsubMessgae) Indexes() []ent.Index {
 	return []ent.Index{
-		index.Fields("message_id", "response_id"),
+		index.Fields("message_id", "response_to_id"),
 	}
 }

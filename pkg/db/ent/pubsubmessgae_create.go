@@ -89,9 +89,9 @@ func (pmc *PubsubMessgaeCreate) SetState(s string) *PubsubMessgaeCreate {
 	return pmc
 }
 
-// SetResponseID sets the "response_id" field.
-func (pmc *PubsubMessgaeCreate) SetResponseID(u uuid.UUID) *PubsubMessgaeCreate {
-	pmc.mutation.SetResponseID(u)
+// SetResponseToID sets the "response_to_id" field.
+func (pmc *PubsubMessgaeCreate) SetResponseToID(u uuid.UUID) *PubsubMessgaeCreate {
+	pmc.mutation.SetResponseToID(u)
 	return pmc
 }
 
@@ -245,8 +245,8 @@ func (pmc *PubsubMessgaeCreate) check() error {
 	if _, ok := pmc.mutation.State(); !ok {
 		return &ValidationError{Name: "state", err: errors.New(`ent: missing required field "PubsubMessgae.state"`)}
 	}
-	if _, ok := pmc.mutation.ResponseID(); !ok {
-		return &ValidationError{Name: "response_id", err: errors.New(`ent: missing required field "PubsubMessgae.response_id"`)}
+	if _, ok := pmc.mutation.ResponseToID(); !ok {
+		return &ValidationError{Name: "response_to_id", err: errors.New(`ent: missing required field "PubsubMessgae.response_to_id"`)}
 	}
 	return nil
 }
@@ -341,13 +341,13 @@ func (pmc *PubsubMessgaeCreate) createSpec() (*PubsubMessgae, *sqlgraph.CreateSp
 		})
 		_node.State = value
 	}
-	if value, ok := pmc.mutation.ResponseID(); ok {
+	if value, ok := pmc.mutation.ResponseToID(); ok {
 		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
 			Type:   field.TypeUUID,
 			Value:  value,
-			Column: pubsubmessgae.FieldResponseID,
+			Column: pubsubmessgae.FieldResponseToID,
 		})
-		_node.ResponseID = value
+		_node.ResponseToID = value
 	}
 	if value, ok := pmc.mutation.ErrorMessage(); ok {
 		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
@@ -513,15 +513,15 @@ func (u *PubsubMessgaeUpsert) UpdateState() *PubsubMessgaeUpsert {
 	return u
 }
 
-// SetResponseID sets the "response_id" field.
-func (u *PubsubMessgaeUpsert) SetResponseID(v uuid.UUID) *PubsubMessgaeUpsert {
-	u.Set(pubsubmessgae.FieldResponseID, v)
+// SetResponseToID sets the "response_to_id" field.
+func (u *PubsubMessgaeUpsert) SetResponseToID(v uuid.UUID) *PubsubMessgaeUpsert {
+	u.Set(pubsubmessgae.FieldResponseToID, v)
 	return u
 }
 
-// UpdateResponseID sets the "response_id" field to the value that was provided on create.
-func (u *PubsubMessgaeUpsert) UpdateResponseID() *PubsubMessgaeUpsert {
-	u.SetExcluded(pubsubmessgae.FieldResponseID)
+// UpdateResponseToID sets the "response_to_id" field to the value that was provided on create.
+func (u *PubsubMessgaeUpsert) UpdateResponseToID() *PubsubMessgaeUpsert {
+	u.SetExcluded(pubsubmessgae.FieldResponseToID)
 	return u
 }
 
@@ -712,17 +712,17 @@ func (u *PubsubMessgaeUpsertOne) UpdateState() *PubsubMessgaeUpsertOne {
 	})
 }
 
-// SetResponseID sets the "response_id" field.
-func (u *PubsubMessgaeUpsertOne) SetResponseID(v uuid.UUID) *PubsubMessgaeUpsertOne {
+// SetResponseToID sets the "response_to_id" field.
+func (u *PubsubMessgaeUpsertOne) SetResponseToID(v uuid.UUID) *PubsubMessgaeUpsertOne {
 	return u.Update(func(s *PubsubMessgaeUpsert) {
-		s.SetResponseID(v)
+		s.SetResponseToID(v)
 	})
 }
 
-// UpdateResponseID sets the "response_id" field to the value that was provided on create.
-func (u *PubsubMessgaeUpsertOne) UpdateResponseID() *PubsubMessgaeUpsertOne {
+// UpdateResponseToID sets the "response_to_id" field to the value that was provided on create.
+func (u *PubsubMessgaeUpsertOne) UpdateResponseToID() *PubsubMessgaeUpsertOne {
 	return u.Update(func(s *PubsubMessgaeUpsert) {
-		s.UpdateResponseID()
+		s.UpdateResponseToID()
 	})
 }
 
@@ -1082,17 +1082,17 @@ func (u *PubsubMessgaeUpsertBulk) UpdateState() *PubsubMessgaeUpsertBulk {
 	})
 }
 
-// SetResponseID sets the "response_id" field.
-func (u *PubsubMessgaeUpsertBulk) SetResponseID(v uuid.UUID) *PubsubMessgaeUpsertBulk {
+// SetResponseToID sets the "response_to_id" field.
+func (u *PubsubMessgaeUpsertBulk) SetResponseToID(v uuid.UUID) *PubsubMessgaeUpsertBulk {
 	return u.Update(func(s *PubsubMessgaeUpsert) {
-		s.SetResponseID(v)
+		s.SetResponseToID(v)
 	})
 }
 
-// UpdateResponseID sets the "response_id" field to the value that was provided on create.
-func (u *PubsubMessgaeUpsertBulk) UpdateResponseID() *PubsubMessgaeUpsertBulk {
+// UpdateResponseToID sets the "response_to_id" field to the value that was provided on create.
+func (u *PubsubMessgaeUpsertBulk) UpdateResponseToID() *PubsubMessgaeUpsertBulk {
 	return u.Update(func(s *PubsubMessgaeUpsert) {
-		s.UpdateResponseID()
+		s.UpdateResponseToID()
 	})
 }
 

@@ -287,7 +287,7 @@ var schemaGraph = func() *sqlgraph.Schema {
 			pubsubmessgae.FieldSender:       {Type: field.TypeString, Column: pubsubmessgae.FieldSender},
 			pubsubmessgae.FieldBody:         {Type: field.TypeBytes, Column: pubsubmessgae.FieldBody},
 			pubsubmessgae.FieldState:        {Type: field.TypeString, Column: pubsubmessgae.FieldState},
-			pubsubmessgae.FieldResponseID:   {Type: field.TypeUUID, Column: pubsubmessgae.FieldResponseID},
+			pubsubmessgae.FieldResponseToID: {Type: field.TypeUUID, Column: pubsubmessgae.FieldResponseToID},
 			pubsubmessgae.FieldErrorMessage: {Type: field.TypeString, Column: pubsubmessgae.FieldErrorMessage},
 		},
 	}
@@ -1364,9 +1364,9 @@ func (f *PubsubMessgaeFilter) WhereState(p entql.StringP) {
 	f.Where(p.Field(pubsubmessgae.FieldState))
 }
 
-// WhereResponseID applies the entql [16]byte predicate on the response_id field.
-func (f *PubsubMessgaeFilter) WhereResponseID(p entql.ValueP) {
-	f.Where(p.Field(pubsubmessgae.FieldResponseID))
+// WhereResponseToID applies the entql [16]byte predicate on the response_to_id field.
+func (f *PubsubMessgaeFilter) WhereResponseToID(p entql.ValueP) {
+	f.Where(p.Field(pubsubmessgae.FieldResponseToID))
 }
 
 // WhereErrorMessage applies the entql string predicate on the error_message field.
