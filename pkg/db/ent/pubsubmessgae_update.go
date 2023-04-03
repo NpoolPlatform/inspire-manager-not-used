@@ -120,6 +120,26 @@ func (pmu *PubsubMessgaeUpdate) SetResponseID(u uuid.UUID) *PubsubMessgaeUpdate 
 	return pmu
 }
 
+// SetErrorMessage sets the "error_message" field.
+func (pmu *PubsubMessgaeUpdate) SetErrorMessage(s string) *PubsubMessgaeUpdate {
+	pmu.mutation.SetErrorMessage(s)
+	return pmu
+}
+
+// SetNillableErrorMessage sets the "error_message" field if the given value is not nil.
+func (pmu *PubsubMessgaeUpdate) SetNillableErrorMessage(s *string) *PubsubMessgaeUpdate {
+	if s != nil {
+		pmu.SetErrorMessage(*s)
+	}
+	return pmu
+}
+
+// ClearErrorMessage clears the value of the "error_message" field.
+func (pmu *PubsubMessgaeUpdate) ClearErrorMessage() *PubsubMessgaeUpdate {
+	pmu.mutation.ClearErrorMessage()
+	return pmu
+}
+
 // Mutation returns the PubsubMessgaeMutation object of the builder.
 func (pmu *PubsubMessgaeUpdate) Mutation() *PubsubMessgaeMutation {
 	return pmu.mutation
@@ -302,6 +322,19 @@ func (pmu *PubsubMessgaeUpdate) sqlSave(ctx context.Context) (n int, err error) 
 			Column: pubsubmessgae.FieldResponseID,
 		})
 	}
+	if value, ok := pmu.mutation.ErrorMessage(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeString,
+			Value:  value,
+			Column: pubsubmessgae.FieldErrorMessage,
+		})
+	}
+	if pmu.mutation.ErrorMessageCleared() {
+		_spec.Fields.Clear = append(_spec.Fields.Clear, &sqlgraph.FieldSpec{
+			Type:   field.TypeString,
+			Column: pubsubmessgae.FieldErrorMessage,
+		})
+	}
 	_spec.Modifiers = pmu.modifiers
 	if n, err = sqlgraph.UpdateNodes(ctx, pmu.driver, _spec); err != nil {
 		if _, ok := err.(*sqlgraph.NotFoundError); ok {
@@ -411,6 +444,26 @@ func (pmuo *PubsubMessgaeUpdateOne) SetState(s string) *PubsubMessgaeUpdateOne {
 // SetResponseID sets the "response_id" field.
 func (pmuo *PubsubMessgaeUpdateOne) SetResponseID(u uuid.UUID) *PubsubMessgaeUpdateOne {
 	pmuo.mutation.SetResponseID(u)
+	return pmuo
+}
+
+// SetErrorMessage sets the "error_message" field.
+func (pmuo *PubsubMessgaeUpdateOne) SetErrorMessage(s string) *PubsubMessgaeUpdateOne {
+	pmuo.mutation.SetErrorMessage(s)
+	return pmuo
+}
+
+// SetNillableErrorMessage sets the "error_message" field if the given value is not nil.
+func (pmuo *PubsubMessgaeUpdateOne) SetNillableErrorMessage(s *string) *PubsubMessgaeUpdateOne {
+	if s != nil {
+		pmuo.SetErrorMessage(*s)
+	}
+	return pmuo
+}
+
+// ClearErrorMessage clears the value of the "error_message" field.
+func (pmuo *PubsubMessgaeUpdateOne) ClearErrorMessage() *PubsubMessgaeUpdateOne {
+	pmuo.mutation.ClearErrorMessage()
 	return pmuo
 }
 
@@ -624,6 +677,19 @@ func (pmuo *PubsubMessgaeUpdateOne) sqlSave(ctx context.Context) (_node *PubsubM
 			Type:   field.TypeUUID,
 			Value:  value,
 			Column: pubsubmessgae.FieldResponseID,
+		})
+	}
+	if value, ok := pmuo.mutation.ErrorMessage(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeString,
+			Value:  value,
+			Column: pubsubmessgae.FieldErrorMessage,
+		})
+	}
+	if pmuo.mutation.ErrorMessageCleared() {
+		_spec.Fields.Clear = append(_spec.Fields.Clear, &sqlgraph.FieldSpec{
+			Type:   field.TypeString,
+			Column: pubsubmessgae.FieldErrorMessage,
 		})
 	}
 	_spec.Modifiers = pmuo.modifiers

@@ -34,6 +34,8 @@ type PubsubMessgae struct {
 	State string `json:"state,omitempty"`
 	// ResponseID holds the value of the "response_id" field.
 	ResponseID uuid.UUID `json:"response_id,omitempty"`
+	// ErrorMessage holds the value of the "error_message" field.
+	ErrorMessage string `json:"error_message,omitempty"`
 }
 
 // scanValues returns the types for scanning values from sql.Rows.
@@ -45,7 +47,7 @@ func (*PubsubMessgae) scanValues(columns []string) ([]interface{}, error) {
 			values[i] = new([]byte)
 		case pubsubmessgae.FieldID, pubsubmessgae.FieldCreatedAt, pubsubmessgae.FieldUpdatedAt, pubsubmessgae.FieldDeletedAt:
 			values[i] = new(sql.NullInt64)
-		case pubsubmessgae.FieldMessageID, pubsubmessgae.FieldSender, pubsubmessgae.FieldState:
+		case pubsubmessgae.FieldMessageID, pubsubmessgae.FieldSender, pubsubmessgae.FieldState, pubsubmessgae.FieldErrorMessage:
 			values[i] = new(sql.NullString)
 		case pubsubmessgae.FieldUniqueID, pubsubmessgae.FieldResponseID:
 			values[i] = new(uuid.UUID)
@@ -124,6 +126,12 @@ func (pm *PubsubMessgae) assignValues(columns []string, values []interface{}) er
 			} else if value != nil {
 				pm.ResponseID = *value
 			}
+		case pubsubmessgae.FieldErrorMessage:
+			if value, ok := values[i].(*sql.NullString); !ok {
+				return fmt.Errorf("unexpected type %T for field error_message", values[i])
+			} else if value.Valid {
+				pm.ErrorMessage = value.String
+			}
 		}
 	}
 	return nil
@@ -178,6 +186,9 @@ func (pm *PubsubMessgae) String() string {
 	builder.WriteString(", ")
 	builder.WriteString("response_id=")
 	builder.WriteString(fmt.Sprintf("%v", pm.ResponseID))
+	builder.WriteString(", ")
+	builder.WriteString("error_message=")
+	builder.WriteString(pm.ErrorMessage)
 	builder.WriteByte(')')
 	return builder.String()
 }

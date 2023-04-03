@@ -11866,6 +11866,7 @@ type PubsubMessgaeMutation struct {
 	body          *[]byte
 	state         *string
 	response_id   *uuid.UUID
+	error_message *string
 	clearedFields map[string]struct{}
 	done          bool
 	oldValue      func(context.Context) (*PubsubMessgae, error)
@@ -12354,6 +12355,55 @@ func (m *PubsubMessgaeMutation) ResetResponseID() {
 	m.response_id = nil
 }
 
+// SetErrorMessage sets the "error_message" field.
+func (m *PubsubMessgaeMutation) SetErrorMessage(s string) {
+	m.error_message = &s
+}
+
+// ErrorMessage returns the value of the "error_message" field in the mutation.
+func (m *PubsubMessgaeMutation) ErrorMessage() (r string, exists bool) {
+	v := m.error_message
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldErrorMessage returns the old "error_message" field's value of the PubsubMessgae entity.
+// If the PubsubMessgae object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *PubsubMessgaeMutation) OldErrorMessage(ctx context.Context) (v string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldErrorMessage is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldErrorMessage requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldErrorMessage: %w", err)
+	}
+	return oldValue.ErrorMessage, nil
+}
+
+// ClearErrorMessage clears the value of the "error_message" field.
+func (m *PubsubMessgaeMutation) ClearErrorMessage() {
+	m.error_message = nil
+	m.clearedFields[pubsubmessgae.FieldErrorMessage] = struct{}{}
+}
+
+// ErrorMessageCleared returns if the "error_message" field was cleared in this mutation.
+func (m *PubsubMessgaeMutation) ErrorMessageCleared() bool {
+	_, ok := m.clearedFields[pubsubmessgae.FieldErrorMessage]
+	return ok
+}
+
+// ResetErrorMessage resets all changes to the "error_message" field.
+func (m *PubsubMessgaeMutation) ResetErrorMessage() {
+	m.error_message = nil
+	delete(m.clearedFields, pubsubmessgae.FieldErrorMessage)
+}
+
 // Where appends a list predicates to the PubsubMessgaeMutation builder.
 func (m *PubsubMessgaeMutation) Where(ps ...predicate.PubsubMessgae) {
 	m.predicates = append(m.predicates, ps...)
@@ -12373,7 +12423,7 @@ func (m *PubsubMessgaeMutation) Type() string {
 // order to get all numeric fields that were incremented/decremented, call
 // AddedFields().
 func (m *PubsubMessgaeMutation) Fields() []string {
-	fields := make([]string, 0, 9)
+	fields := make([]string, 0, 10)
 	if m.created_at != nil {
 		fields = append(fields, pubsubmessgae.FieldCreatedAt)
 	}
@@ -12401,6 +12451,9 @@ func (m *PubsubMessgaeMutation) Fields() []string {
 	if m.response_id != nil {
 		fields = append(fields, pubsubmessgae.FieldResponseID)
 	}
+	if m.error_message != nil {
+		fields = append(fields, pubsubmessgae.FieldErrorMessage)
+	}
 	return fields
 }
 
@@ -12427,6 +12480,8 @@ func (m *PubsubMessgaeMutation) Field(name string) (ent.Value, bool) {
 		return m.State()
 	case pubsubmessgae.FieldResponseID:
 		return m.ResponseID()
+	case pubsubmessgae.FieldErrorMessage:
+		return m.ErrorMessage()
 	}
 	return nil, false
 }
@@ -12454,6 +12509,8 @@ func (m *PubsubMessgaeMutation) OldField(ctx context.Context, name string) (ent.
 		return m.OldState(ctx)
 	case pubsubmessgae.FieldResponseID:
 		return m.OldResponseID(ctx)
+	case pubsubmessgae.FieldErrorMessage:
+		return m.OldErrorMessage(ctx)
 	}
 	return nil, fmt.Errorf("unknown PubsubMessgae field %s", name)
 }
@@ -12526,6 +12583,13 @@ func (m *PubsubMessgaeMutation) SetField(name string, value ent.Value) error {
 		}
 		m.SetResponseID(v)
 		return nil
+	case pubsubmessgae.FieldErrorMessage:
+		v, ok := value.(string)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetErrorMessage(v)
+		return nil
 	}
 	return fmt.Errorf("unknown PubsubMessgae field %s", name)
 }
@@ -12594,7 +12658,11 @@ func (m *PubsubMessgaeMutation) AddField(name string, value ent.Value) error {
 // ClearedFields returns all nullable fields that were cleared during this
 // mutation.
 func (m *PubsubMessgaeMutation) ClearedFields() []string {
-	return nil
+	var fields []string
+	if m.FieldCleared(pubsubmessgae.FieldErrorMessage) {
+		fields = append(fields, pubsubmessgae.FieldErrorMessage)
+	}
+	return fields
 }
 
 // FieldCleared returns a boolean indicating if a field with the given name was
@@ -12607,6 +12675,11 @@ func (m *PubsubMessgaeMutation) FieldCleared(name string) bool {
 // ClearField clears the value of the field with the given name. It returns an
 // error if the field is not defined in the schema.
 func (m *PubsubMessgaeMutation) ClearField(name string) error {
+	switch name {
+	case pubsubmessgae.FieldErrorMessage:
+		m.ClearErrorMessage()
+		return nil
+	}
 	return fmt.Errorf("unknown PubsubMessgae nullable field %s", name)
 }
 
@@ -12640,6 +12713,9 @@ func (m *PubsubMessgaeMutation) ResetField(name string) error {
 		return nil
 	case pubsubmessgae.FieldResponseID:
 		m.ResetResponseID()
+		return nil
+	case pubsubmessgae.FieldErrorMessage:
+		m.ResetErrorMessage()
 		return nil
 	}
 	return fmt.Errorf("unknown PubsubMessgae field %s", name)

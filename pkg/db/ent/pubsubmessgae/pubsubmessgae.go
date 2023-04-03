@@ -29,6 +29,8 @@ const (
 	FieldState = "state"
 	// FieldResponseID holds the string denoting the response_id field in the database.
 	FieldResponseID = "response_id"
+	// FieldErrorMessage holds the string denoting the error_message field in the database.
+	FieldErrorMessage = "error_message"
 	// Table holds the table name of the pubsubmessgae in the database.
 	Table = "pubsub_messgaes"
 )
@@ -45,6 +47,7 @@ var Columns = []string{
 	FieldBody,
 	FieldState,
 	FieldResponseID,
+	FieldErrorMessage,
 }
 
 // ValidColumn reports if the column name is valid (part of the table columns).
@@ -74,4 +77,6 @@ var (
 	UpdateDefaultUpdatedAt func() uint32
 	// DefaultDeletedAt holds the default value on creation for the "deleted_at" field.
 	DefaultDeletedAt func() uint32
+	// DefaultErrorMessage holds the default value on creation for the "error_message" field.
+	DefaultErrorMessage string
 )

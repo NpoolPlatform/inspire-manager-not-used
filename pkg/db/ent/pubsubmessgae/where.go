@@ -142,6 +142,13 @@ func ResponseID(v uuid.UUID) predicate.PubsubMessgae {
 	})
 }
 
+// ErrorMessage applies equality check predicate on the "error_message" field. It's identical to ErrorMessageEQ.
+func ErrorMessage(v string) predicate.PubsubMessgae {
+	return predicate.PubsubMessgae(func(s *sql.Selector) {
+		s.Where(sql.EQ(s.C(FieldErrorMessage), v))
+	})
+}
+
 // CreatedAtEQ applies the EQ predicate on the "created_at" field.
 func CreatedAtEQ(v uint32) predicate.PubsubMessgae {
 	return predicate.PubsubMessgae(func(s *sql.Selector) {
@@ -820,6 +827,119 @@ func ResponseIDLT(v uuid.UUID) predicate.PubsubMessgae {
 func ResponseIDLTE(v uuid.UUID) predicate.PubsubMessgae {
 	return predicate.PubsubMessgae(func(s *sql.Selector) {
 		s.Where(sql.LTE(s.C(FieldResponseID), v))
+	})
+}
+
+// ErrorMessageEQ applies the EQ predicate on the "error_message" field.
+func ErrorMessageEQ(v string) predicate.PubsubMessgae {
+	return predicate.PubsubMessgae(func(s *sql.Selector) {
+		s.Where(sql.EQ(s.C(FieldErrorMessage), v))
+	})
+}
+
+// ErrorMessageNEQ applies the NEQ predicate on the "error_message" field.
+func ErrorMessageNEQ(v string) predicate.PubsubMessgae {
+	return predicate.PubsubMessgae(func(s *sql.Selector) {
+		s.Where(sql.NEQ(s.C(FieldErrorMessage), v))
+	})
+}
+
+// ErrorMessageIn applies the In predicate on the "error_message" field.
+func ErrorMessageIn(vs ...string) predicate.PubsubMessgae {
+	v := make([]interface{}, len(vs))
+	for i := range v {
+		v[i] = vs[i]
+	}
+	return predicate.PubsubMessgae(func(s *sql.Selector) {
+		s.Where(sql.In(s.C(FieldErrorMessage), v...))
+	})
+}
+
+// ErrorMessageNotIn applies the NotIn predicate on the "error_message" field.
+func ErrorMessageNotIn(vs ...string) predicate.PubsubMessgae {
+	v := make([]interface{}, len(vs))
+	for i := range v {
+		v[i] = vs[i]
+	}
+	return predicate.PubsubMessgae(func(s *sql.Selector) {
+		s.Where(sql.NotIn(s.C(FieldErrorMessage), v...))
+	})
+}
+
+// ErrorMessageGT applies the GT predicate on the "error_message" field.
+func ErrorMessageGT(v string) predicate.PubsubMessgae {
+	return predicate.PubsubMessgae(func(s *sql.Selector) {
+		s.Where(sql.GT(s.C(FieldErrorMessage), v))
+	})
+}
+
+// ErrorMessageGTE applies the GTE predicate on the "error_message" field.
+func ErrorMessageGTE(v string) predicate.PubsubMessgae {
+	return predicate.PubsubMessgae(func(s *sql.Selector) {
+		s.Where(sql.GTE(s.C(FieldErrorMessage), v))
+	})
+}
+
+// ErrorMessageLT applies the LT predicate on the "error_message" field.
+func ErrorMessageLT(v string) predicate.PubsubMessgae {
+	return predicate.PubsubMessgae(func(s *sql.Selector) {
+		s.Where(sql.LT(s.C(FieldErrorMessage), v))
+	})
+}
+
+// ErrorMessageLTE applies the LTE predicate on the "error_message" field.
+func ErrorMessageLTE(v string) predicate.PubsubMessgae {
+	return predicate.PubsubMessgae(func(s *sql.Selector) {
+		s.Where(sql.LTE(s.C(FieldErrorMessage), v))
+	})
+}
+
+// ErrorMessageContains applies the Contains predicate on the "error_message" field.
+func ErrorMessageContains(v string) predicate.PubsubMessgae {
+	return predicate.PubsubMessgae(func(s *sql.Selector) {
+		s.Where(sql.Contains(s.C(FieldErrorMessage), v))
+	})
+}
+
+// ErrorMessageHasPrefix applies the HasPrefix predicate on the "error_message" field.
+func ErrorMessageHasPrefix(v string) predicate.PubsubMessgae {
+	return predicate.PubsubMessgae(func(s *sql.Selector) {
+		s.Where(sql.HasPrefix(s.C(FieldErrorMessage), v))
+	})
+}
+
+// ErrorMessageHasSuffix applies the HasSuffix predicate on the "error_message" field.
+func ErrorMessageHasSuffix(v string) predicate.PubsubMessgae {
+	return predicate.PubsubMessgae(func(s *sql.Selector) {
+		s.Where(sql.HasSuffix(s.C(FieldErrorMessage), v))
+	})
+}
+
+// ErrorMessageIsNil applies the IsNil predicate on the "error_message" field.
+func ErrorMessageIsNil() predicate.PubsubMessgae {
+	return predicate.PubsubMessgae(func(s *sql.Selector) {
+		s.Where(sql.IsNull(s.C(FieldErrorMessage)))
+	})
+}
+
+// ErrorMessageNotNil applies the NotNil predicate on the "error_message" field.
+func ErrorMessageNotNil() predicate.PubsubMessgae {
+	return predicate.PubsubMessgae(func(s *sql.Selector) {
+		s.Where(sql.NotNull(s.C(FieldErrorMessage)))
+	})
+}
+
+// ErrorMessageEqualFold applies the EqualFold predicate on the "error_message" field.
+func ErrorMessageEqualFold(v string) predicate.PubsubMessgae {
+	return predicate.PubsubMessgae(func(s *sql.Selector) {
+		s.Where(sql.EqualFold(s.C(FieldErrorMessage), v))
+	})
+}
+
+// ErrorMessageContainsFold applies the ContainsFold predicate on the "error_message" field.
+func ErrorMessageContainsFold(v string) predicate.PubsubMessgae {
+	return predicate.PubsubMessgae(func(s *sql.Selector) {
+		s.Where(sql.ContainsFold(s.C(FieldErrorMessage), v))
 	})
 }
 

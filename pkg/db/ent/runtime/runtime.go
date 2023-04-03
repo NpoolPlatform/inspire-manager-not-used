@@ -662,6 +662,10 @@ func init() {
 	pubsubmessgaeDescDeletedAt := pubsubmessgaeMixinFields0[2].Descriptor()
 	// pubsubmessgae.DefaultDeletedAt holds the default value on creation for the deleted_at field.
 	pubsubmessgae.DefaultDeletedAt = pubsubmessgaeDescDeletedAt.Default.(func() uint32)
+	// pubsubmessgaeDescErrorMessage is the schema descriptor for error_message field.
+	pubsubmessgaeDescErrorMessage := pubsubmessgaeFields[6].Descriptor()
+	// pubsubmessgae.DefaultErrorMessage holds the default value on creation for the error_message field.
+	pubsubmessgae.DefaultErrorMessage = pubsubmessgaeDescErrorMessage.Default.(string)
 	registrationMixin := schema.Registration{}.Mixin()
 	registration.Policy = privacy.NewPolicies(registrationMixin[0], schema.Registration{})
 	registration.Hooks[0] = func(next ent.Mutator) ent.Mutator {

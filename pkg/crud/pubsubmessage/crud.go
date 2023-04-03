@@ -21,32 +21,29 @@ func CreateSet(
 	messageID, sender string,
 	body []byte,
 	state string,
-	responseID uuid.UUID,
+	responseID *uuid.UUID,
+	errorMessage *string,
 ) (*ent.PubsubMessgaeCreate, error) {
 	c.SetUniqueID(uniqueID)
 	c.SetMessageID(messageID)
 	c.SetSender(sender)
 	c.SetBody(body)
 	c.SetState(state)
-	c.SetResponseID(responseID)
+	if responseID != nil {
+		c.SetResponseID(*responseID)
+	}
+	if errorMessage != nil {
+		c.SetErrorMessage(*errorMessage)
+	}
 	return c, nil
 }
 
 func UpdateSet(
 	info *ent.PubsubMessgae,
-	uniqueID uuid.UUID,
-	messageID, sender string,
-	body []byte,
 	state string,
-	responseID uuid.UUID,
 ) (*ent.PubsubMessgaeUpdateOne, error) {
 	u := info.Update()
-	u.SetUniqueID(uniqueID)
-	u.SetMessageID(messageID)
-	u.SetSender(sender)
-	u.SetBody(body)
 	u.SetState(state)
-	u.SetResponseID(responseID)
 	return u, nil
 }
 

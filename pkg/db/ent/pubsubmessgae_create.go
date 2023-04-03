@@ -100,6 +100,20 @@ func (pmc *PubsubMessgaeCreate) SetResponseID(u uuid.UUID) *PubsubMessgaeCreate 
 	return pmc
 }
 
+// SetErrorMessage sets the "error_message" field.
+func (pmc *PubsubMessgaeCreate) SetErrorMessage(s string) *PubsubMessgaeCreate {
+	pmc.mutation.SetErrorMessage(s)
+	return pmc
+}
+
+// SetNillableErrorMessage sets the "error_message" field if the given value is not nil.
+func (pmc *PubsubMessgaeCreate) SetNillableErrorMessage(s *string) *PubsubMessgaeCreate {
+	if s != nil {
+		pmc.SetErrorMessage(*s)
+	}
+	return pmc
+}
+
 // Mutation returns the PubsubMessgaeMutation object of the builder.
 func (pmc *PubsubMessgaeCreate) Mutation() *PubsubMessgaeMutation {
 	return pmc.mutation
@@ -199,6 +213,10 @@ func (pmc *PubsubMessgaeCreate) defaults() error {
 		}
 		v := pubsubmessgae.DefaultDeletedAt()
 		pmc.mutation.SetDeletedAt(v)
+	}
+	if _, ok := pmc.mutation.ErrorMessage(); !ok {
+		v := pubsubmessgae.DefaultErrorMessage
+		pmc.mutation.SetErrorMessage(v)
 	}
 	return nil
 }
@@ -331,6 +349,14 @@ func (pmc *PubsubMessgaeCreate) createSpec() (*PubsubMessgae, *sqlgraph.CreateSp
 			Column: pubsubmessgae.FieldResponseID,
 		})
 		_node.ResponseID = value
+	}
+	if value, ok := pmc.mutation.ErrorMessage(); ok {
+		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
+			Type:   field.TypeString,
+			Value:  value,
+			Column: pubsubmessgae.FieldErrorMessage,
+		})
+		_node.ErrorMessage = value
 	}
 	return _node, _spec
 }
@@ -509,6 +535,24 @@ func (u *PubsubMessgaeUpsert) SetResponseID(v uuid.UUID) *PubsubMessgaeUpsert {
 // UpdateResponseID sets the "response_id" field to the value that was provided on create.
 func (u *PubsubMessgaeUpsert) UpdateResponseID() *PubsubMessgaeUpsert {
 	u.SetExcluded(pubsubmessgae.FieldResponseID)
+	return u
+}
+
+// SetErrorMessage sets the "error_message" field.
+func (u *PubsubMessgaeUpsert) SetErrorMessage(v string) *PubsubMessgaeUpsert {
+	u.Set(pubsubmessgae.FieldErrorMessage, v)
+	return u
+}
+
+// UpdateErrorMessage sets the "error_message" field to the value that was provided on create.
+func (u *PubsubMessgaeUpsert) UpdateErrorMessage() *PubsubMessgaeUpsert {
+	u.SetExcluded(pubsubmessgae.FieldErrorMessage)
+	return u
+}
+
+// ClearErrorMessage clears the value of the "error_message" field.
+func (u *PubsubMessgaeUpsert) ClearErrorMessage() *PubsubMessgaeUpsert {
+	u.SetNull(pubsubmessgae.FieldErrorMessage)
 	return u
 }
 
@@ -698,6 +742,27 @@ func (u *PubsubMessgaeUpsertOne) SetResponseID(v uuid.UUID) *PubsubMessgaeUpsert
 func (u *PubsubMessgaeUpsertOne) UpdateResponseID() *PubsubMessgaeUpsertOne {
 	return u.Update(func(s *PubsubMessgaeUpsert) {
 		s.UpdateResponseID()
+	})
+}
+
+// SetErrorMessage sets the "error_message" field.
+func (u *PubsubMessgaeUpsertOne) SetErrorMessage(v string) *PubsubMessgaeUpsertOne {
+	return u.Update(func(s *PubsubMessgaeUpsert) {
+		s.SetErrorMessage(v)
+	})
+}
+
+// UpdateErrorMessage sets the "error_message" field to the value that was provided on create.
+func (u *PubsubMessgaeUpsertOne) UpdateErrorMessage() *PubsubMessgaeUpsertOne {
+	return u.Update(func(s *PubsubMessgaeUpsert) {
+		s.UpdateErrorMessage()
+	})
+}
+
+// ClearErrorMessage clears the value of the "error_message" field.
+func (u *PubsubMessgaeUpsertOne) ClearErrorMessage() *PubsubMessgaeUpsertOne {
+	return u.Update(func(s *PubsubMessgaeUpsert) {
+		s.ClearErrorMessage()
 	})
 }
 
@@ -1049,6 +1114,27 @@ func (u *PubsubMessgaeUpsertBulk) SetResponseID(v uuid.UUID) *PubsubMessgaeUpser
 func (u *PubsubMessgaeUpsertBulk) UpdateResponseID() *PubsubMessgaeUpsertBulk {
 	return u.Update(func(s *PubsubMessgaeUpsert) {
 		s.UpdateResponseID()
+	})
+}
+
+// SetErrorMessage sets the "error_message" field.
+func (u *PubsubMessgaeUpsertBulk) SetErrorMessage(v string) *PubsubMessgaeUpsertBulk {
+	return u.Update(func(s *PubsubMessgaeUpsert) {
+		s.SetErrorMessage(v)
+	})
+}
+
+// UpdateErrorMessage sets the "error_message" field to the value that was provided on create.
+func (u *PubsubMessgaeUpsertBulk) UpdateErrorMessage() *PubsubMessgaeUpsertBulk {
+	return u.Update(func(s *PubsubMessgaeUpsert) {
+		s.UpdateErrorMessage()
+	})
+}
+
+// ClearErrorMessage clears the value of the "error_message" field.
+func (u *PubsubMessgaeUpsertBulk) ClearErrorMessage() *PubsubMessgaeUpsertBulk {
+	return u.Update(func(s *PubsubMessgaeUpsert) {
+		s.ClearErrorMessage()
 	})
 }
 

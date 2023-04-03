@@ -280,15 +280,16 @@ var schemaGraph = func() *sqlgraph.Schema {
 		},
 		Type: "PubsubMessgae",
 		Fields: map[string]*sqlgraph.FieldSpec{
-			pubsubmessgae.FieldCreatedAt:  {Type: field.TypeUint32, Column: pubsubmessgae.FieldCreatedAt},
-			pubsubmessgae.FieldUpdatedAt:  {Type: field.TypeUint32, Column: pubsubmessgae.FieldUpdatedAt},
-			pubsubmessgae.FieldDeletedAt:  {Type: field.TypeUint32, Column: pubsubmessgae.FieldDeletedAt},
-			pubsubmessgae.FieldUniqueID:   {Type: field.TypeUUID, Column: pubsubmessgae.FieldUniqueID},
-			pubsubmessgae.FieldMessageID:  {Type: field.TypeString, Column: pubsubmessgae.FieldMessageID},
-			pubsubmessgae.FieldSender:     {Type: field.TypeString, Column: pubsubmessgae.FieldSender},
-			pubsubmessgae.FieldBody:       {Type: field.TypeBytes, Column: pubsubmessgae.FieldBody},
-			pubsubmessgae.FieldState:      {Type: field.TypeString, Column: pubsubmessgae.FieldState},
-			pubsubmessgae.FieldResponseID: {Type: field.TypeUUID, Column: pubsubmessgae.FieldResponseID},
+			pubsubmessgae.FieldCreatedAt:    {Type: field.TypeUint32, Column: pubsubmessgae.FieldCreatedAt},
+			pubsubmessgae.FieldUpdatedAt:    {Type: field.TypeUint32, Column: pubsubmessgae.FieldUpdatedAt},
+			pubsubmessgae.FieldDeletedAt:    {Type: field.TypeUint32, Column: pubsubmessgae.FieldDeletedAt},
+			pubsubmessgae.FieldUniqueID:     {Type: field.TypeUUID, Column: pubsubmessgae.FieldUniqueID},
+			pubsubmessgae.FieldMessageID:    {Type: field.TypeString, Column: pubsubmessgae.FieldMessageID},
+			pubsubmessgae.FieldSender:       {Type: field.TypeString, Column: pubsubmessgae.FieldSender},
+			pubsubmessgae.FieldBody:         {Type: field.TypeBytes, Column: pubsubmessgae.FieldBody},
+			pubsubmessgae.FieldState:        {Type: field.TypeString, Column: pubsubmessgae.FieldState},
+			pubsubmessgae.FieldResponseID:   {Type: field.TypeUUID, Column: pubsubmessgae.FieldResponseID},
+			pubsubmessgae.FieldErrorMessage: {Type: field.TypeString, Column: pubsubmessgae.FieldErrorMessage},
 		},
 	}
 	graph.Nodes[11] = &sqlgraph.Node{
@@ -1372,6 +1373,11 @@ func (f *PubsubMessgaeFilter) WhereState(p entql.StringP) {
 // WhereResponseID applies the entql [16]byte predicate on the response_id field.
 func (f *PubsubMessgaeFilter) WhereResponseID(p entql.ValueP) {
 	f.Where(p.Field(pubsubmessgae.FieldResponseID))
+}
+
+// WhereErrorMessage applies the entql string predicate on the error_message field.
+func (f *PubsubMessgaeFilter) WhereErrorMessage(p entql.StringP) {
+	f.Where(p.Field(pubsubmessgae.FieldErrorMessage))
 }
 
 // addPredicate implements the predicateAdder interface.

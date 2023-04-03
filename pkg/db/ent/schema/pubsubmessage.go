@@ -36,6 +36,10 @@ func (PubsubMessgae) Fields() []ent.Field {
 		field.
 			UUID("response_id", uuid.UUID{}).
 			Unique(),
+		field.
+			String("error_message").
+			Optional().
+			Default(""),
 	}
 }
 
