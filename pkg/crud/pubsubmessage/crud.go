@@ -16,20 +16,31 @@ import (
 	"github.com/google/uuid"
 )
 
-func CreateSet(c *ent.PubsubMessgaeCreate, in *pubsub.Message) (*ent.PubsubMessgaeCreate, error) {
-	c.SetUniqueID(in.UniqueID)
-	c.SetMessageID(in.MessageID)
-	c.SetSender(in.Sender)
-	c.SetBody(in.Body)
+func CreateSet(
+	c *ent.PubsubMessgaeCreate,
+	uniqueID uuid.UUID,
+	messageID, sender string,
+	body []byte,
+) (*ent.PubsubMessgaeCreate, error) {
+	c.SetUniqueID(uniqueID)
+	c.SetMessageID(messageID)
+	c.SetSender(sender)
+	c.SetBody(body)
 	return c, nil
 }
 
-func UpdateSet(info *ent.PubsubMessgae, in *pubsub.Message) (*ent.PubsubMessgaeUpdateOne, error) {
+func UpdateSet(
+	info *ent.PubsubMessgae,
+	in *pubsub.Message,
+	uniqueID uuid.UUID,
+	messageID, sender string,
+	body []byte,
+) (*ent.PubsubMessgaeUpdateOne, error) {
 	u := info.Update()
-	u.SetUniqueID(in.UniqueID)
-	u.SetMessageID(in.MessageID)
-	u.SetSender(in.Sender)
-	u.SetBody(in.Body)
+	u.SetUniqueID(uniqueID)
+	u.SetMessageID(messageID)
+	u.SetSender(sender)
+	u.SetBody(body)
 	return u, nil
 }
 
