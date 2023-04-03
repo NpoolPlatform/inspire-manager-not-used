@@ -139,15 +139,15 @@ func (f InvitationCodeFunc) Mutate(ctx context.Context, m ent.Mutation) (ent.Val
 	return f(ctx, mv)
 }
 
-// The PubsubMessgaeFunc type is an adapter to allow the use of ordinary
-// function as PubsubMessgae mutator.
-type PubsubMessgaeFunc func(context.Context, *ent.PubsubMessgaeMutation) (ent.Value, error)
+// The PubsubMessageFunc type is an adapter to allow the use of ordinary
+// function as PubsubMessage mutator.
+type PubsubMessageFunc func(context.Context, *ent.PubsubMessageMutation) (ent.Value, error)
 
 // Mutate calls f(ctx, m).
-func (f PubsubMessgaeFunc) Mutate(ctx context.Context, m ent.Mutation) (ent.Value, error) {
-	mv, ok := m.(*ent.PubsubMessgaeMutation)
+func (f PubsubMessageFunc) Mutate(ctx context.Context, m ent.Mutation) (ent.Value, error) {
+	mv, ok := m.(*ent.PubsubMessageMutation)
 	if !ok {
-		return nil, fmt.Errorf("unexpected mutation type %T. expect *ent.PubsubMessgaeMutation", m)
+		return nil, fmt.Errorf("unexpected mutation type %T. expect *ent.PubsubMessageMutation", m)
 	}
 	return f(ctx, mv)
 }

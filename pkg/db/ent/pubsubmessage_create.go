@@ -11,26 +11,26 @@ import (
 	"entgo.io/ent/dialect/sql"
 	"entgo.io/ent/dialect/sql/sqlgraph"
 	"entgo.io/ent/schema/field"
-	"github.com/NpoolPlatform/inspire-manager/pkg/db/ent/pubsubmessgae"
+	"github.com/NpoolPlatform/inspire-manager/pkg/db/ent/pubsubmessage"
 	"github.com/google/uuid"
 )
 
-// PubsubMessgaeCreate is the builder for creating a PubsubMessgae entity.
-type PubsubMessgaeCreate struct {
+// PubsubMessageCreate is the builder for creating a PubsubMessage entity.
+type PubsubMessageCreate struct {
 	config
-	mutation *PubsubMessgaeMutation
+	mutation *PubsubMessageMutation
 	hooks    []Hook
 	conflict []sql.ConflictOption
 }
 
 // SetCreatedAt sets the "created_at" field.
-func (pmc *PubsubMessgaeCreate) SetCreatedAt(u uint32) *PubsubMessgaeCreate {
+func (pmc *PubsubMessageCreate) SetCreatedAt(u uint32) *PubsubMessageCreate {
 	pmc.mutation.SetCreatedAt(u)
 	return pmc
 }
 
 // SetNillableCreatedAt sets the "created_at" field if the given value is not nil.
-func (pmc *PubsubMessgaeCreate) SetNillableCreatedAt(u *uint32) *PubsubMessgaeCreate {
+func (pmc *PubsubMessageCreate) SetNillableCreatedAt(u *uint32) *PubsubMessageCreate {
 	if u != nil {
 		pmc.SetCreatedAt(*u)
 	}
@@ -38,13 +38,13 @@ func (pmc *PubsubMessgaeCreate) SetNillableCreatedAt(u *uint32) *PubsubMessgaeCr
 }
 
 // SetUpdatedAt sets the "updated_at" field.
-func (pmc *PubsubMessgaeCreate) SetUpdatedAt(u uint32) *PubsubMessgaeCreate {
+func (pmc *PubsubMessageCreate) SetUpdatedAt(u uint32) *PubsubMessageCreate {
 	pmc.mutation.SetUpdatedAt(u)
 	return pmc
 }
 
 // SetNillableUpdatedAt sets the "updated_at" field if the given value is not nil.
-func (pmc *PubsubMessgaeCreate) SetNillableUpdatedAt(u *uint32) *PubsubMessgaeCreate {
+func (pmc *PubsubMessageCreate) SetNillableUpdatedAt(u *uint32) *PubsubMessageCreate {
 	if u != nil {
 		pmc.SetUpdatedAt(*u)
 	}
@@ -52,13 +52,13 @@ func (pmc *PubsubMessgaeCreate) SetNillableUpdatedAt(u *uint32) *PubsubMessgaeCr
 }
 
 // SetDeletedAt sets the "deleted_at" field.
-func (pmc *PubsubMessgaeCreate) SetDeletedAt(u uint32) *PubsubMessgaeCreate {
+func (pmc *PubsubMessageCreate) SetDeletedAt(u uint32) *PubsubMessageCreate {
 	pmc.mutation.SetDeletedAt(u)
 	return pmc
 }
 
 // SetNillableDeletedAt sets the "deleted_at" field if the given value is not nil.
-func (pmc *PubsubMessgaeCreate) SetNillableDeletedAt(u *uint32) *PubsubMessgaeCreate {
+func (pmc *PubsubMessageCreate) SetNillableDeletedAt(u *uint32) *PubsubMessageCreate {
 	if u != nil {
 		pmc.SetDeletedAt(*u)
 	}
@@ -66,43 +66,43 @@ func (pmc *PubsubMessgaeCreate) SetNillableDeletedAt(u *uint32) *PubsubMessgaeCr
 }
 
 // SetMessageID sets the "message_id" field.
-func (pmc *PubsubMessgaeCreate) SetMessageID(s string) *PubsubMessgaeCreate {
+func (pmc *PubsubMessageCreate) SetMessageID(s string) *PubsubMessageCreate {
 	pmc.mutation.SetMessageID(s)
 	return pmc
 }
 
 // SetSender sets the "sender" field.
-func (pmc *PubsubMessgaeCreate) SetSender(s string) *PubsubMessgaeCreate {
+func (pmc *PubsubMessageCreate) SetSender(s string) *PubsubMessageCreate {
 	pmc.mutation.SetSender(s)
 	return pmc
 }
 
 // SetBody sets the "body" field.
-func (pmc *PubsubMessgaeCreate) SetBody(b []byte) *PubsubMessgaeCreate {
+func (pmc *PubsubMessageCreate) SetBody(b []byte) *PubsubMessageCreate {
 	pmc.mutation.SetBody(b)
 	return pmc
 }
 
 // SetState sets the "state" field.
-func (pmc *PubsubMessgaeCreate) SetState(s string) *PubsubMessgaeCreate {
+func (pmc *PubsubMessageCreate) SetState(s string) *PubsubMessageCreate {
 	pmc.mutation.SetState(s)
 	return pmc
 }
 
 // SetResponseToID sets the "response_to_id" field.
-func (pmc *PubsubMessgaeCreate) SetResponseToID(u uuid.UUID) *PubsubMessgaeCreate {
+func (pmc *PubsubMessageCreate) SetResponseToID(u uuid.UUID) *PubsubMessageCreate {
 	pmc.mutation.SetResponseToID(u)
 	return pmc
 }
 
 // SetErrorMessage sets the "error_message" field.
-func (pmc *PubsubMessgaeCreate) SetErrorMessage(s string) *PubsubMessgaeCreate {
+func (pmc *PubsubMessageCreate) SetErrorMessage(s string) *PubsubMessageCreate {
 	pmc.mutation.SetErrorMessage(s)
 	return pmc
 }
 
 // SetNillableErrorMessage sets the "error_message" field if the given value is not nil.
-func (pmc *PubsubMessgaeCreate) SetNillableErrorMessage(s *string) *PubsubMessgaeCreate {
+func (pmc *PubsubMessageCreate) SetNillableErrorMessage(s *string) *PubsubMessageCreate {
 	if s != nil {
 		pmc.SetErrorMessage(*s)
 	}
@@ -110,21 +110,21 @@ func (pmc *PubsubMessgaeCreate) SetNillableErrorMessage(s *string) *PubsubMessga
 }
 
 // SetID sets the "id" field.
-func (pmc *PubsubMessgaeCreate) SetID(u uuid.UUID) *PubsubMessgaeCreate {
+func (pmc *PubsubMessageCreate) SetID(u uuid.UUID) *PubsubMessageCreate {
 	pmc.mutation.SetID(u)
 	return pmc
 }
 
-// Mutation returns the PubsubMessgaeMutation object of the builder.
-func (pmc *PubsubMessgaeCreate) Mutation() *PubsubMessgaeMutation {
+// Mutation returns the PubsubMessageMutation object of the builder.
+func (pmc *PubsubMessageCreate) Mutation() *PubsubMessageMutation {
 	return pmc.mutation
 }
 
-// Save creates the PubsubMessgae in the database.
-func (pmc *PubsubMessgaeCreate) Save(ctx context.Context) (*PubsubMessgae, error) {
+// Save creates the PubsubMessage in the database.
+func (pmc *PubsubMessageCreate) Save(ctx context.Context) (*PubsubMessage, error) {
 	var (
 		err  error
-		node *PubsubMessgae
+		node *PubsubMessage
 	)
 	if err := pmc.defaults(); err != nil {
 		return nil, err
@@ -136,7 +136,7 @@ func (pmc *PubsubMessgaeCreate) Save(ctx context.Context) (*PubsubMessgae, error
 		node, err = pmc.sqlSave(ctx)
 	} else {
 		var mut Mutator = MutateFunc(func(ctx context.Context, m Mutation) (Value, error) {
-			mutation, ok := m.(*PubsubMessgaeMutation)
+			mutation, ok := m.(*PubsubMessageMutation)
 			if !ok {
 				return nil, fmt.Errorf("unexpected mutation type %T", m)
 			}
@@ -161,9 +161,9 @@ func (pmc *PubsubMessgaeCreate) Save(ctx context.Context) (*PubsubMessgae, error
 		if err != nil {
 			return nil, err
 		}
-		nv, ok := v.(*PubsubMessgae)
+		nv, ok := v.(*PubsubMessage)
 		if !ok {
-			return nil, fmt.Errorf("unexpected node type %T returned from PubsubMessgaeMutation", v)
+			return nil, fmt.Errorf("unexpected node type %T returned from PubsubMessageMutation", v)
 		}
 		node = nv
 	}
@@ -171,7 +171,7 @@ func (pmc *PubsubMessgaeCreate) Save(ctx context.Context) (*PubsubMessgae, error
 }
 
 // SaveX calls Save and panics if Save returns an error.
-func (pmc *PubsubMessgaeCreate) SaveX(ctx context.Context) *PubsubMessgae {
+func (pmc *PubsubMessageCreate) SaveX(ctx context.Context) *PubsubMessage {
 	v, err := pmc.Save(ctx)
 	if err != nil {
 		panic(err)
@@ -180,78 +180,78 @@ func (pmc *PubsubMessgaeCreate) SaveX(ctx context.Context) *PubsubMessgae {
 }
 
 // Exec executes the query.
-func (pmc *PubsubMessgaeCreate) Exec(ctx context.Context) error {
+func (pmc *PubsubMessageCreate) Exec(ctx context.Context) error {
 	_, err := pmc.Save(ctx)
 	return err
 }
 
 // ExecX is like Exec, but panics if an error occurs.
-func (pmc *PubsubMessgaeCreate) ExecX(ctx context.Context) {
+func (pmc *PubsubMessageCreate) ExecX(ctx context.Context) {
 	if err := pmc.Exec(ctx); err != nil {
 		panic(err)
 	}
 }
 
 // defaults sets the default values of the builder before save.
-func (pmc *PubsubMessgaeCreate) defaults() error {
+func (pmc *PubsubMessageCreate) defaults() error {
 	if _, ok := pmc.mutation.CreatedAt(); !ok {
-		if pubsubmessgae.DefaultCreatedAt == nil {
-			return fmt.Errorf("ent: uninitialized pubsubmessgae.DefaultCreatedAt (forgotten import ent/runtime?)")
+		if pubsubmessage.DefaultCreatedAt == nil {
+			return fmt.Errorf("ent: uninitialized pubsubmessage.DefaultCreatedAt (forgotten import ent/runtime?)")
 		}
-		v := pubsubmessgae.DefaultCreatedAt()
+		v := pubsubmessage.DefaultCreatedAt()
 		pmc.mutation.SetCreatedAt(v)
 	}
 	if _, ok := pmc.mutation.UpdatedAt(); !ok {
-		if pubsubmessgae.DefaultUpdatedAt == nil {
-			return fmt.Errorf("ent: uninitialized pubsubmessgae.DefaultUpdatedAt (forgotten import ent/runtime?)")
+		if pubsubmessage.DefaultUpdatedAt == nil {
+			return fmt.Errorf("ent: uninitialized pubsubmessage.DefaultUpdatedAt (forgotten import ent/runtime?)")
 		}
-		v := pubsubmessgae.DefaultUpdatedAt()
+		v := pubsubmessage.DefaultUpdatedAt()
 		pmc.mutation.SetUpdatedAt(v)
 	}
 	if _, ok := pmc.mutation.DeletedAt(); !ok {
-		if pubsubmessgae.DefaultDeletedAt == nil {
-			return fmt.Errorf("ent: uninitialized pubsubmessgae.DefaultDeletedAt (forgotten import ent/runtime?)")
+		if pubsubmessage.DefaultDeletedAt == nil {
+			return fmt.Errorf("ent: uninitialized pubsubmessage.DefaultDeletedAt (forgotten import ent/runtime?)")
 		}
-		v := pubsubmessgae.DefaultDeletedAt()
+		v := pubsubmessage.DefaultDeletedAt()
 		pmc.mutation.SetDeletedAt(v)
 	}
 	if _, ok := pmc.mutation.ErrorMessage(); !ok {
-		v := pubsubmessgae.DefaultErrorMessage
+		v := pubsubmessage.DefaultErrorMessage
 		pmc.mutation.SetErrorMessage(v)
 	}
 	return nil
 }
 
 // check runs all checks and user-defined validators on the builder.
-func (pmc *PubsubMessgaeCreate) check() error {
+func (pmc *PubsubMessageCreate) check() error {
 	if _, ok := pmc.mutation.CreatedAt(); !ok {
-		return &ValidationError{Name: "created_at", err: errors.New(`ent: missing required field "PubsubMessgae.created_at"`)}
+		return &ValidationError{Name: "created_at", err: errors.New(`ent: missing required field "PubsubMessage.created_at"`)}
 	}
 	if _, ok := pmc.mutation.UpdatedAt(); !ok {
-		return &ValidationError{Name: "updated_at", err: errors.New(`ent: missing required field "PubsubMessgae.updated_at"`)}
+		return &ValidationError{Name: "updated_at", err: errors.New(`ent: missing required field "PubsubMessage.updated_at"`)}
 	}
 	if _, ok := pmc.mutation.DeletedAt(); !ok {
-		return &ValidationError{Name: "deleted_at", err: errors.New(`ent: missing required field "PubsubMessgae.deleted_at"`)}
+		return &ValidationError{Name: "deleted_at", err: errors.New(`ent: missing required field "PubsubMessage.deleted_at"`)}
 	}
 	if _, ok := pmc.mutation.MessageID(); !ok {
-		return &ValidationError{Name: "message_id", err: errors.New(`ent: missing required field "PubsubMessgae.message_id"`)}
+		return &ValidationError{Name: "message_id", err: errors.New(`ent: missing required field "PubsubMessage.message_id"`)}
 	}
 	if _, ok := pmc.mutation.Sender(); !ok {
-		return &ValidationError{Name: "sender", err: errors.New(`ent: missing required field "PubsubMessgae.sender"`)}
+		return &ValidationError{Name: "sender", err: errors.New(`ent: missing required field "PubsubMessage.sender"`)}
 	}
 	if _, ok := pmc.mutation.Body(); !ok {
-		return &ValidationError{Name: "body", err: errors.New(`ent: missing required field "PubsubMessgae.body"`)}
+		return &ValidationError{Name: "body", err: errors.New(`ent: missing required field "PubsubMessage.body"`)}
 	}
 	if _, ok := pmc.mutation.State(); !ok {
-		return &ValidationError{Name: "state", err: errors.New(`ent: missing required field "PubsubMessgae.state"`)}
+		return &ValidationError{Name: "state", err: errors.New(`ent: missing required field "PubsubMessage.state"`)}
 	}
 	if _, ok := pmc.mutation.ResponseToID(); !ok {
-		return &ValidationError{Name: "response_to_id", err: errors.New(`ent: missing required field "PubsubMessgae.response_to_id"`)}
+		return &ValidationError{Name: "response_to_id", err: errors.New(`ent: missing required field "PubsubMessage.response_to_id"`)}
 	}
 	return nil
 }
 
-func (pmc *PubsubMessgaeCreate) sqlSave(ctx context.Context) (*PubsubMessgae, error) {
+func (pmc *PubsubMessageCreate) sqlSave(ctx context.Context) (*PubsubMessage, error) {
 	_node, _spec := pmc.createSpec()
 	if err := sqlgraph.CreateNode(ctx, pmc.driver, _spec); err != nil {
 		if sqlgraph.IsConstraintError(err) {
@@ -269,14 +269,14 @@ func (pmc *PubsubMessgaeCreate) sqlSave(ctx context.Context) (*PubsubMessgae, er
 	return _node, nil
 }
 
-func (pmc *PubsubMessgaeCreate) createSpec() (*PubsubMessgae, *sqlgraph.CreateSpec) {
+func (pmc *PubsubMessageCreate) createSpec() (*PubsubMessage, *sqlgraph.CreateSpec) {
 	var (
-		_node = &PubsubMessgae{config: pmc.config}
+		_node = &PubsubMessage{config: pmc.config}
 		_spec = &sqlgraph.CreateSpec{
-			Table: pubsubmessgae.Table,
+			Table: pubsubmessage.Table,
 			ID: &sqlgraph.FieldSpec{
 				Type:   field.TypeUUID,
-				Column: pubsubmessgae.FieldID,
+				Column: pubsubmessage.FieldID,
 			},
 		}
 	)
@@ -289,7 +289,7 @@ func (pmc *PubsubMessgaeCreate) createSpec() (*PubsubMessgae, *sqlgraph.CreateSp
 		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
 			Type:   field.TypeUint32,
 			Value:  value,
-			Column: pubsubmessgae.FieldCreatedAt,
+			Column: pubsubmessage.FieldCreatedAt,
 		})
 		_node.CreatedAt = value
 	}
@@ -297,7 +297,7 @@ func (pmc *PubsubMessgaeCreate) createSpec() (*PubsubMessgae, *sqlgraph.CreateSp
 		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
 			Type:   field.TypeUint32,
 			Value:  value,
-			Column: pubsubmessgae.FieldUpdatedAt,
+			Column: pubsubmessage.FieldUpdatedAt,
 		})
 		_node.UpdatedAt = value
 	}
@@ -305,7 +305,7 @@ func (pmc *PubsubMessgaeCreate) createSpec() (*PubsubMessgae, *sqlgraph.CreateSp
 		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
 			Type:   field.TypeUint32,
 			Value:  value,
-			Column: pubsubmessgae.FieldDeletedAt,
+			Column: pubsubmessage.FieldDeletedAt,
 		})
 		_node.DeletedAt = value
 	}
@@ -313,7 +313,7 @@ func (pmc *PubsubMessgaeCreate) createSpec() (*PubsubMessgae, *sqlgraph.CreateSp
 		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
 			Type:   field.TypeString,
 			Value:  value,
-			Column: pubsubmessgae.FieldMessageID,
+			Column: pubsubmessage.FieldMessageID,
 		})
 		_node.MessageID = value
 	}
@@ -321,7 +321,7 @@ func (pmc *PubsubMessgaeCreate) createSpec() (*PubsubMessgae, *sqlgraph.CreateSp
 		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
 			Type:   field.TypeString,
 			Value:  value,
-			Column: pubsubmessgae.FieldSender,
+			Column: pubsubmessage.FieldSender,
 		})
 		_node.Sender = value
 	}
@@ -329,7 +329,7 @@ func (pmc *PubsubMessgaeCreate) createSpec() (*PubsubMessgae, *sqlgraph.CreateSp
 		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
 			Type:   field.TypeBytes,
 			Value:  value,
-			Column: pubsubmessgae.FieldBody,
+			Column: pubsubmessage.FieldBody,
 		})
 		_node.Body = value
 	}
@@ -337,7 +337,7 @@ func (pmc *PubsubMessgaeCreate) createSpec() (*PubsubMessgae, *sqlgraph.CreateSp
 		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
 			Type:   field.TypeString,
 			Value:  value,
-			Column: pubsubmessgae.FieldState,
+			Column: pubsubmessage.FieldState,
 		})
 		_node.State = value
 	}
@@ -345,7 +345,7 @@ func (pmc *PubsubMessgaeCreate) createSpec() (*PubsubMessgae, *sqlgraph.CreateSp
 		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
 			Type:   field.TypeUUID,
 			Value:  value,
-			Column: pubsubmessgae.FieldResponseToID,
+			Column: pubsubmessage.FieldResponseToID,
 		})
 		_node.ResponseToID = value
 	}
@@ -353,7 +353,7 @@ func (pmc *PubsubMessgaeCreate) createSpec() (*PubsubMessgae, *sqlgraph.CreateSp
 		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
 			Type:   field.TypeString,
 			Value:  value,
-			Column: pubsubmessgae.FieldErrorMessage,
+			Column: pubsubmessage.FieldErrorMessage,
 		})
 		_node.ErrorMessage = value
 	}
@@ -363,7 +363,7 @@ func (pmc *PubsubMessgaeCreate) createSpec() (*PubsubMessgae, *sqlgraph.CreateSp
 // OnConflict allows configuring the `ON CONFLICT` / `ON DUPLICATE KEY` clause
 // of the `INSERT` statement. For example:
 //
-//	client.PubsubMessgae.Create().
+//	client.PubsubMessage.Create().
 //		SetCreatedAt(v).
 //		OnConflict(
 //			// Update the row with the new values
@@ -372,14 +372,14 @@ func (pmc *PubsubMessgaeCreate) createSpec() (*PubsubMessgae, *sqlgraph.CreateSp
 //		).
 //		// Override some of the fields with custom
 //		// update values.
-//		Update(func(u *ent.PubsubMessgaeUpsert) {
+//		Update(func(u *ent.PubsubMessageUpsert) {
 //			SetCreatedAt(v+v).
 //		}).
 //		Exec(ctx)
 //
-func (pmc *PubsubMessgaeCreate) OnConflict(opts ...sql.ConflictOption) *PubsubMessgaeUpsertOne {
+func (pmc *PubsubMessageCreate) OnConflict(opts ...sql.ConflictOption) *PubsubMessageUpsertOne {
 	pmc.conflict = opts
-	return &PubsubMessgaeUpsertOne{
+	return &PubsubMessageUpsertOne{
 		create: pmc,
 	}
 }
@@ -387,179 +387,179 @@ func (pmc *PubsubMessgaeCreate) OnConflict(opts ...sql.ConflictOption) *PubsubMe
 // OnConflictColumns calls `OnConflict` and configures the columns
 // as conflict target. Using this option is equivalent to using:
 //
-//	client.PubsubMessgae.Create().
+//	client.PubsubMessage.Create().
 //		OnConflict(sql.ConflictColumns(columns...)).
 //		Exec(ctx)
 //
-func (pmc *PubsubMessgaeCreate) OnConflictColumns(columns ...string) *PubsubMessgaeUpsertOne {
+func (pmc *PubsubMessageCreate) OnConflictColumns(columns ...string) *PubsubMessageUpsertOne {
 	pmc.conflict = append(pmc.conflict, sql.ConflictColumns(columns...))
-	return &PubsubMessgaeUpsertOne{
+	return &PubsubMessageUpsertOne{
 		create: pmc,
 	}
 }
 
 type (
-	// PubsubMessgaeUpsertOne is the builder for "upsert"-ing
-	//  one PubsubMessgae node.
-	PubsubMessgaeUpsertOne struct {
-		create *PubsubMessgaeCreate
+	// PubsubMessageUpsertOne is the builder for "upsert"-ing
+	//  one PubsubMessage node.
+	PubsubMessageUpsertOne struct {
+		create *PubsubMessageCreate
 	}
 
-	// PubsubMessgaeUpsert is the "OnConflict" setter.
-	PubsubMessgaeUpsert struct {
+	// PubsubMessageUpsert is the "OnConflict" setter.
+	PubsubMessageUpsert struct {
 		*sql.UpdateSet
 	}
 )
 
 // SetCreatedAt sets the "created_at" field.
-func (u *PubsubMessgaeUpsert) SetCreatedAt(v uint32) *PubsubMessgaeUpsert {
-	u.Set(pubsubmessgae.FieldCreatedAt, v)
+func (u *PubsubMessageUpsert) SetCreatedAt(v uint32) *PubsubMessageUpsert {
+	u.Set(pubsubmessage.FieldCreatedAt, v)
 	return u
 }
 
 // UpdateCreatedAt sets the "created_at" field to the value that was provided on create.
-func (u *PubsubMessgaeUpsert) UpdateCreatedAt() *PubsubMessgaeUpsert {
-	u.SetExcluded(pubsubmessgae.FieldCreatedAt)
+func (u *PubsubMessageUpsert) UpdateCreatedAt() *PubsubMessageUpsert {
+	u.SetExcluded(pubsubmessage.FieldCreatedAt)
 	return u
 }
 
 // AddCreatedAt adds v to the "created_at" field.
-func (u *PubsubMessgaeUpsert) AddCreatedAt(v uint32) *PubsubMessgaeUpsert {
-	u.Add(pubsubmessgae.FieldCreatedAt, v)
+func (u *PubsubMessageUpsert) AddCreatedAt(v uint32) *PubsubMessageUpsert {
+	u.Add(pubsubmessage.FieldCreatedAt, v)
 	return u
 }
 
 // SetUpdatedAt sets the "updated_at" field.
-func (u *PubsubMessgaeUpsert) SetUpdatedAt(v uint32) *PubsubMessgaeUpsert {
-	u.Set(pubsubmessgae.FieldUpdatedAt, v)
+func (u *PubsubMessageUpsert) SetUpdatedAt(v uint32) *PubsubMessageUpsert {
+	u.Set(pubsubmessage.FieldUpdatedAt, v)
 	return u
 }
 
 // UpdateUpdatedAt sets the "updated_at" field to the value that was provided on create.
-func (u *PubsubMessgaeUpsert) UpdateUpdatedAt() *PubsubMessgaeUpsert {
-	u.SetExcluded(pubsubmessgae.FieldUpdatedAt)
+func (u *PubsubMessageUpsert) UpdateUpdatedAt() *PubsubMessageUpsert {
+	u.SetExcluded(pubsubmessage.FieldUpdatedAt)
 	return u
 }
 
 // AddUpdatedAt adds v to the "updated_at" field.
-func (u *PubsubMessgaeUpsert) AddUpdatedAt(v uint32) *PubsubMessgaeUpsert {
-	u.Add(pubsubmessgae.FieldUpdatedAt, v)
+func (u *PubsubMessageUpsert) AddUpdatedAt(v uint32) *PubsubMessageUpsert {
+	u.Add(pubsubmessage.FieldUpdatedAt, v)
 	return u
 }
 
 // SetDeletedAt sets the "deleted_at" field.
-func (u *PubsubMessgaeUpsert) SetDeletedAt(v uint32) *PubsubMessgaeUpsert {
-	u.Set(pubsubmessgae.FieldDeletedAt, v)
+func (u *PubsubMessageUpsert) SetDeletedAt(v uint32) *PubsubMessageUpsert {
+	u.Set(pubsubmessage.FieldDeletedAt, v)
 	return u
 }
 
 // UpdateDeletedAt sets the "deleted_at" field to the value that was provided on create.
-func (u *PubsubMessgaeUpsert) UpdateDeletedAt() *PubsubMessgaeUpsert {
-	u.SetExcluded(pubsubmessgae.FieldDeletedAt)
+func (u *PubsubMessageUpsert) UpdateDeletedAt() *PubsubMessageUpsert {
+	u.SetExcluded(pubsubmessage.FieldDeletedAt)
 	return u
 }
 
 // AddDeletedAt adds v to the "deleted_at" field.
-func (u *PubsubMessgaeUpsert) AddDeletedAt(v uint32) *PubsubMessgaeUpsert {
-	u.Add(pubsubmessgae.FieldDeletedAt, v)
+func (u *PubsubMessageUpsert) AddDeletedAt(v uint32) *PubsubMessageUpsert {
+	u.Add(pubsubmessage.FieldDeletedAt, v)
 	return u
 }
 
 // SetMessageID sets the "message_id" field.
-func (u *PubsubMessgaeUpsert) SetMessageID(v string) *PubsubMessgaeUpsert {
-	u.Set(pubsubmessgae.FieldMessageID, v)
+func (u *PubsubMessageUpsert) SetMessageID(v string) *PubsubMessageUpsert {
+	u.Set(pubsubmessage.FieldMessageID, v)
 	return u
 }
 
 // UpdateMessageID sets the "message_id" field to the value that was provided on create.
-func (u *PubsubMessgaeUpsert) UpdateMessageID() *PubsubMessgaeUpsert {
-	u.SetExcluded(pubsubmessgae.FieldMessageID)
+func (u *PubsubMessageUpsert) UpdateMessageID() *PubsubMessageUpsert {
+	u.SetExcluded(pubsubmessage.FieldMessageID)
 	return u
 }
 
 // SetSender sets the "sender" field.
-func (u *PubsubMessgaeUpsert) SetSender(v string) *PubsubMessgaeUpsert {
-	u.Set(pubsubmessgae.FieldSender, v)
+func (u *PubsubMessageUpsert) SetSender(v string) *PubsubMessageUpsert {
+	u.Set(pubsubmessage.FieldSender, v)
 	return u
 }
 
 // UpdateSender sets the "sender" field to the value that was provided on create.
-func (u *PubsubMessgaeUpsert) UpdateSender() *PubsubMessgaeUpsert {
-	u.SetExcluded(pubsubmessgae.FieldSender)
+func (u *PubsubMessageUpsert) UpdateSender() *PubsubMessageUpsert {
+	u.SetExcluded(pubsubmessage.FieldSender)
 	return u
 }
 
 // SetBody sets the "body" field.
-func (u *PubsubMessgaeUpsert) SetBody(v []byte) *PubsubMessgaeUpsert {
-	u.Set(pubsubmessgae.FieldBody, v)
+func (u *PubsubMessageUpsert) SetBody(v []byte) *PubsubMessageUpsert {
+	u.Set(pubsubmessage.FieldBody, v)
 	return u
 }
 
 // UpdateBody sets the "body" field to the value that was provided on create.
-func (u *PubsubMessgaeUpsert) UpdateBody() *PubsubMessgaeUpsert {
-	u.SetExcluded(pubsubmessgae.FieldBody)
+func (u *PubsubMessageUpsert) UpdateBody() *PubsubMessageUpsert {
+	u.SetExcluded(pubsubmessage.FieldBody)
 	return u
 }
 
 // SetState sets the "state" field.
-func (u *PubsubMessgaeUpsert) SetState(v string) *PubsubMessgaeUpsert {
-	u.Set(pubsubmessgae.FieldState, v)
+func (u *PubsubMessageUpsert) SetState(v string) *PubsubMessageUpsert {
+	u.Set(pubsubmessage.FieldState, v)
 	return u
 }
 
 // UpdateState sets the "state" field to the value that was provided on create.
-func (u *PubsubMessgaeUpsert) UpdateState() *PubsubMessgaeUpsert {
-	u.SetExcluded(pubsubmessgae.FieldState)
+func (u *PubsubMessageUpsert) UpdateState() *PubsubMessageUpsert {
+	u.SetExcluded(pubsubmessage.FieldState)
 	return u
 }
 
 // SetResponseToID sets the "response_to_id" field.
-func (u *PubsubMessgaeUpsert) SetResponseToID(v uuid.UUID) *PubsubMessgaeUpsert {
-	u.Set(pubsubmessgae.FieldResponseToID, v)
+func (u *PubsubMessageUpsert) SetResponseToID(v uuid.UUID) *PubsubMessageUpsert {
+	u.Set(pubsubmessage.FieldResponseToID, v)
 	return u
 }
 
 // UpdateResponseToID sets the "response_to_id" field to the value that was provided on create.
-func (u *PubsubMessgaeUpsert) UpdateResponseToID() *PubsubMessgaeUpsert {
-	u.SetExcluded(pubsubmessgae.FieldResponseToID)
+func (u *PubsubMessageUpsert) UpdateResponseToID() *PubsubMessageUpsert {
+	u.SetExcluded(pubsubmessage.FieldResponseToID)
 	return u
 }
 
 // SetErrorMessage sets the "error_message" field.
-func (u *PubsubMessgaeUpsert) SetErrorMessage(v string) *PubsubMessgaeUpsert {
-	u.Set(pubsubmessgae.FieldErrorMessage, v)
+func (u *PubsubMessageUpsert) SetErrorMessage(v string) *PubsubMessageUpsert {
+	u.Set(pubsubmessage.FieldErrorMessage, v)
 	return u
 }
 
 // UpdateErrorMessage sets the "error_message" field to the value that was provided on create.
-func (u *PubsubMessgaeUpsert) UpdateErrorMessage() *PubsubMessgaeUpsert {
-	u.SetExcluded(pubsubmessgae.FieldErrorMessage)
+func (u *PubsubMessageUpsert) UpdateErrorMessage() *PubsubMessageUpsert {
+	u.SetExcluded(pubsubmessage.FieldErrorMessage)
 	return u
 }
 
 // ClearErrorMessage clears the value of the "error_message" field.
-func (u *PubsubMessgaeUpsert) ClearErrorMessage() *PubsubMessgaeUpsert {
-	u.SetNull(pubsubmessgae.FieldErrorMessage)
+func (u *PubsubMessageUpsert) ClearErrorMessage() *PubsubMessageUpsert {
+	u.SetNull(pubsubmessage.FieldErrorMessage)
 	return u
 }
 
 // UpdateNewValues updates the mutable fields using the new values that were set on create except the ID field.
 // Using this option is equivalent to using:
 //
-//	client.PubsubMessgae.Create().
+//	client.PubsubMessage.Create().
 //		OnConflict(
 //			sql.ResolveWithNewValues(),
 //			sql.ResolveWith(func(u *sql.UpdateSet) {
-//				u.SetIgnore(pubsubmessgae.FieldID)
+//				u.SetIgnore(pubsubmessage.FieldID)
 //			}),
 //		).
 //		Exec(ctx)
 //
-func (u *PubsubMessgaeUpsertOne) UpdateNewValues() *PubsubMessgaeUpsertOne {
+func (u *PubsubMessageUpsertOne) UpdateNewValues() *PubsubMessageUpsertOne {
 	u.create.conflict = append(u.create.conflict, sql.ResolveWithNewValues())
 	u.create.conflict = append(u.create.conflict, sql.ResolveWith(func(s *sql.UpdateSet) {
 		if _, exists := u.create.mutation.ID(); exists {
-			s.SetIgnore(pubsubmessgae.FieldID)
+			s.SetIgnore(pubsubmessage.FieldID)
 		}
 	}))
 	return u
@@ -568,206 +568,206 @@ func (u *PubsubMessgaeUpsertOne) UpdateNewValues() *PubsubMessgaeUpsertOne {
 // Ignore sets each column to itself in case of conflict.
 // Using this option is equivalent to using:
 //
-//  client.PubsubMessgae.Create().
+//  client.PubsubMessage.Create().
 //      OnConflict(sql.ResolveWithIgnore()).
 //      Exec(ctx)
 //
-func (u *PubsubMessgaeUpsertOne) Ignore() *PubsubMessgaeUpsertOne {
+func (u *PubsubMessageUpsertOne) Ignore() *PubsubMessageUpsertOne {
 	u.create.conflict = append(u.create.conflict, sql.ResolveWithIgnore())
 	return u
 }
 
 // DoNothing configures the conflict_action to `DO NOTHING`.
 // Supported only by SQLite and PostgreSQL.
-func (u *PubsubMessgaeUpsertOne) DoNothing() *PubsubMessgaeUpsertOne {
+func (u *PubsubMessageUpsertOne) DoNothing() *PubsubMessageUpsertOne {
 	u.create.conflict = append(u.create.conflict, sql.DoNothing())
 	return u
 }
 
-// Update allows overriding fields `UPDATE` values. See the PubsubMessgaeCreate.OnConflict
+// Update allows overriding fields `UPDATE` values. See the PubsubMessageCreate.OnConflict
 // documentation for more info.
-func (u *PubsubMessgaeUpsertOne) Update(set func(*PubsubMessgaeUpsert)) *PubsubMessgaeUpsertOne {
+func (u *PubsubMessageUpsertOne) Update(set func(*PubsubMessageUpsert)) *PubsubMessageUpsertOne {
 	u.create.conflict = append(u.create.conflict, sql.ResolveWith(func(update *sql.UpdateSet) {
-		set(&PubsubMessgaeUpsert{UpdateSet: update})
+		set(&PubsubMessageUpsert{UpdateSet: update})
 	}))
 	return u
 }
 
 // SetCreatedAt sets the "created_at" field.
-func (u *PubsubMessgaeUpsertOne) SetCreatedAt(v uint32) *PubsubMessgaeUpsertOne {
-	return u.Update(func(s *PubsubMessgaeUpsert) {
+func (u *PubsubMessageUpsertOne) SetCreatedAt(v uint32) *PubsubMessageUpsertOne {
+	return u.Update(func(s *PubsubMessageUpsert) {
 		s.SetCreatedAt(v)
 	})
 }
 
 // AddCreatedAt adds v to the "created_at" field.
-func (u *PubsubMessgaeUpsertOne) AddCreatedAt(v uint32) *PubsubMessgaeUpsertOne {
-	return u.Update(func(s *PubsubMessgaeUpsert) {
+func (u *PubsubMessageUpsertOne) AddCreatedAt(v uint32) *PubsubMessageUpsertOne {
+	return u.Update(func(s *PubsubMessageUpsert) {
 		s.AddCreatedAt(v)
 	})
 }
 
 // UpdateCreatedAt sets the "created_at" field to the value that was provided on create.
-func (u *PubsubMessgaeUpsertOne) UpdateCreatedAt() *PubsubMessgaeUpsertOne {
-	return u.Update(func(s *PubsubMessgaeUpsert) {
+func (u *PubsubMessageUpsertOne) UpdateCreatedAt() *PubsubMessageUpsertOne {
+	return u.Update(func(s *PubsubMessageUpsert) {
 		s.UpdateCreatedAt()
 	})
 }
 
 // SetUpdatedAt sets the "updated_at" field.
-func (u *PubsubMessgaeUpsertOne) SetUpdatedAt(v uint32) *PubsubMessgaeUpsertOne {
-	return u.Update(func(s *PubsubMessgaeUpsert) {
+func (u *PubsubMessageUpsertOne) SetUpdatedAt(v uint32) *PubsubMessageUpsertOne {
+	return u.Update(func(s *PubsubMessageUpsert) {
 		s.SetUpdatedAt(v)
 	})
 }
 
 // AddUpdatedAt adds v to the "updated_at" field.
-func (u *PubsubMessgaeUpsertOne) AddUpdatedAt(v uint32) *PubsubMessgaeUpsertOne {
-	return u.Update(func(s *PubsubMessgaeUpsert) {
+func (u *PubsubMessageUpsertOne) AddUpdatedAt(v uint32) *PubsubMessageUpsertOne {
+	return u.Update(func(s *PubsubMessageUpsert) {
 		s.AddUpdatedAt(v)
 	})
 }
 
 // UpdateUpdatedAt sets the "updated_at" field to the value that was provided on create.
-func (u *PubsubMessgaeUpsertOne) UpdateUpdatedAt() *PubsubMessgaeUpsertOne {
-	return u.Update(func(s *PubsubMessgaeUpsert) {
+func (u *PubsubMessageUpsertOne) UpdateUpdatedAt() *PubsubMessageUpsertOne {
+	return u.Update(func(s *PubsubMessageUpsert) {
 		s.UpdateUpdatedAt()
 	})
 }
 
 // SetDeletedAt sets the "deleted_at" field.
-func (u *PubsubMessgaeUpsertOne) SetDeletedAt(v uint32) *PubsubMessgaeUpsertOne {
-	return u.Update(func(s *PubsubMessgaeUpsert) {
+func (u *PubsubMessageUpsertOne) SetDeletedAt(v uint32) *PubsubMessageUpsertOne {
+	return u.Update(func(s *PubsubMessageUpsert) {
 		s.SetDeletedAt(v)
 	})
 }
 
 // AddDeletedAt adds v to the "deleted_at" field.
-func (u *PubsubMessgaeUpsertOne) AddDeletedAt(v uint32) *PubsubMessgaeUpsertOne {
-	return u.Update(func(s *PubsubMessgaeUpsert) {
+func (u *PubsubMessageUpsertOne) AddDeletedAt(v uint32) *PubsubMessageUpsertOne {
+	return u.Update(func(s *PubsubMessageUpsert) {
 		s.AddDeletedAt(v)
 	})
 }
 
 // UpdateDeletedAt sets the "deleted_at" field to the value that was provided on create.
-func (u *PubsubMessgaeUpsertOne) UpdateDeletedAt() *PubsubMessgaeUpsertOne {
-	return u.Update(func(s *PubsubMessgaeUpsert) {
+func (u *PubsubMessageUpsertOne) UpdateDeletedAt() *PubsubMessageUpsertOne {
+	return u.Update(func(s *PubsubMessageUpsert) {
 		s.UpdateDeletedAt()
 	})
 }
 
 // SetMessageID sets the "message_id" field.
-func (u *PubsubMessgaeUpsertOne) SetMessageID(v string) *PubsubMessgaeUpsertOne {
-	return u.Update(func(s *PubsubMessgaeUpsert) {
+func (u *PubsubMessageUpsertOne) SetMessageID(v string) *PubsubMessageUpsertOne {
+	return u.Update(func(s *PubsubMessageUpsert) {
 		s.SetMessageID(v)
 	})
 }
 
 // UpdateMessageID sets the "message_id" field to the value that was provided on create.
-func (u *PubsubMessgaeUpsertOne) UpdateMessageID() *PubsubMessgaeUpsertOne {
-	return u.Update(func(s *PubsubMessgaeUpsert) {
+func (u *PubsubMessageUpsertOne) UpdateMessageID() *PubsubMessageUpsertOne {
+	return u.Update(func(s *PubsubMessageUpsert) {
 		s.UpdateMessageID()
 	})
 }
 
 // SetSender sets the "sender" field.
-func (u *PubsubMessgaeUpsertOne) SetSender(v string) *PubsubMessgaeUpsertOne {
-	return u.Update(func(s *PubsubMessgaeUpsert) {
+func (u *PubsubMessageUpsertOne) SetSender(v string) *PubsubMessageUpsertOne {
+	return u.Update(func(s *PubsubMessageUpsert) {
 		s.SetSender(v)
 	})
 }
 
 // UpdateSender sets the "sender" field to the value that was provided on create.
-func (u *PubsubMessgaeUpsertOne) UpdateSender() *PubsubMessgaeUpsertOne {
-	return u.Update(func(s *PubsubMessgaeUpsert) {
+func (u *PubsubMessageUpsertOne) UpdateSender() *PubsubMessageUpsertOne {
+	return u.Update(func(s *PubsubMessageUpsert) {
 		s.UpdateSender()
 	})
 }
 
 // SetBody sets the "body" field.
-func (u *PubsubMessgaeUpsertOne) SetBody(v []byte) *PubsubMessgaeUpsertOne {
-	return u.Update(func(s *PubsubMessgaeUpsert) {
+func (u *PubsubMessageUpsertOne) SetBody(v []byte) *PubsubMessageUpsertOne {
+	return u.Update(func(s *PubsubMessageUpsert) {
 		s.SetBody(v)
 	})
 }
 
 // UpdateBody sets the "body" field to the value that was provided on create.
-func (u *PubsubMessgaeUpsertOne) UpdateBody() *PubsubMessgaeUpsertOne {
-	return u.Update(func(s *PubsubMessgaeUpsert) {
+func (u *PubsubMessageUpsertOne) UpdateBody() *PubsubMessageUpsertOne {
+	return u.Update(func(s *PubsubMessageUpsert) {
 		s.UpdateBody()
 	})
 }
 
 // SetState sets the "state" field.
-func (u *PubsubMessgaeUpsertOne) SetState(v string) *PubsubMessgaeUpsertOne {
-	return u.Update(func(s *PubsubMessgaeUpsert) {
+func (u *PubsubMessageUpsertOne) SetState(v string) *PubsubMessageUpsertOne {
+	return u.Update(func(s *PubsubMessageUpsert) {
 		s.SetState(v)
 	})
 }
 
 // UpdateState sets the "state" field to the value that was provided on create.
-func (u *PubsubMessgaeUpsertOne) UpdateState() *PubsubMessgaeUpsertOne {
-	return u.Update(func(s *PubsubMessgaeUpsert) {
+func (u *PubsubMessageUpsertOne) UpdateState() *PubsubMessageUpsertOne {
+	return u.Update(func(s *PubsubMessageUpsert) {
 		s.UpdateState()
 	})
 }
 
 // SetResponseToID sets the "response_to_id" field.
-func (u *PubsubMessgaeUpsertOne) SetResponseToID(v uuid.UUID) *PubsubMessgaeUpsertOne {
-	return u.Update(func(s *PubsubMessgaeUpsert) {
+func (u *PubsubMessageUpsertOne) SetResponseToID(v uuid.UUID) *PubsubMessageUpsertOne {
+	return u.Update(func(s *PubsubMessageUpsert) {
 		s.SetResponseToID(v)
 	})
 }
 
 // UpdateResponseToID sets the "response_to_id" field to the value that was provided on create.
-func (u *PubsubMessgaeUpsertOne) UpdateResponseToID() *PubsubMessgaeUpsertOne {
-	return u.Update(func(s *PubsubMessgaeUpsert) {
+func (u *PubsubMessageUpsertOne) UpdateResponseToID() *PubsubMessageUpsertOne {
+	return u.Update(func(s *PubsubMessageUpsert) {
 		s.UpdateResponseToID()
 	})
 }
 
 // SetErrorMessage sets the "error_message" field.
-func (u *PubsubMessgaeUpsertOne) SetErrorMessage(v string) *PubsubMessgaeUpsertOne {
-	return u.Update(func(s *PubsubMessgaeUpsert) {
+func (u *PubsubMessageUpsertOne) SetErrorMessage(v string) *PubsubMessageUpsertOne {
+	return u.Update(func(s *PubsubMessageUpsert) {
 		s.SetErrorMessage(v)
 	})
 }
 
 // UpdateErrorMessage sets the "error_message" field to the value that was provided on create.
-func (u *PubsubMessgaeUpsertOne) UpdateErrorMessage() *PubsubMessgaeUpsertOne {
-	return u.Update(func(s *PubsubMessgaeUpsert) {
+func (u *PubsubMessageUpsertOne) UpdateErrorMessage() *PubsubMessageUpsertOne {
+	return u.Update(func(s *PubsubMessageUpsert) {
 		s.UpdateErrorMessage()
 	})
 }
 
 // ClearErrorMessage clears the value of the "error_message" field.
-func (u *PubsubMessgaeUpsertOne) ClearErrorMessage() *PubsubMessgaeUpsertOne {
-	return u.Update(func(s *PubsubMessgaeUpsert) {
+func (u *PubsubMessageUpsertOne) ClearErrorMessage() *PubsubMessageUpsertOne {
+	return u.Update(func(s *PubsubMessageUpsert) {
 		s.ClearErrorMessage()
 	})
 }
 
 // Exec executes the query.
-func (u *PubsubMessgaeUpsertOne) Exec(ctx context.Context) error {
+func (u *PubsubMessageUpsertOne) Exec(ctx context.Context) error {
 	if len(u.create.conflict) == 0 {
-		return errors.New("ent: missing options for PubsubMessgaeCreate.OnConflict")
+		return errors.New("ent: missing options for PubsubMessageCreate.OnConflict")
 	}
 	return u.create.Exec(ctx)
 }
 
 // ExecX is like Exec, but panics if an error occurs.
-func (u *PubsubMessgaeUpsertOne) ExecX(ctx context.Context) {
+func (u *PubsubMessageUpsertOne) ExecX(ctx context.Context) {
 	if err := u.create.Exec(ctx); err != nil {
 		panic(err)
 	}
 }
 
 // Exec executes the UPSERT query and returns the inserted/updated ID.
-func (u *PubsubMessgaeUpsertOne) ID(ctx context.Context) (id uuid.UUID, err error) {
+func (u *PubsubMessageUpsertOne) ID(ctx context.Context) (id uuid.UUID, err error) {
 	if u.create.driver.Dialect() == dialect.MySQL {
 		// In case of "ON CONFLICT", there is no way to get back non-numeric ID
 		// fields from the database since MySQL does not support the RETURNING clause.
-		return id, errors.New("ent: PubsubMessgaeUpsertOne.ID is not supported by MySQL driver. Use PubsubMessgaeUpsertOne.Exec instead")
+		return id, errors.New("ent: PubsubMessageUpsertOne.ID is not supported by MySQL driver. Use PubsubMessageUpsertOne.Exec instead")
 	}
 	node, err := u.create.Save(ctx)
 	if err != nil {
@@ -777,7 +777,7 @@ func (u *PubsubMessgaeUpsertOne) ID(ctx context.Context) (id uuid.UUID, err erro
 }
 
 // IDX is like ID, but panics if an error occurs.
-func (u *PubsubMessgaeUpsertOne) IDX(ctx context.Context) uuid.UUID {
+func (u *PubsubMessageUpsertOne) IDX(ctx context.Context) uuid.UUID {
 	id, err := u.ID(ctx)
 	if err != nil {
 		panic(err)
@@ -785,24 +785,24 @@ func (u *PubsubMessgaeUpsertOne) IDX(ctx context.Context) uuid.UUID {
 	return id
 }
 
-// PubsubMessgaeCreateBulk is the builder for creating many PubsubMessgae entities in bulk.
-type PubsubMessgaeCreateBulk struct {
+// PubsubMessageCreateBulk is the builder for creating many PubsubMessage entities in bulk.
+type PubsubMessageCreateBulk struct {
 	config
-	builders []*PubsubMessgaeCreate
+	builders []*PubsubMessageCreate
 	conflict []sql.ConflictOption
 }
 
-// Save creates the PubsubMessgae entities in the database.
-func (pmcb *PubsubMessgaeCreateBulk) Save(ctx context.Context) ([]*PubsubMessgae, error) {
+// Save creates the PubsubMessage entities in the database.
+func (pmcb *PubsubMessageCreateBulk) Save(ctx context.Context) ([]*PubsubMessage, error) {
 	specs := make([]*sqlgraph.CreateSpec, len(pmcb.builders))
-	nodes := make([]*PubsubMessgae, len(pmcb.builders))
+	nodes := make([]*PubsubMessage, len(pmcb.builders))
 	mutators := make([]Mutator, len(pmcb.builders))
 	for i := range pmcb.builders {
 		func(i int, root context.Context) {
 			builder := pmcb.builders[i]
 			builder.defaults()
 			var mut Mutator = MutateFunc(func(ctx context.Context, m Mutation) (Value, error) {
-				mutation, ok := m.(*PubsubMessgaeMutation)
+				mutation, ok := m.(*PubsubMessageMutation)
 				if !ok {
 					return nil, fmt.Errorf("unexpected mutation type %T", m)
 				}
@@ -846,7 +846,7 @@ func (pmcb *PubsubMessgaeCreateBulk) Save(ctx context.Context) ([]*PubsubMessgae
 }
 
 // SaveX is like Save, but panics if an error occurs.
-func (pmcb *PubsubMessgaeCreateBulk) SaveX(ctx context.Context) []*PubsubMessgae {
+func (pmcb *PubsubMessageCreateBulk) SaveX(ctx context.Context) []*PubsubMessage {
 	v, err := pmcb.Save(ctx)
 	if err != nil {
 		panic(err)
@@ -855,13 +855,13 @@ func (pmcb *PubsubMessgaeCreateBulk) SaveX(ctx context.Context) []*PubsubMessgae
 }
 
 // Exec executes the query.
-func (pmcb *PubsubMessgaeCreateBulk) Exec(ctx context.Context) error {
+func (pmcb *PubsubMessageCreateBulk) Exec(ctx context.Context) error {
 	_, err := pmcb.Save(ctx)
 	return err
 }
 
 // ExecX is like Exec, but panics if an error occurs.
-func (pmcb *PubsubMessgaeCreateBulk) ExecX(ctx context.Context) {
+func (pmcb *PubsubMessageCreateBulk) ExecX(ctx context.Context) {
 	if err := pmcb.Exec(ctx); err != nil {
 		panic(err)
 	}
@@ -870,7 +870,7 @@ func (pmcb *PubsubMessgaeCreateBulk) ExecX(ctx context.Context) {
 // OnConflict allows configuring the `ON CONFLICT` / `ON DUPLICATE KEY` clause
 // of the `INSERT` statement. For example:
 //
-//	client.PubsubMessgae.CreateBulk(builders...).
+//	client.PubsubMessage.CreateBulk(builders...).
 //		OnConflict(
 //			// Update the row with the new values
 //			// the was proposed for insertion.
@@ -878,14 +878,14 @@ func (pmcb *PubsubMessgaeCreateBulk) ExecX(ctx context.Context) {
 //		).
 //		// Override some of the fields with custom
 //		// update values.
-//		Update(func(u *ent.PubsubMessgaeUpsert) {
+//		Update(func(u *ent.PubsubMessageUpsert) {
 //			SetCreatedAt(v+v).
 //		}).
 //		Exec(ctx)
 //
-func (pmcb *PubsubMessgaeCreateBulk) OnConflict(opts ...sql.ConflictOption) *PubsubMessgaeUpsertBulk {
+func (pmcb *PubsubMessageCreateBulk) OnConflict(opts ...sql.ConflictOption) *PubsubMessageUpsertBulk {
 	pmcb.conflict = opts
-	return &PubsubMessgaeUpsertBulk{
+	return &PubsubMessageUpsertBulk{
 		create: pmcb,
 	}
 }
@@ -893,41 +893,41 @@ func (pmcb *PubsubMessgaeCreateBulk) OnConflict(opts ...sql.ConflictOption) *Pub
 // OnConflictColumns calls `OnConflict` and configures the columns
 // as conflict target. Using this option is equivalent to using:
 //
-//	client.PubsubMessgae.Create().
+//	client.PubsubMessage.Create().
 //		OnConflict(sql.ConflictColumns(columns...)).
 //		Exec(ctx)
 //
-func (pmcb *PubsubMessgaeCreateBulk) OnConflictColumns(columns ...string) *PubsubMessgaeUpsertBulk {
+func (pmcb *PubsubMessageCreateBulk) OnConflictColumns(columns ...string) *PubsubMessageUpsertBulk {
 	pmcb.conflict = append(pmcb.conflict, sql.ConflictColumns(columns...))
-	return &PubsubMessgaeUpsertBulk{
+	return &PubsubMessageUpsertBulk{
 		create: pmcb,
 	}
 }
 
-// PubsubMessgaeUpsertBulk is the builder for "upsert"-ing
-// a bulk of PubsubMessgae nodes.
-type PubsubMessgaeUpsertBulk struct {
-	create *PubsubMessgaeCreateBulk
+// PubsubMessageUpsertBulk is the builder for "upsert"-ing
+// a bulk of PubsubMessage nodes.
+type PubsubMessageUpsertBulk struct {
+	create *PubsubMessageCreateBulk
 }
 
 // UpdateNewValues updates the mutable fields using the new values that
 // were set on create. Using this option is equivalent to using:
 //
-//	client.PubsubMessgae.Create().
+//	client.PubsubMessage.Create().
 //		OnConflict(
 //			sql.ResolveWithNewValues(),
 //			sql.ResolveWith(func(u *sql.UpdateSet) {
-//				u.SetIgnore(pubsubmessgae.FieldID)
+//				u.SetIgnore(pubsubmessage.FieldID)
 //			}),
 //		).
 //		Exec(ctx)
 //
-func (u *PubsubMessgaeUpsertBulk) UpdateNewValues() *PubsubMessgaeUpsertBulk {
+func (u *PubsubMessageUpsertBulk) UpdateNewValues() *PubsubMessageUpsertBulk {
 	u.create.conflict = append(u.create.conflict, sql.ResolveWithNewValues())
 	u.create.conflict = append(u.create.conflict, sql.ResolveWith(func(s *sql.UpdateSet) {
 		for _, b := range u.create.builders {
 			if _, exists := b.mutation.ID(); exists {
-				s.SetIgnore(pubsubmessgae.FieldID)
+				s.SetIgnore(pubsubmessage.FieldID)
 				return
 			}
 		}
@@ -938,200 +938,200 @@ func (u *PubsubMessgaeUpsertBulk) UpdateNewValues() *PubsubMessgaeUpsertBulk {
 // Ignore sets each column to itself in case of conflict.
 // Using this option is equivalent to using:
 //
-//	client.PubsubMessgae.Create().
+//	client.PubsubMessage.Create().
 //		OnConflict(sql.ResolveWithIgnore()).
 //		Exec(ctx)
 //
-func (u *PubsubMessgaeUpsertBulk) Ignore() *PubsubMessgaeUpsertBulk {
+func (u *PubsubMessageUpsertBulk) Ignore() *PubsubMessageUpsertBulk {
 	u.create.conflict = append(u.create.conflict, sql.ResolveWithIgnore())
 	return u
 }
 
 // DoNothing configures the conflict_action to `DO NOTHING`.
 // Supported only by SQLite and PostgreSQL.
-func (u *PubsubMessgaeUpsertBulk) DoNothing() *PubsubMessgaeUpsertBulk {
+func (u *PubsubMessageUpsertBulk) DoNothing() *PubsubMessageUpsertBulk {
 	u.create.conflict = append(u.create.conflict, sql.DoNothing())
 	return u
 }
 
-// Update allows overriding fields `UPDATE` values. See the PubsubMessgaeCreateBulk.OnConflict
+// Update allows overriding fields `UPDATE` values. See the PubsubMessageCreateBulk.OnConflict
 // documentation for more info.
-func (u *PubsubMessgaeUpsertBulk) Update(set func(*PubsubMessgaeUpsert)) *PubsubMessgaeUpsertBulk {
+func (u *PubsubMessageUpsertBulk) Update(set func(*PubsubMessageUpsert)) *PubsubMessageUpsertBulk {
 	u.create.conflict = append(u.create.conflict, sql.ResolveWith(func(update *sql.UpdateSet) {
-		set(&PubsubMessgaeUpsert{UpdateSet: update})
+		set(&PubsubMessageUpsert{UpdateSet: update})
 	}))
 	return u
 }
 
 // SetCreatedAt sets the "created_at" field.
-func (u *PubsubMessgaeUpsertBulk) SetCreatedAt(v uint32) *PubsubMessgaeUpsertBulk {
-	return u.Update(func(s *PubsubMessgaeUpsert) {
+func (u *PubsubMessageUpsertBulk) SetCreatedAt(v uint32) *PubsubMessageUpsertBulk {
+	return u.Update(func(s *PubsubMessageUpsert) {
 		s.SetCreatedAt(v)
 	})
 }
 
 // AddCreatedAt adds v to the "created_at" field.
-func (u *PubsubMessgaeUpsertBulk) AddCreatedAt(v uint32) *PubsubMessgaeUpsertBulk {
-	return u.Update(func(s *PubsubMessgaeUpsert) {
+func (u *PubsubMessageUpsertBulk) AddCreatedAt(v uint32) *PubsubMessageUpsertBulk {
+	return u.Update(func(s *PubsubMessageUpsert) {
 		s.AddCreatedAt(v)
 	})
 }
 
 // UpdateCreatedAt sets the "created_at" field to the value that was provided on create.
-func (u *PubsubMessgaeUpsertBulk) UpdateCreatedAt() *PubsubMessgaeUpsertBulk {
-	return u.Update(func(s *PubsubMessgaeUpsert) {
+func (u *PubsubMessageUpsertBulk) UpdateCreatedAt() *PubsubMessageUpsertBulk {
+	return u.Update(func(s *PubsubMessageUpsert) {
 		s.UpdateCreatedAt()
 	})
 }
 
 // SetUpdatedAt sets the "updated_at" field.
-func (u *PubsubMessgaeUpsertBulk) SetUpdatedAt(v uint32) *PubsubMessgaeUpsertBulk {
-	return u.Update(func(s *PubsubMessgaeUpsert) {
+func (u *PubsubMessageUpsertBulk) SetUpdatedAt(v uint32) *PubsubMessageUpsertBulk {
+	return u.Update(func(s *PubsubMessageUpsert) {
 		s.SetUpdatedAt(v)
 	})
 }
 
 // AddUpdatedAt adds v to the "updated_at" field.
-func (u *PubsubMessgaeUpsertBulk) AddUpdatedAt(v uint32) *PubsubMessgaeUpsertBulk {
-	return u.Update(func(s *PubsubMessgaeUpsert) {
+func (u *PubsubMessageUpsertBulk) AddUpdatedAt(v uint32) *PubsubMessageUpsertBulk {
+	return u.Update(func(s *PubsubMessageUpsert) {
 		s.AddUpdatedAt(v)
 	})
 }
 
 // UpdateUpdatedAt sets the "updated_at" field to the value that was provided on create.
-func (u *PubsubMessgaeUpsertBulk) UpdateUpdatedAt() *PubsubMessgaeUpsertBulk {
-	return u.Update(func(s *PubsubMessgaeUpsert) {
+func (u *PubsubMessageUpsertBulk) UpdateUpdatedAt() *PubsubMessageUpsertBulk {
+	return u.Update(func(s *PubsubMessageUpsert) {
 		s.UpdateUpdatedAt()
 	})
 }
 
 // SetDeletedAt sets the "deleted_at" field.
-func (u *PubsubMessgaeUpsertBulk) SetDeletedAt(v uint32) *PubsubMessgaeUpsertBulk {
-	return u.Update(func(s *PubsubMessgaeUpsert) {
+func (u *PubsubMessageUpsertBulk) SetDeletedAt(v uint32) *PubsubMessageUpsertBulk {
+	return u.Update(func(s *PubsubMessageUpsert) {
 		s.SetDeletedAt(v)
 	})
 }
 
 // AddDeletedAt adds v to the "deleted_at" field.
-func (u *PubsubMessgaeUpsertBulk) AddDeletedAt(v uint32) *PubsubMessgaeUpsertBulk {
-	return u.Update(func(s *PubsubMessgaeUpsert) {
+func (u *PubsubMessageUpsertBulk) AddDeletedAt(v uint32) *PubsubMessageUpsertBulk {
+	return u.Update(func(s *PubsubMessageUpsert) {
 		s.AddDeletedAt(v)
 	})
 }
 
 // UpdateDeletedAt sets the "deleted_at" field to the value that was provided on create.
-func (u *PubsubMessgaeUpsertBulk) UpdateDeletedAt() *PubsubMessgaeUpsertBulk {
-	return u.Update(func(s *PubsubMessgaeUpsert) {
+func (u *PubsubMessageUpsertBulk) UpdateDeletedAt() *PubsubMessageUpsertBulk {
+	return u.Update(func(s *PubsubMessageUpsert) {
 		s.UpdateDeletedAt()
 	})
 }
 
 // SetMessageID sets the "message_id" field.
-func (u *PubsubMessgaeUpsertBulk) SetMessageID(v string) *PubsubMessgaeUpsertBulk {
-	return u.Update(func(s *PubsubMessgaeUpsert) {
+func (u *PubsubMessageUpsertBulk) SetMessageID(v string) *PubsubMessageUpsertBulk {
+	return u.Update(func(s *PubsubMessageUpsert) {
 		s.SetMessageID(v)
 	})
 }
 
 // UpdateMessageID sets the "message_id" field to the value that was provided on create.
-func (u *PubsubMessgaeUpsertBulk) UpdateMessageID() *PubsubMessgaeUpsertBulk {
-	return u.Update(func(s *PubsubMessgaeUpsert) {
+func (u *PubsubMessageUpsertBulk) UpdateMessageID() *PubsubMessageUpsertBulk {
+	return u.Update(func(s *PubsubMessageUpsert) {
 		s.UpdateMessageID()
 	})
 }
 
 // SetSender sets the "sender" field.
-func (u *PubsubMessgaeUpsertBulk) SetSender(v string) *PubsubMessgaeUpsertBulk {
-	return u.Update(func(s *PubsubMessgaeUpsert) {
+func (u *PubsubMessageUpsertBulk) SetSender(v string) *PubsubMessageUpsertBulk {
+	return u.Update(func(s *PubsubMessageUpsert) {
 		s.SetSender(v)
 	})
 }
 
 // UpdateSender sets the "sender" field to the value that was provided on create.
-func (u *PubsubMessgaeUpsertBulk) UpdateSender() *PubsubMessgaeUpsertBulk {
-	return u.Update(func(s *PubsubMessgaeUpsert) {
+func (u *PubsubMessageUpsertBulk) UpdateSender() *PubsubMessageUpsertBulk {
+	return u.Update(func(s *PubsubMessageUpsert) {
 		s.UpdateSender()
 	})
 }
 
 // SetBody sets the "body" field.
-func (u *PubsubMessgaeUpsertBulk) SetBody(v []byte) *PubsubMessgaeUpsertBulk {
-	return u.Update(func(s *PubsubMessgaeUpsert) {
+func (u *PubsubMessageUpsertBulk) SetBody(v []byte) *PubsubMessageUpsertBulk {
+	return u.Update(func(s *PubsubMessageUpsert) {
 		s.SetBody(v)
 	})
 }
 
 // UpdateBody sets the "body" field to the value that was provided on create.
-func (u *PubsubMessgaeUpsertBulk) UpdateBody() *PubsubMessgaeUpsertBulk {
-	return u.Update(func(s *PubsubMessgaeUpsert) {
+func (u *PubsubMessageUpsertBulk) UpdateBody() *PubsubMessageUpsertBulk {
+	return u.Update(func(s *PubsubMessageUpsert) {
 		s.UpdateBody()
 	})
 }
 
 // SetState sets the "state" field.
-func (u *PubsubMessgaeUpsertBulk) SetState(v string) *PubsubMessgaeUpsertBulk {
-	return u.Update(func(s *PubsubMessgaeUpsert) {
+func (u *PubsubMessageUpsertBulk) SetState(v string) *PubsubMessageUpsertBulk {
+	return u.Update(func(s *PubsubMessageUpsert) {
 		s.SetState(v)
 	})
 }
 
 // UpdateState sets the "state" field to the value that was provided on create.
-func (u *PubsubMessgaeUpsertBulk) UpdateState() *PubsubMessgaeUpsertBulk {
-	return u.Update(func(s *PubsubMessgaeUpsert) {
+func (u *PubsubMessageUpsertBulk) UpdateState() *PubsubMessageUpsertBulk {
+	return u.Update(func(s *PubsubMessageUpsert) {
 		s.UpdateState()
 	})
 }
 
 // SetResponseToID sets the "response_to_id" field.
-func (u *PubsubMessgaeUpsertBulk) SetResponseToID(v uuid.UUID) *PubsubMessgaeUpsertBulk {
-	return u.Update(func(s *PubsubMessgaeUpsert) {
+func (u *PubsubMessageUpsertBulk) SetResponseToID(v uuid.UUID) *PubsubMessageUpsertBulk {
+	return u.Update(func(s *PubsubMessageUpsert) {
 		s.SetResponseToID(v)
 	})
 }
 
 // UpdateResponseToID sets the "response_to_id" field to the value that was provided on create.
-func (u *PubsubMessgaeUpsertBulk) UpdateResponseToID() *PubsubMessgaeUpsertBulk {
-	return u.Update(func(s *PubsubMessgaeUpsert) {
+func (u *PubsubMessageUpsertBulk) UpdateResponseToID() *PubsubMessageUpsertBulk {
+	return u.Update(func(s *PubsubMessageUpsert) {
 		s.UpdateResponseToID()
 	})
 }
 
 // SetErrorMessage sets the "error_message" field.
-func (u *PubsubMessgaeUpsertBulk) SetErrorMessage(v string) *PubsubMessgaeUpsertBulk {
-	return u.Update(func(s *PubsubMessgaeUpsert) {
+func (u *PubsubMessageUpsertBulk) SetErrorMessage(v string) *PubsubMessageUpsertBulk {
+	return u.Update(func(s *PubsubMessageUpsert) {
 		s.SetErrorMessage(v)
 	})
 }
 
 // UpdateErrorMessage sets the "error_message" field to the value that was provided on create.
-func (u *PubsubMessgaeUpsertBulk) UpdateErrorMessage() *PubsubMessgaeUpsertBulk {
-	return u.Update(func(s *PubsubMessgaeUpsert) {
+func (u *PubsubMessageUpsertBulk) UpdateErrorMessage() *PubsubMessageUpsertBulk {
+	return u.Update(func(s *PubsubMessageUpsert) {
 		s.UpdateErrorMessage()
 	})
 }
 
 // ClearErrorMessage clears the value of the "error_message" field.
-func (u *PubsubMessgaeUpsertBulk) ClearErrorMessage() *PubsubMessgaeUpsertBulk {
-	return u.Update(func(s *PubsubMessgaeUpsert) {
+func (u *PubsubMessageUpsertBulk) ClearErrorMessage() *PubsubMessageUpsertBulk {
+	return u.Update(func(s *PubsubMessageUpsert) {
 		s.ClearErrorMessage()
 	})
 }
 
 // Exec executes the query.
-func (u *PubsubMessgaeUpsertBulk) Exec(ctx context.Context) error {
+func (u *PubsubMessageUpsertBulk) Exec(ctx context.Context) error {
 	for i, b := range u.create.builders {
 		if len(b.conflict) != 0 {
-			return fmt.Errorf("ent: OnConflict was set for builder %d. Set it on the PubsubMessgaeCreateBulk instead", i)
+			return fmt.Errorf("ent: OnConflict was set for builder %d. Set it on the PubsubMessageCreateBulk instead", i)
 		}
 	}
 	if len(u.create.conflict) == 0 {
-		return errors.New("ent: missing options for PubsubMessgaeCreateBulk.OnConflict")
+		return errors.New("ent: missing options for PubsubMessageCreateBulk.OnConflict")
 	}
 	return u.create.Exec(ctx)
 }
 
 // ExecX is like Exec, but panics if an error occurs.
-func (u *PubsubMessgaeUpsertBulk) ExecX(ctx context.Context) {
+func (u *PubsubMessageUpsertBulk) ExecX(ctx context.Context) {
 	if err := u.create.Exec(ctx); err != nil {
 		panic(err)
 	}

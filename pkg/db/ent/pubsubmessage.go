@@ -7,12 +7,12 @@ import (
 	"strings"
 
 	"entgo.io/ent/dialect/sql"
-	"github.com/NpoolPlatform/inspire-manager/pkg/db/ent/pubsubmessgae"
+	"github.com/NpoolPlatform/inspire-manager/pkg/db/ent/pubsubmessage"
 	"github.com/google/uuid"
 )
 
-// PubsubMessgae is the model entity for the PubsubMessgae schema.
-type PubsubMessgae struct {
+// PubsubMessage is the model entity for the PubsubMessage schema.
+type PubsubMessage struct {
 	config `json:"-"`
 	// ID of the ent.
 	ID uuid.UUID `json:"id,omitempty"`
@@ -37,88 +37,88 @@ type PubsubMessgae struct {
 }
 
 // scanValues returns the types for scanning values from sql.Rows.
-func (*PubsubMessgae) scanValues(columns []string) ([]interface{}, error) {
+func (*PubsubMessage) scanValues(columns []string) ([]interface{}, error) {
 	values := make([]interface{}, len(columns))
 	for i := range columns {
 		switch columns[i] {
-		case pubsubmessgae.FieldBody:
+		case pubsubmessage.FieldBody:
 			values[i] = new([]byte)
-		case pubsubmessgae.FieldCreatedAt, pubsubmessgae.FieldUpdatedAt, pubsubmessgae.FieldDeletedAt:
+		case pubsubmessage.FieldCreatedAt, pubsubmessage.FieldUpdatedAt, pubsubmessage.FieldDeletedAt:
 			values[i] = new(sql.NullInt64)
-		case pubsubmessgae.FieldMessageID, pubsubmessgae.FieldSender, pubsubmessgae.FieldState, pubsubmessgae.FieldErrorMessage:
+		case pubsubmessage.FieldMessageID, pubsubmessage.FieldSender, pubsubmessage.FieldState, pubsubmessage.FieldErrorMessage:
 			values[i] = new(sql.NullString)
-		case pubsubmessgae.FieldID, pubsubmessgae.FieldResponseToID:
+		case pubsubmessage.FieldID, pubsubmessage.FieldResponseToID:
 			values[i] = new(uuid.UUID)
 		default:
-			return nil, fmt.Errorf("unexpected column %q for type PubsubMessgae", columns[i])
+			return nil, fmt.Errorf("unexpected column %q for type PubsubMessage", columns[i])
 		}
 	}
 	return values, nil
 }
 
 // assignValues assigns the values that were returned from sql.Rows (after scanning)
-// to the PubsubMessgae fields.
-func (pm *PubsubMessgae) assignValues(columns []string, values []interface{}) error {
+// to the PubsubMessage fields.
+func (pm *PubsubMessage) assignValues(columns []string, values []interface{}) error {
 	if m, n := len(values), len(columns); m < n {
 		return fmt.Errorf("mismatch number of scan values: %d != %d", m, n)
 	}
 	for i := range columns {
 		switch columns[i] {
-		case pubsubmessgae.FieldID:
+		case pubsubmessage.FieldID:
 			if value, ok := values[i].(*uuid.UUID); !ok {
 				return fmt.Errorf("unexpected type %T for field id", values[i])
 			} else if value != nil {
 				pm.ID = *value
 			}
-		case pubsubmessgae.FieldCreatedAt:
+		case pubsubmessage.FieldCreatedAt:
 			if value, ok := values[i].(*sql.NullInt64); !ok {
 				return fmt.Errorf("unexpected type %T for field created_at", values[i])
 			} else if value.Valid {
 				pm.CreatedAt = uint32(value.Int64)
 			}
-		case pubsubmessgae.FieldUpdatedAt:
+		case pubsubmessage.FieldUpdatedAt:
 			if value, ok := values[i].(*sql.NullInt64); !ok {
 				return fmt.Errorf("unexpected type %T for field updated_at", values[i])
 			} else if value.Valid {
 				pm.UpdatedAt = uint32(value.Int64)
 			}
-		case pubsubmessgae.FieldDeletedAt:
+		case pubsubmessage.FieldDeletedAt:
 			if value, ok := values[i].(*sql.NullInt64); !ok {
 				return fmt.Errorf("unexpected type %T for field deleted_at", values[i])
 			} else if value.Valid {
 				pm.DeletedAt = uint32(value.Int64)
 			}
-		case pubsubmessgae.FieldMessageID:
+		case pubsubmessage.FieldMessageID:
 			if value, ok := values[i].(*sql.NullString); !ok {
 				return fmt.Errorf("unexpected type %T for field message_id", values[i])
 			} else if value.Valid {
 				pm.MessageID = value.String
 			}
-		case pubsubmessgae.FieldSender:
+		case pubsubmessage.FieldSender:
 			if value, ok := values[i].(*sql.NullString); !ok {
 				return fmt.Errorf("unexpected type %T for field sender", values[i])
 			} else if value.Valid {
 				pm.Sender = value.String
 			}
-		case pubsubmessgae.FieldBody:
+		case pubsubmessage.FieldBody:
 			if value, ok := values[i].(*[]byte); !ok {
 				return fmt.Errorf("unexpected type %T for field body", values[i])
 			} else if value != nil {
 				pm.Body = *value
 			}
-		case pubsubmessgae.FieldState:
+		case pubsubmessage.FieldState:
 			if value, ok := values[i].(*sql.NullString); !ok {
 				return fmt.Errorf("unexpected type %T for field state", values[i])
 			} else if value.Valid {
 				pm.State = value.String
 			}
-		case pubsubmessgae.FieldResponseToID:
+		case pubsubmessage.FieldResponseToID:
 			if value, ok := values[i].(*uuid.UUID); !ok {
 				return fmt.Errorf("unexpected type %T for field response_to_id", values[i])
 			} else if value != nil {
 				pm.ResponseToID = *value
 			}
-		case pubsubmessgae.FieldErrorMessage:
+		case pubsubmessage.FieldErrorMessage:
 			if value, ok := values[i].(*sql.NullString); !ok {
 				return fmt.Errorf("unexpected type %T for field error_message", values[i])
 			} else if value.Valid {
@@ -129,28 +129,28 @@ func (pm *PubsubMessgae) assignValues(columns []string, values []interface{}) er
 	return nil
 }
 
-// Update returns a builder for updating this PubsubMessgae.
-// Note that you need to call PubsubMessgae.Unwrap() before calling this method if this PubsubMessgae
+// Update returns a builder for updating this PubsubMessage.
+// Note that you need to call PubsubMessage.Unwrap() before calling this method if this PubsubMessage
 // was returned from a transaction, and the transaction was committed or rolled back.
-func (pm *PubsubMessgae) Update() *PubsubMessgaeUpdateOne {
-	return (&PubsubMessgaeClient{config: pm.config}).UpdateOne(pm)
+func (pm *PubsubMessage) Update() *PubsubMessageUpdateOne {
+	return (&PubsubMessageClient{config: pm.config}).UpdateOne(pm)
 }
 
-// Unwrap unwraps the PubsubMessgae entity that was returned from a transaction after it was closed,
+// Unwrap unwraps the PubsubMessage entity that was returned from a transaction after it was closed,
 // so that all future queries will be executed through the driver which created the transaction.
-func (pm *PubsubMessgae) Unwrap() *PubsubMessgae {
+func (pm *PubsubMessage) Unwrap() *PubsubMessage {
 	_tx, ok := pm.config.driver.(*txDriver)
 	if !ok {
-		panic("ent: PubsubMessgae is not a transactional entity")
+		panic("ent: PubsubMessage is not a transactional entity")
 	}
 	pm.config.driver = _tx.drv
 	return pm
 }
 
 // String implements the fmt.Stringer.
-func (pm *PubsubMessgae) String() string {
+func (pm *PubsubMessage) String() string {
 	var builder strings.Builder
-	builder.WriteString("PubsubMessgae(")
+	builder.WriteString("PubsubMessage(")
 	builder.WriteString(fmt.Sprintf("id=%v, ", pm.ID))
 	builder.WriteString("created_at=")
 	builder.WriteString(fmt.Sprintf("%v", pm.CreatedAt))
@@ -182,10 +182,10 @@ func (pm *PubsubMessgae) String() string {
 	return builder.String()
 }
 
-// PubsubMessgaes is a parsable slice of PubsubMessgae.
-type PubsubMessgaes []*PubsubMessgae
+// PubsubMessages is a parsable slice of PubsubMessage.
+type PubsubMessages []*PubsubMessage
 
-func (pm PubsubMessgaes) config(cfg config) {
+func (pm PubsubMessages) config(cfg config) {
 	for _i := range pm {
 		pm[_i].config = cfg
 	}

@@ -11,33 +11,33 @@ import (
 	"entgo.io/ent/dialect/sql/sqlgraph"
 	"entgo.io/ent/schema/field"
 	"github.com/NpoolPlatform/inspire-manager/pkg/db/ent/predicate"
-	"github.com/NpoolPlatform/inspire-manager/pkg/db/ent/pubsubmessgae"
+	"github.com/NpoolPlatform/inspire-manager/pkg/db/ent/pubsubmessage"
 	"github.com/google/uuid"
 )
 
-// PubsubMessgaeUpdate is the builder for updating PubsubMessgae entities.
-type PubsubMessgaeUpdate struct {
+// PubsubMessageUpdate is the builder for updating PubsubMessage entities.
+type PubsubMessageUpdate struct {
 	config
 	hooks     []Hook
-	mutation  *PubsubMessgaeMutation
+	mutation  *PubsubMessageMutation
 	modifiers []func(*sql.UpdateBuilder)
 }
 
-// Where appends a list predicates to the PubsubMessgaeUpdate builder.
-func (pmu *PubsubMessgaeUpdate) Where(ps ...predicate.PubsubMessgae) *PubsubMessgaeUpdate {
+// Where appends a list predicates to the PubsubMessageUpdate builder.
+func (pmu *PubsubMessageUpdate) Where(ps ...predicate.PubsubMessage) *PubsubMessageUpdate {
 	pmu.mutation.Where(ps...)
 	return pmu
 }
 
 // SetCreatedAt sets the "created_at" field.
-func (pmu *PubsubMessgaeUpdate) SetCreatedAt(u uint32) *PubsubMessgaeUpdate {
+func (pmu *PubsubMessageUpdate) SetCreatedAt(u uint32) *PubsubMessageUpdate {
 	pmu.mutation.ResetCreatedAt()
 	pmu.mutation.SetCreatedAt(u)
 	return pmu
 }
 
 // SetNillableCreatedAt sets the "created_at" field if the given value is not nil.
-func (pmu *PubsubMessgaeUpdate) SetNillableCreatedAt(u *uint32) *PubsubMessgaeUpdate {
+func (pmu *PubsubMessageUpdate) SetNillableCreatedAt(u *uint32) *PubsubMessageUpdate {
 	if u != nil {
 		pmu.SetCreatedAt(*u)
 	}
@@ -45,33 +45,33 @@ func (pmu *PubsubMessgaeUpdate) SetNillableCreatedAt(u *uint32) *PubsubMessgaeUp
 }
 
 // AddCreatedAt adds u to the "created_at" field.
-func (pmu *PubsubMessgaeUpdate) AddCreatedAt(u int32) *PubsubMessgaeUpdate {
+func (pmu *PubsubMessageUpdate) AddCreatedAt(u int32) *PubsubMessageUpdate {
 	pmu.mutation.AddCreatedAt(u)
 	return pmu
 }
 
 // SetUpdatedAt sets the "updated_at" field.
-func (pmu *PubsubMessgaeUpdate) SetUpdatedAt(u uint32) *PubsubMessgaeUpdate {
+func (pmu *PubsubMessageUpdate) SetUpdatedAt(u uint32) *PubsubMessageUpdate {
 	pmu.mutation.ResetUpdatedAt()
 	pmu.mutation.SetUpdatedAt(u)
 	return pmu
 }
 
 // AddUpdatedAt adds u to the "updated_at" field.
-func (pmu *PubsubMessgaeUpdate) AddUpdatedAt(u int32) *PubsubMessgaeUpdate {
+func (pmu *PubsubMessageUpdate) AddUpdatedAt(u int32) *PubsubMessageUpdate {
 	pmu.mutation.AddUpdatedAt(u)
 	return pmu
 }
 
 // SetDeletedAt sets the "deleted_at" field.
-func (pmu *PubsubMessgaeUpdate) SetDeletedAt(u uint32) *PubsubMessgaeUpdate {
+func (pmu *PubsubMessageUpdate) SetDeletedAt(u uint32) *PubsubMessageUpdate {
 	pmu.mutation.ResetDeletedAt()
 	pmu.mutation.SetDeletedAt(u)
 	return pmu
 }
 
 // SetNillableDeletedAt sets the "deleted_at" field if the given value is not nil.
-func (pmu *PubsubMessgaeUpdate) SetNillableDeletedAt(u *uint32) *PubsubMessgaeUpdate {
+func (pmu *PubsubMessageUpdate) SetNillableDeletedAt(u *uint32) *PubsubMessageUpdate {
 	if u != nil {
 		pmu.SetDeletedAt(*u)
 	}
@@ -79,49 +79,49 @@ func (pmu *PubsubMessgaeUpdate) SetNillableDeletedAt(u *uint32) *PubsubMessgaeUp
 }
 
 // AddDeletedAt adds u to the "deleted_at" field.
-func (pmu *PubsubMessgaeUpdate) AddDeletedAt(u int32) *PubsubMessgaeUpdate {
+func (pmu *PubsubMessageUpdate) AddDeletedAt(u int32) *PubsubMessageUpdate {
 	pmu.mutation.AddDeletedAt(u)
 	return pmu
 }
 
 // SetMessageID sets the "message_id" field.
-func (pmu *PubsubMessgaeUpdate) SetMessageID(s string) *PubsubMessgaeUpdate {
+func (pmu *PubsubMessageUpdate) SetMessageID(s string) *PubsubMessageUpdate {
 	pmu.mutation.SetMessageID(s)
 	return pmu
 }
 
 // SetSender sets the "sender" field.
-func (pmu *PubsubMessgaeUpdate) SetSender(s string) *PubsubMessgaeUpdate {
+func (pmu *PubsubMessageUpdate) SetSender(s string) *PubsubMessageUpdate {
 	pmu.mutation.SetSender(s)
 	return pmu
 }
 
 // SetBody sets the "body" field.
-func (pmu *PubsubMessgaeUpdate) SetBody(b []byte) *PubsubMessgaeUpdate {
+func (pmu *PubsubMessageUpdate) SetBody(b []byte) *PubsubMessageUpdate {
 	pmu.mutation.SetBody(b)
 	return pmu
 }
 
 // SetState sets the "state" field.
-func (pmu *PubsubMessgaeUpdate) SetState(s string) *PubsubMessgaeUpdate {
+func (pmu *PubsubMessageUpdate) SetState(s string) *PubsubMessageUpdate {
 	pmu.mutation.SetState(s)
 	return pmu
 }
 
 // SetResponseToID sets the "response_to_id" field.
-func (pmu *PubsubMessgaeUpdate) SetResponseToID(u uuid.UUID) *PubsubMessgaeUpdate {
+func (pmu *PubsubMessageUpdate) SetResponseToID(u uuid.UUID) *PubsubMessageUpdate {
 	pmu.mutation.SetResponseToID(u)
 	return pmu
 }
 
 // SetErrorMessage sets the "error_message" field.
-func (pmu *PubsubMessgaeUpdate) SetErrorMessage(s string) *PubsubMessgaeUpdate {
+func (pmu *PubsubMessageUpdate) SetErrorMessage(s string) *PubsubMessageUpdate {
 	pmu.mutation.SetErrorMessage(s)
 	return pmu
 }
 
 // SetNillableErrorMessage sets the "error_message" field if the given value is not nil.
-func (pmu *PubsubMessgaeUpdate) SetNillableErrorMessage(s *string) *PubsubMessgaeUpdate {
+func (pmu *PubsubMessageUpdate) SetNillableErrorMessage(s *string) *PubsubMessageUpdate {
 	if s != nil {
 		pmu.SetErrorMessage(*s)
 	}
@@ -129,18 +129,18 @@ func (pmu *PubsubMessgaeUpdate) SetNillableErrorMessage(s *string) *PubsubMessga
 }
 
 // ClearErrorMessage clears the value of the "error_message" field.
-func (pmu *PubsubMessgaeUpdate) ClearErrorMessage() *PubsubMessgaeUpdate {
+func (pmu *PubsubMessageUpdate) ClearErrorMessage() *PubsubMessageUpdate {
 	pmu.mutation.ClearErrorMessage()
 	return pmu
 }
 
-// Mutation returns the PubsubMessgaeMutation object of the builder.
-func (pmu *PubsubMessgaeUpdate) Mutation() *PubsubMessgaeMutation {
+// Mutation returns the PubsubMessageMutation object of the builder.
+func (pmu *PubsubMessageUpdate) Mutation() *PubsubMessageMutation {
 	return pmu.mutation
 }
 
 // Save executes the query and returns the number of nodes affected by the update operation.
-func (pmu *PubsubMessgaeUpdate) Save(ctx context.Context) (int, error) {
+func (pmu *PubsubMessageUpdate) Save(ctx context.Context) (int, error) {
 	var (
 		err      error
 		affected int
@@ -152,7 +152,7 @@ func (pmu *PubsubMessgaeUpdate) Save(ctx context.Context) (int, error) {
 		affected, err = pmu.sqlSave(ctx)
 	} else {
 		var mut Mutator = MutateFunc(func(ctx context.Context, m Mutation) (Value, error) {
-			mutation, ok := m.(*PubsubMessgaeMutation)
+			mutation, ok := m.(*PubsubMessageMutation)
 			if !ok {
 				return nil, fmt.Errorf("unexpected mutation type %T", m)
 			}
@@ -175,7 +175,7 @@ func (pmu *PubsubMessgaeUpdate) Save(ctx context.Context) (int, error) {
 }
 
 // SaveX is like Save, but panics if an error occurs.
-func (pmu *PubsubMessgaeUpdate) SaveX(ctx context.Context) int {
+func (pmu *PubsubMessageUpdate) SaveX(ctx context.Context) int {
 	affected, err := pmu.Save(ctx)
 	if err != nil {
 		panic(err)
@@ -184,44 +184,44 @@ func (pmu *PubsubMessgaeUpdate) SaveX(ctx context.Context) int {
 }
 
 // Exec executes the query.
-func (pmu *PubsubMessgaeUpdate) Exec(ctx context.Context) error {
+func (pmu *PubsubMessageUpdate) Exec(ctx context.Context) error {
 	_, err := pmu.Save(ctx)
 	return err
 }
 
 // ExecX is like Exec, but panics if an error occurs.
-func (pmu *PubsubMessgaeUpdate) ExecX(ctx context.Context) {
+func (pmu *PubsubMessageUpdate) ExecX(ctx context.Context) {
 	if err := pmu.Exec(ctx); err != nil {
 		panic(err)
 	}
 }
 
 // defaults sets the default values of the builder before save.
-func (pmu *PubsubMessgaeUpdate) defaults() error {
+func (pmu *PubsubMessageUpdate) defaults() error {
 	if _, ok := pmu.mutation.UpdatedAt(); !ok {
-		if pubsubmessgae.UpdateDefaultUpdatedAt == nil {
-			return fmt.Errorf("ent: uninitialized pubsubmessgae.UpdateDefaultUpdatedAt (forgotten import ent/runtime?)")
+		if pubsubmessage.UpdateDefaultUpdatedAt == nil {
+			return fmt.Errorf("ent: uninitialized pubsubmessage.UpdateDefaultUpdatedAt (forgotten import ent/runtime?)")
 		}
-		v := pubsubmessgae.UpdateDefaultUpdatedAt()
+		v := pubsubmessage.UpdateDefaultUpdatedAt()
 		pmu.mutation.SetUpdatedAt(v)
 	}
 	return nil
 }
 
 // Modify adds a statement modifier for attaching custom logic to the UPDATE statement.
-func (pmu *PubsubMessgaeUpdate) Modify(modifiers ...func(u *sql.UpdateBuilder)) *PubsubMessgaeUpdate {
+func (pmu *PubsubMessageUpdate) Modify(modifiers ...func(u *sql.UpdateBuilder)) *PubsubMessageUpdate {
 	pmu.modifiers = append(pmu.modifiers, modifiers...)
 	return pmu
 }
 
-func (pmu *PubsubMessgaeUpdate) sqlSave(ctx context.Context) (n int, err error) {
+func (pmu *PubsubMessageUpdate) sqlSave(ctx context.Context) (n int, err error) {
 	_spec := &sqlgraph.UpdateSpec{
 		Node: &sqlgraph.NodeSpec{
-			Table:   pubsubmessgae.Table,
-			Columns: pubsubmessgae.Columns,
+			Table:   pubsubmessage.Table,
+			Columns: pubsubmessage.Columns,
 			ID: &sqlgraph.FieldSpec{
 				Type:   field.TypeUUID,
-				Column: pubsubmessgae.FieldID,
+				Column: pubsubmessage.FieldID,
 			},
 		},
 	}
@@ -236,96 +236,96 @@ func (pmu *PubsubMessgaeUpdate) sqlSave(ctx context.Context) (n int, err error) 
 		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
 			Type:   field.TypeUint32,
 			Value:  value,
-			Column: pubsubmessgae.FieldCreatedAt,
+			Column: pubsubmessage.FieldCreatedAt,
 		})
 	}
 	if value, ok := pmu.mutation.AddedCreatedAt(); ok {
 		_spec.Fields.Add = append(_spec.Fields.Add, &sqlgraph.FieldSpec{
 			Type:   field.TypeUint32,
 			Value:  value,
-			Column: pubsubmessgae.FieldCreatedAt,
+			Column: pubsubmessage.FieldCreatedAt,
 		})
 	}
 	if value, ok := pmu.mutation.UpdatedAt(); ok {
 		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
 			Type:   field.TypeUint32,
 			Value:  value,
-			Column: pubsubmessgae.FieldUpdatedAt,
+			Column: pubsubmessage.FieldUpdatedAt,
 		})
 	}
 	if value, ok := pmu.mutation.AddedUpdatedAt(); ok {
 		_spec.Fields.Add = append(_spec.Fields.Add, &sqlgraph.FieldSpec{
 			Type:   field.TypeUint32,
 			Value:  value,
-			Column: pubsubmessgae.FieldUpdatedAt,
+			Column: pubsubmessage.FieldUpdatedAt,
 		})
 	}
 	if value, ok := pmu.mutation.DeletedAt(); ok {
 		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
 			Type:   field.TypeUint32,
 			Value:  value,
-			Column: pubsubmessgae.FieldDeletedAt,
+			Column: pubsubmessage.FieldDeletedAt,
 		})
 	}
 	if value, ok := pmu.mutation.AddedDeletedAt(); ok {
 		_spec.Fields.Add = append(_spec.Fields.Add, &sqlgraph.FieldSpec{
 			Type:   field.TypeUint32,
 			Value:  value,
-			Column: pubsubmessgae.FieldDeletedAt,
+			Column: pubsubmessage.FieldDeletedAt,
 		})
 	}
 	if value, ok := pmu.mutation.MessageID(); ok {
 		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
 			Type:   field.TypeString,
 			Value:  value,
-			Column: pubsubmessgae.FieldMessageID,
+			Column: pubsubmessage.FieldMessageID,
 		})
 	}
 	if value, ok := pmu.mutation.Sender(); ok {
 		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
 			Type:   field.TypeString,
 			Value:  value,
-			Column: pubsubmessgae.FieldSender,
+			Column: pubsubmessage.FieldSender,
 		})
 	}
 	if value, ok := pmu.mutation.Body(); ok {
 		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
 			Type:   field.TypeBytes,
 			Value:  value,
-			Column: pubsubmessgae.FieldBody,
+			Column: pubsubmessage.FieldBody,
 		})
 	}
 	if value, ok := pmu.mutation.State(); ok {
 		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
 			Type:   field.TypeString,
 			Value:  value,
-			Column: pubsubmessgae.FieldState,
+			Column: pubsubmessage.FieldState,
 		})
 	}
 	if value, ok := pmu.mutation.ResponseToID(); ok {
 		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
 			Type:   field.TypeUUID,
 			Value:  value,
-			Column: pubsubmessgae.FieldResponseToID,
+			Column: pubsubmessage.FieldResponseToID,
 		})
 	}
 	if value, ok := pmu.mutation.ErrorMessage(); ok {
 		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
 			Type:   field.TypeString,
 			Value:  value,
-			Column: pubsubmessgae.FieldErrorMessage,
+			Column: pubsubmessage.FieldErrorMessage,
 		})
 	}
 	if pmu.mutation.ErrorMessageCleared() {
 		_spec.Fields.Clear = append(_spec.Fields.Clear, &sqlgraph.FieldSpec{
 			Type:   field.TypeString,
-			Column: pubsubmessgae.FieldErrorMessage,
+			Column: pubsubmessage.FieldErrorMessage,
 		})
 	}
 	_spec.Modifiers = pmu.modifiers
 	if n, err = sqlgraph.UpdateNodes(ctx, pmu.driver, _spec); err != nil {
 		if _, ok := err.(*sqlgraph.NotFoundError); ok {
-			err = &NotFoundError{pubsubmessgae.Label}
+			err = &NotFoundError{pubsubmessage.Label}
 		} else if sqlgraph.IsConstraintError(err) {
 			err = &ConstraintError{msg: err.Error(), wrap: err}
 		}
@@ -334,24 +334,24 @@ func (pmu *PubsubMessgaeUpdate) sqlSave(ctx context.Context) (n int, err error) 
 	return n, nil
 }
 
-// PubsubMessgaeUpdateOne is the builder for updating a single PubsubMessgae entity.
-type PubsubMessgaeUpdateOne struct {
+// PubsubMessageUpdateOne is the builder for updating a single PubsubMessage entity.
+type PubsubMessageUpdateOne struct {
 	config
 	fields    []string
 	hooks     []Hook
-	mutation  *PubsubMessgaeMutation
+	mutation  *PubsubMessageMutation
 	modifiers []func(*sql.UpdateBuilder)
 }
 
 // SetCreatedAt sets the "created_at" field.
-func (pmuo *PubsubMessgaeUpdateOne) SetCreatedAt(u uint32) *PubsubMessgaeUpdateOne {
+func (pmuo *PubsubMessageUpdateOne) SetCreatedAt(u uint32) *PubsubMessageUpdateOne {
 	pmuo.mutation.ResetCreatedAt()
 	pmuo.mutation.SetCreatedAt(u)
 	return pmuo
 }
 
 // SetNillableCreatedAt sets the "created_at" field if the given value is not nil.
-func (pmuo *PubsubMessgaeUpdateOne) SetNillableCreatedAt(u *uint32) *PubsubMessgaeUpdateOne {
+func (pmuo *PubsubMessageUpdateOne) SetNillableCreatedAt(u *uint32) *PubsubMessageUpdateOne {
 	if u != nil {
 		pmuo.SetCreatedAt(*u)
 	}
@@ -359,33 +359,33 @@ func (pmuo *PubsubMessgaeUpdateOne) SetNillableCreatedAt(u *uint32) *PubsubMessg
 }
 
 // AddCreatedAt adds u to the "created_at" field.
-func (pmuo *PubsubMessgaeUpdateOne) AddCreatedAt(u int32) *PubsubMessgaeUpdateOne {
+func (pmuo *PubsubMessageUpdateOne) AddCreatedAt(u int32) *PubsubMessageUpdateOne {
 	pmuo.mutation.AddCreatedAt(u)
 	return pmuo
 }
 
 // SetUpdatedAt sets the "updated_at" field.
-func (pmuo *PubsubMessgaeUpdateOne) SetUpdatedAt(u uint32) *PubsubMessgaeUpdateOne {
+func (pmuo *PubsubMessageUpdateOne) SetUpdatedAt(u uint32) *PubsubMessageUpdateOne {
 	pmuo.mutation.ResetUpdatedAt()
 	pmuo.mutation.SetUpdatedAt(u)
 	return pmuo
 }
 
 // AddUpdatedAt adds u to the "updated_at" field.
-func (pmuo *PubsubMessgaeUpdateOne) AddUpdatedAt(u int32) *PubsubMessgaeUpdateOne {
+func (pmuo *PubsubMessageUpdateOne) AddUpdatedAt(u int32) *PubsubMessageUpdateOne {
 	pmuo.mutation.AddUpdatedAt(u)
 	return pmuo
 }
 
 // SetDeletedAt sets the "deleted_at" field.
-func (pmuo *PubsubMessgaeUpdateOne) SetDeletedAt(u uint32) *PubsubMessgaeUpdateOne {
+func (pmuo *PubsubMessageUpdateOne) SetDeletedAt(u uint32) *PubsubMessageUpdateOne {
 	pmuo.mutation.ResetDeletedAt()
 	pmuo.mutation.SetDeletedAt(u)
 	return pmuo
 }
 
 // SetNillableDeletedAt sets the "deleted_at" field if the given value is not nil.
-func (pmuo *PubsubMessgaeUpdateOne) SetNillableDeletedAt(u *uint32) *PubsubMessgaeUpdateOne {
+func (pmuo *PubsubMessageUpdateOne) SetNillableDeletedAt(u *uint32) *PubsubMessageUpdateOne {
 	if u != nil {
 		pmuo.SetDeletedAt(*u)
 	}
@@ -393,49 +393,49 @@ func (pmuo *PubsubMessgaeUpdateOne) SetNillableDeletedAt(u *uint32) *PubsubMessg
 }
 
 // AddDeletedAt adds u to the "deleted_at" field.
-func (pmuo *PubsubMessgaeUpdateOne) AddDeletedAt(u int32) *PubsubMessgaeUpdateOne {
+func (pmuo *PubsubMessageUpdateOne) AddDeletedAt(u int32) *PubsubMessageUpdateOne {
 	pmuo.mutation.AddDeletedAt(u)
 	return pmuo
 }
 
 // SetMessageID sets the "message_id" field.
-func (pmuo *PubsubMessgaeUpdateOne) SetMessageID(s string) *PubsubMessgaeUpdateOne {
+func (pmuo *PubsubMessageUpdateOne) SetMessageID(s string) *PubsubMessageUpdateOne {
 	pmuo.mutation.SetMessageID(s)
 	return pmuo
 }
 
 // SetSender sets the "sender" field.
-func (pmuo *PubsubMessgaeUpdateOne) SetSender(s string) *PubsubMessgaeUpdateOne {
+func (pmuo *PubsubMessageUpdateOne) SetSender(s string) *PubsubMessageUpdateOne {
 	pmuo.mutation.SetSender(s)
 	return pmuo
 }
 
 // SetBody sets the "body" field.
-func (pmuo *PubsubMessgaeUpdateOne) SetBody(b []byte) *PubsubMessgaeUpdateOne {
+func (pmuo *PubsubMessageUpdateOne) SetBody(b []byte) *PubsubMessageUpdateOne {
 	pmuo.mutation.SetBody(b)
 	return pmuo
 }
 
 // SetState sets the "state" field.
-func (pmuo *PubsubMessgaeUpdateOne) SetState(s string) *PubsubMessgaeUpdateOne {
+func (pmuo *PubsubMessageUpdateOne) SetState(s string) *PubsubMessageUpdateOne {
 	pmuo.mutation.SetState(s)
 	return pmuo
 }
 
 // SetResponseToID sets the "response_to_id" field.
-func (pmuo *PubsubMessgaeUpdateOne) SetResponseToID(u uuid.UUID) *PubsubMessgaeUpdateOne {
+func (pmuo *PubsubMessageUpdateOne) SetResponseToID(u uuid.UUID) *PubsubMessageUpdateOne {
 	pmuo.mutation.SetResponseToID(u)
 	return pmuo
 }
 
 // SetErrorMessage sets the "error_message" field.
-func (pmuo *PubsubMessgaeUpdateOne) SetErrorMessage(s string) *PubsubMessgaeUpdateOne {
+func (pmuo *PubsubMessageUpdateOne) SetErrorMessage(s string) *PubsubMessageUpdateOne {
 	pmuo.mutation.SetErrorMessage(s)
 	return pmuo
 }
 
 // SetNillableErrorMessage sets the "error_message" field if the given value is not nil.
-func (pmuo *PubsubMessgaeUpdateOne) SetNillableErrorMessage(s *string) *PubsubMessgaeUpdateOne {
+func (pmuo *PubsubMessageUpdateOne) SetNillableErrorMessage(s *string) *PubsubMessageUpdateOne {
 	if s != nil {
 		pmuo.SetErrorMessage(*s)
 	}
@@ -443,28 +443,28 @@ func (pmuo *PubsubMessgaeUpdateOne) SetNillableErrorMessage(s *string) *PubsubMe
 }
 
 // ClearErrorMessage clears the value of the "error_message" field.
-func (pmuo *PubsubMessgaeUpdateOne) ClearErrorMessage() *PubsubMessgaeUpdateOne {
+func (pmuo *PubsubMessageUpdateOne) ClearErrorMessage() *PubsubMessageUpdateOne {
 	pmuo.mutation.ClearErrorMessage()
 	return pmuo
 }
 
-// Mutation returns the PubsubMessgaeMutation object of the builder.
-func (pmuo *PubsubMessgaeUpdateOne) Mutation() *PubsubMessgaeMutation {
+// Mutation returns the PubsubMessageMutation object of the builder.
+func (pmuo *PubsubMessageUpdateOne) Mutation() *PubsubMessageMutation {
 	return pmuo.mutation
 }
 
 // Select allows selecting one or more fields (columns) of the returned entity.
 // The default is selecting all fields defined in the entity schema.
-func (pmuo *PubsubMessgaeUpdateOne) Select(field string, fields ...string) *PubsubMessgaeUpdateOne {
+func (pmuo *PubsubMessageUpdateOne) Select(field string, fields ...string) *PubsubMessageUpdateOne {
 	pmuo.fields = append([]string{field}, fields...)
 	return pmuo
 }
 
-// Save executes the query and returns the updated PubsubMessgae entity.
-func (pmuo *PubsubMessgaeUpdateOne) Save(ctx context.Context) (*PubsubMessgae, error) {
+// Save executes the query and returns the updated PubsubMessage entity.
+func (pmuo *PubsubMessageUpdateOne) Save(ctx context.Context) (*PubsubMessage, error) {
 	var (
 		err  error
-		node *PubsubMessgae
+		node *PubsubMessage
 	)
 	if err := pmuo.defaults(); err != nil {
 		return nil, err
@@ -473,7 +473,7 @@ func (pmuo *PubsubMessgaeUpdateOne) Save(ctx context.Context) (*PubsubMessgae, e
 		node, err = pmuo.sqlSave(ctx)
 	} else {
 		var mut Mutator = MutateFunc(func(ctx context.Context, m Mutation) (Value, error) {
-			mutation, ok := m.(*PubsubMessgaeMutation)
+			mutation, ok := m.(*PubsubMessageMutation)
 			if !ok {
 				return nil, fmt.Errorf("unexpected mutation type %T", m)
 			}
@@ -492,9 +492,9 @@ func (pmuo *PubsubMessgaeUpdateOne) Save(ctx context.Context) (*PubsubMessgae, e
 		if err != nil {
 			return nil, err
 		}
-		nv, ok := v.(*PubsubMessgae)
+		nv, ok := v.(*PubsubMessage)
 		if !ok {
-			return nil, fmt.Errorf("unexpected node type %T returned from PubsubMessgaeMutation", v)
+			return nil, fmt.Errorf("unexpected node type %T returned from PubsubMessageMutation", v)
 		}
 		node = nv
 	}
@@ -502,7 +502,7 @@ func (pmuo *PubsubMessgaeUpdateOne) Save(ctx context.Context) (*PubsubMessgae, e
 }
 
 // SaveX is like Save, but panics if an error occurs.
-func (pmuo *PubsubMessgaeUpdateOne) SaveX(ctx context.Context) *PubsubMessgae {
+func (pmuo *PubsubMessageUpdateOne) SaveX(ctx context.Context) *PubsubMessage {
 	node, err := pmuo.Save(ctx)
 	if err != nil {
 		panic(err)
@@ -511,60 +511,60 @@ func (pmuo *PubsubMessgaeUpdateOne) SaveX(ctx context.Context) *PubsubMessgae {
 }
 
 // Exec executes the query on the entity.
-func (pmuo *PubsubMessgaeUpdateOne) Exec(ctx context.Context) error {
+func (pmuo *PubsubMessageUpdateOne) Exec(ctx context.Context) error {
 	_, err := pmuo.Save(ctx)
 	return err
 }
 
 // ExecX is like Exec, but panics if an error occurs.
-func (pmuo *PubsubMessgaeUpdateOne) ExecX(ctx context.Context) {
+func (pmuo *PubsubMessageUpdateOne) ExecX(ctx context.Context) {
 	if err := pmuo.Exec(ctx); err != nil {
 		panic(err)
 	}
 }
 
 // defaults sets the default values of the builder before save.
-func (pmuo *PubsubMessgaeUpdateOne) defaults() error {
+func (pmuo *PubsubMessageUpdateOne) defaults() error {
 	if _, ok := pmuo.mutation.UpdatedAt(); !ok {
-		if pubsubmessgae.UpdateDefaultUpdatedAt == nil {
-			return fmt.Errorf("ent: uninitialized pubsubmessgae.UpdateDefaultUpdatedAt (forgotten import ent/runtime?)")
+		if pubsubmessage.UpdateDefaultUpdatedAt == nil {
+			return fmt.Errorf("ent: uninitialized pubsubmessage.UpdateDefaultUpdatedAt (forgotten import ent/runtime?)")
 		}
-		v := pubsubmessgae.UpdateDefaultUpdatedAt()
+		v := pubsubmessage.UpdateDefaultUpdatedAt()
 		pmuo.mutation.SetUpdatedAt(v)
 	}
 	return nil
 }
 
 // Modify adds a statement modifier for attaching custom logic to the UPDATE statement.
-func (pmuo *PubsubMessgaeUpdateOne) Modify(modifiers ...func(u *sql.UpdateBuilder)) *PubsubMessgaeUpdateOne {
+func (pmuo *PubsubMessageUpdateOne) Modify(modifiers ...func(u *sql.UpdateBuilder)) *PubsubMessageUpdateOne {
 	pmuo.modifiers = append(pmuo.modifiers, modifiers...)
 	return pmuo
 }
 
-func (pmuo *PubsubMessgaeUpdateOne) sqlSave(ctx context.Context) (_node *PubsubMessgae, err error) {
+func (pmuo *PubsubMessageUpdateOne) sqlSave(ctx context.Context) (_node *PubsubMessage, err error) {
 	_spec := &sqlgraph.UpdateSpec{
 		Node: &sqlgraph.NodeSpec{
-			Table:   pubsubmessgae.Table,
-			Columns: pubsubmessgae.Columns,
+			Table:   pubsubmessage.Table,
+			Columns: pubsubmessage.Columns,
 			ID: &sqlgraph.FieldSpec{
 				Type:   field.TypeUUID,
-				Column: pubsubmessgae.FieldID,
+				Column: pubsubmessage.FieldID,
 			},
 		},
 	}
 	id, ok := pmuo.mutation.ID()
 	if !ok {
-		return nil, &ValidationError{Name: "id", err: errors.New(`ent: missing "PubsubMessgae.id" for update`)}
+		return nil, &ValidationError{Name: "id", err: errors.New(`ent: missing "PubsubMessage.id" for update`)}
 	}
 	_spec.Node.ID.Value = id
 	if fields := pmuo.fields; len(fields) > 0 {
 		_spec.Node.Columns = make([]string, 0, len(fields))
-		_spec.Node.Columns = append(_spec.Node.Columns, pubsubmessgae.FieldID)
+		_spec.Node.Columns = append(_spec.Node.Columns, pubsubmessage.FieldID)
 		for _, f := range fields {
-			if !pubsubmessgae.ValidColumn(f) {
+			if !pubsubmessage.ValidColumn(f) {
 				return nil, &ValidationError{Name: f, err: fmt.Errorf("ent: invalid field %q for query", f)}
 			}
-			if f != pubsubmessgae.FieldID {
+			if f != pubsubmessage.FieldID {
 				_spec.Node.Columns = append(_spec.Node.Columns, f)
 			}
 		}
@@ -580,99 +580,99 @@ func (pmuo *PubsubMessgaeUpdateOne) sqlSave(ctx context.Context) (_node *PubsubM
 		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
 			Type:   field.TypeUint32,
 			Value:  value,
-			Column: pubsubmessgae.FieldCreatedAt,
+			Column: pubsubmessage.FieldCreatedAt,
 		})
 	}
 	if value, ok := pmuo.mutation.AddedCreatedAt(); ok {
 		_spec.Fields.Add = append(_spec.Fields.Add, &sqlgraph.FieldSpec{
 			Type:   field.TypeUint32,
 			Value:  value,
-			Column: pubsubmessgae.FieldCreatedAt,
+			Column: pubsubmessage.FieldCreatedAt,
 		})
 	}
 	if value, ok := pmuo.mutation.UpdatedAt(); ok {
 		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
 			Type:   field.TypeUint32,
 			Value:  value,
-			Column: pubsubmessgae.FieldUpdatedAt,
+			Column: pubsubmessage.FieldUpdatedAt,
 		})
 	}
 	if value, ok := pmuo.mutation.AddedUpdatedAt(); ok {
 		_spec.Fields.Add = append(_spec.Fields.Add, &sqlgraph.FieldSpec{
 			Type:   field.TypeUint32,
 			Value:  value,
-			Column: pubsubmessgae.FieldUpdatedAt,
+			Column: pubsubmessage.FieldUpdatedAt,
 		})
 	}
 	if value, ok := pmuo.mutation.DeletedAt(); ok {
 		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
 			Type:   field.TypeUint32,
 			Value:  value,
-			Column: pubsubmessgae.FieldDeletedAt,
+			Column: pubsubmessage.FieldDeletedAt,
 		})
 	}
 	if value, ok := pmuo.mutation.AddedDeletedAt(); ok {
 		_spec.Fields.Add = append(_spec.Fields.Add, &sqlgraph.FieldSpec{
 			Type:   field.TypeUint32,
 			Value:  value,
-			Column: pubsubmessgae.FieldDeletedAt,
+			Column: pubsubmessage.FieldDeletedAt,
 		})
 	}
 	if value, ok := pmuo.mutation.MessageID(); ok {
 		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
 			Type:   field.TypeString,
 			Value:  value,
-			Column: pubsubmessgae.FieldMessageID,
+			Column: pubsubmessage.FieldMessageID,
 		})
 	}
 	if value, ok := pmuo.mutation.Sender(); ok {
 		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
 			Type:   field.TypeString,
 			Value:  value,
-			Column: pubsubmessgae.FieldSender,
+			Column: pubsubmessage.FieldSender,
 		})
 	}
 	if value, ok := pmuo.mutation.Body(); ok {
 		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
 			Type:   field.TypeBytes,
 			Value:  value,
-			Column: pubsubmessgae.FieldBody,
+			Column: pubsubmessage.FieldBody,
 		})
 	}
 	if value, ok := pmuo.mutation.State(); ok {
 		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
 			Type:   field.TypeString,
 			Value:  value,
-			Column: pubsubmessgae.FieldState,
+			Column: pubsubmessage.FieldState,
 		})
 	}
 	if value, ok := pmuo.mutation.ResponseToID(); ok {
 		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
 			Type:   field.TypeUUID,
 			Value:  value,
-			Column: pubsubmessgae.FieldResponseToID,
+			Column: pubsubmessage.FieldResponseToID,
 		})
 	}
 	if value, ok := pmuo.mutation.ErrorMessage(); ok {
 		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
 			Type:   field.TypeString,
 			Value:  value,
-			Column: pubsubmessgae.FieldErrorMessage,
+			Column: pubsubmessage.FieldErrorMessage,
 		})
 	}
 	if pmuo.mutation.ErrorMessageCleared() {
 		_spec.Fields.Clear = append(_spec.Fields.Clear, &sqlgraph.FieldSpec{
 			Type:   field.TypeString,
-			Column: pubsubmessgae.FieldErrorMessage,
+			Column: pubsubmessage.FieldErrorMessage,
 		})
 	}
 	_spec.Modifiers = pmuo.modifiers
-	_node = &PubsubMessgae{config: pmuo.config}
+	_node = &PubsubMessage{config: pmuo.config}
 	_spec.Assign = _node.assignValues
 	_spec.ScanValues = _node.scanValues
 	if err = sqlgraph.UpdateNode(ctx, pmuo.driver, _spec); err != nil {
 		if _, ok := err.(*sqlgraph.NotFoundError); ok {
-			err = &NotFoundError{pubsubmessgae.Label}
+			err = &NotFoundError{pubsubmessage.Label}
 		} else if sqlgraph.IsConstraintError(err) {
 			err = &ConstraintError{msg: err.Error(), wrap: err}
 		}

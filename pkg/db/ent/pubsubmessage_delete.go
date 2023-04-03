@@ -10,24 +10,24 @@ import (
 	"entgo.io/ent/dialect/sql/sqlgraph"
 	"entgo.io/ent/schema/field"
 	"github.com/NpoolPlatform/inspire-manager/pkg/db/ent/predicate"
-	"github.com/NpoolPlatform/inspire-manager/pkg/db/ent/pubsubmessgae"
+	"github.com/NpoolPlatform/inspire-manager/pkg/db/ent/pubsubmessage"
 )
 
-// PubsubMessgaeDelete is the builder for deleting a PubsubMessgae entity.
-type PubsubMessgaeDelete struct {
+// PubsubMessageDelete is the builder for deleting a PubsubMessage entity.
+type PubsubMessageDelete struct {
 	config
 	hooks    []Hook
-	mutation *PubsubMessgaeMutation
+	mutation *PubsubMessageMutation
 }
 
-// Where appends a list predicates to the PubsubMessgaeDelete builder.
-func (pmd *PubsubMessgaeDelete) Where(ps ...predicate.PubsubMessgae) *PubsubMessgaeDelete {
+// Where appends a list predicates to the PubsubMessageDelete builder.
+func (pmd *PubsubMessageDelete) Where(ps ...predicate.PubsubMessage) *PubsubMessageDelete {
 	pmd.mutation.Where(ps...)
 	return pmd
 }
 
 // Exec executes the deletion query and returns how many vertices were deleted.
-func (pmd *PubsubMessgaeDelete) Exec(ctx context.Context) (int, error) {
+func (pmd *PubsubMessageDelete) Exec(ctx context.Context) (int, error) {
 	var (
 		err      error
 		affected int
@@ -36,7 +36,7 @@ func (pmd *PubsubMessgaeDelete) Exec(ctx context.Context) (int, error) {
 		affected, err = pmd.sqlExec(ctx)
 	} else {
 		var mut Mutator = MutateFunc(func(ctx context.Context, m Mutation) (Value, error) {
-			mutation, ok := m.(*PubsubMessgaeMutation)
+			mutation, ok := m.(*PubsubMessageMutation)
 			if !ok {
 				return nil, fmt.Errorf("unexpected mutation type %T", m)
 			}
@@ -59,7 +59,7 @@ func (pmd *PubsubMessgaeDelete) Exec(ctx context.Context) (int, error) {
 }
 
 // ExecX is like Exec, but panics if an error occurs.
-func (pmd *PubsubMessgaeDelete) ExecX(ctx context.Context) int {
+func (pmd *PubsubMessageDelete) ExecX(ctx context.Context) int {
 	n, err := pmd.Exec(ctx)
 	if err != nil {
 		panic(err)
@@ -67,13 +67,13 @@ func (pmd *PubsubMessgaeDelete) ExecX(ctx context.Context) int {
 	return n
 }
 
-func (pmd *PubsubMessgaeDelete) sqlExec(ctx context.Context) (int, error) {
+func (pmd *PubsubMessageDelete) sqlExec(ctx context.Context) (int, error) {
 	_spec := &sqlgraph.DeleteSpec{
 		Node: &sqlgraph.NodeSpec{
-			Table: pubsubmessgae.Table,
+			Table: pubsubmessage.Table,
 			ID: &sqlgraph.FieldSpec{
 				Type:   field.TypeUUID,
-				Column: pubsubmessgae.FieldID,
+				Column: pubsubmessage.FieldID,
 			},
 		},
 	}
@@ -91,25 +91,25 @@ func (pmd *PubsubMessgaeDelete) sqlExec(ctx context.Context) (int, error) {
 	return affected, err
 }
 
-// PubsubMessgaeDeleteOne is the builder for deleting a single PubsubMessgae entity.
-type PubsubMessgaeDeleteOne struct {
-	pmd *PubsubMessgaeDelete
+// PubsubMessageDeleteOne is the builder for deleting a single PubsubMessage entity.
+type PubsubMessageDeleteOne struct {
+	pmd *PubsubMessageDelete
 }
 
 // Exec executes the deletion query.
-func (pmdo *PubsubMessgaeDeleteOne) Exec(ctx context.Context) error {
+func (pmdo *PubsubMessageDeleteOne) Exec(ctx context.Context) error {
 	n, err := pmdo.pmd.Exec(ctx)
 	switch {
 	case err != nil:
 		return err
 	case n == 0:
-		return &NotFoundError{pubsubmessgae.Label}
+		return &NotFoundError{pubsubmessage.Label}
 	default:
 		return nil
 	}
 }
 
 // ExecX is like Exec, but panics if an error occurs.
-func (pmdo *PubsubMessgaeDeleteOne) ExecX(ctx context.Context) {
+func (pmdo *PubsubMessageDeleteOne) ExecX(ctx context.Context) {
 	pmdo.pmd.ExecX(ctx)
 }

@@ -3,7 +3,7 @@ package pubsubmessage
 import (
 	"context"
 
-	entpubsubmessgae "github.com/NpoolPlatform/inspire-manager/pkg/db/ent/pubsubmessgae"
+	entpubsubmessgae "github.com/NpoolPlatform/inspire-manager/pkg/db/ent/pubsubmessage"
 	constant "github.com/NpoolPlatform/inspire-manager/pkg/message/const"
 	commontracer "github.com/NpoolPlatform/inspire-manager/pkg/tracer"
 
@@ -16,14 +16,14 @@ import (
 )
 
 func CreateSet(
-	c *ent.PubsubMessgaeCreate,
+	c *ent.PubsubMessageCreate,
 	uniqueID uuid.UUID,
 	messageID, sender string,
 	body []byte,
 	state string,
 	responseID *uuid.UUID,
 	errorMessage *string,
-) (*ent.PubsubMessgaeCreate, error) {
+) (*ent.PubsubMessageCreate, error) {
 	c.SetID(uniqueID)
 	c.SetMessageID(messageID)
 	c.SetSender(sender)
@@ -39,16 +39,16 @@ func CreateSet(
 }
 
 func UpdateSet(
-	info *ent.PubsubMessgae,
+	info *ent.PubsubMessage,
 	state string,
-) (*ent.PubsubMessgaeUpdateOne, error) {
+) (*ent.PubsubMessageUpdateOne, error) {
 	u := info.Update()
 	u.SetState(state)
 	return u, nil
 }
 
-func Row(ctx context.Context, uniqueID uuid.UUID) (*ent.PubsubMessgae, error) {
-	var info *ent.PubsubMessgae
+func Row(ctx context.Context, uniqueID uuid.UUID) (*ent.PubsubMessage, error) {
+	var info *ent.PubsubMessage
 	var err error
 
 	_, span := otel.Tracer(constant.ServiceName).Start(ctx, "Row")
@@ -64,7 +64,7 @@ func Row(ctx context.Context, uniqueID uuid.UUID) (*ent.PubsubMessgae, error) {
 	span = commontracer.TraceID(span, uniqueID.String())
 
 	err = db.WithClient(ctx, func(_ctx context.Context, cli *ent.Client) error {
-		info, err = cli.PubsubMessgae.Query().Where(entpubsubmessgae.ID(uniqueID)).Only(_ctx)
+		info, err = cli.PubsubMessage.Query().Where(entpubsubmessgae.ID(uniqueID)).Only(_ctx)
 		return err
 	})
 	if err != nil {
@@ -91,7 +91,7 @@ func Exist(ctx context.Context, id uuid.UUID) (bool, error) {
 	span = commontracer.TraceID(span, id.String())
 
 	err = db.WithClient(ctx, func(_ctx context.Context, cli *ent.Client) error {
-		exist, err = cli.PubsubMessgae.Query().Where(entpubsubmessgae.ID(id)).Exist(_ctx)
+		exist, err = cli.PubsubMessage.Query().Where(entpubsubmessgae.ID(id)).Exist(_ctx)
 		return err
 	})
 	if err != nil {

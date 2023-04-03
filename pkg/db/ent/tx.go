@@ -34,8 +34,8 @@ type Tx struct {
 	GoodOrderValuePercent *GoodOrderValuePercentClient
 	// InvitationCode is the client for interacting with the InvitationCode builders.
 	InvitationCode *InvitationCodeClient
-	// PubsubMessgae is the client for interacting with the PubsubMessgae builders.
-	PubsubMessgae *PubsubMessgaeClient
+	// PubsubMessage is the client for interacting with the PubsubMessage builders.
+	PubsubMessage *PubsubMessageClient
 	// Registration is the client for interacting with the Registration builders.
 	Registration *RegistrationClient
 
@@ -183,7 +183,7 @@ func (tx *Tx) init() {
 	tx.GoodOrderPercent = NewGoodOrderPercentClient(tx.config)
 	tx.GoodOrderValuePercent = NewGoodOrderValuePercentClient(tx.config)
 	tx.InvitationCode = NewInvitationCodeClient(tx.config)
-	tx.PubsubMessgae = NewPubsubMessgaeClient(tx.config)
+	tx.PubsubMessage = NewPubsubMessageClient(tx.config)
 	tx.Registration = NewRegistrationClient(tx.config)
 }
 

@@ -8,19 +8,19 @@ import (
 	"github.com/google/uuid"
 )
 
-// PubsubMessgae holds the schema definition for the PubsubMessgae entity.
-type PubsubMessgae struct {
+// PubsubMessage holds the schema definition for the PubsubMessage entity.
+type PubsubMessage struct {
 	ent.Schema
 }
 
-func (PubsubMessgae) Mixin() []ent.Mixin {
+func (PubsubMessage) Mixin() []ent.Mixin {
 	return []ent.Mixin{
 		mixin.TimeMixin{},
 	}
 }
 
-// Fields of the PubsubMessgae.
-func (PubsubMessgae) Fields() []ent.Field {
+// Fields of the PubsubMessage.
+func (PubsubMessage) Fields() []ent.Field {
 	return []ent.Field{
 		field.
 			UUID("id", uuid.UUID{}).
@@ -43,12 +43,12 @@ func (PubsubMessgae) Fields() []ent.Field {
 	}
 }
 
-// Edges of the PubsubMessgae.
-func (PubsubMessgae) Edges() []ent.Edge {
+// Edges of the PubsubMessage.
+func (PubsubMessage) Edges() []ent.Edge {
 	return nil
 }
 
-func (PubsubMessgae) Indexes() []ent.Index {
+func (PubsubMessage) Indexes() []ent.Index {
 	return []ent.Index{
 		index.Fields("message_id", "response_to_id"),
 	}
