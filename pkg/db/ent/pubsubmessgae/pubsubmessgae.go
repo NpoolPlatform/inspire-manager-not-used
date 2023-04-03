@@ -17,8 +17,6 @@ const (
 	FieldUpdatedAt = "updated_at"
 	// FieldDeletedAt holds the string denoting the deleted_at field in the database.
 	FieldDeletedAt = "deleted_at"
-	// FieldUniqueID holds the string denoting the unique_id field in the database.
-	FieldUniqueID = "unique_id"
 	// FieldMessageID holds the string denoting the message_id field in the database.
 	FieldMessageID = "message_id"
 	// FieldSender holds the string denoting the sender field in the database.
@@ -41,7 +39,6 @@ var Columns = []string{
 	FieldCreatedAt,
 	FieldUpdatedAt,
 	FieldDeletedAt,
-	FieldUniqueID,
 	FieldMessageID,
 	FieldSender,
 	FieldBody,

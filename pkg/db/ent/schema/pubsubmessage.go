@@ -23,7 +23,7 @@ func (PubsubMessgae) Mixin() []ent.Mixin {
 func (PubsubMessgae) Fields() []ent.Field {
 	return []ent.Field{
 		field.
-			UUID("unique_id", uuid.UUID{}).
+			UUID("id", uuid.UUID{}).
 			Unique(),
 		field.
 			String("message_id"),
@@ -50,6 +50,6 @@ func (PubsubMessgae) Edges() []ent.Edge {
 
 func (PubsubMessgae) Indexes() []ent.Index {
 	return []ent.Index{
-		index.Fields("unique_id", "message_id", "response_id"),
+		index.Fields("message_id", "response_id"),
 	}
 }

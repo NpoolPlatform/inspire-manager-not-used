@@ -15,15 +15,13 @@ import (
 type PubsubMessgae struct {
 	config `json:"-"`
 	// ID of the ent.
-	ID int `json:"id,omitempty"`
+	ID uuid.UUID `json:"id,omitempty"`
 	// CreatedAt holds the value of the "created_at" field.
 	CreatedAt uint32 `json:"created_at,omitempty"`
 	// UpdatedAt holds the value of the "updated_at" field.
 	UpdatedAt uint32 `json:"updated_at,omitempty"`
 	// DeletedAt holds the value of the "deleted_at" field.
 	DeletedAt uint32 `json:"deleted_at,omitempty"`
-	// UniqueID holds the value of the "unique_id" field.
-	UniqueID uuid.UUID `json:"unique_id,omitempty"`
 	// MessageID holds the value of the "message_id" field.
 	MessageID string `json:"message_id,omitempty"`
 	// Sender holds the value of the "sender" field.
@@ -45,11 +43,11 @@ func (*PubsubMessgae) scanValues(columns []string) ([]interface{}, error) {
 		switch columns[i] {
 		case pubsubmessgae.FieldBody:
 			values[i] = new([]byte)
-		case pubsubmessgae.FieldID, pubsubmessgae.FieldCreatedAt, pubsubmessgae.FieldUpdatedAt, pubsubmessgae.FieldDeletedAt:
+		case pubsubmessgae.FieldCreatedAt, pubsubmessgae.FieldUpdatedAt, pubsubmessgae.FieldDeletedAt:
 			values[i] = new(sql.NullInt64)
 		case pubsubmessgae.FieldMessageID, pubsubmessgae.FieldSender, pubsubmessgae.FieldState, pubsubmessgae.FieldErrorMessage:
 			values[i] = new(sql.NullString)
-		case pubsubmessgae.FieldUniqueID, pubsubmessgae.FieldResponseID:
+		case pubsubmessgae.FieldID, pubsubmessgae.FieldResponseID:
 			values[i] = new(uuid.UUID)
 		default:
 			return nil, fmt.Errorf("unexpected column %q for type PubsubMessgae", columns[i])
@@ -67,11 +65,11 @@ func (pm *PubsubMessgae) assignValues(columns []string, values []interface{}) er
 	for i := range columns {
 		switch columns[i] {
 		case pubsubmessgae.FieldID:
-			value, ok := values[i].(*sql.NullInt64)
-			if !ok {
-				return fmt.Errorf("unexpected type %T for field id", value)
+			if value, ok := values[i].(*uuid.UUID); !ok {
+				return fmt.Errorf("unexpected type %T for field id", values[i])
+			} else if value != nil {
+				pm.ID = *value
 			}
-			pm.ID = int(value.Int64)
 		case pubsubmessgae.FieldCreatedAt:
 			if value, ok := values[i].(*sql.NullInt64); !ok {
 				return fmt.Errorf("unexpected type %T for field created_at", values[i])
@@ -89,12 +87,6 @@ func (pm *PubsubMessgae) assignValues(columns []string, values []interface{}) er
 				return fmt.Errorf("unexpected type %T for field deleted_at", values[i])
 			} else if value.Valid {
 				pm.DeletedAt = uint32(value.Int64)
-			}
-		case pubsubmessgae.FieldUniqueID:
-			if value, ok := values[i].(*uuid.UUID); !ok {
-				return fmt.Errorf("unexpected type %T for field unique_id", values[i])
-			} else if value != nil {
-				pm.UniqueID = *value
 			}
 		case pubsubmessgae.FieldMessageID:
 			if value, ok := values[i].(*sql.NullString); !ok {
@@ -168,9 +160,6 @@ func (pm *PubsubMessgae) String() string {
 	builder.WriteString(", ")
 	builder.WriteString("deleted_at=")
 	builder.WriteString(fmt.Sprintf("%v", pm.DeletedAt))
-	builder.WriteString(", ")
-	builder.WriteString("unique_id=")
-	builder.WriteString(fmt.Sprintf("%v", pm.UniqueID))
 	builder.WriteString(", ")
 	builder.WriteString("message_id=")
 	builder.WriteString(pm.MessageID)

@@ -84,12 +84,6 @@ func (pmu *PubsubMessgaeUpdate) AddDeletedAt(u int32) *PubsubMessgaeUpdate {
 	return pmu
 }
 
-// SetUniqueID sets the "unique_id" field.
-func (pmu *PubsubMessgaeUpdate) SetUniqueID(u uuid.UUID) *PubsubMessgaeUpdate {
-	pmu.mutation.SetUniqueID(u)
-	return pmu
-}
-
 // SetMessageID sets the "message_id" field.
 func (pmu *PubsubMessgaeUpdate) SetMessageID(s string) *PubsubMessgaeUpdate {
 	pmu.mutation.SetMessageID(s)
@@ -226,7 +220,7 @@ func (pmu *PubsubMessgaeUpdate) sqlSave(ctx context.Context) (n int, err error) 
 			Table:   pubsubmessgae.Table,
 			Columns: pubsubmessgae.Columns,
 			ID: &sqlgraph.FieldSpec{
-				Type:   field.TypeInt,
+				Type:   field.TypeUUID,
 				Column: pubsubmessgae.FieldID,
 			},
 		},
@@ -278,13 +272,6 @@ func (pmu *PubsubMessgaeUpdate) sqlSave(ctx context.Context) (n int, err error) 
 			Type:   field.TypeUint32,
 			Value:  value,
 			Column: pubsubmessgae.FieldDeletedAt,
-		})
-	}
-	if value, ok := pmu.mutation.UniqueID(); ok {
-		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
-			Type:   field.TypeUUID,
-			Value:  value,
-			Column: pubsubmessgae.FieldUniqueID,
 		})
 	}
 	if value, ok := pmu.mutation.MessageID(); ok {
@@ -408,12 +395,6 @@ func (pmuo *PubsubMessgaeUpdateOne) SetNillableDeletedAt(u *uint32) *PubsubMessg
 // AddDeletedAt adds u to the "deleted_at" field.
 func (pmuo *PubsubMessgaeUpdateOne) AddDeletedAt(u int32) *PubsubMessgaeUpdateOne {
 	pmuo.mutation.AddDeletedAt(u)
-	return pmuo
-}
-
-// SetUniqueID sets the "unique_id" field.
-func (pmuo *PubsubMessgaeUpdateOne) SetUniqueID(u uuid.UUID) *PubsubMessgaeUpdateOne {
-	pmuo.mutation.SetUniqueID(u)
 	return pmuo
 }
 
@@ -566,7 +547,7 @@ func (pmuo *PubsubMessgaeUpdateOne) sqlSave(ctx context.Context) (_node *PubsubM
 			Table:   pubsubmessgae.Table,
 			Columns: pubsubmessgae.Columns,
 			ID: &sqlgraph.FieldSpec{
-				Type:   field.TypeInt,
+				Type:   field.TypeUUID,
 				Column: pubsubmessgae.FieldID,
 			},
 		},
@@ -635,13 +616,6 @@ func (pmuo *PubsubMessgaeUpdateOne) sqlSave(ctx context.Context) (_node *PubsubM
 			Type:   field.TypeUint32,
 			Value:  value,
 			Column: pubsubmessgae.FieldDeletedAt,
-		})
-	}
-	if value, ok := pmuo.mutation.UniqueID(); ok {
-		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
-			Type:   field.TypeUUID,
-			Value:  value,
-			Column: pubsubmessgae.FieldUniqueID,
 		})
 	}
 	if value, ok := pmuo.mutation.MessageID(); ok {

@@ -14,6 +14,7 @@ import (
 	"entgo.io/ent/schema/field"
 	"github.com/NpoolPlatform/inspire-manager/pkg/db/ent/predicate"
 	"github.com/NpoolPlatform/inspire-manager/pkg/db/ent/pubsubmessgae"
+	"github.com/google/uuid"
 )
 
 // PubsubMessgaeQuery is the builder for querying PubsubMessgae entities.
@@ -86,8 +87,8 @@ func (pmq *PubsubMessgaeQuery) FirstX(ctx context.Context) *PubsubMessgae {
 
 // FirstID returns the first PubsubMessgae ID from the query.
 // Returns a *NotFoundError when no PubsubMessgae ID was found.
-func (pmq *PubsubMessgaeQuery) FirstID(ctx context.Context) (id int, err error) {
-	var ids []int
+func (pmq *PubsubMessgaeQuery) FirstID(ctx context.Context) (id uuid.UUID, err error) {
+	var ids []uuid.UUID
 	if ids, err = pmq.Limit(1).IDs(ctx); err != nil {
 		return
 	}
@@ -99,7 +100,7 @@ func (pmq *PubsubMessgaeQuery) FirstID(ctx context.Context) (id int, err error) 
 }
 
 // FirstIDX is like FirstID, but panics if an error occurs.
-func (pmq *PubsubMessgaeQuery) FirstIDX(ctx context.Context) int {
+func (pmq *PubsubMessgaeQuery) FirstIDX(ctx context.Context) uuid.UUID {
 	id, err := pmq.FirstID(ctx)
 	if err != nil && !IsNotFound(err) {
 		panic(err)
@@ -137,8 +138,8 @@ func (pmq *PubsubMessgaeQuery) OnlyX(ctx context.Context) *PubsubMessgae {
 // OnlyID is like Only, but returns the only PubsubMessgae ID in the query.
 // Returns a *NotSingularError when more than one PubsubMessgae ID is found.
 // Returns a *NotFoundError when no entities are found.
-func (pmq *PubsubMessgaeQuery) OnlyID(ctx context.Context) (id int, err error) {
-	var ids []int
+func (pmq *PubsubMessgaeQuery) OnlyID(ctx context.Context) (id uuid.UUID, err error) {
+	var ids []uuid.UUID
 	if ids, err = pmq.Limit(2).IDs(ctx); err != nil {
 		return
 	}
@@ -154,7 +155,7 @@ func (pmq *PubsubMessgaeQuery) OnlyID(ctx context.Context) (id int, err error) {
 }
 
 // OnlyIDX is like OnlyID, but panics if an error occurs.
-func (pmq *PubsubMessgaeQuery) OnlyIDX(ctx context.Context) int {
+func (pmq *PubsubMessgaeQuery) OnlyIDX(ctx context.Context) uuid.UUID {
 	id, err := pmq.OnlyID(ctx)
 	if err != nil {
 		panic(err)
@@ -180,8 +181,8 @@ func (pmq *PubsubMessgaeQuery) AllX(ctx context.Context) []*PubsubMessgae {
 }
 
 // IDs executes the query and returns a list of PubsubMessgae IDs.
-func (pmq *PubsubMessgaeQuery) IDs(ctx context.Context) ([]int, error) {
-	var ids []int
+func (pmq *PubsubMessgaeQuery) IDs(ctx context.Context) ([]uuid.UUID, error) {
+	var ids []uuid.UUID
 	if err := pmq.Select(pubsubmessgae.FieldID).Scan(ctx, &ids); err != nil {
 		return nil, err
 	}
@@ -189,7 +190,7 @@ func (pmq *PubsubMessgaeQuery) IDs(ctx context.Context) ([]int, error) {
 }
 
 // IDsX is like IDs, but panics if an error occurs.
-func (pmq *PubsubMessgaeQuery) IDsX(ctx context.Context) []int {
+func (pmq *PubsubMessgaeQuery) IDsX(ctx context.Context) []uuid.UUID {
 	ids, err := pmq.IDs(ctx)
 	if err != nil {
 		panic(err)
@@ -376,7 +377,7 @@ func (pmq *PubsubMessgaeQuery) querySpec() *sqlgraph.QuerySpec {
 			Table:   pubsubmessgae.Table,
 			Columns: pubsubmessgae.Columns,
 			ID: &sqlgraph.FieldSpec{
-				Type:   field.TypeInt,
+				Type:   field.TypeUUID,
 				Column: pubsubmessgae.FieldID,
 			},
 		},

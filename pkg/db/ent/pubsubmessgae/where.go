@@ -9,28 +9,28 @@ import (
 )
 
 // ID filters vertices based on their ID field.
-func ID(id int) predicate.PubsubMessgae {
+func ID(id uuid.UUID) predicate.PubsubMessgae {
 	return predicate.PubsubMessgae(func(s *sql.Selector) {
 		s.Where(sql.EQ(s.C(FieldID), id))
 	})
 }
 
 // IDEQ applies the EQ predicate on the ID field.
-func IDEQ(id int) predicate.PubsubMessgae {
+func IDEQ(id uuid.UUID) predicate.PubsubMessgae {
 	return predicate.PubsubMessgae(func(s *sql.Selector) {
 		s.Where(sql.EQ(s.C(FieldID), id))
 	})
 }
 
 // IDNEQ applies the NEQ predicate on the ID field.
-func IDNEQ(id int) predicate.PubsubMessgae {
+func IDNEQ(id uuid.UUID) predicate.PubsubMessgae {
 	return predicate.PubsubMessgae(func(s *sql.Selector) {
 		s.Where(sql.NEQ(s.C(FieldID), id))
 	})
 }
 
 // IDIn applies the In predicate on the ID field.
-func IDIn(ids ...int) predicate.PubsubMessgae {
+func IDIn(ids ...uuid.UUID) predicate.PubsubMessgae {
 	return predicate.PubsubMessgae(func(s *sql.Selector) {
 		v := make([]interface{}, len(ids))
 		for i := range v {
@@ -41,7 +41,7 @@ func IDIn(ids ...int) predicate.PubsubMessgae {
 }
 
 // IDNotIn applies the NotIn predicate on the ID field.
-func IDNotIn(ids ...int) predicate.PubsubMessgae {
+func IDNotIn(ids ...uuid.UUID) predicate.PubsubMessgae {
 	return predicate.PubsubMessgae(func(s *sql.Selector) {
 		v := make([]interface{}, len(ids))
 		for i := range v {
@@ -52,28 +52,28 @@ func IDNotIn(ids ...int) predicate.PubsubMessgae {
 }
 
 // IDGT applies the GT predicate on the ID field.
-func IDGT(id int) predicate.PubsubMessgae {
+func IDGT(id uuid.UUID) predicate.PubsubMessgae {
 	return predicate.PubsubMessgae(func(s *sql.Selector) {
 		s.Where(sql.GT(s.C(FieldID), id))
 	})
 }
 
 // IDGTE applies the GTE predicate on the ID field.
-func IDGTE(id int) predicate.PubsubMessgae {
+func IDGTE(id uuid.UUID) predicate.PubsubMessgae {
 	return predicate.PubsubMessgae(func(s *sql.Selector) {
 		s.Where(sql.GTE(s.C(FieldID), id))
 	})
 }
 
 // IDLT applies the LT predicate on the ID field.
-func IDLT(id int) predicate.PubsubMessgae {
+func IDLT(id uuid.UUID) predicate.PubsubMessgae {
 	return predicate.PubsubMessgae(func(s *sql.Selector) {
 		s.Where(sql.LT(s.C(FieldID), id))
 	})
 }
 
 // IDLTE applies the LTE predicate on the ID field.
-func IDLTE(id int) predicate.PubsubMessgae {
+func IDLTE(id uuid.UUID) predicate.PubsubMessgae {
 	return predicate.PubsubMessgae(func(s *sql.Selector) {
 		s.Where(sql.LTE(s.C(FieldID), id))
 	})
@@ -97,13 +97,6 @@ func UpdatedAt(v uint32) predicate.PubsubMessgae {
 func DeletedAt(v uint32) predicate.PubsubMessgae {
 	return predicate.PubsubMessgae(func(s *sql.Selector) {
 		s.Where(sql.EQ(s.C(FieldDeletedAt), v))
-	})
-}
-
-// UniqueID applies equality check predicate on the "unique_id" field. It's identical to UniqueIDEQ.
-func UniqueID(v uuid.UUID) predicate.PubsubMessgae {
-	return predicate.PubsubMessgae(func(s *sql.Selector) {
-		s.Where(sql.EQ(s.C(FieldUniqueID), v))
 	})
 }
 
@@ -338,70 +331,6 @@ func DeletedAtLT(v uint32) predicate.PubsubMessgae {
 func DeletedAtLTE(v uint32) predicate.PubsubMessgae {
 	return predicate.PubsubMessgae(func(s *sql.Selector) {
 		s.Where(sql.LTE(s.C(FieldDeletedAt), v))
-	})
-}
-
-// UniqueIDEQ applies the EQ predicate on the "unique_id" field.
-func UniqueIDEQ(v uuid.UUID) predicate.PubsubMessgae {
-	return predicate.PubsubMessgae(func(s *sql.Selector) {
-		s.Where(sql.EQ(s.C(FieldUniqueID), v))
-	})
-}
-
-// UniqueIDNEQ applies the NEQ predicate on the "unique_id" field.
-func UniqueIDNEQ(v uuid.UUID) predicate.PubsubMessgae {
-	return predicate.PubsubMessgae(func(s *sql.Selector) {
-		s.Where(sql.NEQ(s.C(FieldUniqueID), v))
-	})
-}
-
-// UniqueIDIn applies the In predicate on the "unique_id" field.
-func UniqueIDIn(vs ...uuid.UUID) predicate.PubsubMessgae {
-	v := make([]interface{}, len(vs))
-	for i := range v {
-		v[i] = vs[i]
-	}
-	return predicate.PubsubMessgae(func(s *sql.Selector) {
-		s.Where(sql.In(s.C(FieldUniqueID), v...))
-	})
-}
-
-// UniqueIDNotIn applies the NotIn predicate on the "unique_id" field.
-func UniqueIDNotIn(vs ...uuid.UUID) predicate.PubsubMessgae {
-	v := make([]interface{}, len(vs))
-	for i := range v {
-		v[i] = vs[i]
-	}
-	return predicate.PubsubMessgae(func(s *sql.Selector) {
-		s.Where(sql.NotIn(s.C(FieldUniqueID), v...))
-	})
-}
-
-// UniqueIDGT applies the GT predicate on the "unique_id" field.
-func UniqueIDGT(v uuid.UUID) predicate.PubsubMessgae {
-	return predicate.PubsubMessgae(func(s *sql.Selector) {
-		s.Where(sql.GT(s.C(FieldUniqueID), v))
-	})
-}
-
-// UniqueIDGTE applies the GTE predicate on the "unique_id" field.
-func UniqueIDGTE(v uuid.UUID) predicate.PubsubMessgae {
-	return predicate.PubsubMessgae(func(s *sql.Selector) {
-		s.Where(sql.GTE(s.C(FieldUniqueID), v))
-	})
-}
-
-// UniqueIDLT applies the LT predicate on the "unique_id" field.
-func UniqueIDLT(v uuid.UUID) predicate.PubsubMessgae {
-	return predicate.PubsubMessgae(func(s *sql.Selector) {
-		s.Where(sql.LT(s.C(FieldUniqueID), v))
-	})
-}
-
-// UniqueIDLTE applies the LTE predicate on the "unique_id" field.
-func UniqueIDLTE(v uuid.UUID) predicate.PubsubMessgae {
-	return predicate.PubsubMessgae(func(s *sql.Selector) {
-		s.Where(sql.LTE(s.C(FieldUniqueID), v))
 	})
 }
 

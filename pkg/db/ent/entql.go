@@ -274,7 +274,7 @@ var schemaGraph = func() *sqlgraph.Schema {
 			Table:   pubsubmessgae.Table,
 			Columns: pubsubmessgae.Columns,
 			ID: &sqlgraph.FieldSpec{
-				Type:   field.TypeInt,
+				Type:   field.TypeUUID,
 				Column: pubsubmessgae.FieldID,
 			},
 		},
@@ -283,7 +283,6 @@ var schemaGraph = func() *sqlgraph.Schema {
 			pubsubmessgae.FieldCreatedAt:    {Type: field.TypeUint32, Column: pubsubmessgae.FieldCreatedAt},
 			pubsubmessgae.FieldUpdatedAt:    {Type: field.TypeUint32, Column: pubsubmessgae.FieldUpdatedAt},
 			pubsubmessgae.FieldDeletedAt:    {Type: field.TypeUint32, Column: pubsubmessgae.FieldDeletedAt},
-			pubsubmessgae.FieldUniqueID:     {Type: field.TypeUUID, Column: pubsubmessgae.FieldUniqueID},
 			pubsubmessgae.FieldMessageID:    {Type: field.TypeString, Column: pubsubmessgae.FieldMessageID},
 			pubsubmessgae.FieldSender:       {Type: field.TypeString, Column: pubsubmessgae.FieldSender},
 			pubsubmessgae.FieldBody:         {Type: field.TypeBytes, Column: pubsubmessgae.FieldBody},
@@ -1325,8 +1324,8 @@ func (f *PubsubMessgaeFilter) Where(p entql.P) {
 	})
 }
 
-// WhereID applies the entql int predicate on the id field.
-func (f *PubsubMessgaeFilter) WhereID(p entql.IntP) {
+// WhereID applies the entql [16]byte predicate on the id field.
+func (f *PubsubMessgaeFilter) WhereID(p entql.ValueP) {
 	f.Where(p.Field(pubsubmessgae.FieldID))
 }
 
@@ -1343,11 +1342,6 @@ func (f *PubsubMessgaeFilter) WhereUpdatedAt(p entql.Uint32P) {
 // WhereDeletedAt applies the entql uint32 predicate on the deleted_at field.
 func (f *PubsubMessgaeFilter) WhereDeletedAt(p entql.Uint32P) {
 	f.Where(p.Field(pubsubmessgae.FieldDeletedAt))
-}
-
-// WhereUniqueID applies the entql [16]byte predicate on the unique_id field.
-func (f *PubsubMessgaeFilter) WhereUniqueID(p entql.ValueP) {
-	f.Where(p.Field(pubsubmessgae.FieldUniqueID))
 }
 
 // WhereMessageID applies the entql string predicate on the message_id field.

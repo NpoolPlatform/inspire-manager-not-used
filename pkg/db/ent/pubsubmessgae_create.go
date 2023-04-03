@@ -7,6 +7,7 @@ import (
 	"errors"
 	"fmt"
 
+	"entgo.io/ent/dialect"
 	"entgo.io/ent/dialect/sql"
 	"entgo.io/ent/dialect/sql/sqlgraph"
 	"entgo.io/ent/schema/field"
@@ -64,12 +65,6 @@ func (pmc *PubsubMessgaeCreate) SetNillableDeletedAt(u *uint32) *PubsubMessgaeCr
 	return pmc
 }
 
-// SetUniqueID sets the "unique_id" field.
-func (pmc *PubsubMessgaeCreate) SetUniqueID(u uuid.UUID) *PubsubMessgaeCreate {
-	pmc.mutation.SetUniqueID(u)
-	return pmc
-}
-
 // SetMessageID sets the "message_id" field.
 func (pmc *PubsubMessgaeCreate) SetMessageID(s string) *PubsubMessgaeCreate {
 	pmc.mutation.SetMessageID(s)
@@ -111,6 +106,12 @@ func (pmc *PubsubMessgaeCreate) SetNillableErrorMessage(s *string) *PubsubMessga
 	if s != nil {
 		pmc.SetErrorMessage(*s)
 	}
+	return pmc
+}
+
+// SetID sets the "id" field.
+func (pmc *PubsubMessgaeCreate) SetID(u uuid.UUID) *PubsubMessgaeCreate {
+	pmc.mutation.SetID(u)
 	return pmc
 }
 
@@ -232,9 +233,6 @@ func (pmc *PubsubMessgaeCreate) check() error {
 	if _, ok := pmc.mutation.DeletedAt(); !ok {
 		return &ValidationError{Name: "deleted_at", err: errors.New(`ent: missing required field "PubsubMessgae.deleted_at"`)}
 	}
-	if _, ok := pmc.mutation.UniqueID(); !ok {
-		return &ValidationError{Name: "unique_id", err: errors.New(`ent: missing required field "PubsubMessgae.unique_id"`)}
-	}
 	if _, ok := pmc.mutation.MessageID(); !ok {
 		return &ValidationError{Name: "message_id", err: errors.New(`ent: missing required field "PubsubMessgae.message_id"`)}
 	}
@@ -261,8 +259,13 @@ func (pmc *PubsubMessgaeCreate) sqlSave(ctx context.Context) (*PubsubMessgae, er
 		}
 		return nil, err
 	}
-	id := _spec.ID.Value.(int64)
-	_node.ID = int(id)
+	if _spec.ID.Value != nil {
+		if id, ok := _spec.ID.Value.(*uuid.UUID); ok {
+			_node.ID = *id
+		} else if err := _node.ID.Scan(_spec.ID.Value); err != nil {
+			return nil, err
+		}
+	}
 	return _node, nil
 }
 
@@ -272,12 +275,16 @@ func (pmc *PubsubMessgaeCreate) createSpec() (*PubsubMessgae, *sqlgraph.CreateSp
 		_spec = &sqlgraph.CreateSpec{
 			Table: pubsubmessgae.Table,
 			ID: &sqlgraph.FieldSpec{
-				Type:   field.TypeInt,
+				Type:   field.TypeUUID,
 				Column: pubsubmessgae.FieldID,
 			},
 		}
 	)
 	_spec.OnConflict = pmc.conflict
+	if id, ok := pmc.mutation.ID(); ok {
+		_node.ID = id
+		_spec.ID.Value = &id
+	}
 	if value, ok := pmc.mutation.CreatedAt(); ok {
 		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
 			Type:   field.TypeUint32,
@@ -301,14 +308,6 @@ func (pmc *PubsubMessgaeCreate) createSpec() (*PubsubMessgae, *sqlgraph.CreateSp
 			Column: pubsubmessgae.FieldDeletedAt,
 		})
 		_node.DeletedAt = value
-	}
-	if value, ok := pmc.mutation.UniqueID(); ok {
-		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
-			Type:   field.TypeUUID,
-			Value:  value,
-			Column: pubsubmessgae.FieldUniqueID,
-		})
-		_node.UniqueID = value
 	}
 	if value, ok := pmc.mutation.MessageID(); ok {
 		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
@@ -466,18 +465,6 @@ func (u *PubsubMessgaeUpsert) AddDeletedAt(v uint32) *PubsubMessgaeUpsert {
 	return u
 }
 
-// SetUniqueID sets the "unique_id" field.
-func (u *PubsubMessgaeUpsert) SetUniqueID(v uuid.UUID) *PubsubMessgaeUpsert {
-	u.Set(pubsubmessgae.FieldUniqueID, v)
-	return u
-}
-
-// UpdateUniqueID sets the "unique_id" field to the value that was provided on create.
-func (u *PubsubMessgaeUpsert) UpdateUniqueID() *PubsubMessgaeUpsert {
-	u.SetExcluded(pubsubmessgae.FieldUniqueID)
-	return u
-}
-
 // SetMessageID sets the "message_id" field.
 func (u *PubsubMessgaeUpsert) SetMessageID(v string) *PubsubMessgaeUpsert {
 	u.Set(pubsubmessgae.FieldMessageID, v)
@@ -556,17 +543,25 @@ func (u *PubsubMessgaeUpsert) ClearErrorMessage() *PubsubMessgaeUpsert {
 	return u
 }
 
-// UpdateNewValues updates the mutable fields using the new values that were set on create.
+// UpdateNewValues updates the mutable fields using the new values that were set on create except the ID field.
 // Using this option is equivalent to using:
 //
 //	client.PubsubMessgae.Create().
 //		OnConflict(
 //			sql.ResolveWithNewValues(),
+//			sql.ResolveWith(func(u *sql.UpdateSet) {
+//				u.SetIgnore(pubsubmessgae.FieldID)
+//			}),
 //		).
 //		Exec(ctx)
 //
 func (u *PubsubMessgaeUpsertOne) UpdateNewValues() *PubsubMessgaeUpsertOne {
 	u.create.conflict = append(u.create.conflict, sql.ResolveWithNewValues())
+	u.create.conflict = append(u.create.conflict, sql.ResolveWith(func(s *sql.UpdateSet) {
+		if _, exists := u.create.mutation.ID(); exists {
+			s.SetIgnore(pubsubmessgae.FieldID)
+		}
+	}))
 	return u
 }
 
@@ -658,20 +653,6 @@ func (u *PubsubMessgaeUpsertOne) AddDeletedAt(v uint32) *PubsubMessgaeUpsertOne 
 func (u *PubsubMessgaeUpsertOne) UpdateDeletedAt() *PubsubMessgaeUpsertOne {
 	return u.Update(func(s *PubsubMessgaeUpsert) {
 		s.UpdateDeletedAt()
-	})
-}
-
-// SetUniqueID sets the "unique_id" field.
-func (u *PubsubMessgaeUpsertOne) SetUniqueID(v uuid.UUID) *PubsubMessgaeUpsertOne {
-	return u.Update(func(s *PubsubMessgaeUpsert) {
-		s.SetUniqueID(v)
-	})
-}
-
-// UpdateUniqueID sets the "unique_id" field to the value that was provided on create.
-func (u *PubsubMessgaeUpsertOne) UpdateUniqueID() *PubsubMessgaeUpsertOne {
-	return u.Update(func(s *PubsubMessgaeUpsert) {
-		s.UpdateUniqueID()
 	})
 }
 
@@ -782,7 +763,12 @@ func (u *PubsubMessgaeUpsertOne) ExecX(ctx context.Context) {
 }
 
 // Exec executes the UPSERT query and returns the inserted/updated ID.
-func (u *PubsubMessgaeUpsertOne) ID(ctx context.Context) (id int, err error) {
+func (u *PubsubMessgaeUpsertOne) ID(ctx context.Context) (id uuid.UUID, err error) {
+	if u.create.driver.Dialect() == dialect.MySQL {
+		// In case of "ON CONFLICT", there is no way to get back non-numeric ID
+		// fields from the database since MySQL does not support the RETURNING clause.
+		return id, errors.New("ent: PubsubMessgaeUpsertOne.ID is not supported by MySQL driver. Use PubsubMessgaeUpsertOne.Exec instead")
+	}
 	node, err := u.create.Save(ctx)
 	if err != nil {
 		return id, err
@@ -791,7 +777,7 @@ func (u *PubsubMessgaeUpsertOne) ID(ctx context.Context) (id int, err error) {
 }
 
 // IDX is like ID, but panics if an error occurs.
-func (u *PubsubMessgaeUpsertOne) IDX(ctx context.Context) int {
+func (u *PubsubMessgaeUpsertOne) IDX(ctx context.Context) uuid.UUID {
 	id, err := u.ID(ctx)
 	if err != nil {
 		panic(err)
@@ -842,10 +828,6 @@ func (pmcb *PubsubMessgaeCreateBulk) Save(ctx context.Context) ([]*PubsubMessgae
 					return nil, err
 				}
 				mutation.id = &nodes[i].ID
-				if specs[i].ID.Value != nil {
-					id := specs[i].ID.Value.(int64)
-					nodes[i].ID = int(id)
-				}
 				mutation.done = true
 				return nodes[i], nil
 			})
@@ -934,11 +916,22 @@ type PubsubMessgaeUpsertBulk struct {
 //	client.PubsubMessgae.Create().
 //		OnConflict(
 //			sql.ResolveWithNewValues(),
+//			sql.ResolveWith(func(u *sql.UpdateSet) {
+//				u.SetIgnore(pubsubmessgae.FieldID)
+//			}),
 //		).
 //		Exec(ctx)
 //
 func (u *PubsubMessgaeUpsertBulk) UpdateNewValues() *PubsubMessgaeUpsertBulk {
 	u.create.conflict = append(u.create.conflict, sql.ResolveWithNewValues())
+	u.create.conflict = append(u.create.conflict, sql.ResolveWith(func(s *sql.UpdateSet) {
+		for _, b := range u.create.builders {
+			if _, exists := b.mutation.ID(); exists {
+				s.SetIgnore(pubsubmessgae.FieldID)
+				return
+			}
+		}
+	}))
 	return u
 }
 
@@ -1030,20 +1023,6 @@ func (u *PubsubMessgaeUpsertBulk) AddDeletedAt(v uint32) *PubsubMessgaeUpsertBul
 func (u *PubsubMessgaeUpsertBulk) UpdateDeletedAt() *PubsubMessgaeUpsertBulk {
 	return u.Update(func(s *PubsubMessgaeUpsert) {
 		s.UpdateDeletedAt()
-	})
-}
-
-// SetUniqueID sets the "unique_id" field.
-func (u *PubsubMessgaeUpsertBulk) SetUniqueID(v uuid.UUID) *PubsubMessgaeUpsertBulk {
-	return u.Update(func(s *PubsubMessgaeUpsert) {
-		s.SetUniqueID(v)
-	})
-}
-
-// UpdateUniqueID sets the "unique_id" field to the value that was provided on create.
-func (u *PubsubMessgaeUpsertBulk) UpdateUniqueID() *PubsubMessgaeUpsertBulk {
-	return u.Update(func(s *PubsubMessgaeUpsert) {
-		s.UpdateUniqueID()
 	})
 }
 

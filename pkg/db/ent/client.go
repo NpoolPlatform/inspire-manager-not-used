@@ -1151,7 +1151,7 @@ func (c *PubsubMessgaeClient) UpdateOne(pm *PubsubMessgae) *PubsubMessgaeUpdateO
 }
 
 // UpdateOneID returns an update builder for the given id.
-func (c *PubsubMessgaeClient) UpdateOneID(id int) *PubsubMessgaeUpdateOne {
+func (c *PubsubMessgaeClient) UpdateOneID(id uuid.UUID) *PubsubMessgaeUpdateOne {
 	mutation := newPubsubMessgaeMutation(c.config, OpUpdateOne, withPubsubMessgaeID(id))
 	return &PubsubMessgaeUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
 }
@@ -1168,7 +1168,7 @@ func (c *PubsubMessgaeClient) DeleteOne(pm *PubsubMessgae) *PubsubMessgaeDeleteO
 }
 
 // DeleteOne returns a builder for deleting the given entity by its id.
-func (c *PubsubMessgaeClient) DeleteOneID(id int) *PubsubMessgaeDeleteOne {
+func (c *PubsubMessgaeClient) DeleteOneID(id uuid.UUID) *PubsubMessgaeDeleteOne {
 	builder := c.Delete().Where(pubsubmessgae.ID(id))
 	builder.mutation.id = &id
 	builder.mutation.op = OpDeleteOne
@@ -1183,12 +1183,12 @@ func (c *PubsubMessgaeClient) Query() *PubsubMessgaeQuery {
 }
 
 // Get returns a PubsubMessgae entity by its id.
-func (c *PubsubMessgaeClient) Get(ctx context.Context, id int) (*PubsubMessgae, error) {
+func (c *PubsubMessgaeClient) Get(ctx context.Context, id uuid.UUID) (*PubsubMessgae, error) {
 	return c.Query().Where(pubsubmessgae.ID(id)).Only(ctx)
 }
 
 // GetX is like Get, but panics if an error occurs.
-func (c *PubsubMessgaeClient) GetX(ctx context.Context, id int) *PubsubMessgae {
+func (c *PubsubMessgaeClient) GetX(ctx context.Context, id uuid.UUID) *PubsubMessgae {
 	obj, err := c.Get(ctx, id)
 	if err != nil {
 		panic(err)
