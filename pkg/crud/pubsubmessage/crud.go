@@ -10,7 +10,6 @@ import (
 	"go.opentelemetry.io/otel"
 	"go.opentelemetry.io/otel/codes"
 
-	"github.com/NpoolPlatform/go-service-framework/pkg/pubsub"
 	"github.com/NpoolPlatform/inspire-manager/pkg/db"
 	"github.com/NpoolPlatform/inspire-manager/pkg/db/ent"
 	"github.com/google/uuid"
@@ -31,7 +30,6 @@ func CreateSet(
 
 func UpdateSet(
 	info *ent.PubsubMessgae,
-	in *pubsub.Message,
 	uniqueID uuid.UUID,
 	messageID, sender string,
 	body []byte,
