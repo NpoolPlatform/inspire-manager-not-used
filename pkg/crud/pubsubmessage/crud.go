@@ -3,90 +3,38 @@ package event
 import (
 	"context"
 
-	entevent "github.com/NpoolPlatform/inspire-manager/pkg/db/ent/event"
+	entpubsubmessgae "github.com/NpoolPlatform/inspire-manager/pkg/db/ent/pubsubmessgae"
 	constant "github.com/NpoolPlatform/inspire-manager/pkg/message/const"
 	commontracer "github.com/NpoolPlatform/inspire-manager/pkg/tracer"
 
 	"go.opentelemetry.io/otel"
 	"go.opentelemetry.io/otel/codes"
 
+	"github.com/NpoolPlatform/go-service-framework/pkg/pubsub"
 	"github.com/NpoolPlatform/inspire-manager/pkg/db"
 	"github.com/NpoolPlatform/inspire-manager/pkg/db/ent"
-	npool "github.com/NpoolPlatform/message/npool/inspire/mgr/v1/event"
-
 	"github.com/google/uuid"
-	"github.com/shopspring/decimal"
 )
 
-func CreateSet(c *ent.EventCreate, in *npool.EventReq) (*ent.EventCreate, error) {
-	if in.ID != nil {
-		c.SetID(uuid.MustParse(in.GetID()))
-	}
-	if in.AppID != nil {
-		c.SetAppID(uuid.MustParse(in.GetAppID()))
-	}
-	if in.EventType != nil {
-		c.SetEventType(in.GetEventType().String())
-	}
-	if len(in.GetCoupons()) > 0 {
-		coupons := []npool.Coupon{}
-		for _, coup := range in.GetCoupons() {
-			coupons = append(coupons, npool.Coupon{
-				ID:         coup.ID,
-				CouponType: coup.CouponType,
-			})
-		}
-		c.SetCoupons(coupons)
-	}
-	if in.Credits != nil {
-		c.SetCredits(decimal.RequireFromString(in.GetCredits()))
-	}
-	if in.CreditsPerUSD != nil {
-		c.SetCreditsPerUsd(decimal.RequireFromString(in.GetCreditsPerUSD()))
-	}
-	if in.MaxConsecutive != nil {
-		c.SetMaxConsecutive(in.GetMaxConsecutive())
-	}
-	if in.GoodID != nil {
-		c.SetGoodID(uuid.MustParse(in.GetGoodID()))
-	}
-	if in.InviterLayers != nil {
-		c.SetInviterLayers(in.GetInviterLayers())
-	}
+func CreateSet(c *ent.PubsubMessgaeCreate, in *pubsub.Message) (*ent.PubsubMessgaeCreate, error) {
+	c.SetUniqueID(in.UniqueID)
+	c.SetMessageID(in.MessageID)
+	c.SetSender(in.Sender)
+	c.SetBody(in.Body)
 	return c, nil
 }
 
-func UpdateSet(info *ent.Event, in *npool.EventReq) (*ent.EventUpdateOne, error) {
+func UpdateSet(info *ent.PubsubMessgae, in *pubsub.Message) (*ent.PubsubMessgaeUpdateOne, error) {
 	u := info.Update()
-
-	if in.Coupons != nil {
-		coupons := []npool.Coupon{}
-		for _, coup := range in.GetCoupons() {
-			coupons = append(coupons, npool.Coupon{
-				ID:         coup.ID,
-				CouponType: coup.CouponType,
-			})
-		}
-		u.SetCoupons(coupons)
-	}
-	if in.Credits != nil {
-		u.SetCredits(decimal.RequireFromString(in.GetCredits()))
-	}
-	if in.CreditsPerUSD != nil {
-		u.SetCreditsPerUsd(decimal.RequireFromString(in.GetCreditsPerUSD()))
-	}
-	if in.MaxConsecutive != nil {
-		u.SetMaxConsecutive(in.GetMaxConsecutive())
-	}
-	if in.InviterLayers != nil {
-		u.SetInviterLayers(in.GetInviterLayers())
-	}
-
+	u.SetUniqueID(in.UniqueID)
+	u.SetMessageID(in.MessageID)
+	u.SetSender(in.Sender)
+	u.SetBody(in.Body)
 	return u, nil
 }
 
-func Row(ctx context.Context, id uuid.UUID) (*ent.Event, error) {
-	var info *ent.Event
+func Row(ctx context.Context, uniqueID uuid.UUID) (*ent.PubsubMessgae, error) {
+	var info *ent.PubsubMessgae
 	var err error
 
 	_, span := otel.Tracer(constant.ServiceName).Start(ctx, "Row")
@@ -99,10 +47,10 @@ func Row(ctx context.Context, id uuid.UUID) (*ent.Event, error) {
 		}
 	}()
 
-	span = commontracer.TraceID(span, id.String())
+	span = commontracer.TraceID(span, uniqueID.String())
 
 	err = db.WithClient(ctx, func(_ctx context.Context, cli *ent.Client) error {
-		info, err = cli.Event.Query().Where(entevent.ID(id)).Only(_ctx)
+		info, err = cli.PubsubMessgae.Query().Where(entpubsubmessgae.UniqueID(uniqueID)).Only(_ctx)
 		return err
 	})
 	if err != nil {
@@ -129,7 +77,7 @@ func Exist(ctx context.Context, id uuid.UUID) (bool, error) {
 	span = commontracer.TraceID(span, id.String())
 
 	err = db.WithClient(ctx, func(_ctx context.Context, cli *ent.Client) error {
-		exist, err = cli.Event.Query().Where(entevent.ID(id)).Exist(_ctx)
+		exist, err = cli.PubsubMessgae.Query().Where(entpubsubmessgae.UniqueID(id)).Exist(_ctx)
 		return err
 	})
 	if err != nil {
