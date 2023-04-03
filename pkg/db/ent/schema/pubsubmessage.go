@@ -31,6 +31,11 @@ func (PubsubMessgae) Fields() []ent.Field {
 			String("sender"),
 		field.
 			Bytes("body"),
+		field.
+			String("state"),
+		field.
+			UUID("response_id", uuid.UUID{}).
+			Unique(),
 	}
 }
 
@@ -41,6 +46,6 @@ func (PubsubMessgae) Edges() []ent.Edge {
 
 func (PubsubMessgae) Indexes() []ent.Index {
 	return []ent.Index{
-		index.Fields("unique_id", "message_id"),
+		index.Fields("unique_id", "message_id", "response_id"),
 	}
 }

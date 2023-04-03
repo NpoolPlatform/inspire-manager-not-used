@@ -20,11 +20,15 @@ func CreateSet(
 	uniqueID uuid.UUID,
 	messageID, sender string,
 	body []byte,
+	state string,
+	responseID uuid.UUID,
 ) (*ent.PubsubMessgaeCreate, error) {
 	c.SetUniqueID(uniqueID)
 	c.SetMessageID(messageID)
 	c.SetSender(sender)
 	c.SetBody(body)
+	c.SetState(state)
+	c.SetResponseID(responseID)
 	return c, nil
 }
 
@@ -33,12 +37,16 @@ func UpdateSet(
 	uniqueID uuid.UUID,
 	messageID, sender string,
 	body []byte,
+	state string,
+	responseID uuid.UUID,
 ) (*ent.PubsubMessgaeUpdateOne, error) {
 	u := info.Update()
 	u.SetUniqueID(uniqueID)
 	u.SetMessageID(messageID)
 	u.SetSender(sender)
 	u.SetBody(body)
+	u.SetState(state)
+	u.SetResponseID(responseID)
 	return u, nil
 }
 

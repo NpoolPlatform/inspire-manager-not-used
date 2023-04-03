@@ -25,6 +25,10 @@ const (
 	FieldSender = "sender"
 	// FieldBody holds the string denoting the body field in the database.
 	FieldBody = "body"
+	// FieldState holds the string denoting the state field in the database.
+	FieldState = "state"
+	// FieldResponseID holds the string denoting the response_id field in the database.
+	FieldResponseID = "response_id"
 	// Table holds the table name of the pubsubmessgae in the database.
 	Table = "pubsub_messgaes"
 )
@@ -39,6 +43,8 @@ var Columns = []string{
 	FieldMessageID,
 	FieldSender,
 	FieldBody,
+	FieldState,
+	FieldResponseID,
 }
 
 // ValidColumn reports if the column name is valid (part of the table columns).

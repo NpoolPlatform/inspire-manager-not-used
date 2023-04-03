@@ -88,6 +88,18 @@ func (pmc *PubsubMessgaeCreate) SetBody(b []byte) *PubsubMessgaeCreate {
 	return pmc
 }
 
+// SetState sets the "state" field.
+func (pmc *PubsubMessgaeCreate) SetState(s string) *PubsubMessgaeCreate {
+	pmc.mutation.SetState(s)
+	return pmc
+}
+
+// SetResponseID sets the "response_id" field.
+func (pmc *PubsubMessgaeCreate) SetResponseID(u uuid.UUID) *PubsubMessgaeCreate {
+	pmc.mutation.SetResponseID(u)
+	return pmc
+}
+
 // Mutation returns the PubsubMessgaeMutation object of the builder.
 func (pmc *PubsubMessgaeCreate) Mutation() *PubsubMessgaeMutation {
 	return pmc.mutation
@@ -214,6 +226,12 @@ func (pmc *PubsubMessgaeCreate) check() error {
 	if _, ok := pmc.mutation.Body(); !ok {
 		return &ValidationError{Name: "body", err: errors.New(`ent: missing required field "PubsubMessgae.body"`)}
 	}
+	if _, ok := pmc.mutation.State(); !ok {
+		return &ValidationError{Name: "state", err: errors.New(`ent: missing required field "PubsubMessgae.state"`)}
+	}
+	if _, ok := pmc.mutation.ResponseID(); !ok {
+		return &ValidationError{Name: "response_id", err: errors.New(`ent: missing required field "PubsubMessgae.response_id"`)}
+	}
 	return nil
 }
 
@@ -297,6 +315,22 @@ func (pmc *PubsubMessgaeCreate) createSpec() (*PubsubMessgae, *sqlgraph.CreateSp
 			Column: pubsubmessgae.FieldBody,
 		})
 		_node.Body = value
+	}
+	if value, ok := pmc.mutation.State(); ok {
+		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
+			Type:   field.TypeString,
+			Value:  value,
+			Column: pubsubmessgae.FieldState,
+		})
+		_node.State = value
+	}
+	if value, ok := pmc.mutation.ResponseID(); ok {
+		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
+			Type:   field.TypeUUID,
+			Value:  value,
+			Column: pubsubmessgae.FieldResponseID,
+		})
+		_node.ResponseID = value
 	}
 	return _node, _spec
 }
@@ -451,6 +485,30 @@ func (u *PubsubMessgaeUpsert) SetBody(v []byte) *PubsubMessgaeUpsert {
 // UpdateBody sets the "body" field to the value that was provided on create.
 func (u *PubsubMessgaeUpsert) UpdateBody() *PubsubMessgaeUpsert {
 	u.SetExcluded(pubsubmessgae.FieldBody)
+	return u
+}
+
+// SetState sets the "state" field.
+func (u *PubsubMessgaeUpsert) SetState(v string) *PubsubMessgaeUpsert {
+	u.Set(pubsubmessgae.FieldState, v)
+	return u
+}
+
+// UpdateState sets the "state" field to the value that was provided on create.
+func (u *PubsubMessgaeUpsert) UpdateState() *PubsubMessgaeUpsert {
+	u.SetExcluded(pubsubmessgae.FieldState)
+	return u
+}
+
+// SetResponseID sets the "response_id" field.
+func (u *PubsubMessgaeUpsert) SetResponseID(v uuid.UUID) *PubsubMessgaeUpsert {
+	u.Set(pubsubmessgae.FieldResponseID, v)
+	return u
+}
+
+// UpdateResponseID sets the "response_id" field to the value that was provided on create.
+func (u *PubsubMessgaeUpsert) UpdateResponseID() *PubsubMessgaeUpsert {
+	u.SetExcluded(pubsubmessgae.FieldResponseID)
 	return u
 }
 
@@ -612,6 +670,34 @@ func (u *PubsubMessgaeUpsertOne) SetBody(v []byte) *PubsubMessgaeUpsertOne {
 func (u *PubsubMessgaeUpsertOne) UpdateBody() *PubsubMessgaeUpsertOne {
 	return u.Update(func(s *PubsubMessgaeUpsert) {
 		s.UpdateBody()
+	})
+}
+
+// SetState sets the "state" field.
+func (u *PubsubMessgaeUpsertOne) SetState(v string) *PubsubMessgaeUpsertOne {
+	return u.Update(func(s *PubsubMessgaeUpsert) {
+		s.SetState(v)
+	})
+}
+
+// UpdateState sets the "state" field to the value that was provided on create.
+func (u *PubsubMessgaeUpsertOne) UpdateState() *PubsubMessgaeUpsertOne {
+	return u.Update(func(s *PubsubMessgaeUpsert) {
+		s.UpdateState()
+	})
+}
+
+// SetResponseID sets the "response_id" field.
+func (u *PubsubMessgaeUpsertOne) SetResponseID(v uuid.UUID) *PubsubMessgaeUpsertOne {
+	return u.Update(func(s *PubsubMessgaeUpsert) {
+		s.SetResponseID(v)
+	})
+}
+
+// UpdateResponseID sets the "response_id" field to the value that was provided on create.
+func (u *PubsubMessgaeUpsertOne) UpdateResponseID() *PubsubMessgaeUpsertOne {
+	return u.Update(func(s *PubsubMessgaeUpsert) {
+		s.UpdateResponseID()
 	})
 }
 
@@ -935,6 +1021,34 @@ func (u *PubsubMessgaeUpsertBulk) SetBody(v []byte) *PubsubMessgaeUpsertBulk {
 func (u *PubsubMessgaeUpsertBulk) UpdateBody() *PubsubMessgaeUpsertBulk {
 	return u.Update(func(s *PubsubMessgaeUpsert) {
 		s.UpdateBody()
+	})
+}
+
+// SetState sets the "state" field.
+func (u *PubsubMessgaeUpsertBulk) SetState(v string) *PubsubMessgaeUpsertBulk {
+	return u.Update(func(s *PubsubMessgaeUpsert) {
+		s.SetState(v)
+	})
+}
+
+// UpdateState sets the "state" field to the value that was provided on create.
+func (u *PubsubMessgaeUpsertBulk) UpdateState() *PubsubMessgaeUpsertBulk {
+	return u.Update(func(s *PubsubMessgaeUpsert) {
+		s.UpdateState()
+	})
+}
+
+// SetResponseID sets the "response_id" field.
+func (u *PubsubMessgaeUpsertBulk) SetResponseID(v uuid.UUID) *PubsubMessgaeUpsertBulk {
+	return u.Update(func(s *PubsubMessgaeUpsert) {
+		s.SetResponseID(v)
+	})
+}
+
+// UpdateResponseID sets the "response_id" field to the value that was provided on create.
+func (u *PubsubMessgaeUpsertBulk) UpdateResponseID() *PubsubMessgaeUpsertBulk {
+	return u.Update(func(s *PubsubMessgaeUpsert) {
+		s.UpdateResponseID()
 	})
 }
 

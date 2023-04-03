@@ -108,6 +108,18 @@ func (pmu *PubsubMessgaeUpdate) SetBody(b []byte) *PubsubMessgaeUpdate {
 	return pmu
 }
 
+// SetState sets the "state" field.
+func (pmu *PubsubMessgaeUpdate) SetState(s string) *PubsubMessgaeUpdate {
+	pmu.mutation.SetState(s)
+	return pmu
+}
+
+// SetResponseID sets the "response_id" field.
+func (pmu *PubsubMessgaeUpdate) SetResponseID(u uuid.UUID) *PubsubMessgaeUpdate {
+	pmu.mutation.SetResponseID(u)
+	return pmu
+}
+
 // Mutation returns the PubsubMessgaeMutation object of the builder.
 func (pmu *PubsubMessgaeUpdate) Mutation() *PubsubMessgaeMutation {
 	return pmu.mutation
@@ -276,6 +288,20 @@ func (pmu *PubsubMessgaeUpdate) sqlSave(ctx context.Context) (n int, err error) 
 			Column: pubsubmessgae.FieldBody,
 		})
 	}
+	if value, ok := pmu.mutation.State(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeString,
+			Value:  value,
+			Column: pubsubmessgae.FieldState,
+		})
+	}
+	if value, ok := pmu.mutation.ResponseID(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeUUID,
+			Value:  value,
+			Column: pubsubmessgae.FieldResponseID,
+		})
+	}
 	_spec.Modifiers = pmu.modifiers
 	if n, err = sqlgraph.UpdateNodes(ctx, pmu.driver, _spec); err != nil {
 		if _, ok := err.(*sqlgraph.NotFoundError); ok {
@@ -373,6 +399,18 @@ func (pmuo *PubsubMessgaeUpdateOne) SetSender(s string) *PubsubMessgaeUpdateOne 
 // SetBody sets the "body" field.
 func (pmuo *PubsubMessgaeUpdateOne) SetBody(b []byte) *PubsubMessgaeUpdateOne {
 	pmuo.mutation.SetBody(b)
+	return pmuo
+}
+
+// SetState sets the "state" field.
+func (pmuo *PubsubMessgaeUpdateOne) SetState(s string) *PubsubMessgaeUpdateOne {
+	pmuo.mutation.SetState(s)
+	return pmuo
+}
+
+// SetResponseID sets the "response_id" field.
+func (pmuo *PubsubMessgaeUpdateOne) SetResponseID(u uuid.UUID) *PubsubMessgaeUpdateOne {
+	pmuo.mutation.SetResponseID(u)
 	return pmuo
 }
 
@@ -572,6 +610,20 @@ func (pmuo *PubsubMessgaeUpdateOne) sqlSave(ctx context.Context) (_node *PubsubM
 			Type:   field.TypeBytes,
 			Value:  value,
 			Column: pubsubmessgae.FieldBody,
+		})
+	}
+	if value, ok := pmuo.mutation.State(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeString,
+			Value:  value,
+			Column: pubsubmessgae.FieldState,
+		})
+	}
+	if value, ok := pmuo.mutation.ResponseID(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeUUID,
+			Value:  value,
+			Column: pubsubmessgae.FieldResponseID,
 		})
 	}
 	_spec.Modifiers = pmuo.modifiers

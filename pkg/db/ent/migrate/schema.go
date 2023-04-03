@@ -177,7 +177,7 @@ var (
 		{Name: "user_id", Type: field.TypeUUID, Nullable: true},
 		{Name: "good_id", Type: field.TypeUUID, Nullable: true},
 		{Name: "percent", Type: field.TypeOther, Nullable: true, SchemaType: map[string]string{"mysql": "decimal(37,18)"}},
-		{Name: "start_at", Type: field.TypeUint32, Nullable: true, Default: 1680257712},
+		{Name: "start_at", Type: field.TypeUint32, Nullable: true, Default: 1680508286},
 		{Name: "end_at", Type: field.TypeUint32, Nullable: true, Default: 0},
 	}
 	// GoodOrderPercentsTable holds the schema information for the "good_order_percents" table.
@@ -196,7 +196,7 @@ var (
 		{Name: "user_id", Type: field.TypeUUID, Nullable: true},
 		{Name: "good_id", Type: field.TypeUUID, Nullable: true},
 		{Name: "percent", Type: field.TypeOther, Nullable: true, SchemaType: map[string]string{"mysql": "decimal(37,18)"}},
-		{Name: "start_at", Type: field.TypeUint32, Nullable: true, Default: 1680257712},
+		{Name: "start_at", Type: field.TypeUint32, Nullable: true, Default: 1680508286},
 		{Name: "end_at", Type: field.TypeUint32, Nullable: true, Default: 0},
 	}
 	// GoodOrderValuePercentsTable holds the schema information for the "good_order_value_percents" table.
@@ -232,6 +232,8 @@ var (
 		{Name: "message_id", Type: field.TypeString},
 		{Name: "sender", Type: field.TypeString},
 		{Name: "body", Type: field.TypeBytes},
+		{Name: "state", Type: field.TypeString},
+		{Name: "response_id", Type: field.TypeUUID, Unique: true},
 	}
 	// PubsubMessgaesTable holds the schema information for the "pubsub_messgaes" table.
 	PubsubMessgaesTable = &schema.Table{
@@ -240,9 +242,9 @@ var (
 		PrimaryKey: []*schema.Column{PubsubMessgaesColumns[0]},
 		Indexes: []*schema.Index{
 			{
-				Name:    "pubsubmessgae_unique_id_message_id",
+				Name:    "pubsubmessgae_unique_id_message_id_response_id",
 				Unique:  false,
-				Columns: []*schema.Column{PubsubMessgaesColumns[4], PubsubMessgaesColumns[5]},
+				Columns: []*schema.Column{PubsubMessgaesColumns[4], PubsubMessgaesColumns[5], PubsubMessgaesColumns[9]},
 			},
 		},
 	}

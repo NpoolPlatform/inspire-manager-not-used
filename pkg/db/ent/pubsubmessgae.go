@@ -30,6 +30,10 @@ type PubsubMessgae struct {
 	Sender string `json:"sender,omitempty"`
 	// Body holds the value of the "body" field.
 	Body []byte `json:"body,omitempty"`
+	// State holds the value of the "state" field.
+	State string `json:"state,omitempty"`
+	// ResponseID holds the value of the "response_id" field.
+	ResponseID uuid.UUID `json:"response_id,omitempty"`
 }
 
 // scanValues returns the types for scanning values from sql.Rows.
@@ -41,9 +45,9 @@ func (*PubsubMessgae) scanValues(columns []string) ([]interface{}, error) {
 			values[i] = new([]byte)
 		case pubsubmessgae.FieldID, pubsubmessgae.FieldCreatedAt, pubsubmessgae.FieldUpdatedAt, pubsubmessgae.FieldDeletedAt:
 			values[i] = new(sql.NullInt64)
-		case pubsubmessgae.FieldMessageID, pubsubmessgae.FieldSender:
+		case pubsubmessgae.FieldMessageID, pubsubmessgae.FieldSender, pubsubmessgae.FieldState:
 			values[i] = new(sql.NullString)
-		case pubsubmessgae.FieldUniqueID:
+		case pubsubmessgae.FieldUniqueID, pubsubmessgae.FieldResponseID:
 			values[i] = new(uuid.UUID)
 		default:
 			return nil, fmt.Errorf("unexpected column %q for type PubsubMessgae", columns[i])
@@ -108,6 +112,18 @@ func (pm *PubsubMessgae) assignValues(columns []string, values []interface{}) er
 			} else if value != nil {
 				pm.Body = *value
 			}
+		case pubsubmessgae.FieldState:
+			if value, ok := values[i].(*sql.NullString); !ok {
+				return fmt.Errorf("unexpected type %T for field state", values[i])
+			} else if value.Valid {
+				pm.State = value.String
+			}
+		case pubsubmessgae.FieldResponseID:
+			if value, ok := values[i].(*uuid.UUID); !ok {
+				return fmt.Errorf("unexpected type %T for field response_id", values[i])
+			} else if value != nil {
+				pm.ResponseID = *value
+			}
 		}
 	}
 	return nil
@@ -156,6 +172,12 @@ func (pm *PubsubMessgae) String() string {
 	builder.WriteString(", ")
 	builder.WriteString("body=")
 	builder.WriteString(fmt.Sprintf("%v", pm.Body))
+	builder.WriteString(", ")
+	builder.WriteString("state=")
+	builder.WriteString(pm.State)
+	builder.WriteString(", ")
+	builder.WriteString("response_id=")
+	builder.WriteString(fmt.Sprintf("%v", pm.ResponseID))
 	builder.WriteByte(')')
 	return builder.String()
 }

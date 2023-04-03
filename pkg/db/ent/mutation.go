@@ -11864,6 +11864,8 @@ type PubsubMessgaeMutation struct {
 	message_id    *string
 	sender        *string
 	body          *[]byte
+	state         *string
+	response_id   *uuid.UUID
 	clearedFields map[string]struct{}
 	done          bool
 	oldValue      func(context.Context) (*PubsubMessgae, error)
@@ -12280,6 +12282,78 @@ func (m *PubsubMessgaeMutation) ResetBody() {
 	m.body = nil
 }
 
+// SetState sets the "state" field.
+func (m *PubsubMessgaeMutation) SetState(s string) {
+	m.state = &s
+}
+
+// State returns the value of the "state" field in the mutation.
+func (m *PubsubMessgaeMutation) State() (r string, exists bool) {
+	v := m.state
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldState returns the old "state" field's value of the PubsubMessgae entity.
+// If the PubsubMessgae object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *PubsubMessgaeMutation) OldState(ctx context.Context) (v string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldState is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldState requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldState: %w", err)
+	}
+	return oldValue.State, nil
+}
+
+// ResetState resets all changes to the "state" field.
+func (m *PubsubMessgaeMutation) ResetState() {
+	m.state = nil
+}
+
+// SetResponseID sets the "response_id" field.
+func (m *PubsubMessgaeMutation) SetResponseID(u uuid.UUID) {
+	m.response_id = &u
+}
+
+// ResponseID returns the value of the "response_id" field in the mutation.
+func (m *PubsubMessgaeMutation) ResponseID() (r uuid.UUID, exists bool) {
+	v := m.response_id
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldResponseID returns the old "response_id" field's value of the PubsubMessgae entity.
+// If the PubsubMessgae object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *PubsubMessgaeMutation) OldResponseID(ctx context.Context) (v uuid.UUID, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldResponseID is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldResponseID requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldResponseID: %w", err)
+	}
+	return oldValue.ResponseID, nil
+}
+
+// ResetResponseID resets all changes to the "response_id" field.
+func (m *PubsubMessgaeMutation) ResetResponseID() {
+	m.response_id = nil
+}
+
 // Where appends a list predicates to the PubsubMessgaeMutation builder.
 func (m *PubsubMessgaeMutation) Where(ps ...predicate.PubsubMessgae) {
 	m.predicates = append(m.predicates, ps...)
@@ -12299,7 +12373,7 @@ func (m *PubsubMessgaeMutation) Type() string {
 // order to get all numeric fields that were incremented/decremented, call
 // AddedFields().
 func (m *PubsubMessgaeMutation) Fields() []string {
-	fields := make([]string, 0, 7)
+	fields := make([]string, 0, 9)
 	if m.created_at != nil {
 		fields = append(fields, pubsubmessgae.FieldCreatedAt)
 	}
@@ -12320,6 +12394,12 @@ func (m *PubsubMessgaeMutation) Fields() []string {
 	}
 	if m.body != nil {
 		fields = append(fields, pubsubmessgae.FieldBody)
+	}
+	if m.state != nil {
+		fields = append(fields, pubsubmessgae.FieldState)
+	}
+	if m.response_id != nil {
+		fields = append(fields, pubsubmessgae.FieldResponseID)
 	}
 	return fields
 }
@@ -12343,6 +12423,10 @@ func (m *PubsubMessgaeMutation) Field(name string) (ent.Value, bool) {
 		return m.Sender()
 	case pubsubmessgae.FieldBody:
 		return m.Body()
+	case pubsubmessgae.FieldState:
+		return m.State()
+	case pubsubmessgae.FieldResponseID:
+		return m.ResponseID()
 	}
 	return nil, false
 }
@@ -12366,6 +12450,10 @@ func (m *PubsubMessgaeMutation) OldField(ctx context.Context, name string) (ent.
 		return m.OldSender(ctx)
 	case pubsubmessgae.FieldBody:
 		return m.OldBody(ctx)
+	case pubsubmessgae.FieldState:
+		return m.OldState(ctx)
+	case pubsubmessgae.FieldResponseID:
+		return m.OldResponseID(ctx)
 	}
 	return nil, fmt.Errorf("unknown PubsubMessgae field %s", name)
 }
@@ -12423,6 +12511,20 @@ func (m *PubsubMessgaeMutation) SetField(name string, value ent.Value) error {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
 		m.SetBody(v)
+		return nil
+	case pubsubmessgae.FieldState:
+		v, ok := value.(string)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetState(v)
+		return nil
+	case pubsubmessgae.FieldResponseID:
+		v, ok := value.(uuid.UUID)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetResponseID(v)
 		return nil
 	}
 	return fmt.Errorf("unknown PubsubMessgae field %s", name)
@@ -12532,6 +12634,12 @@ func (m *PubsubMessgaeMutation) ResetField(name string) error {
 		return nil
 	case pubsubmessgae.FieldBody:
 		m.ResetBody()
+		return nil
+	case pubsubmessgae.FieldState:
+		m.ResetState()
+		return nil
+	case pubsubmessgae.FieldResponseID:
+		m.ResetResponseID()
 		return nil
 	}
 	return fmt.Errorf("unknown PubsubMessgae field %s", name)

@@ -128,6 +128,20 @@ func Body(v []byte) predicate.PubsubMessgae {
 	})
 }
 
+// State applies equality check predicate on the "state" field. It's identical to StateEQ.
+func State(v string) predicate.PubsubMessgae {
+	return predicate.PubsubMessgae(func(s *sql.Selector) {
+		s.Where(sql.EQ(s.C(FieldState), v))
+	})
+}
+
+// ResponseID applies equality check predicate on the "response_id" field. It's identical to ResponseIDEQ.
+func ResponseID(v uuid.UUID) predicate.PubsubMessgae {
+	return predicate.PubsubMessgae(func(s *sql.Selector) {
+		s.Where(sql.EQ(s.C(FieldResponseID), v))
+	})
+}
+
 // CreatedAtEQ applies the EQ predicate on the "created_at" field.
 func CreatedAtEQ(v uint32) predicate.PubsubMessgae {
 	return predicate.PubsubMessgae(func(s *sql.Selector) {
@@ -643,6 +657,169 @@ func BodyLT(v []byte) predicate.PubsubMessgae {
 func BodyLTE(v []byte) predicate.PubsubMessgae {
 	return predicate.PubsubMessgae(func(s *sql.Selector) {
 		s.Where(sql.LTE(s.C(FieldBody), v))
+	})
+}
+
+// StateEQ applies the EQ predicate on the "state" field.
+func StateEQ(v string) predicate.PubsubMessgae {
+	return predicate.PubsubMessgae(func(s *sql.Selector) {
+		s.Where(sql.EQ(s.C(FieldState), v))
+	})
+}
+
+// StateNEQ applies the NEQ predicate on the "state" field.
+func StateNEQ(v string) predicate.PubsubMessgae {
+	return predicate.PubsubMessgae(func(s *sql.Selector) {
+		s.Where(sql.NEQ(s.C(FieldState), v))
+	})
+}
+
+// StateIn applies the In predicate on the "state" field.
+func StateIn(vs ...string) predicate.PubsubMessgae {
+	v := make([]interface{}, len(vs))
+	for i := range v {
+		v[i] = vs[i]
+	}
+	return predicate.PubsubMessgae(func(s *sql.Selector) {
+		s.Where(sql.In(s.C(FieldState), v...))
+	})
+}
+
+// StateNotIn applies the NotIn predicate on the "state" field.
+func StateNotIn(vs ...string) predicate.PubsubMessgae {
+	v := make([]interface{}, len(vs))
+	for i := range v {
+		v[i] = vs[i]
+	}
+	return predicate.PubsubMessgae(func(s *sql.Selector) {
+		s.Where(sql.NotIn(s.C(FieldState), v...))
+	})
+}
+
+// StateGT applies the GT predicate on the "state" field.
+func StateGT(v string) predicate.PubsubMessgae {
+	return predicate.PubsubMessgae(func(s *sql.Selector) {
+		s.Where(sql.GT(s.C(FieldState), v))
+	})
+}
+
+// StateGTE applies the GTE predicate on the "state" field.
+func StateGTE(v string) predicate.PubsubMessgae {
+	return predicate.PubsubMessgae(func(s *sql.Selector) {
+		s.Where(sql.GTE(s.C(FieldState), v))
+	})
+}
+
+// StateLT applies the LT predicate on the "state" field.
+func StateLT(v string) predicate.PubsubMessgae {
+	return predicate.PubsubMessgae(func(s *sql.Selector) {
+		s.Where(sql.LT(s.C(FieldState), v))
+	})
+}
+
+// StateLTE applies the LTE predicate on the "state" field.
+func StateLTE(v string) predicate.PubsubMessgae {
+	return predicate.PubsubMessgae(func(s *sql.Selector) {
+		s.Where(sql.LTE(s.C(FieldState), v))
+	})
+}
+
+// StateContains applies the Contains predicate on the "state" field.
+func StateContains(v string) predicate.PubsubMessgae {
+	return predicate.PubsubMessgae(func(s *sql.Selector) {
+		s.Where(sql.Contains(s.C(FieldState), v))
+	})
+}
+
+// StateHasPrefix applies the HasPrefix predicate on the "state" field.
+func StateHasPrefix(v string) predicate.PubsubMessgae {
+	return predicate.PubsubMessgae(func(s *sql.Selector) {
+		s.Where(sql.HasPrefix(s.C(FieldState), v))
+	})
+}
+
+// StateHasSuffix applies the HasSuffix predicate on the "state" field.
+func StateHasSuffix(v string) predicate.PubsubMessgae {
+	return predicate.PubsubMessgae(func(s *sql.Selector) {
+		s.Where(sql.HasSuffix(s.C(FieldState), v))
+	})
+}
+
+// StateEqualFold applies the EqualFold predicate on the "state" field.
+func StateEqualFold(v string) predicate.PubsubMessgae {
+	return predicate.PubsubMessgae(func(s *sql.Selector) {
+		s.Where(sql.EqualFold(s.C(FieldState), v))
+	})
+}
+
+// StateContainsFold applies the ContainsFold predicate on the "state" field.
+func StateContainsFold(v string) predicate.PubsubMessgae {
+	return predicate.PubsubMessgae(func(s *sql.Selector) {
+		s.Where(sql.ContainsFold(s.C(FieldState), v))
+	})
+}
+
+// ResponseIDEQ applies the EQ predicate on the "response_id" field.
+func ResponseIDEQ(v uuid.UUID) predicate.PubsubMessgae {
+	return predicate.PubsubMessgae(func(s *sql.Selector) {
+		s.Where(sql.EQ(s.C(FieldResponseID), v))
+	})
+}
+
+// ResponseIDNEQ applies the NEQ predicate on the "response_id" field.
+func ResponseIDNEQ(v uuid.UUID) predicate.PubsubMessgae {
+	return predicate.PubsubMessgae(func(s *sql.Selector) {
+		s.Where(sql.NEQ(s.C(FieldResponseID), v))
+	})
+}
+
+// ResponseIDIn applies the In predicate on the "response_id" field.
+func ResponseIDIn(vs ...uuid.UUID) predicate.PubsubMessgae {
+	v := make([]interface{}, len(vs))
+	for i := range v {
+		v[i] = vs[i]
+	}
+	return predicate.PubsubMessgae(func(s *sql.Selector) {
+		s.Where(sql.In(s.C(FieldResponseID), v...))
+	})
+}
+
+// ResponseIDNotIn applies the NotIn predicate on the "response_id" field.
+func ResponseIDNotIn(vs ...uuid.UUID) predicate.PubsubMessgae {
+	v := make([]interface{}, len(vs))
+	for i := range v {
+		v[i] = vs[i]
+	}
+	return predicate.PubsubMessgae(func(s *sql.Selector) {
+		s.Where(sql.NotIn(s.C(FieldResponseID), v...))
+	})
+}
+
+// ResponseIDGT applies the GT predicate on the "response_id" field.
+func ResponseIDGT(v uuid.UUID) predicate.PubsubMessgae {
+	return predicate.PubsubMessgae(func(s *sql.Selector) {
+		s.Where(sql.GT(s.C(FieldResponseID), v))
+	})
+}
+
+// ResponseIDGTE applies the GTE predicate on the "response_id" field.
+func ResponseIDGTE(v uuid.UUID) predicate.PubsubMessgae {
+	return predicate.PubsubMessgae(func(s *sql.Selector) {
+		s.Where(sql.GTE(s.C(FieldResponseID), v))
+	})
+}
+
+// ResponseIDLT applies the LT predicate on the "response_id" field.
+func ResponseIDLT(v uuid.UUID) predicate.PubsubMessgae {
+	return predicate.PubsubMessgae(func(s *sql.Selector) {
+		s.Where(sql.LT(s.C(FieldResponseID), v))
+	})
+}
+
+// ResponseIDLTE applies the LTE predicate on the "response_id" field.
+func ResponseIDLTE(v uuid.UUID) predicate.PubsubMessgae {
+	return predicate.PubsubMessgae(func(s *sql.Selector) {
+		s.Where(sql.LTE(s.C(FieldResponseID), v))
 	})
 }
 
