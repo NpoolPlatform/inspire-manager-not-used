@@ -24,7 +24,7 @@ func CreateSet(
 	responseID *uuid.UUID,
 	errorMessage *string,
 ) (*ent.PubsubMessgaeCreate, error) {
-	c.SetUniqueID(uniqueID)
+	c.SetID(uniqueID)
 	c.SetMessageID(messageID)
 	c.SetSender(sender)
 	c.SetBody(body)
@@ -64,7 +64,7 @@ func Row(ctx context.Context, uniqueID uuid.UUID) (*ent.PubsubMessgae, error) {
 	span = commontracer.TraceID(span, uniqueID.String())
 
 	err = db.WithClient(ctx, func(_ctx context.Context, cli *ent.Client) error {
-		info, err = cli.PubsubMessgae.Query().Where(entpubsubmessgae.UniqueID(uniqueID)).Only(_ctx)
+		info, err = cli.PubsubMessgae.Query().Where(entpubsubmessgae.ID(uniqueID)).Only(_ctx)
 		return err
 	})
 	if err != nil {
@@ -91,7 +91,7 @@ func Exist(ctx context.Context, id uuid.UUID) (bool, error) {
 	span = commontracer.TraceID(span, id.String())
 
 	err = db.WithClient(ctx, func(_ctx context.Context, cli *ent.Client) error {
-		exist, err = cli.PubsubMessgae.Query().Where(entpubsubmessgae.UniqueID(id)).Exist(_ctx)
+		exist, err = cli.PubsubMessgae.Query().Where(entpubsubmessgae.ID(id)).Exist(_ctx)
 		return err
 	})
 	if err != nil {
