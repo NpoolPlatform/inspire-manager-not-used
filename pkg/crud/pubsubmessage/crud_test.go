@@ -28,10 +28,10 @@ func init() {
 }
 
 var data = ent.PubsubMessage{
-	ID:           uuid.New(),
-	MessageID:    uuid.NewString(),
-	State:        basetypes.MessageState_Processing.String(),
-	ResponseToID: uuid.New(),
+	ID:        uuid.New(),
+	MessageID: uuid.NewString(),
+	State:     basetypes.MessageState_Processing.String(),
+	RespToID:  uuid.New(),
 }
 
 var info *ent.PubsubMessage
@@ -43,7 +43,7 @@ func create(t *testing.T) {
 			data.ID,
 			data.MessageID,
 			data.State,
-			&data.ResponseToID,
+			&data.RespToID,
 		)
 		if err != nil {
 			return err
