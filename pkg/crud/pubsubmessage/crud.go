@@ -20,16 +20,16 @@ func CreateSet(
 	uniqueID uuid.UUID,
 	messageID string,
 	state string,
-	respondToID *uuid.UUID,
+	respToID *uuid.UUID,
 ) (*ent.PubsubMessageCreate, error) {
 	c.SetID(uniqueID)
 	c.SetMessageID(messageID)
 	c.SetState(state)
-	respondToID1 := uuid.UUID{}
-	if respondToID != nil {
-		respondToID1 = *respondToID
+	respToID1 := uuid.UUID{}
+	if respToID != nil {
+		respToID1 = *respToID
 	}
-	c.SetResponseToID(respondToID1)
+	c.SetRespToID(respToID1)
 	return c, nil
 }
 
