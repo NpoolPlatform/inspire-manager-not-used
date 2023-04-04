@@ -12,7 +12,7 @@ import (
 	commontracer "github.com/NpoolPlatform/inspire-manager/pkg/tracer"
 	tracer "github.com/NpoolPlatform/inspire-manager/pkg/tracer/event"
 
-	constant "github.com/NpoolPlatform/inspire-manager/pkg/message/const"
+	"github.com/NpoolPlatform/inspire-manager/pkg/servicename"
 
 	"go.opentelemetry.io/otel"
 	scodes "go.opentelemetry.io/otel/codes"
@@ -104,7 +104,7 @@ func ValidateCreateMany(in []*npool.EventReq) error {
 func (s *Server) CreateEvent(ctx context.Context, in *npool.CreateEventRequest) (*npool.CreateEventResponse, error) {
 	var err error
 
-	_, span := otel.Tracer(constant.ServiceName).Start(ctx, "CreateEvent")
+	_, span := otel.Tracer(servicename.ServiceDomain).Start(ctx, "CreateEvent")
 	defer span.End()
 
 	defer func() {
@@ -146,7 +146,7 @@ func (s *Server) CreateEvent(ctx context.Context, in *npool.CreateEventRequest) 
 func (s *Server) CreateEvents(ctx context.Context, in *npool.CreateEventsRequest) (*npool.CreateEventsResponse, error) {
 	var err error
 
-	_, span := otel.Tracer(constant.ServiceName).Start(ctx, "CreateEvents")
+	_, span := otel.Tracer(servicename.ServiceDomain).Start(ctx, "CreateEvents")
 	defer span.End()
 
 	defer func() {

@@ -280,12 +280,12 @@ var schemaGraph = func() *sqlgraph.Schema {
 		},
 		Type: "PubsubMessage",
 		Fields: map[string]*sqlgraph.FieldSpec{
-			pubsubmessage.FieldCreatedAt:    {Type: field.TypeUint32, Column: pubsubmessage.FieldCreatedAt},
-			pubsubmessage.FieldUpdatedAt:    {Type: field.TypeUint32, Column: pubsubmessage.FieldUpdatedAt},
-			pubsubmessage.FieldDeletedAt:    {Type: field.TypeUint32, Column: pubsubmessage.FieldDeletedAt},
-			pubsubmessage.FieldMessageID:    {Type: field.TypeString, Column: pubsubmessage.FieldMessageID},
-			pubsubmessage.FieldState:        {Type: field.TypeString, Column: pubsubmessage.FieldState},
-			pubsubmessage.FieldResponseToID: {Type: field.TypeUUID, Column: pubsubmessage.FieldResponseToID},
+			pubsubmessage.FieldCreatedAt: {Type: field.TypeUint32, Column: pubsubmessage.FieldCreatedAt},
+			pubsubmessage.FieldUpdatedAt: {Type: field.TypeUint32, Column: pubsubmessage.FieldUpdatedAt},
+			pubsubmessage.FieldDeletedAt: {Type: field.TypeUint32, Column: pubsubmessage.FieldDeletedAt},
+			pubsubmessage.FieldMessageID: {Type: field.TypeString, Column: pubsubmessage.FieldMessageID},
+			pubsubmessage.FieldState:     {Type: field.TypeString, Column: pubsubmessage.FieldState},
+			pubsubmessage.FieldRespToID:  {Type: field.TypeUUID, Column: pubsubmessage.FieldRespToID},
 		},
 	}
 	graph.Nodes[11] = &sqlgraph.Node{
@@ -1351,9 +1351,9 @@ func (f *PubsubMessageFilter) WhereState(p entql.StringP) {
 	f.Where(p.Field(pubsubmessage.FieldState))
 }
 
-// WhereResponseToID applies the entql [16]byte predicate on the response_to_id field.
-func (f *PubsubMessageFilter) WhereResponseToID(p entql.ValueP) {
-	f.Where(p.Field(pubsubmessage.FieldResponseToID))
+// WhereRespToID applies the entql [16]byte predicate on the resp_to_id field.
+func (f *PubsubMessageFilter) WhereRespToID(p entql.ValueP) {
+	f.Where(p.Field(pubsubmessage.FieldRespToID))
 }
 
 // addPredicate implements the predicateAdder interface.

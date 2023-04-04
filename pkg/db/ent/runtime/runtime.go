@@ -662,10 +662,18 @@ func init() {
 	pubsubmessageDescDeletedAt := pubsubmessageMixinFields0[2].Descriptor()
 	// pubsubmessage.DefaultDeletedAt holds the default value on creation for the deleted_at field.
 	pubsubmessage.DefaultDeletedAt = pubsubmessageDescDeletedAt.Default.(func() uint32)
-	// pubsubmessageDescResponseToID is the schema descriptor for response_to_id field.
-	pubsubmessageDescResponseToID := pubsubmessageFields[3].Descriptor()
-	// pubsubmessage.DefaultResponseToID holds the default value on creation for the response_to_id field.
-	pubsubmessage.DefaultResponseToID = pubsubmessageDescResponseToID.Default.(func() uuid.UUID)
+	// pubsubmessageDescMessageID is the schema descriptor for message_id field.
+	pubsubmessageDescMessageID := pubsubmessageFields[1].Descriptor()
+	// pubsubmessage.DefaultMessageID holds the default value on creation for the message_id field.
+	pubsubmessage.DefaultMessageID = pubsubmessageDescMessageID.Default.(string)
+	// pubsubmessageDescState is the schema descriptor for state field.
+	pubsubmessageDescState := pubsubmessageFields[2].Descriptor()
+	// pubsubmessage.DefaultState holds the default value on creation for the state field.
+	pubsubmessage.DefaultState = pubsubmessageDescState.Default.(string)
+	// pubsubmessageDescRespToID is the schema descriptor for resp_to_id field.
+	pubsubmessageDescRespToID := pubsubmessageFields[3].Descriptor()
+	// pubsubmessage.DefaultRespToID holds the default value on creation for the resp_to_id field.
+	pubsubmessage.DefaultRespToID = pubsubmessageDescRespToID.Default.(func() uuid.UUID)
 	registrationMixin := schema.Registration{}.Mixin()
 	registration.Policy = privacy.NewPolicies(registrationMixin[0], schema.Registration{})
 	registration.Hooks[0] = func(next ent.Mutator) ent.Mutator {

@@ -11851,22 +11851,22 @@ func (m *InvitationCodeMutation) ResetEdge(name string) error {
 // PubsubMessageMutation represents an operation that mutates the PubsubMessage nodes in the graph.
 type PubsubMessageMutation struct {
 	config
-	op             Op
-	typ            string
-	id             *uuid.UUID
-	created_at     *uint32
-	addcreated_at  *int32
-	updated_at     *uint32
-	addupdated_at  *int32
-	deleted_at     *uint32
-	adddeleted_at  *int32
-	message_id     *string
-	state          *string
-	response_to_id *uuid.UUID
-	clearedFields  map[string]struct{}
-	done           bool
-	oldValue       func(context.Context) (*PubsubMessage, error)
-	predicates     []predicate.PubsubMessage
+	op            Op
+	typ           string
+	id            *uuid.UUID
+	created_at    *uint32
+	addcreated_at *int32
+	updated_at    *uint32
+	addupdated_at *int32
+	deleted_at    *uint32
+	adddeleted_at *int32
+	message_id    *string
+	state         *string
+	resp_to_id    *uuid.UUID
+	clearedFields map[string]struct{}
+	done          bool
+	oldValue      func(context.Context) (*PubsubMessage, error)
+	predicates    []predicate.PubsubMessage
 }
 
 var _ ent.Mutation = (*PubsubMessageMutation)(nil)
@@ -12172,9 +12172,22 @@ func (m *PubsubMessageMutation) OldMessageID(ctx context.Context) (v string, err
 	return oldValue.MessageID, nil
 }
 
+// ClearMessageID clears the value of the "message_id" field.
+func (m *PubsubMessageMutation) ClearMessageID() {
+	m.message_id = nil
+	m.clearedFields[pubsubmessage.FieldMessageID] = struct{}{}
+}
+
+// MessageIDCleared returns if the "message_id" field was cleared in this mutation.
+func (m *PubsubMessageMutation) MessageIDCleared() bool {
+	_, ok := m.clearedFields[pubsubmessage.FieldMessageID]
+	return ok
+}
+
 // ResetMessageID resets all changes to the "message_id" field.
 func (m *PubsubMessageMutation) ResetMessageID() {
 	m.message_id = nil
+	delete(m.clearedFields, pubsubmessage.FieldMessageID)
 }
 
 // SetState sets the "state" field.
@@ -12208,58 +12221,71 @@ func (m *PubsubMessageMutation) OldState(ctx context.Context) (v string, err err
 	return oldValue.State, nil
 }
 
+// ClearState clears the value of the "state" field.
+func (m *PubsubMessageMutation) ClearState() {
+	m.state = nil
+	m.clearedFields[pubsubmessage.FieldState] = struct{}{}
+}
+
+// StateCleared returns if the "state" field was cleared in this mutation.
+func (m *PubsubMessageMutation) StateCleared() bool {
+	_, ok := m.clearedFields[pubsubmessage.FieldState]
+	return ok
+}
+
 // ResetState resets all changes to the "state" field.
 func (m *PubsubMessageMutation) ResetState() {
 	m.state = nil
+	delete(m.clearedFields, pubsubmessage.FieldState)
 }
 
-// SetResponseToID sets the "response_to_id" field.
-func (m *PubsubMessageMutation) SetResponseToID(u uuid.UUID) {
-	m.response_to_id = &u
+// SetRespToID sets the "resp_to_id" field.
+func (m *PubsubMessageMutation) SetRespToID(u uuid.UUID) {
+	m.resp_to_id = &u
 }
 
-// ResponseToID returns the value of the "response_to_id" field in the mutation.
-func (m *PubsubMessageMutation) ResponseToID() (r uuid.UUID, exists bool) {
-	v := m.response_to_id
+// RespToID returns the value of the "resp_to_id" field in the mutation.
+func (m *PubsubMessageMutation) RespToID() (r uuid.UUID, exists bool) {
+	v := m.resp_to_id
 	if v == nil {
 		return
 	}
 	return *v, true
 }
 
-// OldResponseToID returns the old "response_to_id" field's value of the PubsubMessage entity.
+// OldRespToID returns the old "resp_to_id" field's value of the PubsubMessage entity.
 // If the PubsubMessage object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *PubsubMessageMutation) OldResponseToID(ctx context.Context) (v uuid.UUID, err error) {
+func (m *PubsubMessageMutation) OldRespToID(ctx context.Context) (v uuid.UUID, err error) {
 	if !m.op.Is(OpUpdateOne) {
-		return v, errors.New("OldResponseToID is only allowed on UpdateOne operations")
+		return v, errors.New("OldRespToID is only allowed on UpdateOne operations")
 	}
 	if m.id == nil || m.oldValue == nil {
-		return v, errors.New("OldResponseToID requires an ID field in the mutation")
+		return v, errors.New("OldRespToID requires an ID field in the mutation")
 	}
 	oldValue, err := m.oldValue(ctx)
 	if err != nil {
-		return v, fmt.Errorf("querying old value for OldResponseToID: %w", err)
+		return v, fmt.Errorf("querying old value for OldRespToID: %w", err)
 	}
-	return oldValue.ResponseToID, nil
+	return oldValue.RespToID, nil
 }
 
-// ClearResponseToID clears the value of the "response_to_id" field.
-func (m *PubsubMessageMutation) ClearResponseToID() {
-	m.response_to_id = nil
-	m.clearedFields[pubsubmessage.FieldResponseToID] = struct{}{}
+// ClearRespToID clears the value of the "resp_to_id" field.
+func (m *PubsubMessageMutation) ClearRespToID() {
+	m.resp_to_id = nil
+	m.clearedFields[pubsubmessage.FieldRespToID] = struct{}{}
 }
 
-// ResponseToIDCleared returns if the "response_to_id" field was cleared in this mutation.
-func (m *PubsubMessageMutation) ResponseToIDCleared() bool {
-	_, ok := m.clearedFields[pubsubmessage.FieldResponseToID]
+// RespToIDCleared returns if the "resp_to_id" field was cleared in this mutation.
+func (m *PubsubMessageMutation) RespToIDCleared() bool {
+	_, ok := m.clearedFields[pubsubmessage.FieldRespToID]
 	return ok
 }
 
-// ResetResponseToID resets all changes to the "response_to_id" field.
-func (m *PubsubMessageMutation) ResetResponseToID() {
-	m.response_to_id = nil
-	delete(m.clearedFields, pubsubmessage.FieldResponseToID)
+// ResetRespToID resets all changes to the "resp_to_id" field.
+func (m *PubsubMessageMutation) ResetRespToID() {
+	m.resp_to_id = nil
+	delete(m.clearedFields, pubsubmessage.FieldRespToID)
 }
 
 // Where appends a list predicates to the PubsubMessageMutation builder.
@@ -12297,8 +12323,8 @@ func (m *PubsubMessageMutation) Fields() []string {
 	if m.state != nil {
 		fields = append(fields, pubsubmessage.FieldState)
 	}
-	if m.response_to_id != nil {
-		fields = append(fields, pubsubmessage.FieldResponseToID)
+	if m.resp_to_id != nil {
+		fields = append(fields, pubsubmessage.FieldRespToID)
 	}
 	return fields
 }
@@ -12318,8 +12344,8 @@ func (m *PubsubMessageMutation) Field(name string) (ent.Value, bool) {
 		return m.MessageID()
 	case pubsubmessage.FieldState:
 		return m.State()
-	case pubsubmessage.FieldResponseToID:
-		return m.ResponseToID()
+	case pubsubmessage.FieldRespToID:
+		return m.RespToID()
 	}
 	return nil, false
 }
@@ -12339,8 +12365,8 @@ func (m *PubsubMessageMutation) OldField(ctx context.Context, name string) (ent.
 		return m.OldMessageID(ctx)
 	case pubsubmessage.FieldState:
 		return m.OldState(ctx)
-	case pubsubmessage.FieldResponseToID:
-		return m.OldResponseToID(ctx)
+	case pubsubmessage.FieldRespToID:
+		return m.OldRespToID(ctx)
 	}
 	return nil, fmt.Errorf("unknown PubsubMessage field %s", name)
 }
@@ -12385,12 +12411,12 @@ func (m *PubsubMessageMutation) SetField(name string, value ent.Value) error {
 		}
 		m.SetState(v)
 		return nil
-	case pubsubmessage.FieldResponseToID:
+	case pubsubmessage.FieldRespToID:
 		v, ok := value.(uuid.UUID)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
-		m.SetResponseToID(v)
+		m.SetRespToID(v)
 		return nil
 	}
 	return fmt.Errorf("unknown PubsubMessage field %s", name)
@@ -12461,8 +12487,14 @@ func (m *PubsubMessageMutation) AddField(name string, value ent.Value) error {
 // mutation.
 func (m *PubsubMessageMutation) ClearedFields() []string {
 	var fields []string
-	if m.FieldCleared(pubsubmessage.FieldResponseToID) {
-		fields = append(fields, pubsubmessage.FieldResponseToID)
+	if m.FieldCleared(pubsubmessage.FieldMessageID) {
+		fields = append(fields, pubsubmessage.FieldMessageID)
+	}
+	if m.FieldCleared(pubsubmessage.FieldState) {
+		fields = append(fields, pubsubmessage.FieldState)
+	}
+	if m.FieldCleared(pubsubmessage.FieldRespToID) {
+		fields = append(fields, pubsubmessage.FieldRespToID)
 	}
 	return fields
 }
@@ -12478,8 +12510,14 @@ func (m *PubsubMessageMutation) FieldCleared(name string) bool {
 // error if the field is not defined in the schema.
 func (m *PubsubMessageMutation) ClearField(name string) error {
 	switch name {
-	case pubsubmessage.FieldResponseToID:
-		m.ClearResponseToID()
+	case pubsubmessage.FieldMessageID:
+		m.ClearMessageID()
+		return nil
+	case pubsubmessage.FieldState:
+		m.ClearState()
+		return nil
+	case pubsubmessage.FieldRespToID:
+		m.ClearRespToID()
 		return nil
 	}
 	return fmt.Errorf("unknown PubsubMessage nullable field %s", name)
@@ -12504,8 +12542,8 @@ func (m *PubsubMessageMutation) ResetField(name string) error {
 	case pubsubmessage.FieldState:
 		m.ResetState()
 		return nil
-	case pubsubmessage.FieldResponseToID:
-		m.ResetResponseToID()
+	case pubsubmessage.FieldRespToID:
+		m.ResetRespToID()
 		return nil
 	}
 	return fmt.Errorf("unknown PubsubMessage field %s", name)

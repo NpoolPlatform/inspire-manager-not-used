@@ -9,7 +9,7 @@ import (
 	commontracer "github.com/NpoolPlatform/inspire-manager/pkg/tracer"
 	tracer "github.com/NpoolPlatform/inspire-manager/pkg/tracer/coupon/allocated"
 
-	constant "github.com/NpoolPlatform/inspire-manager/pkg/message/const"
+	"github.com/NpoolPlatform/inspire-manager/pkg/servicename"
 
 	"go.opentelemetry.io/otel"
 	scodes "go.opentelemetry.io/otel/codes"
@@ -25,7 +25,7 @@ import (
 func (s *Server) CreateAllocated(ctx context.Context, in *npool.CreateAllocatedRequest) (*npool.CreateAllocatedResponse, error) {
 	var err error
 
-	_, span := otel.Tracer(constant.ServiceName).Start(ctx, "CreateAllocated")
+	_, span := otel.Tracer(servicename.ServiceDomain).Start(ctx, "CreateAllocated")
 	defer span.End()
 
 	defer func() {
@@ -58,7 +58,7 @@ func (s *Server) CreateAllocated(ctx context.Context, in *npool.CreateAllocatedR
 func (s *Server) CreateAllocateds(ctx context.Context, in *npool.CreateAllocatedsRequest) (*npool.CreateAllocatedsResponse, error) {
 	var err error
 
-	_, span := otel.Tracer(constant.ServiceName).Start(ctx, "CreateAllocateds")
+	_, span := otel.Tracer(servicename.ServiceDomain).Start(ctx, "CreateAllocateds")
 	defer span.End()
 
 	defer func() {
@@ -89,7 +89,7 @@ func (s *Server) CreateAllocateds(ctx context.Context, in *npool.CreateAllocated
 func (s *Server) UpdateAllocated(ctx context.Context, in *npool.UpdateAllocatedRequest) (*npool.UpdateAllocatedResponse, error) {
 	var err error
 
-	_, span := otel.Tracer(constant.ServiceName).Start(ctx, "UpdateAllocated")
+	_, span := otel.Tracer(servicename.ServiceDomain).Start(ctx, "UpdateAllocated")
 	defer span.End()
 
 	defer func() {
@@ -127,7 +127,7 @@ func (s *Server) UpdateAllocated(ctx context.Context, in *npool.UpdateAllocatedR
 func (s *Server) GetAllocated(ctx context.Context, in *npool.GetAllocatedRequest) (*npool.GetAllocatedResponse, error) {
 	var err error
 
-	_, span := otel.Tracer(constant.ServiceName).Start(ctx, "GetAllocated")
+	_, span := otel.Tracer(servicename.ServiceDomain).Start(ctx, "GetAllocated")
 	defer span.End()
 
 	defer func() {
@@ -160,7 +160,7 @@ func (s *Server) GetAllocated(ctx context.Context, in *npool.GetAllocatedRequest
 func (s *Server) GetAllocatedOnly(ctx context.Context, in *npool.GetAllocatedOnlyRequest) (*npool.GetAllocatedOnlyResponse, error) {
 	var err error
 
-	_, span := otel.Tracer(constant.ServiceName).Start(ctx, "GetAllocatedOnly")
+	_, span := otel.Tracer(servicename.ServiceDomain).Start(ctx, "GetAllocatedOnly")
 	defer span.End()
 
 	defer func() {
@@ -187,7 +187,7 @@ func (s *Server) GetAllocatedOnly(ctx context.Context, in *npool.GetAllocatedOnl
 func (s *Server) GetAllocateds(ctx context.Context, in *npool.GetAllocatedsRequest) (*npool.GetAllocatedsResponse, error) {
 	var err error
 
-	_, span := otel.Tracer(constant.ServiceName).Start(ctx, "GetAllocateds")
+	_, span := otel.Tracer(servicename.ServiceDomain).Start(ctx, "GetAllocateds")
 	defer span.End()
 
 	defer func() {
@@ -216,7 +216,7 @@ func (s *Server) GetAllocateds(ctx context.Context, in *npool.GetAllocatedsReque
 func (s *Server) ExistAllocated(ctx context.Context, in *npool.ExistAllocatedRequest) (*npool.ExistAllocatedResponse, error) {
 	var err error
 
-	_, span := otel.Tracer(constant.ServiceName).Start(ctx, "ExistAllocated")
+	_, span := otel.Tracer(servicename.ServiceDomain).Start(ctx, "ExistAllocated")
 	defer span.End()
 
 	defer func() {
@@ -250,7 +250,7 @@ func (s *Server) ExistAllocatedConds(ctx context.Context,
 	in *npool.ExistAllocatedCondsRequest) (*npool.ExistAllocatedCondsResponse, error) {
 	var err error
 
-	_, span := otel.Tracer(constant.ServiceName).Start(ctx, "ExistAllocatedConds")
+	_, span := otel.Tracer(servicename.ServiceDomain).Start(ctx, "ExistAllocatedConds")
 	defer span.End()
 
 	defer func() {
@@ -277,7 +277,7 @@ func (s *Server) ExistAllocatedConds(ctx context.Context,
 func (s *Server) CountAllocateds(ctx context.Context, in *npool.CountAllocatedsRequest) (*npool.CountAllocatedsResponse, error) {
 	var err error
 
-	_, span := otel.Tracer(constant.ServiceName).Start(ctx, "CountAllocateds")
+	_, span := otel.Tracer(servicename.ServiceDomain).Start(ctx, "CountAllocateds")
 	defer span.End()
 
 	defer func() {
@@ -304,7 +304,7 @@ func (s *Server) CountAllocateds(ctx context.Context, in *npool.CountAllocatedsR
 func (s *Server) DeleteAllocated(ctx context.Context, in *npool.DeleteAllocatedRequest) (*npool.DeleteAllocatedResponse, error) {
 	var err error
 
-	_, span := otel.Tracer(constant.ServiceName).Start(ctx, "CreateAllocateds")
+	_, span := otel.Tracer(servicename.ServiceDomain).Start(ctx, "CreateAllocateds")
 	defer span.End()
 
 	defer func() {

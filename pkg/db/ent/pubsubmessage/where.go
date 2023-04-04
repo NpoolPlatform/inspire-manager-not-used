@@ -114,10 +114,10 @@ func State(v string) predicate.PubsubMessage {
 	})
 }
 
-// ResponseToID applies equality check predicate on the "response_to_id" field. It's identical to ResponseToIDEQ.
-func ResponseToID(v uuid.UUID) predicate.PubsubMessage {
+// RespToID applies equality check predicate on the "resp_to_id" field. It's identical to RespToIDEQ.
+func RespToID(v uuid.UUID) predicate.PubsubMessage {
 	return predicate.PubsubMessage(func(s *sql.Selector) {
-		s.Where(sql.EQ(s.C(FieldResponseToID), v))
+		s.Where(sql.EQ(s.C(FieldRespToID), v))
 	})
 }
 
@@ -398,6 +398,20 @@ func MessageIDHasSuffix(v string) predicate.PubsubMessage {
 	})
 }
 
+// MessageIDIsNil applies the IsNil predicate on the "message_id" field.
+func MessageIDIsNil() predicate.PubsubMessage {
+	return predicate.PubsubMessage(func(s *sql.Selector) {
+		s.Where(sql.IsNull(s.C(FieldMessageID)))
+	})
+}
+
+// MessageIDNotNil applies the NotNil predicate on the "message_id" field.
+func MessageIDNotNil() predicate.PubsubMessage {
+	return predicate.PubsubMessage(func(s *sql.Selector) {
+		s.Where(sql.NotNull(s.C(FieldMessageID)))
+	})
+}
+
 // MessageIDEqualFold applies the EqualFold predicate on the "message_id" field.
 func MessageIDEqualFold(v string) predicate.PubsubMessage {
 	return predicate.PubsubMessage(func(s *sql.Selector) {
@@ -497,6 +511,20 @@ func StateHasSuffix(v string) predicate.PubsubMessage {
 	})
 }
 
+// StateIsNil applies the IsNil predicate on the "state" field.
+func StateIsNil() predicate.PubsubMessage {
+	return predicate.PubsubMessage(func(s *sql.Selector) {
+		s.Where(sql.IsNull(s.C(FieldState)))
+	})
+}
+
+// StateNotNil applies the NotNil predicate on the "state" field.
+func StateNotNil() predicate.PubsubMessage {
+	return predicate.PubsubMessage(func(s *sql.Selector) {
+		s.Where(sql.NotNull(s.C(FieldState)))
+	})
+}
+
 // StateEqualFold applies the EqualFold predicate on the "state" field.
 func StateEqualFold(v string) predicate.PubsubMessage {
 	return predicate.PubsubMessage(func(s *sql.Selector) {
@@ -511,81 +539,81 @@ func StateContainsFold(v string) predicate.PubsubMessage {
 	})
 }
 
-// ResponseToIDEQ applies the EQ predicate on the "response_to_id" field.
-func ResponseToIDEQ(v uuid.UUID) predicate.PubsubMessage {
+// RespToIDEQ applies the EQ predicate on the "resp_to_id" field.
+func RespToIDEQ(v uuid.UUID) predicate.PubsubMessage {
 	return predicate.PubsubMessage(func(s *sql.Selector) {
-		s.Where(sql.EQ(s.C(FieldResponseToID), v))
+		s.Where(sql.EQ(s.C(FieldRespToID), v))
 	})
 }
 
-// ResponseToIDNEQ applies the NEQ predicate on the "response_to_id" field.
-func ResponseToIDNEQ(v uuid.UUID) predicate.PubsubMessage {
+// RespToIDNEQ applies the NEQ predicate on the "resp_to_id" field.
+func RespToIDNEQ(v uuid.UUID) predicate.PubsubMessage {
 	return predicate.PubsubMessage(func(s *sql.Selector) {
-		s.Where(sql.NEQ(s.C(FieldResponseToID), v))
+		s.Where(sql.NEQ(s.C(FieldRespToID), v))
 	})
 }
 
-// ResponseToIDIn applies the In predicate on the "response_to_id" field.
-func ResponseToIDIn(vs ...uuid.UUID) predicate.PubsubMessage {
+// RespToIDIn applies the In predicate on the "resp_to_id" field.
+func RespToIDIn(vs ...uuid.UUID) predicate.PubsubMessage {
 	v := make([]interface{}, len(vs))
 	for i := range v {
 		v[i] = vs[i]
 	}
 	return predicate.PubsubMessage(func(s *sql.Selector) {
-		s.Where(sql.In(s.C(FieldResponseToID), v...))
+		s.Where(sql.In(s.C(FieldRespToID), v...))
 	})
 }
 
-// ResponseToIDNotIn applies the NotIn predicate on the "response_to_id" field.
-func ResponseToIDNotIn(vs ...uuid.UUID) predicate.PubsubMessage {
+// RespToIDNotIn applies the NotIn predicate on the "resp_to_id" field.
+func RespToIDNotIn(vs ...uuid.UUID) predicate.PubsubMessage {
 	v := make([]interface{}, len(vs))
 	for i := range v {
 		v[i] = vs[i]
 	}
 	return predicate.PubsubMessage(func(s *sql.Selector) {
-		s.Where(sql.NotIn(s.C(FieldResponseToID), v...))
+		s.Where(sql.NotIn(s.C(FieldRespToID), v...))
 	})
 }
 
-// ResponseToIDGT applies the GT predicate on the "response_to_id" field.
-func ResponseToIDGT(v uuid.UUID) predicate.PubsubMessage {
+// RespToIDGT applies the GT predicate on the "resp_to_id" field.
+func RespToIDGT(v uuid.UUID) predicate.PubsubMessage {
 	return predicate.PubsubMessage(func(s *sql.Selector) {
-		s.Where(sql.GT(s.C(FieldResponseToID), v))
+		s.Where(sql.GT(s.C(FieldRespToID), v))
 	})
 }
 
-// ResponseToIDGTE applies the GTE predicate on the "response_to_id" field.
-func ResponseToIDGTE(v uuid.UUID) predicate.PubsubMessage {
+// RespToIDGTE applies the GTE predicate on the "resp_to_id" field.
+func RespToIDGTE(v uuid.UUID) predicate.PubsubMessage {
 	return predicate.PubsubMessage(func(s *sql.Selector) {
-		s.Where(sql.GTE(s.C(FieldResponseToID), v))
+		s.Where(sql.GTE(s.C(FieldRespToID), v))
 	})
 }
 
-// ResponseToIDLT applies the LT predicate on the "response_to_id" field.
-func ResponseToIDLT(v uuid.UUID) predicate.PubsubMessage {
+// RespToIDLT applies the LT predicate on the "resp_to_id" field.
+func RespToIDLT(v uuid.UUID) predicate.PubsubMessage {
 	return predicate.PubsubMessage(func(s *sql.Selector) {
-		s.Where(sql.LT(s.C(FieldResponseToID), v))
+		s.Where(sql.LT(s.C(FieldRespToID), v))
 	})
 }
 
-// ResponseToIDLTE applies the LTE predicate on the "response_to_id" field.
-func ResponseToIDLTE(v uuid.UUID) predicate.PubsubMessage {
+// RespToIDLTE applies the LTE predicate on the "resp_to_id" field.
+func RespToIDLTE(v uuid.UUID) predicate.PubsubMessage {
 	return predicate.PubsubMessage(func(s *sql.Selector) {
-		s.Where(sql.LTE(s.C(FieldResponseToID), v))
+		s.Where(sql.LTE(s.C(FieldRespToID), v))
 	})
 }
 
-// ResponseToIDIsNil applies the IsNil predicate on the "response_to_id" field.
-func ResponseToIDIsNil() predicate.PubsubMessage {
+// RespToIDIsNil applies the IsNil predicate on the "resp_to_id" field.
+func RespToIDIsNil() predicate.PubsubMessage {
 	return predicate.PubsubMessage(func(s *sql.Selector) {
-		s.Where(sql.IsNull(s.C(FieldResponseToID)))
+		s.Where(sql.IsNull(s.C(FieldRespToID)))
 	})
 }
 
-// ResponseToIDNotNil applies the NotNil predicate on the "response_to_id" field.
-func ResponseToIDNotNil() predicate.PubsubMessage {
+// RespToIDNotNil applies the NotNil predicate on the "resp_to_id" field.
+func RespToIDNotNil() predicate.PubsubMessage {
 	return predicate.PubsubMessage(func(s *sql.Selector) {
-		s.Where(sql.NotNull(s.C(FieldResponseToID)))
+		s.Where(sql.NotNull(s.C(FieldRespToID)))
 	})
 }
 

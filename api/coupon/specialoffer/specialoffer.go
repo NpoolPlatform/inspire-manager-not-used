@@ -9,7 +9,7 @@ import (
 	commontracer "github.com/NpoolPlatform/inspire-manager/pkg/tracer"
 	tracer "github.com/NpoolPlatform/inspire-manager/pkg/tracer/coupon/specialoffer"
 
-	constant "github.com/NpoolPlatform/inspire-manager/pkg/message/const"
+	"github.com/NpoolPlatform/inspire-manager/pkg/servicename"
 
 	"go.opentelemetry.io/otel"
 	scodes "go.opentelemetry.io/otel/codes"
@@ -31,7 +31,7 @@ func (s *Server) CreateSpecialOffer(
 ) {
 	var err error
 
-	_, span := otel.Tracer(constant.ServiceName).Start(ctx, "CreateSpecialOffer")
+	_, span := otel.Tracer(servicename.ServiceDomain).Start(ctx, "CreateSpecialOffer")
 	defer span.End()
 
 	defer func() {
@@ -70,7 +70,7 @@ func (s *Server) CreateSpecialOffers(
 ) {
 	var err error
 
-	_, span := otel.Tracer(constant.ServiceName).Start(ctx, "CreateSpecialOffers")
+	_, span := otel.Tracer(servicename.ServiceDomain).Start(ctx, "CreateSpecialOffers")
 	defer span.End()
 
 	defer func() {
@@ -107,7 +107,7 @@ func (s *Server) UpdateSpecialOffer(
 ) {
 	var err error
 
-	_, span := otel.Tracer(constant.ServiceName).Start(ctx, "UpdateSpecialOffers")
+	_, span := otel.Tracer(servicename.ServiceDomain).Start(ctx, "UpdateSpecialOffers")
 	defer span.End()
 
 	defer func() {
@@ -140,7 +140,7 @@ func (s *Server) GetSpecialOffer(
 ) {
 	var err error
 
-	_, span := otel.Tracer(constant.ServiceName).Start(ctx, "GetSpecialOffer")
+	_, span := otel.Tracer(servicename.ServiceDomain).Start(ctx, "GetSpecialOffer")
 	defer span.End()
 
 	defer func() {
@@ -179,7 +179,7 @@ func (s *Server) GetSpecialOfferOnly(
 ) {
 	var err error
 
-	_, span := otel.Tracer(constant.ServiceName).Start(ctx, "GetSpecialOfferOnly")
+	_, span := otel.Tracer(servicename.ServiceDomain).Start(ctx, "GetSpecialOfferOnly")
 	defer span.End()
 
 	defer func() {
@@ -206,7 +206,7 @@ func (s *Server) GetSpecialOfferOnly(
 func (s *Server) GetSpecialOffers(ctx context.Context, in *npool.GetSpecialOffersRequest) (*npool.GetSpecialOffersResponse, error) {
 	var err error
 
-	_, span := otel.Tracer(constant.ServiceName).Start(ctx, "GetSpecialOffers")
+	_, span := otel.Tracer(servicename.ServiceDomain).Start(ctx, "GetSpecialOffers")
 	defer span.End()
 
 	defer func() {
@@ -241,7 +241,7 @@ func (s *Server) ExistSpecialOffer(
 ) {
 	var err error
 
-	_, span := otel.Tracer(constant.ServiceName).Start(ctx, "ExistSpecialOffer")
+	_, span := otel.Tracer(servicename.ServiceDomain).Start(ctx, "ExistSpecialOffer")
 	defer span.End()
 
 	defer func() {
@@ -280,7 +280,7 @@ func (s *Server) ExistSpecialOfferConds(
 ) {
 	var err error
 
-	_, span := otel.Tracer(constant.ServiceName).Start(ctx, "ExistSpecialOfferConds")
+	_, span := otel.Tracer(servicename.ServiceDomain).Start(ctx, "ExistSpecialOfferConds")
 	defer span.End()
 
 	defer func() {
@@ -313,7 +313,7 @@ func (s *Server) CountSpecialOffers(
 ) {
 	var err error
 
-	_, span := otel.Tracer(constant.ServiceName).Start(ctx, "CountSpecialOffers")
+	_, span := otel.Tracer(servicename.ServiceDomain).Start(ctx, "CountSpecialOffers")
 	defer span.End()
 
 	defer func() {
@@ -346,7 +346,7 @@ func (s *Server) DeleteSpecialOffer(
 ) {
 	var err error
 
-	_, span := otel.Tracer(constant.ServiceName).Start(ctx, "CreateSpecialOffers")
+	_, span := otel.Tracer(servicename.ServiceDomain).Start(ctx, "CreateSpecialOffers")
 	defer span.End()
 
 	defer func() {

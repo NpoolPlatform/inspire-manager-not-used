@@ -9,7 +9,7 @@ import (
 	commontracer "github.com/NpoolPlatform/inspire-manager/pkg/tracer"
 	tracer "github.com/NpoolPlatform/inspire-manager/pkg/tracer/coupon/discount"
 
-	constant "github.com/NpoolPlatform/inspire-manager/pkg/message/const"
+	"github.com/NpoolPlatform/inspire-manager/pkg/servicename"
 
 	"go.opentelemetry.io/otel"
 	scodes "go.opentelemetry.io/otel/codes"
@@ -25,7 +25,7 @@ import (
 func (s *Server) CreateDiscount(ctx context.Context, in *npool.CreateDiscountRequest) (*npool.CreateDiscountResponse, error) {
 	var err error
 
-	_, span := otel.Tracer(constant.ServiceName).Start(ctx, "CreateDiscount")
+	_, span := otel.Tracer(servicename.ServiceDomain).Start(ctx, "CreateDiscount")
 	defer span.End()
 
 	defer func() {
@@ -58,7 +58,7 @@ func (s *Server) CreateDiscount(ctx context.Context, in *npool.CreateDiscountReq
 func (s *Server) CreateDiscounts(ctx context.Context, in *npool.CreateDiscountsRequest) (*npool.CreateDiscountsResponse, error) {
 	var err error
 
-	_, span := otel.Tracer(constant.ServiceName).Start(ctx, "CreateDiscounts")
+	_, span := otel.Tracer(servicename.ServiceDomain).Start(ctx, "CreateDiscounts")
 	defer span.End()
 
 	defer func() {
@@ -95,7 +95,7 @@ func (s *Server) UpdateDiscount(
 ) {
 	var err error
 
-	_, span := otel.Tracer(constant.ServiceName).Start(ctx, "UpdateDiscounts")
+	_, span := otel.Tracer(servicename.ServiceDomain).Start(ctx, "UpdateDiscounts")
 	defer span.End()
 
 	defer func() {
@@ -122,7 +122,7 @@ func (s *Server) UpdateDiscount(
 func (s *Server) GetDiscount(ctx context.Context, in *npool.GetDiscountRequest) (*npool.GetDiscountResponse, error) {
 	var err error
 
-	_, span := otel.Tracer(constant.ServiceName).Start(ctx, "GetDiscount")
+	_, span := otel.Tracer(servicename.ServiceDomain).Start(ctx, "GetDiscount")
 	defer span.End()
 
 	defer func() {
@@ -155,7 +155,7 @@ func (s *Server) GetDiscount(ctx context.Context, in *npool.GetDiscountRequest) 
 func (s *Server) GetDiscountOnly(ctx context.Context, in *npool.GetDiscountOnlyRequest) (*npool.GetDiscountOnlyResponse, error) {
 	var err error
 
-	_, span := otel.Tracer(constant.ServiceName).Start(ctx, "GetDiscountOnly")
+	_, span := otel.Tracer(servicename.ServiceDomain).Start(ctx, "GetDiscountOnly")
 	defer span.End()
 
 	defer func() {
@@ -182,7 +182,7 @@ func (s *Server) GetDiscountOnly(ctx context.Context, in *npool.GetDiscountOnlyR
 func (s *Server) GetDiscounts(ctx context.Context, in *npool.GetDiscountsRequest) (*npool.GetDiscountsResponse, error) {
 	var err error
 
-	_, span := otel.Tracer(constant.ServiceName).Start(ctx, "GetDiscounts")
+	_, span := otel.Tracer(servicename.ServiceDomain).Start(ctx, "GetDiscounts")
 	defer span.End()
 
 	defer func() {
@@ -211,7 +211,7 @@ func (s *Server) GetDiscounts(ctx context.Context, in *npool.GetDiscountsRequest
 func (s *Server) ExistDiscount(ctx context.Context, in *npool.ExistDiscountRequest) (*npool.ExistDiscountResponse, error) {
 	var err error
 
-	_, span := otel.Tracer(constant.ServiceName).Start(ctx, "ExistDiscount")
+	_, span := otel.Tracer(servicename.ServiceDomain).Start(ctx, "ExistDiscount")
 	defer span.End()
 
 	defer func() {
@@ -245,7 +245,7 @@ func (s *Server) ExistDiscountConds(ctx context.Context,
 	in *npool.ExistDiscountCondsRequest) (*npool.ExistDiscountCondsResponse, error) {
 	var err error
 
-	_, span := otel.Tracer(constant.ServiceName).Start(ctx, "ExistDiscountConds")
+	_, span := otel.Tracer(servicename.ServiceDomain).Start(ctx, "ExistDiscountConds")
 	defer span.End()
 
 	defer func() {
@@ -272,7 +272,7 @@ func (s *Server) ExistDiscountConds(ctx context.Context,
 func (s *Server) CountDiscounts(ctx context.Context, in *npool.CountDiscountsRequest) (*npool.CountDiscountsResponse, error) {
 	var err error
 
-	_, span := otel.Tracer(constant.ServiceName).Start(ctx, "CountDiscounts")
+	_, span := otel.Tracer(servicename.ServiceDomain).Start(ctx, "CountDiscounts")
 	defer span.End()
 
 	defer func() {
@@ -299,7 +299,7 @@ func (s *Server) CountDiscounts(ctx context.Context, in *npool.CountDiscountsReq
 func (s *Server) DeleteDiscount(ctx context.Context, in *npool.DeleteDiscountRequest) (*npool.DeleteDiscountResponse, error) {
 	var err error
 
-	_, span := otel.Tracer(constant.ServiceName).Start(ctx, "CreateDiscounts")
+	_, span := otel.Tracer(servicename.ServiceDomain).Start(ctx, "CreateDiscounts")
 	defer span.End()
 
 	defer func() {

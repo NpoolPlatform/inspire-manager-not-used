@@ -22,8 +22,8 @@ const (
 	FieldMessageID = "message_id"
 	// FieldState holds the string denoting the state field in the database.
 	FieldState = "state"
-	// FieldResponseToID holds the string denoting the response_to_id field in the database.
-	FieldResponseToID = "response_to_id"
+	// FieldRespToID holds the string denoting the resp_to_id field in the database.
+	FieldRespToID = "resp_to_id"
 	// Table holds the table name of the pubsubmessage in the database.
 	Table = "pubsub_messages"
 )
@@ -36,7 +36,7 @@ var Columns = []string{
 	FieldDeletedAt,
 	FieldMessageID,
 	FieldState,
-	FieldResponseToID,
+	FieldRespToID,
 }
 
 // ValidColumn reports if the column name is valid (part of the table columns).
@@ -66,6 +66,10 @@ var (
 	UpdateDefaultUpdatedAt func() uint32
 	// DefaultDeletedAt holds the default value on creation for the "deleted_at" field.
 	DefaultDeletedAt func() uint32
-	// DefaultResponseToID holds the default value on creation for the "response_to_id" field.
-	DefaultResponseToID func() uuid.UUID
+	// DefaultMessageID holds the default value on creation for the "message_id" field.
+	DefaultMessageID string
+	// DefaultState holds the default value on creation for the "state" field.
+	DefaultState string
+	// DefaultRespToID holds the default value on creation for the "resp_to_id" field.
+	DefaultRespToID func() uuid.UUID
 )

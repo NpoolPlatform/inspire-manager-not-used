@@ -26,8 +26,8 @@ type PubsubMessage struct {
 	MessageID string `json:"message_id,omitempty"`
 	// State holds the value of the "state" field.
 	State string `json:"state,omitempty"`
-	// ResponseToID holds the value of the "response_to_id" field.
-	ResponseToID uuid.UUID `json:"response_to_id,omitempty"`
+	// RespToID holds the value of the "resp_to_id" field.
+	RespToID uuid.UUID `json:"resp_to_id,omitempty"`
 }
 
 // scanValues returns the types for scanning values from sql.Rows.
@@ -39,7 +39,7 @@ func (*PubsubMessage) scanValues(columns []string) ([]interface{}, error) {
 			values[i] = new(sql.NullInt64)
 		case pubsubmessage.FieldMessageID, pubsubmessage.FieldState:
 			values[i] = new(sql.NullString)
-		case pubsubmessage.FieldID, pubsubmessage.FieldResponseToID:
+		case pubsubmessage.FieldID, pubsubmessage.FieldRespToID:
 			values[i] = new(uuid.UUID)
 		default:
 			return nil, fmt.Errorf("unexpected column %q for type PubsubMessage", columns[i])
@@ -92,11 +92,11 @@ func (pm *PubsubMessage) assignValues(columns []string, values []interface{}) er
 			} else if value.Valid {
 				pm.State = value.String
 			}
-		case pubsubmessage.FieldResponseToID:
+		case pubsubmessage.FieldRespToID:
 			if value, ok := values[i].(*uuid.UUID); !ok {
-				return fmt.Errorf("unexpected type %T for field response_to_id", values[i])
+				return fmt.Errorf("unexpected type %T for field resp_to_id", values[i])
 			} else if value != nil {
-				pm.ResponseToID = *value
+				pm.RespToID = *value
 			}
 		}
 	}
@@ -141,8 +141,8 @@ func (pm *PubsubMessage) String() string {
 	builder.WriteString("state=")
 	builder.WriteString(pm.State)
 	builder.WriteString(", ")
-	builder.WriteString("response_to_id=")
-	builder.WriteString(fmt.Sprintf("%v", pm.ResponseToID))
+	builder.WriteString("resp_to_id=")
+	builder.WriteString(fmt.Sprintf("%v", pm.RespToID))
 	builder.WriteByte(')')
 	return builder.String()
 }

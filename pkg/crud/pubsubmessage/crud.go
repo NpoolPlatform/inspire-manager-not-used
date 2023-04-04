@@ -4,7 +4,7 @@ import (
 	"context"
 
 	entpubsubmessgae "github.com/NpoolPlatform/inspire-manager/pkg/db/ent/pubsubmessage"
-	constant "github.com/NpoolPlatform/inspire-manager/pkg/message/const"
+	"github.com/NpoolPlatform/inspire-manager/pkg/servicename"
 	commontracer "github.com/NpoolPlatform/inspire-manager/pkg/tracer"
 
 	"go.opentelemetry.io/otel"
@@ -20,16 +20,16 @@ func CreateSet(
 	uniqueID uuid.UUID,
 	messageID string,
 	state string,
-	respondToID *uuid.UUID,
+	respToID *uuid.UUID,
 ) (*ent.PubsubMessageCreate, error) {
 	c.SetID(uniqueID)
 	c.SetMessageID(messageID)
 	c.SetState(state)
-	respondToID1 := uuid.UUID{}
-	if respondToID != nil {
-		respondToID1 = *respondToID
+	respToID1 := uuid.UUID{}
+	if respToID != nil {
+		respToID1 = *respToID
 	}
-	c.SetResponseToID(respondToID1)
+	c.SetRespToID(respToID1)
 	return c, nil
 }
 
@@ -46,7 +46,7 @@ func Row(ctx context.Context, uniqueID uuid.UUID) (*ent.PubsubMessage, error) {
 	var info *ent.PubsubMessage
 	var err error
 
-	_, span := otel.Tracer(constant.ServiceName).Start(ctx, "Row")
+	_, span := otel.Tracer(servicename.ServiceDomain).Start(ctx, "Row")
 	defer span.End()
 
 	defer func() {
@@ -73,7 +73,7 @@ func Exist(ctx context.Context, id uuid.UUID) (bool, error) {
 	var err error
 	exist := false
 
-	_, span := otel.Tracer(constant.ServiceName).Start(ctx, "Exist")
+	_, span := otel.Tracer(servicename.ServiceDomain).Start(ctx, "Exist")
 	defer span.End()
 
 	defer func() {

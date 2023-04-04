@@ -8,7 +8,7 @@ import (
 	crud "github.com/NpoolPlatform/inspire-manager/pkg/crud/event"
 	commontracer "github.com/NpoolPlatform/inspire-manager/pkg/tracer"
 
-	constant "github.com/NpoolPlatform/inspire-manager/pkg/message/const"
+	"github.com/NpoolPlatform/inspire-manager/pkg/servicename"
 
 	"go.opentelemetry.io/otel"
 	scodes "go.opentelemetry.io/otel/codes"
@@ -24,7 +24,7 @@ import (
 func (s *Server) DeleteEvent(ctx context.Context, in *npool.DeleteEventRequest) (*npool.DeleteEventResponse, error) {
 	var err error
 
-	_, span := otel.Tracer(constant.ServiceName).Start(ctx, "DeleteEvent")
+	_, span := otel.Tracer(servicename.ServiceDomain).Start(ctx, "DeleteEvent")
 	defer span.End()
 
 	defer func() {

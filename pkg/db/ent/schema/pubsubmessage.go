@@ -5,6 +5,7 @@ import (
 	"entgo.io/ent/schema/field"
 	"entgo.io/ent/schema/index"
 	"github.com/NpoolPlatform/inspire-manager/pkg/db/mixin"
+	msgpb "github.com/NpoolPlatform/message/npool/basetypes/v1"
 	"github.com/google/uuid"
 )
 
@@ -26,11 +27,15 @@ func (PubsubMessage) Fields() []ent.Field {
 			UUID("id", uuid.UUID{}).
 			Unique(),
 		field.
-			String("message_id"),
+			String("message_id").
+			Optional().
+			Default(msgpb.MessageID_DefaultMessageID.String()),
 		field.
-			String("state"),
+			String("state").
+			Optional().
+			Default(msgpb.MessageState_Processing.String()),
 		field.
-			UUID("response_to_id", uuid.UUID{}).
+			UUID("resp_to_id", uuid.UUID{}).
 			Optional().
 			Default(func() uuid.UUID {
 				return uuid.UUID{}
@@ -45,6 +50,6 @@ func (PubsubMessage) Edges() []ent.Edge {
 
 func (PubsubMessage) Indexes() []ent.Index {
 	return []ent.Index{
-		index.Fields("state", "response_to_id"),
+		index.Fields("state", "resp_to_id"),
 	}
 }

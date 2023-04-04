@@ -9,7 +9,7 @@ import (
 	commontracer "github.com/NpoolPlatform/inspire-manager/pkg/tracer"
 	tracer "github.com/NpoolPlatform/inspire-manager/pkg/tracer/archivement/general"
 
-	constant "github.com/NpoolPlatform/inspire-manager/pkg/message/const"
+	"github.com/NpoolPlatform/inspire-manager/pkg/servicename"
 
 	"go.opentelemetry.io/otel"
 	scodes "go.opentelemetry.io/otel/codes"
@@ -25,7 +25,7 @@ import (
 func (s *Server) CreateGeneral(ctx context.Context, in *npool.CreateGeneralRequest) (*npool.CreateGeneralResponse, error) {
 	var err error
 
-	_, span := otel.Tracer(constant.ServiceName).Start(ctx, "CreateGeneral")
+	_, span := otel.Tracer(servicename.ServiceDomain).Start(ctx, "CreateGeneral")
 	defer span.End()
 
 	defer func() {
@@ -58,7 +58,7 @@ func (s *Server) CreateGeneral(ctx context.Context, in *npool.CreateGeneralReque
 func (s *Server) CreateGenerals(ctx context.Context, in *npool.CreateGeneralsRequest) (*npool.CreateGeneralsResponse, error) {
 	var err error
 
-	_, span := otel.Tracer(constant.ServiceName).Start(ctx, "CreateGenerals")
+	_, span := otel.Tracer(servicename.ServiceDomain).Start(ctx, "CreateGenerals")
 	defer span.End()
 
 	defer func() {
@@ -94,7 +94,7 @@ func (s *Server) CreateGenerals(ctx context.Context, in *npool.CreateGeneralsReq
 func (s *Server) AddGeneral(ctx context.Context, in *npool.AddGeneralRequest) (*npool.AddGeneralResponse, error) {
 	var err error
 
-	_, span := otel.Tracer(constant.ServiceName).Start(ctx, "GetGeneral")
+	_, span := otel.Tracer(servicename.ServiceDomain).Start(ctx, "GetGeneral")
 	defer span.End()
 
 	defer func() {
@@ -127,7 +127,7 @@ func (s *Server) AddGeneral(ctx context.Context, in *npool.AddGeneralRequest) (*
 func (s *Server) GetGeneral(ctx context.Context, in *npool.GetGeneralRequest) (*npool.GetGeneralResponse, error) {
 	var err error
 
-	_, span := otel.Tracer(constant.ServiceName).Start(ctx, "GetGeneral")
+	_, span := otel.Tracer(servicename.ServiceDomain).Start(ctx, "GetGeneral")
 	defer span.End()
 
 	defer func() {
@@ -160,7 +160,7 @@ func (s *Server) GetGeneral(ctx context.Context, in *npool.GetGeneralRequest) (*
 func (s *Server) GetGeneralOnly(ctx context.Context, in *npool.GetGeneralOnlyRequest) (*npool.GetGeneralOnlyResponse, error) {
 	var err error
 
-	_, span := otel.Tracer(constant.ServiceName).Start(ctx, "GetGeneralOnly")
+	_, span := otel.Tracer(servicename.ServiceDomain).Start(ctx, "GetGeneralOnly")
 	defer span.End()
 
 	defer func() {
@@ -187,7 +187,7 @@ func (s *Server) GetGeneralOnly(ctx context.Context, in *npool.GetGeneralOnlyReq
 func (s *Server) GetGenerals(ctx context.Context, in *npool.GetGeneralsRequest) (*npool.GetGeneralsResponse, error) {
 	var err error
 
-	_, span := otel.Tracer(constant.ServiceName).Start(ctx, "GetGenerals")
+	_, span := otel.Tracer(servicename.ServiceDomain).Start(ctx, "GetGenerals")
 	defer span.End()
 
 	defer func() {
@@ -216,7 +216,7 @@ func (s *Server) GetGenerals(ctx context.Context, in *npool.GetGeneralsRequest) 
 func (s *Server) ExistGeneral(ctx context.Context, in *npool.ExistGeneralRequest) (*npool.ExistGeneralResponse, error) {
 	var err error
 
-	_, span := otel.Tracer(constant.ServiceName).Start(ctx, "ExistGeneral")
+	_, span := otel.Tracer(servicename.ServiceDomain).Start(ctx, "ExistGeneral")
 	defer span.End()
 
 	defer func() {
@@ -250,7 +250,7 @@ func (s *Server) ExistGeneralConds(ctx context.Context,
 	in *npool.ExistGeneralCondsRequest) (*npool.ExistGeneralCondsResponse, error) {
 	var err error
 
-	_, span := otel.Tracer(constant.ServiceName).Start(ctx, "ExistGeneralConds")
+	_, span := otel.Tracer(servicename.ServiceDomain).Start(ctx, "ExistGeneralConds")
 	defer span.End()
 
 	defer func() {
@@ -277,7 +277,7 @@ func (s *Server) ExistGeneralConds(ctx context.Context,
 func (s *Server) CountGenerals(ctx context.Context, in *npool.CountGeneralsRequest) (*npool.CountGeneralsResponse, error) {
 	var err error
 
-	_, span := otel.Tracer(constant.ServiceName).Start(ctx, "CountGenerals")
+	_, span := otel.Tracer(servicename.ServiceDomain).Start(ctx, "CountGenerals")
 	defer span.End()
 
 	defer func() {
@@ -304,7 +304,7 @@ func (s *Server) CountGenerals(ctx context.Context, in *npool.CountGeneralsReque
 func (s *Server) DeleteGeneral(ctx context.Context, in *npool.DeleteGeneralRequest) (*npool.DeleteGeneralResponse, error) {
 	var err error
 
-	_, span := otel.Tracer(constant.ServiceName).Start(ctx, "DeleteGeneral")
+	_, span := otel.Tracer(servicename.ServiceDomain).Start(ctx, "DeleteGeneral")
 	defer span.End()
 
 	defer func() {
