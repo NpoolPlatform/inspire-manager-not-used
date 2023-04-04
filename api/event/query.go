@@ -10,7 +10,7 @@ import (
 	commontracer "github.com/NpoolPlatform/inspire-manager/pkg/tracer"
 	tracer "github.com/NpoolPlatform/inspire-manager/pkg/tracer/event"
 
-	constant "github.com/NpoolPlatform/inspire-manager/pkg/message/const"
+	"github.com/NpoolPlatform/inspire-manager/pkg/servicename"
 
 	"go.opentelemetry.io/otel"
 	scodes "go.opentelemetry.io/otel/codes"
@@ -67,7 +67,7 @@ func ValidateConds(conds *npool.Conds) error { //nolint
 func (s *Server) GetEvent(ctx context.Context, in *npool.GetEventRequest) (*npool.GetEventResponse, error) {
 	var err error
 
-	_, span := otel.Tracer(constant.ServiceName).Start(ctx, "GetEvent")
+	_, span := otel.Tracer(servicename.ServiceDomain).Start(ctx, "GetEvent")
 	defer span.End()
 
 	defer func() {
@@ -101,7 +101,7 @@ func (s *Server) GetEvent(ctx context.Context, in *npool.GetEventRequest) (*npoo
 func (s *Server) GetEventOnly(ctx context.Context, in *npool.GetEventOnlyRequest) (*npool.GetEventOnlyResponse, error) {
 	var err error
 
-	_, span := otel.Tracer(constant.ServiceName).Start(ctx, "GetEventOnly")
+	_, span := otel.Tracer(servicename.ServiceDomain).Start(ctx, "GetEventOnly")
 	defer span.End()
 
 	defer func() {
@@ -133,7 +133,7 @@ func (s *Server) GetEventOnly(ctx context.Context, in *npool.GetEventOnlyRequest
 func (s *Server) GetEvents(ctx context.Context, in *npool.GetEventsRequest) (*npool.GetEventsResponse, error) {
 	var err error
 
-	_, span := otel.Tracer(constant.ServiceName).Start(ctx, "GetEvents")
+	_, span := otel.Tracer(servicename.ServiceDomain).Start(ctx, "GetEvents")
 	defer span.End()
 
 	defer func() {
@@ -167,7 +167,7 @@ func (s *Server) GetEvents(ctx context.Context, in *npool.GetEventsRequest) (*np
 func (s *Server) ExistEvent(ctx context.Context, in *npool.ExistEventRequest) (*npool.ExistEventResponse, error) {
 	var err error
 
-	_, span := otel.Tracer(constant.ServiceName).Start(ctx, "ExistEvent")
+	_, span := otel.Tracer(servicename.ServiceDomain).Start(ctx, "ExistEvent")
 	defer span.End()
 
 	defer func() {
@@ -202,7 +202,7 @@ func (s *Server) ExistEventConds(ctx context.Context,
 	in *npool.ExistEventCondsRequest) (*npool.ExistEventCondsResponse, error) {
 	var err error
 
-	_, span := otel.Tracer(constant.ServiceName).Start(ctx, "ExistEventConds")
+	_, span := otel.Tracer(servicename.ServiceDomain).Start(ctx, "ExistEventConds")
 	defer span.End()
 
 	defer func() {
@@ -234,7 +234,7 @@ func (s *Server) ExistEventConds(ctx context.Context,
 func (s *Server) CountEvents(ctx context.Context, in *npool.CountEventsRequest) (*npool.CountEventsResponse, error) {
 	var err error
 
-	_, span := otel.Tracer(constant.ServiceName).Start(ctx, "CountEvents")
+	_, span := otel.Tracer(servicename.ServiceDomain).Start(ctx, "CountEvents")
 	defer span.End()
 
 	defer func() {

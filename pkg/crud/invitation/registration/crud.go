@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"time"
 
-	constant "github.com/NpoolPlatform/inspire-manager/pkg/message/const"
+	"github.com/NpoolPlatform/inspire-manager/pkg/servicename"
 	commontracer "github.com/NpoolPlatform/inspire-manager/pkg/tracer"
 	tracer "github.com/NpoolPlatform/inspire-manager/pkg/tracer/invitation/registration"
 
@@ -42,7 +42,7 @@ func Create(ctx context.Context, in *npool.RegistrationReq) (*ent.Registration, 
 	var info *ent.Registration
 	var err error
 
-	_, span := otel.Tracer(constant.ServiceName).Start(ctx, "Create")
+	_, span := otel.Tracer(servicename.ServiceDomain).Start(ctx, "Create")
 	defer span.End()
 
 	defer func() {
@@ -73,7 +73,7 @@ func Create(ctx context.Context, in *npool.RegistrationReq) (*ent.Registration, 
 func CreateBulk(ctx context.Context, in []*npool.RegistrationReq) ([]*ent.Registration, error) {
 	var err error
 
-	_, span := otel.Tracer(constant.ServiceName).Start(ctx, "CreateBulk")
+	_, span := otel.Tracer(servicename.ServiceDomain).Start(ctx, "CreateBulk")
 	defer span.End()
 
 	defer func() {
@@ -117,7 +117,7 @@ func Update(ctx context.Context, in *npool.RegistrationReq) (*ent.Registration, 
 	var info *ent.Registration
 	var err error
 
-	_, span := otel.Tracer(constant.ServiceName).Start(ctx, "Update")
+	_, span := otel.Tracer(servicename.ServiceDomain).Start(ctx, "Update")
 	defer span.End()
 
 	defer func() {
@@ -155,7 +155,7 @@ func Row(ctx context.Context, id uuid.UUID) (*ent.Registration, error) {
 	var info *ent.Registration
 	var err error
 
-	_, span := otel.Tracer(constant.ServiceName).Start(ctx, "Row")
+	_, span := otel.Tracer(servicename.ServiceDomain).Start(ctx, "Row")
 	defer span.End()
 
 	defer func() {
@@ -242,7 +242,7 @@ func SetQueryConds(conds *npool.Conds, cli *ent.Client) (*ent.RegistrationQuery,
 func Rows(ctx context.Context, conds *npool.Conds, offset, limit int) ([]*ent.Registration, int, error) {
 	var err error
 
-	_, span := otel.Tracer(constant.ServiceName).Start(ctx, "Rows")
+	_, span := otel.Tracer(servicename.ServiceDomain).Start(ctx, "Rows")
 	defer span.End()
 
 	defer func() {
@@ -289,7 +289,7 @@ func RowOnly(ctx context.Context, conds *npool.Conds) (*ent.Registration, error)
 	var info *ent.Registration
 	var err error
 
-	_, span := otel.Tracer(constant.ServiceName).Start(ctx, "RowOnly")
+	_, span := otel.Tracer(servicename.ServiceDomain).Start(ctx, "RowOnly")
 	defer span.End()
 
 	defer func() {
@@ -328,7 +328,7 @@ func Count(ctx context.Context, conds *npool.Conds) (uint32, error) {
 	var err error
 	var total int
 
-	_, span := otel.Tracer(constant.ServiceName).Start(ctx, "Count")
+	_, span := otel.Tracer(servicename.ServiceDomain).Start(ctx, "Count")
 	defer span.End()
 
 	defer func() {
@@ -363,7 +363,7 @@ func Exist(ctx context.Context, id uuid.UUID) (bool, error) {
 	var err error
 	exist := false
 
-	_, span := otel.Tracer(constant.ServiceName).Start(ctx, "Exist")
+	_, span := otel.Tracer(servicename.ServiceDomain).Start(ctx, "Exist")
 	defer span.End()
 
 	defer func() {
@@ -390,7 +390,7 @@ func ExistConds(ctx context.Context, conds *npool.Conds) (bool, error) {
 	var err error
 	exist := false
 
-	_, span := otel.Tracer(constant.ServiceName).Start(ctx, "ExistConds")
+	_, span := otel.Tracer(servicename.ServiceDomain).Start(ctx, "ExistConds")
 	defer span.End()
 
 	defer func() {
@@ -426,7 +426,7 @@ func Delete(ctx context.Context, id uuid.UUID) (*ent.Registration, error) {
 	var info *ent.Registration
 	var err error
 
-	_, span := otel.Tracer(constant.ServiceName).Start(ctx, "Delete")
+	_, span := otel.Tracer(servicename.ServiceDomain).Start(ctx, "Delete")
 	defer span.End()
 
 	defer func() {

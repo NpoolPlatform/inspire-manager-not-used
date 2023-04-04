@@ -10,7 +10,7 @@ import (
 	commontracer "github.com/NpoolPlatform/inspire-manager/pkg/tracer"
 	tracer "github.com/NpoolPlatform/inspire-manager/pkg/tracer/commission/goodordervaluepercent"
 
-	constant "github.com/NpoolPlatform/inspire-manager/pkg/message/const"
+	"github.com/NpoolPlatform/inspire-manager/pkg/servicename"
 
 	"github.com/shopspring/decimal"
 
@@ -68,7 +68,7 @@ func (s *Server) CreateOrderValuePercent(
 ) {
 	var err error
 
-	_, span := otel.Tracer(constant.ServiceName).Start(ctx, "CreateOrderValuePercent")
+	_, span := otel.Tracer(servicename.ServiceDomain).Start(ctx, "CreateOrderValuePercent")
 	defer span.End()
 
 	defer func() {
@@ -107,7 +107,7 @@ func (s *Server) CreateOrderValuePercents(
 ) {
 	var err error
 
-	_, span := otel.Tracer(constant.ServiceName).Start(ctx, "CreateOrderValuePercents")
+	_, span := otel.Tracer(servicename.ServiceDomain).Start(ctx, "CreateOrderValuePercents")
 	defer span.End()
 
 	defer func() {
@@ -144,7 +144,7 @@ func (s *Server) UpdateOrderValuePercent(
 ) {
 	var err error
 
-	_, span := otel.Tracer(constant.ServiceName).Start(ctx, "UpdateOrderValuePercent")
+	_, span := otel.Tracer(servicename.ServiceDomain).Start(ctx, "UpdateOrderValuePercent")
 	defer span.End()
 
 	defer func() {
@@ -179,7 +179,7 @@ func (s *Server) GetOrderValuePercent(
 ) (*npool.GetOrderValuePercentResponse, error) {
 	var err error
 
-	_, span := otel.Tracer(constant.ServiceName).Start(ctx, "GetOrderValuePercent")
+	_, span := otel.Tracer(servicename.ServiceDomain).Start(ctx, "GetOrderValuePercent")
 	defer span.End()
 
 	defer func() {
@@ -253,7 +253,7 @@ func (s *Server) GetOrderValuePercentOnly(
 ) {
 	var err error
 
-	_, span := otel.Tracer(constant.ServiceName).Start(ctx, "GetOrderValuePercentOnly")
+	_, span := otel.Tracer(servicename.ServiceDomain).Start(ctx, "GetOrderValuePercentOnly")
 	defer span.End()
 
 	defer func() {
@@ -287,7 +287,7 @@ func (s *Server) GetOrderValuePercents(
 ) (*npool.GetOrderValuePercentsResponse, error) {
 	var err error
 
-	_, span := otel.Tracer(constant.ServiceName).Start(ctx, "GetOrderValuePercents")
+	_, span := otel.Tracer(servicename.ServiceDomain).Start(ctx, "GetOrderValuePercents")
 	defer span.End()
 
 	defer func() {
@@ -326,7 +326,7 @@ func (s *Server) ExistOrderValuePercent(
 ) {
 	var err error
 
-	_, span := otel.Tracer(constant.ServiceName).Start(ctx, "ExistOrderValuePercent")
+	_, span := otel.Tracer(servicename.ServiceDomain).Start(ctx, "ExistOrderValuePercent")
 	defer span.End()
 
 	defer func() {
@@ -360,7 +360,7 @@ func (s *Server) ExistOrderValuePercentConds(ctx context.Context,
 	in *npool.ExistOrderValuePercentCondsRequest) (*npool.ExistOrderValuePercentCondsResponse, error) {
 	var err error
 
-	_, span := otel.Tracer(constant.ServiceName).Start(ctx, "ExistOrderValuePercentConds")
+	_, span := otel.Tracer(servicename.ServiceDomain).Start(ctx, "ExistOrderValuePercentConds")
 	defer span.End()
 
 	defer func() {
@@ -397,7 +397,7 @@ func (s *Server) CountOrderValuePercents(
 ) {
 	var err error
 
-	_, span := otel.Tracer(constant.ServiceName).Start(ctx, "CountOrderValuePercents")
+	_, span := otel.Tracer(servicename.ServiceDomain).Start(ctx, "CountOrderValuePercents")
 	defer span.End()
 
 	defer func() {
