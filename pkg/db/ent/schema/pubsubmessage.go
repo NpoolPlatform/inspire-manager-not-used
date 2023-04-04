@@ -30,7 +30,11 @@ func (PubsubMessage) Fields() []ent.Field {
 		field.
 			String("state"),
 		field.
-			UUID("response_to_id", uuid.UUID{}),
+			UUID("response_to_id", uuid.UUID{}).
+			Optional().
+			Default(func() uuid.UUID {
+				return uuid.UUID{}
+			}),
 	}
 }
 

@@ -102,6 +102,20 @@ func (pmu *PubsubMessageUpdate) SetResponseToID(u uuid.UUID) *PubsubMessageUpdat
 	return pmu
 }
 
+// SetNillableResponseToID sets the "response_to_id" field if the given value is not nil.
+func (pmu *PubsubMessageUpdate) SetNillableResponseToID(u *uuid.UUID) *PubsubMessageUpdate {
+	if u != nil {
+		pmu.SetResponseToID(*u)
+	}
+	return pmu
+}
+
+// ClearResponseToID clears the value of the "response_to_id" field.
+func (pmu *PubsubMessageUpdate) ClearResponseToID() *PubsubMessageUpdate {
+	pmu.mutation.ClearResponseToID()
+	return pmu
+}
+
 // Mutation returns the PubsubMessageMutation object of the builder.
 func (pmu *PubsubMessageUpdate) Mutation() *PubsubMessageMutation {
 	return pmu.mutation
@@ -263,6 +277,12 @@ func (pmu *PubsubMessageUpdate) sqlSave(ctx context.Context) (n int, err error) 
 			Column: pubsubmessage.FieldResponseToID,
 		})
 	}
+	if pmu.mutation.ResponseToIDCleared() {
+		_spec.Fields.Clear = append(_spec.Fields.Clear, &sqlgraph.FieldSpec{
+			Type:   field.TypeUUID,
+			Column: pubsubmessage.FieldResponseToID,
+		})
+	}
 	_spec.Modifiers = pmu.modifiers
 	if n, err = sqlgraph.UpdateNodes(ctx, pmu.driver, _spec); err != nil {
 		if _, ok := err.(*sqlgraph.NotFoundError); ok {
@@ -354,6 +374,20 @@ func (pmuo *PubsubMessageUpdateOne) SetState(s string) *PubsubMessageUpdateOne {
 // SetResponseToID sets the "response_to_id" field.
 func (pmuo *PubsubMessageUpdateOne) SetResponseToID(u uuid.UUID) *PubsubMessageUpdateOne {
 	pmuo.mutation.SetResponseToID(u)
+	return pmuo
+}
+
+// SetNillableResponseToID sets the "response_to_id" field if the given value is not nil.
+func (pmuo *PubsubMessageUpdateOne) SetNillableResponseToID(u *uuid.UUID) *PubsubMessageUpdateOne {
+	if u != nil {
+		pmuo.SetResponseToID(*u)
+	}
+	return pmuo
+}
+
+// ClearResponseToID clears the value of the "response_to_id" field.
+func (pmuo *PubsubMessageUpdateOne) ClearResponseToID() *PubsubMessageUpdateOne {
+	pmuo.mutation.ClearResponseToID()
 	return pmuo
 }
 
@@ -545,6 +579,12 @@ func (pmuo *PubsubMessageUpdateOne) sqlSave(ctx context.Context) (_node *PubsubM
 		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
 			Type:   field.TypeUUID,
 			Value:  value,
+			Column: pubsubmessage.FieldResponseToID,
+		})
+	}
+	if pmuo.mutation.ResponseToIDCleared() {
+		_spec.Fields.Clear = append(_spec.Fields.Clear, &sqlgraph.FieldSpec{
+			Type:   field.TypeUUID,
 			Column: pubsubmessage.FieldResponseToID,
 		})
 	}

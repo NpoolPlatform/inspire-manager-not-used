@@ -177,7 +177,7 @@ var (
 		{Name: "user_id", Type: field.TypeUUID, Nullable: true},
 		{Name: "good_id", Type: field.TypeUUID, Nullable: true},
 		{Name: "percent", Type: field.TypeOther, Nullable: true, SchemaType: map[string]string{"mysql": "decimal(37,18)"}},
-		{Name: "start_at", Type: field.TypeUint32, Nullable: true, Default: 1680577053},
+		{Name: "start_at", Type: field.TypeUint32, Nullable: true, Default: 1680577761},
 		{Name: "end_at", Type: field.TypeUint32, Nullable: true, Default: 0},
 	}
 	// GoodOrderPercentsTable holds the schema information for the "good_order_percents" table.
@@ -196,7 +196,7 @@ var (
 		{Name: "user_id", Type: field.TypeUUID, Nullable: true},
 		{Name: "good_id", Type: field.TypeUUID, Nullable: true},
 		{Name: "percent", Type: field.TypeOther, Nullable: true, SchemaType: map[string]string{"mysql": "decimal(37,18)"}},
-		{Name: "start_at", Type: field.TypeUint32, Nullable: true, Default: 1680577053},
+		{Name: "start_at", Type: field.TypeUint32, Nullable: true, Default: 1680577761},
 		{Name: "end_at", Type: field.TypeUint32, Nullable: true, Default: 0},
 	}
 	// GoodOrderValuePercentsTable holds the schema information for the "good_order_value_percents" table.
@@ -230,7 +230,7 @@ var (
 		{Name: "deleted_at", Type: field.TypeUint32},
 		{Name: "message_id", Type: field.TypeString},
 		{Name: "state", Type: field.TypeString},
-		{Name: "response_to_id", Type: field.TypeUUID},
+		{Name: "response_to_id", Type: field.TypeUUID, Nullable: true},
 	}
 	// PubsubMessagesTable holds the schema information for the "pubsub_messages" table.
 	PubsubMessagesTable = &schema.Table{
@@ -239,9 +239,9 @@ var (
 		PrimaryKey: []*schema.Column{PubsubMessagesColumns[0]},
 		Indexes: []*schema.Index{
 			{
-				Name:    "pubsubmessage_message_id_response_to_id",
+				Name:    "pubsubmessage_state_response_to_id",
 				Unique:  false,
-				Columns: []*schema.Column{PubsubMessagesColumns[4], PubsubMessagesColumns[6]},
+				Columns: []*schema.Column{PubsubMessagesColumns[5], PubsubMessagesColumns[6]},
 			},
 		},
 	}

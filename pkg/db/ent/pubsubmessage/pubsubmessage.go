@@ -4,6 +4,7 @@ package pubsubmessage
 
 import (
 	"entgo.io/ent"
+	"github.com/google/uuid"
 )
 
 const (
@@ -65,4 +66,6 @@ var (
 	UpdateDefaultUpdatedAt func() uint32
 	// DefaultDeletedAt holds the default value on creation for the "deleted_at" field.
 	DefaultDeletedAt func() uint32
+	// DefaultResponseToID holds the default value on creation for the "response_to_id" field.
+	DefaultResponseToID func() uuid.UUID
 )

@@ -12244,9 +12244,22 @@ func (m *PubsubMessageMutation) OldResponseToID(ctx context.Context) (v uuid.UUI
 	return oldValue.ResponseToID, nil
 }
 
+// ClearResponseToID clears the value of the "response_to_id" field.
+func (m *PubsubMessageMutation) ClearResponseToID() {
+	m.response_to_id = nil
+	m.clearedFields[pubsubmessage.FieldResponseToID] = struct{}{}
+}
+
+// ResponseToIDCleared returns if the "response_to_id" field was cleared in this mutation.
+func (m *PubsubMessageMutation) ResponseToIDCleared() bool {
+	_, ok := m.clearedFields[pubsubmessage.FieldResponseToID]
+	return ok
+}
+
 // ResetResponseToID resets all changes to the "response_to_id" field.
 func (m *PubsubMessageMutation) ResetResponseToID() {
 	m.response_to_id = nil
+	delete(m.clearedFields, pubsubmessage.FieldResponseToID)
 }
 
 // Where appends a list predicates to the PubsubMessageMutation builder.
@@ -12447,7 +12460,11 @@ func (m *PubsubMessageMutation) AddField(name string, value ent.Value) error {
 // ClearedFields returns all nullable fields that were cleared during this
 // mutation.
 func (m *PubsubMessageMutation) ClearedFields() []string {
-	return nil
+	var fields []string
+	if m.FieldCleared(pubsubmessage.FieldResponseToID) {
+		fields = append(fields, pubsubmessage.FieldResponseToID)
+	}
+	return fields
 }
 
 // FieldCleared returns a boolean indicating if a field with the given name was
@@ -12460,6 +12477,11 @@ func (m *PubsubMessageMutation) FieldCleared(name string) bool {
 // ClearField clears the value of the field with the given name. It returns an
 // error if the field is not defined in the schema.
 func (m *PubsubMessageMutation) ClearField(name string) error {
+	switch name {
+	case pubsubmessage.FieldResponseToID:
+		m.ClearResponseToID()
+		return nil
+	}
 	return fmt.Errorf("unknown PubsubMessage nullable field %s", name)
 }
 

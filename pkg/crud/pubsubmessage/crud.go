@@ -18,23 +18,18 @@ import (
 func CreateSet(
 	c *ent.PubsubMessageCreate,
 	uniqueID uuid.UUID,
-	messageID, sender string,
-	body []byte,
+	messageID string,
 	state string,
-	responseID *uuid.UUID,
-	errorMessage *string,
+	respondToID *uuid.UUID,
 ) (*ent.PubsubMessageCreate, error) {
 	c.SetID(uniqueID)
 	c.SetMessageID(messageID)
-	c.SetSender(sender)
-	c.SetBody(body)
 	c.SetState(state)
-	if responseID != nil {
-		c.SetResponseToID(*responseID)
+	respondToID1 := uuid.UUID{}
+	if respondToID != nil {
+		respondToID1 = *respondToID
 	}
-	if errorMessage != nil {
-		c.SetErrorMessage(*errorMessage)
-	}
+	c.SetResponseToID(respondToID1)
 	return c, nil
 }
 

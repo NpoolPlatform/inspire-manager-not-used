@@ -575,6 +575,20 @@ func ResponseToIDLTE(v uuid.UUID) predicate.PubsubMessage {
 	})
 }
 
+// ResponseToIDIsNil applies the IsNil predicate on the "response_to_id" field.
+func ResponseToIDIsNil() predicate.PubsubMessage {
+	return predicate.PubsubMessage(func(s *sql.Selector) {
+		s.Where(sql.IsNull(s.C(FieldResponseToID)))
+	})
+}
+
+// ResponseToIDNotNil applies the NotNil predicate on the "response_to_id" field.
+func ResponseToIDNotNil() predicate.PubsubMessage {
+	return predicate.PubsubMessage(func(s *sql.Selector) {
+		s.Where(sql.NotNull(s.C(FieldResponseToID)))
+	})
+}
+
 // And groups predicates with the AND operator between them.
 func And(predicates ...predicate.PubsubMessage) predicate.PubsubMessage {
 	return predicate.PubsubMessage(func(s *sql.Selector) {

@@ -662,6 +662,10 @@ func init() {
 	pubsubmessageDescDeletedAt := pubsubmessageMixinFields0[2].Descriptor()
 	// pubsubmessage.DefaultDeletedAt holds the default value on creation for the deleted_at field.
 	pubsubmessage.DefaultDeletedAt = pubsubmessageDescDeletedAt.Default.(func() uint32)
+	// pubsubmessageDescResponseToID is the schema descriptor for response_to_id field.
+	pubsubmessageDescResponseToID := pubsubmessageFields[3].Descriptor()
+	// pubsubmessage.DefaultResponseToID holds the default value on creation for the response_to_id field.
+	pubsubmessage.DefaultResponseToID = pubsubmessageDescResponseToID.Default.(func() uuid.UUID)
 	registrationMixin := schema.Registration{}.Mixin()
 	registration.Policy = privacy.NewPolicies(registrationMixin[0], schema.Registration{})
 	registration.Hooks[0] = func(next ent.Mutator) ent.Mutator {

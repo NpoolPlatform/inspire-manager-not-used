@@ -83,6 +83,14 @@ func (pmc *PubsubMessageCreate) SetResponseToID(u uuid.UUID) *PubsubMessageCreat
 	return pmc
 }
 
+// SetNillableResponseToID sets the "response_to_id" field if the given value is not nil.
+func (pmc *PubsubMessageCreate) SetNillableResponseToID(u *uuid.UUID) *PubsubMessageCreate {
+	if u != nil {
+		pmc.SetResponseToID(*u)
+	}
+	return pmc
+}
+
 // SetID sets the "id" field.
 func (pmc *PubsubMessageCreate) SetID(u uuid.UUID) *PubsubMessageCreate {
 	pmc.mutation.SetID(u)
@@ -189,6 +197,13 @@ func (pmc *PubsubMessageCreate) defaults() error {
 		v := pubsubmessage.DefaultDeletedAt()
 		pmc.mutation.SetDeletedAt(v)
 	}
+	if _, ok := pmc.mutation.ResponseToID(); !ok {
+		if pubsubmessage.DefaultResponseToID == nil {
+			return fmt.Errorf("ent: uninitialized pubsubmessage.DefaultResponseToID (forgotten import ent/runtime?)")
+		}
+		v := pubsubmessage.DefaultResponseToID()
+		pmc.mutation.SetResponseToID(v)
+	}
 	return nil
 }
 
@@ -208,9 +223,6 @@ func (pmc *PubsubMessageCreate) check() error {
 	}
 	if _, ok := pmc.mutation.State(); !ok {
 		return &ValidationError{Name: "state", err: errors.New(`ent: missing required field "PubsubMessage.state"`)}
-	}
-	if _, ok := pmc.mutation.ResponseToID(); !ok {
-		return &ValidationError{Name: "response_to_id", err: errors.New(`ent: missing required field "PubsubMessage.response_to_id"`)}
 	}
 	return nil
 }
@@ -441,6 +453,12 @@ func (u *PubsubMessageUpsert) UpdateResponseToID() *PubsubMessageUpsert {
 	return u
 }
 
+// ClearResponseToID clears the value of the "response_to_id" field.
+func (u *PubsubMessageUpsert) ClearResponseToID() *PubsubMessageUpsert {
+	u.SetNull(pubsubmessage.FieldResponseToID)
+	return u
+}
+
 // UpdateNewValues updates the mutable fields using the new values that were set on create except the ID field.
 // Using this option is equivalent to using:
 //
@@ -593,6 +611,13 @@ func (u *PubsubMessageUpsertOne) SetResponseToID(v uuid.UUID) *PubsubMessageUpse
 func (u *PubsubMessageUpsertOne) UpdateResponseToID() *PubsubMessageUpsertOne {
 	return u.Update(func(s *PubsubMessageUpsert) {
 		s.UpdateResponseToID()
+	})
+}
+
+// ClearResponseToID clears the value of the "response_to_id" field.
+func (u *PubsubMessageUpsertOne) ClearResponseToID() *PubsubMessageUpsertOne {
+	return u.Update(func(s *PubsubMessageUpsert) {
+		s.ClearResponseToID()
 	})
 }
 
@@ -914,6 +939,13 @@ func (u *PubsubMessageUpsertBulk) SetResponseToID(v uuid.UUID) *PubsubMessageUps
 func (u *PubsubMessageUpsertBulk) UpdateResponseToID() *PubsubMessageUpsertBulk {
 	return u.Update(func(s *PubsubMessageUpsert) {
 		s.UpdateResponseToID()
+	})
+}
+
+// ClearResponseToID clears the value of the "response_to_id" field.
+func (u *PubsubMessageUpsertBulk) ClearResponseToID() *PubsubMessageUpsertBulk {
+	return u.Update(func(s *PubsubMessageUpsert) {
+		s.ClearResponseToID()
 	})
 }
 
