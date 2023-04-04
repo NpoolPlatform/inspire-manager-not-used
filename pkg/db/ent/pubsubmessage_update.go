@@ -90,29 +90,57 @@ func (pmu *PubsubMessageUpdate) SetMessageID(s string) *PubsubMessageUpdate {
 	return pmu
 }
 
+// SetNillableMessageID sets the "message_id" field if the given value is not nil.
+func (pmu *PubsubMessageUpdate) SetNillableMessageID(s *string) *PubsubMessageUpdate {
+	if s != nil {
+		pmu.SetMessageID(*s)
+	}
+	return pmu
+}
+
+// ClearMessageID clears the value of the "message_id" field.
+func (pmu *PubsubMessageUpdate) ClearMessageID() *PubsubMessageUpdate {
+	pmu.mutation.ClearMessageID()
+	return pmu
+}
+
 // SetState sets the "state" field.
 func (pmu *PubsubMessageUpdate) SetState(s string) *PubsubMessageUpdate {
 	pmu.mutation.SetState(s)
 	return pmu
 }
 
-// SetResponseToID sets the "response_to_id" field.
-func (pmu *PubsubMessageUpdate) SetResponseToID(u uuid.UUID) *PubsubMessageUpdate {
-	pmu.mutation.SetResponseToID(u)
-	return pmu
-}
-
-// SetNillableResponseToID sets the "response_to_id" field if the given value is not nil.
-func (pmu *PubsubMessageUpdate) SetNillableResponseToID(u *uuid.UUID) *PubsubMessageUpdate {
-	if u != nil {
-		pmu.SetResponseToID(*u)
+// SetNillableState sets the "state" field if the given value is not nil.
+func (pmu *PubsubMessageUpdate) SetNillableState(s *string) *PubsubMessageUpdate {
+	if s != nil {
+		pmu.SetState(*s)
 	}
 	return pmu
 }
 
-// ClearResponseToID clears the value of the "response_to_id" field.
-func (pmu *PubsubMessageUpdate) ClearResponseToID() *PubsubMessageUpdate {
-	pmu.mutation.ClearResponseToID()
+// ClearState clears the value of the "state" field.
+func (pmu *PubsubMessageUpdate) ClearState() *PubsubMessageUpdate {
+	pmu.mutation.ClearState()
+	return pmu
+}
+
+// SetRespToID sets the "resp_to_id" field.
+func (pmu *PubsubMessageUpdate) SetRespToID(u uuid.UUID) *PubsubMessageUpdate {
+	pmu.mutation.SetRespToID(u)
+	return pmu
+}
+
+// SetNillableRespToID sets the "resp_to_id" field if the given value is not nil.
+func (pmu *PubsubMessageUpdate) SetNillableRespToID(u *uuid.UUID) *PubsubMessageUpdate {
+	if u != nil {
+		pmu.SetRespToID(*u)
+	}
+	return pmu
+}
+
+// ClearRespToID clears the value of the "resp_to_id" field.
+func (pmu *PubsubMessageUpdate) ClearRespToID() *PubsubMessageUpdate {
+	pmu.mutation.ClearRespToID()
 	return pmu
 }
 
@@ -263,6 +291,12 @@ func (pmu *PubsubMessageUpdate) sqlSave(ctx context.Context) (n int, err error) 
 			Column: pubsubmessage.FieldMessageID,
 		})
 	}
+	if pmu.mutation.MessageIDCleared() {
+		_spec.Fields.Clear = append(_spec.Fields.Clear, &sqlgraph.FieldSpec{
+			Type:   field.TypeString,
+			Column: pubsubmessage.FieldMessageID,
+		})
+	}
 	if value, ok := pmu.mutation.State(); ok {
 		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
 			Type:   field.TypeString,
@@ -270,17 +304,23 @@ func (pmu *PubsubMessageUpdate) sqlSave(ctx context.Context) (n int, err error) 
 			Column: pubsubmessage.FieldState,
 		})
 	}
-	if value, ok := pmu.mutation.ResponseToID(); ok {
+	if pmu.mutation.StateCleared() {
+		_spec.Fields.Clear = append(_spec.Fields.Clear, &sqlgraph.FieldSpec{
+			Type:   field.TypeString,
+			Column: pubsubmessage.FieldState,
+		})
+	}
+	if value, ok := pmu.mutation.RespToID(); ok {
 		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
 			Type:   field.TypeUUID,
 			Value:  value,
-			Column: pubsubmessage.FieldResponseToID,
+			Column: pubsubmessage.FieldRespToID,
 		})
 	}
-	if pmu.mutation.ResponseToIDCleared() {
+	if pmu.mutation.RespToIDCleared() {
 		_spec.Fields.Clear = append(_spec.Fields.Clear, &sqlgraph.FieldSpec{
 			Type:   field.TypeUUID,
-			Column: pubsubmessage.FieldResponseToID,
+			Column: pubsubmessage.FieldRespToID,
 		})
 	}
 	_spec.Modifiers = pmu.modifiers
@@ -365,29 +405,57 @@ func (pmuo *PubsubMessageUpdateOne) SetMessageID(s string) *PubsubMessageUpdateO
 	return pmuo
 }
 
+// SetNillableMessageID sets the "message_id" field if the given value is not nil.
+func (pmuo *PubsubMessageUpdateOne) SetNillableMessageID(s *string) *PubsubMessageUpdateOne {
+	if s != nil {
+		pmuo.SetMessageID(*s)
+	}
+	return pmuo
+}
+
+// ClearMessageID clears the value of the "message_id" field.
+func (pmuo *PubsubMessageUpdateOne) ClearMessageID() *PubsubMessageUpdateOne {
+	pmuo.mutation.ClearMessageID()
+	return pmuo
+}
+
 // SetState sets the "state" field.
 func (pmuo *PubsubMessageUpdateOne) SetState(s string) *PubsubMessageUpdateOne {
 	pmuo.mutation.SetState(s)
 	return pmuo
 }
 
-// SetResponseToID sets the "response_to_id" field.
-func (pmuo *PubsubMessageUpdateOne) SetResponseToID(u uuid.UUID) *PubsubMessageUpdateOne {
-	pmuo.mutation.SetResponseToID(u)
-	return pmuo
-}
-
-// SetNillableResponseToID sets the "response_to_id" field if the given value is not nil.
-func (pmuo *PubsubMessageUpdateOne) SetNillableResponseToID(u *uuid.UUID) *PubsubMessageUpdateOne {
-	if u != nil {
-		pmuo.SetResponseToID(*u)
+// SetNillableState sets the "state" field if the given value is not nil.
+func (pmuo *PubsubMessageUpdateOne) SetNillableState(s *string) *PubsubMessageUpdateOne {
+	if s != nil {
+		pmuo.SetState(*s)
 	}
 	return pmuo
 }
 
-// ClearResponseToID clears the value of the "response_to_id" field.
-func (pmuo *PubsubMessageUpdateOne) ClearResponseToID() *PubsubMessageUpdateOne {
-	pmuo.mutation.ClearResponseToID()
+// ClearState clears the value of the "state" field.
+func (pmuo *PubsubMessageUpdateOne) ClearState() *PubsubMessageUpdateOne {
+	pmuo.mutation.ClearState()
+	return pmuo
+}
+
+// SetRespToID sets the "resp_to_id" field.
+func (pmuo *PubsubMessageUpdateOne) SetRespToID(u uuid.UUID) *PubsubMessageUpdateOne {
+	pmuo.mutation.SetRespToID(u)
+	return pmuo
+}
+
+// SetNillableRespToID sets the "resp_to_id" field if the given value is not nil.
+func (pmuo *PubsubMessageUpdateOne) SetNillableRespToID(u *uuid.UUID) *PubsubMessageUpdateOne {
+	if u != nil {
+		pmuo.SetRespToID(*u)
+	}
+	return pmuo
+}
+
+// ClearRespToID clears the value of the "resp_to_id" field.
+func (pmuo *PubsubMessageUpdateOne) ClearRespToID() *PubsubMessageUpdateOne {
+	pmuo.mutation.ClearRespToID()
 	return pmuo
 }
 
@@ -568,6 +636,12 @@ func (pmuo *PubsubMessageUpdateOne) sqlSave(ctx context.Context) (_node *PubsubM
 			Column: pubsubmessage.FieldMessageID,
 		})
 	}
+	if pmuo.mutation.MessageIDCleared() {
+		_spec.Fields.Clear = append(_spec.Fields.Clear, &sqlgraph.FieldSpec{
+			Type:   field.TypeString,
+			Column: pubsubmessage.FieldMessageID,
+		})
+	}
 	if value, ok := pmuo.mutation.State(); ok {
 		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
 			Type:   field.TypeString,
@@ -575,17 +649,23 @@ func (pmuo *PubsubMessageUpdateOne) sqlSave(ctx context.Context) (_node *PubsubM
 			Column: pubsubmessage.FieldState,
 		})
 	}
-	if value, ok := pmuo.mutation.ResponseToID(); ok {
+	if pmuo.mutation.StateCleared() {
+		_spec.Fields.Clear = append(_spec.Fields.Clear, &sqlgraph.FieldSpec{
+			Type:   field.TypeString,
+			Column: pubsubmessage.FieldState,
+		})
+	}
+	if value, ok := pmuo.mutation.RespToID(); ok {
 		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
 			Type:   field.TypeUUID,
 			Value:  value,
-			Column: pubsubmessage.FieldResponseToID,
+			Column: pubsubmessage.FieldRespToID,
 		})
 	}
-	if pmuo.mutation.ResponseToIDCleared() {
+	if pmuo.mutation.RespToIDCleared() {
 		_spec.Fields.Clear = append(_spec.Fields.Clear, &sqlgraph.FieldSpec{
 			Type:   field.TypeUUID,
-			Column: pubsubmessage.FieldResponseToID,
+			Column: pubsubmessage.FieldRespToID,
 		})
 	}
 	_spec.Modifiers = pmuo.modifiers
