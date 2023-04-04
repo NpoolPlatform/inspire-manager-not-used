@@ -19,16 +19,10 @@ const (
 	FieldDeletedAt = "deleted_at"
 	// FieldMessageID holds the string denoting the message_id field in the database.
 	FieldMessageID = "message_id"
-	// FieldSender holds the string denoting the sender field in the database.
-	FieldSender = "sender"
-	// FieldBody holds the string denoting the body field in the database.
-	FieldBody = "body"
 	// FieldState holds the string denoting the state field in the database.
 	FieldState = "state"
 	// FieldResponseToID holds the string denoting the response_to_id field in the database.
 	FieldResponseToID = "response_to_id"
-	// FieldErrorMessage holds the string denoting the error_message field in the database.
-	FieldErrorMessage = "error_message"
 	// Table holds the table name of the pubsubmessage in the database.
 	Table = "pubsub_messages"
 )
@@ -40,11 +34,8 @@ var Columns = []string{
 	FieldUpdatedAt,
 	FieldDeletedAt,
 	FieldMessageID,
-	FieldSender,
-	FieldBody,
 	FieldState,
 	FieldResponseToID,
-	FieldErrorMessage,
 }
 
 // ValidColumn reports if the column name is valid (part of the table columns).
@@ -74,6 +65,4 @@ var (
 	UpdateDefaultUpdatedAt func() uint32
 	// DefaultDeletedAt holds the default value on creation for the "deleted_at" field.
 	DefaultDeletedAt func() uint32
-	// DefaultErrorMessage holds the default value on creation for the "error_message" field.
-	DefaultErrorMessage string
 )

@@ -177,7 +177,7 @@ var (
 		{Name: "user_id", Type: field.TypeUUID, Nullable: true},
 		{Name: "good_id", Type: field.TypeUUID, Nullable: true},
 		{Name: "percent", Type: field.TypeOther, Nullable: true, SchemaType: map[string]string{"mysql": "decimal(37,18)"}},
-		{Name: "start_at", Type: field.TypeUint32, Nullable: true, Default: 1680518517},
+		{Name: "start_at", Type: field.TypeUint32, Nullable: true, Default: 1680577053},
 		{Name: "end_at", Type: field.TypeUint32, Nullable: true, Default: 0},
 	}
 	// GoodOrderPercentsTable holds the schema information for the "good_order_percents" table.
@@ -196,7 +196,7 @@ var (
 		{Name: "user_id", Type: field.TypeUUID, Nullable: true},
 		{Name: "good_id", Type: field.TypeUUID, Nullable: true},
 		{Name: "percent", Type: field.TypeOther, Nullable: true, SchemaType: map[string]string{"mysql": "decimal(37,18)"}},
-		{Name: "start_at", Type: field.TypeUint32, Nullable: true, Default: 1680518517},
+		{Name: "start_at", Type: field.TypeUint32, Nullable: true, Default: 1680577053},
 		{Name: "end_at", Type: field.TypeUint32, Nullable: true, Default: 0},
 	}
 	// GoodOrderValuePercentsTable holds the schema information for the "good_order_value_percents" table.
@@ -229,11 +229,8 @@ var (
 		{Name: "updated_at", Type: field.TypeUint32},
 		{Name: "deleted_at", Type: field.TypeUint32},
 		{Name: "message_id", Type: field.TypeString},
-		{Name: "sender", Type: field.TypeString},
-		{Name: "body", Type: field.TypeBytes},
 		{Name: "state", Type: field.TypeString},
-		{Name: "response_to_id", Type: field.TypeUUID, Unique: true},
-		{Name: "error_message", Type: field.TypeString, Nullable: true, Default: ""},
+		{Name: "response_to_id", Type: field.TypeUUID},
 	}
 	// PubsubMessagesTable holds the schema information for the "pubsub_messages" table.
 	PubsubMessagesTable = &schema.Table{
@@ -244,7 +241,7 @@ var (
 			{
 				Name:    "pubsubmessage_message_id_response_to_id",
 				Unique:  false,
-				Columns: []*schema.Column{PubsubMessagesColumns[4], PubsubMessagesColumns[8]},
+				Columns: []*schema.Column{PubsubMessagesColumns[4], PubsubMessagesColumns[6]},
 			},
 		},
 	}

@@ -71,18 +71,6 @@ func (pmc *PubsubMessageCreate) SetMessageID(s string) *PubsubMessageCreate {
 	return pmc
 }
 
-// SetSender sets the "sender" field.
-func (pmc *PubsubMessageCreate) SetSender(s string) *PubsubMessageCreate {
-	pmc.mutation.SetSender(s)
-	return pmc
-}
-
-// SetBody sets the "body" field.
-func (pmc *PubsubMessageCreate) SetBody(b []byte) *PubsubMessageCreate {
-	pmc.mutation.SetBody(b)
-	return pmc
-}
-
 // SetState sets the "state" field.
 func (pmc *PubsubMessageCreate) SetState(s string) *PubsubMessageCreate {
 	pmc.mutation.SetState(s)
@@ -92,20 +80,6 @@ func (pmc *PubsubMessageCreate) SetState(s string) *PubsubMessageCreate {
 // SetResponseToID sets the "response_to_id" field.
 func (pmc *PubsubMessageCreate) SetResponseToID(u uuid.UUID) *PubsubMessageCreate {
 	pmc.mutation.SetResponseToID(u)
-	return pmc
-}
-
-// SetErrorMessage sets the "error_message" field.
-func (pmc *PubsubMessageCreate) SetErrorMessage(s string) *PubsubMessageCreate {
-	pmc.mutation.SetErrorMessage(s)
-	return pmc
-}
-
-// SetNillableErrorMessage sets the "error_message" field if the given value is not nil.
-func (pmc *PubsubMessageCreate) SetNillableErrorMessage(s *string) *PubsubMessageCreate {
-	if s != nil {
-		pmc.SetErrorMessage(*s)
-	}
 	return pmc
 }
 
@@ -215,10 +189,6 @@ func (pmc *PubsubMessageCreate) defaults() error {
 		v := pubsubmessage.DefaultDeletedAt()
 		pmc.mutation.SetDeletedAt(v)
 	}
-	if _, ok := pmc.mutation.ErrorMessage(); !ok {
-		v := pubsubmessage.DefaultErrorMessage
-		pmc.mutation.SetErrorMessage(v)
-	}
 	return nil
 }
 
@@ -235,12 +205,6 @@ func (pmc *PubsubMessageCreate) check() error {
 	}
 	if _, ok := pmc.mutation.MessageID(); !ok {
 		return &ValidationError{Name: "message_id", err: errors.New(`ent: missing required field "PubsubMessage.message_id"`)}
-	}
-	if _, ok := pmc.mutation.Sender(); !ok {
-		return &ValidationError{Name: "sender", err: errors.New(`ent: missing required field "PubsubMessage.sender"`)}
-	}
-	if _, ok := pmc.mutation.Body(); !ok {
-		return &ValidationError{Name: "body", err: errors.New(`ent: missing required field "PubsubMessage.body"`)}
 	}
 	if _, ok := pmc.mutation.State(); !ok {
 		return &ValidationError{Name: "state", err: errors.New(`ent: missing required field "PubsubMessage.state"`)}
@@ -317,22 +281,6 @@ func (pmc *PubsubMessageCreate) createSpec() (*PubsubMessage, *sqlgraph.CreateSp
 		})
 		_node.MessageID = value
 	}
-	if value, ok := pmc.mutation.Sender(); ok {
-		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
-			Type:   field.TypeString,
-			Value:  value,
-			Column: pubsubmessage.FieldSender,
-		})
-		_node.Sender = value
-	}
-	if value, ok := pmc.mutation.Body(); ok {
-		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
-			Type:   field.TypeBytes,
-			Value:  value,
-			Column: pubsubmessage.FieldBody,
-		})
-		_node.Body = value
-	}
 	if value, ok := pmc.mutation.State(); ok {
 		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
 			Type:   field.TypeString,
@@ -348,14 +296,6 @@ func (pmc *PubsubMessageCreate) createSpec() (*PubsubMessage, *sqlgraph.CreateSp
 			Column: pubsubmessage.FieldResponseToID,
 		})
 		_node.ResponseToID = value
-	}
-	if value, ok := pmc.mutation.ErrorMessage(); ok {
-		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
-			Type:   field.TypeString,
-			Value:  value,
-			Column: pubsubmessage.FieldErrorMessage,
-		})
-		_node.ErrorMessage = value
 	}
 	return _node, _spec
 }
@@ -477,30 +417,6 @@ func (u *PubsubMessageUpsert) UpdateMessageID() *PubsubMessageUpsert {
 	return u
 }
 
-// SetSender sets the "sender" field.
-func (u *PubsubMessageUpsert) SetSender(v string) *PubsubMessageUpsert {
-	u.Set(pubsubmessage.FieldSender, v)
-	return u
-}
-
-// UpdateSender sets the "sender" field to the value that was provided on create.
-func (u *PubsubMessageUpsert) UpdateSender() *PubsubMessageUpsert {
-	u.SetExcluded(pubsubmessage.FieldSender)
-	return u
-}
-
-// SetBody sets the "body" field.
-func (u *PubsubMessageUpsert) SetBody(v []byte) *PubsubMessageUpsert {
-	u.Set(pubsubmessage.FieldBody, v)
-	return u
-}
-
-// UpdateBody sets the "body" field to the value that was provided on create.
-func (u *PubsubMessageUpsert) UpdateBody() *PubsubMessageUpsert {
-	u.SetExcluded(pubsubmessage.FieldBody)
-	return u
-}
-
 // SetState sets the "state" field.
 func (u *PubsubMessageUpsert) SetState(v string) *PubsubMessageUpsert {
 	u.Set(pubsubmessage.FieldState, v)
@@ -522,24 +438,6 @@ func (u *PubsubMessageUpsert) SetResponseToID(v uuid.UUID) *PubsubMessageUpsert 
 // UpdateResponseToID sets the "response_to_id" field to the value that was provided on create.
 func (u *PubsubMessageUpsert) UpdateResponseToID() *PubsubMessageUpsert {
 	u.SetExcluded(pubsubmessage.FieldResponseToID)
-	return u
-}
-
-// SetErrorMessage sets the "error_message" field.
-func (u *PubsubMessageUpsert) SetErrorMessage(v string) *PubsubMessageUpsert {
-	u.Set(pubsubmessage.FieldErrorMessage, v)
-	return u
-}
-
-// UpdateErrorMessage sets the "error_message" field to the value that was provided on create.
-func (u *PubsubMessageUpsert) UpdateErrorMessage() *PubsubMessageUpsert {
-	u.SetExcluded(pubsubmessage.FieldErrorMessage)
-	return u
-}
-
-// ClearErrorMessage clears the value of the "error_message" field.
-func (u *PubsubMessageUpsert) ClearErrorMessage() *PubsubMessageUpsert {
-	u.SetNull(pubsubmessage.FieldErrorMessage)
 	return u
 }
 
@@ -670,34 +568,6 @@ func (u *PubsubMessageUpsertOne) UpdateMessageID() *PubsubMessageUpsertOne {
 	})
 }
 
-// SetSender sets the "sender" field.
-func (u *PubsubMessageUpsertOne) SetSender(v string) *PubsubMessageUpsertOne {
-	return u.Update(func(s *PubsubMessageUpsert) {
-		s.SetSender(v)
-	})
-}
-
-// UpdateSender sets the "sender" field to the value that was provided on create.
-func (u *PubsubMessageUpsertOne) UpdateSender() *PubsubMessageUpsertOne {
-	return u.Update(func(s *PubsubMessageUpsert) {
-		s.UpdateSender()
-	})
-}
-
-// SetBody sets the "body" field.
-func (u *PubsubMessageUpsertOne) SetBody(v []byte) *PubsubMessageUpsertOne {
-	return u.Update(func(s *PubsubMessageUpsert) {
-		s.SetBody(v)
-	})
-}
-
-// UpdateBody sets the "body" field to the value that was provided on create.
-func (u *PubsubMessageUpsertOne) UpdateBody() *PubsubMessageUpsertOne {
-	return u.Update(func(s *PubsubMessageUpsert) {
-		s.UpdateBody()
-	})
-}
-
 // SetState sets the "state" field.
 func (u *PubsubMessageUpsertOne) SetState(v string) *PubsubMessageUpsertOne {
 	return u.Update(func(s *PubsubMessageUpsert) {
@@ -723,27 +593,6 @@ func (u *PubsubMessageUpsertOne) SetResponseToID(v uuid.UUID) *PubsubMessageUpse
 func (u *PubsubMessageUpsertOne) UpdateResponseToID() *PubsubMessageUpsertOne {
 	return u.Update(func(s *PubsubMessageUpsert) {
 		s.UpdateResponseToID()
-	})
-}
-
-// SetErrorMessage sets the "error_message" field.
-func (u *PubsubMessageUpsertOne) SetErrorMessage(v string) *PubsubMessageUpsertOne {
-	return u.Update(func(s *PubsubMessageUpsert) {
-		s.SetErrorMessage(v)
-	})
-}
-
-// UpdateErrorMessage sets the "error_message" field to the value that was provided on create.
-func (u *PubsubMessageUpsertOne) UpdateErrorMessage() *PubsubMessageUpsertOne {
-	return u.Update(func(s *PubsubMessageUpsert) {
-		s.UpdateErrorMessage()
-	})
-}
-
-// ClearErrorMessage clears the value of the "error_message" field.
-func (u *PubsubMessageUpsertOne) ClearErrorMessage() *PubsubMessageUpsertOne {
-	return u.Update(func(s *PubsubMessageUpsert) {
-		s.ClearErrorMessage()
 	})
 }
 
@@ -1040,34 +889,6 @@ func (u *PubsubMessageUpsertBulk) UpdateMessageID() *PubsubMessageUpsertBulk {
 	})
 }
 
-// SetSender sets the "sender" field.
-func (u *PubsubMessageUpsertBulk) SetSender(v string) *PubsubMessageUpsertBulk {
-	return u.Update(func(s *PubsubMessageUpsert) {
-		s.SetSender(v)
-	})
-}
-
-// UpdateSender sets the "sender" field to the value that was provided on create.
-func (u *PubsubMessageUpsertBulk) UpdateSender() *PubsubMessageUpsertBulk {
-	return u.Update(func(s *PubsubMessageUpsert) {
-		s.UpdateSender()
-	})
-}
-
-// SetBody sets the "body" field.
-func (u *PubsubMessageUpsertBulk) SetBody(v []byte) *PubsubMessageUpsertBulk {
-	return u.Update(func(s *PubsubMessageUpsert) {
-		s.SetBody(v)
-	})
-}
-
-// UpdateBody sets the "body" field to the value that was provided on create.
-func (u *PubsubMessageUpsertBulk) UpdateBody() *PubsubMessageUpsertBulk {
-	return u.Update(func(s *PubsubMessageUpsert) {
-		s.UpdateBody()
-	})
-}
-
 // SetState sets the "state" field.
 func (u *PubsubMessageUpsertBulk) SetState(v string) *PubsubMessageUpsertBulk {
 	return u.Update(func(s *PubsubMessageUpsert) {
@@ -1093,27 +914,6 @@ func (u *PubsubMessageUpsertBulk) SetResponseToID(v uuid.UUID) *PubsubMessageUps
 func (u *PubsubMessageUpsertBulk) UpdateResponseToID() *PubsubMessageUpsertBulk {
 	return u.Update(func(s *PubsubMessageUpsert) {
 		s.UpdateResponseToID()
-	})
-}
-
-// SetErrorMessage sets the "error_message" field.
-func (u *PubsubMessageUpsertBulk) SetErrorMessage(v string) *PubsubMessageUpsertBulk {
-	return u.Update(func(s *PubsubMessageUpsert) {
-		s.SetErrorMessage(v)
-	})
-}
-
-// UpdateErrorMessage sets the "error_message" field to the value that was provided on create.
-func (u *PubsubMessageUpsertBulk) UpdateErrorMessage() *PubsubMessageUpsertBulk {
-	return u.Update(func(s *PubsubMessageUpsert) {
-		s.UpdateErrorMessage()
-	})
-}
-
-// ClearErrorMessage clears the value of the "error_message" field.
-func (u *PubsubMessageUpsertBulk) ClearErrorMessage() *PubsubMessageUpsertBulk {
-	return u.Update(func(s *PubsubMessageUpsert) {
-		s.ClearErrorMessage()
 	})
 }
 

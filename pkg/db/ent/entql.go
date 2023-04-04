@@ -284,11 +284,8 @@ var schemaGraph = func() *sqlgraph.Schema {
 			pubsubmessage.FieldUpdatedAt:    {Type: field.TypeUint32, Column: pubsubmessage.FieldUpdatedAt},
 			pubsubmessage.FieldDeletedAt:    {Type: field.TypeUint32, Column: pubsubmessage.FieldDeletedAt},
 			pubsubmessage.FieldMessageID:    {Type: field.TypeString, Column: pubsubmessage.FieldMessageID},
-			pubsubmessage.FieldSender:       {Type: field.TypeString, Column: pubsubmessage.FieldSender},
-			pubsubmessage.FieldBody:         {Type: field.TypeBytes, Column: pubsubmessage.FieldBody},
 			pubsubmessage.FieldState:        {Type: field.TypeString, Column: pubsubmessage.FieldState},
 			pubsubmessage.FieldResponseToID: {Type: field.TypeUUID, Column: pubsubmessage.FieldResponseToID},
-			pubsubmessage.FieldErrorMessage: {Type: field.TypeString, Column: pubsubmessage.FieldErrorMessage},
 		},
 	}
 	graph.Nodes[11] = &sqlgraph.Node{
@@ -1349,16 +1346,6 @@ func (f *PubsubMessageFilter) WhereMessageID(p entql.StringP) {
 	f.Where(p.Field(pubsubmessage.FieldMessageID))
 }
 
-// WhereSender applies the entql string predicate on the sender field.
-func (f *PubsubMessageFilter) WhereSender(p entql.StringP) {
-	f.Where(p.Field(pubsubmessage.FieldSender))
-}
-
-// WhereBody applies the entql []byte predicate on the body field.
-func (f *PubsubMessageFilter) WhereBody(p entql.BytesP) {
-	f.Where(p.Field(pubsubmessage.FieldBody))
-}
-
 // WhereState applies the entql string predicate on the state field.
 func (f *PubsubMessageFilter) WhereState(p entql.StringP) {
 	f.Where(p.Field(pubsubmessage.FieldState))
@@ -1367,11 +1354,6 @@ func (f *PubsubMessageFilter) WhereState(p entql.StringP) {
 // WhereResponseToID applies the entql [16]byte predicate on the response_to_id field.
 func (f *PubsubMessageFilter) WhereResponseToID(p entql.ValueP) {
 	f.Where(p.Field(pubsubmessage.FieldResponseToID))
-}
-
-// WhereErrorMessage applies the entql string predicate on the error_message field.
-func (f *PubsubMessageFilter) WhereErrorMessage(p entql.StringP) {
-	f.Where(p.Field(pubsubmessage.FieldErrorMessage))
 }
 
 // addPredicate implements the predicateAdder interface.

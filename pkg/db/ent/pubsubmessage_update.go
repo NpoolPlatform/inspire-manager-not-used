@@ -90,18 +90,6 @@ func (pmu *PubsubMessageUpdate) SetMessageID(s string) *PubsubMessageUpdate {
 	return pmu
 }
 
-// SetSender sets the "sender" field.
-func (pmu *PubsubMessageUpdate) SetSender(s string) *PubsubMessageUpdate {
-	pmu.mutation.SetSender(s)
-	return pmu
-}
-
-// SetBody sets the "body" field.
-func (pmu *PubsubMessageUpdate) SetBody(b []byte) *PubsubMessageUpdate {
-	pmu.mutation.SetBody(b)
-	return pmu
-}
-
 // SetState sets the "state" field.
 func (pmu *PubsubMessageUpdate) SetState(s string) *PubsubMessageUpdate {
 	pmu.mutation.SetState(s)
@@ -111,26 +99,6 @@ func (pmu *PubsubMessageUpdate) SetState(s string) *PubsubMessageUpdate {
 // SetResponseToID sets the "response_to_id" field.
 func (pmu *PubsubMessageUpdate) SetResponseToID(u uuid.UUID) *PubsubMessageUpdate {
 	pmu.mutation.SetResponseToID(u)
-	return pmu
-}
-
-// SetErrorMessage sets the "error_message" field.
-func (pmu *PubsubMessageUpdate) SetErrorMessage(s string) *PubsubMessageUpdate {
-	pmu.mutation.SetErrorMessage(s)
-	return pmu
-}
-
-// SetNillableErrorMessage sets the "error_message" field if the given value is not nil.
-func (pmu *PubsubMessageUpdate) SetNillableErrorMessage(s *string) *PubsubMessageUpdate {
-	if s != nil {
-		pmu.SetErrorMessage(*s)
-	}
-	return pmu
-}
-
-// ClearErrorMessage clears the value of the "error_message" field.
-func (pmu *PubsubMessageUpdate) ClearErrorMessage() *PubsubMessageUpdate {
-	pmu.mutation.ClearErrorMessage()
 	return pmu
 }
 
@@ -281,20 +249,6 @@ func (pmu *PubsubMessageUpdate) sqlSave(ctx context.Context) (n int, err error) 
 			Column: pubsubmessage.FieldMessageID,
 		})
 	}
-	if value, ok := pmu.mutation.Sender(); ok {
-		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
-			Type:   field.TypeString,
-			Value:  value,
-			Column: pubsubmessage.FieldSender,
-		})
-	}
-	if value, ok := pmu.mutation.Body(); ok {
-		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
-			Type:   field.TypeBytes,
-			Value:  value,
-			Column: pubsubmessage.FieldBody,
-		})
-	}
 	if value, ok := pmu.mutation.State(); ok {
 		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
 			Type:   field.TypeString,
@@ -307,19 +261,6 @@ func (pmu *PubsubMessageUpdate) sqlSave(ctx context.Context) (n int, err error) 
 			Type:   field.TypeUUID,
 			Value:  value,
 			Column: pubsubmessage.FieldResponseToID,
-		})
-	}
-	if value, ok := pmu.mutation.ErrorMessage(); ok {
-		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
-			Type:   field.TypeString,
-			Value:  value,
-			Column: pubsubmessage.FieldErrorMessage,
-		})
-	}
-	if pmu.mutation.ErrorMessageCleared() {
-		_spec.Fields.Clear = append(_spec.Fields.Clear, &sqlgraph.FieldSpec{
-			Type:   field.TypeString,
-			Column: pubsubmessage.FieldErrorMessage,
 		})
 	}
 	_spec.Modifiers = pmu.modifiers
@@ -404,18 +345,6 @@ func (pmuo *PubsubMessageUpdateOne) SetMessageID(s string) *PubsubMessageUpdateO
 	return pmuo
 }
 
-// SetSender sets the "sender" field.
-func (pmuo *PubsubMessageUpdateOne) SetSender(s string) *PubsubMessageUpdateOne {
-	pmuo.mutation.SetSender(s)
-	return pmuo
-}
-
-// SetBody sets the "body" field.
-func (pmuo *PubsubMessageUpdateOne) SetBody(b []byte) *PubsubMessageUpdateOne {
-	pmuo.mutation.SetBody(b)
-	return pmuo
-}
-
 // SetState sets the "state" field.
 func (pmuo *PubsubMessageUpdateOne) SetState(s string) *PubsubMessageUpdateOne {
 	pmuo.mutation.SetState(s)
@@ -425,26 +354,6 @@ func (pmuo *PubsubMessageUpdateOne) SetState(s string) *PubsubMessageUpdateOne {
 // SetResponseToID sets the "response_to_id" field.
 func (pmuo *PubsubMessageUpdateOne) SetResponseToID(u uuid.UUID) *PubsubMessageUpdateOne {
 	pmuo.mutation.SetResponseToID(u)
-	return pmuo
-}
-
-// SetErrorMessage sets the "error_message" field.
-func (pmuo *PubsubMessageUpdateOne) SetErrorMessage(s string) *PubsubMessageUpdateOne {
-	pmuo.mutation.SetErrorMessage(s)
-	return pmuo
-}
-
-// SetNillableErrorMessage sets the "error_message" field if the given value is not nil.
-func (pmuo *PubsubMessageUpdateOne) SetNillableErrorMessage(s *string) *PubsubMessageUpdateOne {
-	if s != nil {
-		pmuo.SetErrorMessage(*s)
-	}
-	return pmuo
-}
-
-// ClearErrorMessage clears the value of the "error_message" field.
-func (pmuo *PubsubMessageUpdateOne) ClearErrorMessage() *PubsubMessageUpdateOne {
-	pmuo.mutation.ClearErrorMessage()
 	return pmuo
 }
 
@@ -625,20 +534,6 @@ func (pmuo *PubsubMessageUpdateOne) sqlSave(ctx context.Context) (_node *PubsubM
 			Column: pubsubmessage.FieldMessageID,
 		})
 	}
-	if value, ok := pmuo.mutation.Sender(); ok {
-		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
-			Type:   field.TypeString,
-			Value:  value,
-			Column: pubsubmessage.FieldSender,
-		})
-	}
-	if value, ok := pmuo.mutation.Body(); ok {
-		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
-			Type:   field.TypeBytes,
-			Value:  value,
-			Column: pubsubmessage.FieldBody,
-		})
-	}
 	if value, ok := pmuo.mutation.State(); ok {
 		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
 			Type:   field.TypeString,
@@ -651,19 +546,6 @@ func (pmuo *PubsubMessageUpdateOne) sqlSave(ctx context.Context) (_node *PubsubM
 			Type:   field.TypeUUID,
 			Value:  value,
 			Column: pubsubmessage.FieldResponseToID,
-		})
-	}
-	if value, ok := pmuo.mutation.ErrorMessage(); ok {
-		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
-			Type:   field.TypeString,
-			Value:  value,
-			Column: pubsubmessage.FieldErrorMessage,
-		})
-	}
-	if pmuo.mutation.ErrorMessageCleared() {
-		_spec.Fields.Clear = append(_spec.Fields.Clear, &sqlgraph.FieldSpec{
-			Type:   field.TypeString,
-			Column: pubsubmessage.FieldErrorMessage,
 		})
 	}
 	_spec.Modifiers = pmuo.modifiers

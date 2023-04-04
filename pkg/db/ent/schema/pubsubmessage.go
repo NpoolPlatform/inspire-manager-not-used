@@ -28,18 +28,9 @@ func (PubsubMessage) Fields() []ent.Field {
 		field.
 			String("message_id"),
 		field.
-			String("sender"),
-		field.
-			Bytes("body"),
-		field.
 			String("state"),
 		field.
-			UUID("response_to_id", uuid.UUID{}).
-			Unique(),
-		field.
-			String("error_message").
-			Optional().
-			Default(""),
+			UUID("response_to_id", uuid.UUID{}),
 	}
 }
 
@@ -50,6 +41,6 @@ func (PubsubMessage) Edges() []ent.Edge {
 
 func (PubsubMessage) Indexes() []ent.Index {
 	return []ent.Index{
-		index.Fields("message_id", "response_to_id"),
+		index.Fields("state", "response_to_id"),
 	}
 }
