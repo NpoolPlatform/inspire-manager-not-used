@@ -40,6 +40,10 @@ func (PubsubMessage) Fields() []ent.Field {
 			Default(func() uuid.UUID {
 				return uuid.UUID{}
 			}),
+		field.
+			Bool("retry").
+			Optional().
+			Default(false),
 	}
 }
 

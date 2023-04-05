@@ -24,6 +24,8 @@ const (
 	FieldState = "state"
 	// FieldRespToID holds the string denoting the resp_to_id field in the database.
 	FieldRespToID = "resp_to_id"
+	// FieldRetry holds the string denoting the retry field in the database.
+	FieldRetry = "retry"
 	// Table holds the table name of the pubsubmessage in the database.
 	Table = "pubsub_messages"
 )
@@ -37,6 +39,7 @@ var Columns = []string{
 	FieldMessageID,
 	FieldState,
 	FieldRespToID,
+	FieldRetry,
 }
 
 // ValidColumn reports if the column name is valid (part of the table columns).
@@ -72,4 +75,6 @@ var (
 	DefaultState string
 	// DefaultRespToID holds the default value on creation for the "resp_to_id" field.
 	DefaultRespToID func() uuid.UUID
+	// DefaultRetry holds the default value on creation for the "retry" field.
+	DefaultRetry bool
 )

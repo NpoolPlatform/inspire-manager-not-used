@@ -674,6 +674,10 @@ func init() {
 	pubsubmessageDescRespToID := pubsubmessageFields[3].Descriptor()
 	// pubsubmessage.DefaultRespToID holds the default value on creation for the resp_to_id field.
 	pubsubmessage.DefaultRespToID = pubsubmessageDescRespToID.Default.(func() uuid.UUID)
+	// pubsubmessageDescRetry is the schema descriptor for retry field.
+	pubsubmessageDescRetry := pubsubmessageFields[4].Descriptor()
+	// pubsubmessage.DefaultRetry holds the default value on creation for the retry field.
+	pubsubmessage.DefaultRetry = pubsubmessageDescRetry.Default.(bool)
 	registrationMixin := schema.Registration{}.Mixin()
 	registration.Policy = privacy.NewPolicies(registrationMixin[0], schema.Registration{})
 	registration.Hooks[0] = func(next ent.Mutator) ent.Mutator {

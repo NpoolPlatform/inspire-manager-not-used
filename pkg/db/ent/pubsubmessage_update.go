@@ -144,6 +144,26 @@ func (pmu *PubsubMessageUpdate) ClearRespToID() *PubsubMessageUpdate {
 	return pmu
 }
 
+// SetRetry sets the "retry" field.
+func (pmu *PubsubMessageUpdate) SetRetry(b bool) *PubsubMessageUpdate {
+	pmu.mutation.SetRetry(b)
+	return pmu
+}
+
+// SetNillableRetry sets the "retry" field if the given value is not nil.
+func (pmu *PubsubMessageUpdate) SetNillableRetry(b *bool) *PubsubMessageUpdate {
+	if b != nil {
+		pmu.SetRetry(*b)
+	}
+	return pmu
+}
+
+// ClearRetry clears the value of the "retry" field.
+func (pmu *PubsubMessageUpdate) ClearRetry() *PubsubMessageUpdate {
+	pmu.mutation.ClearRetry()
+	return pmu
+}
+
 // Mutation returns the PubsubMessageMutation object of the builder.
 func (pmu *PubsubMessageUpdate) Mutation() *PubsubMessageMutation {
 	return pmu.mutation
@@ -323,6 +343,19 @@ func (pmu *PubsubMessageUpdate) sqlSave(ctx context.Context) (n int, err error) 
 			Column: pubsubmessage.FieldRespToID,
 		})
 	}
+	if value, ok := pmu.mutation.Retry(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeBool,
+			Value:  value,
+			Column: pubsubmessage.FieldRetry,
+		})
+	}
+	if pmu.mutation.RetryCleared() {
+		_spec.Fields.Clear = append(_spec.Fields.Clear, &sqlgraph.FieldSpec{
+			Type:   field.TypeBool,
+			Column: pubsubmessage.FieldRetry,
+		})
+	}
 	_spec.Modifiers = pmu.modifiers
 	if n, err = sqlgraph.UpdateNodes(ctx, pmu.driver, _spec); err != nil {
 		if _, ok := err.(*sqlgraph.NotFoundError); ok {
@@ -456,6 +489,26 @@ func (pmuo *PubsubMessageUpdateOne) SetNillableRespToID(u *uuid.UUID) *PubsubMes
 // ClearRespToID clears the value of the "resp_to_id" field.
 func (pmuo *PubsubMessageUpdateOne) ClearRespToID() *PubsubMessageUpdateOne {
 	pmuo.mutation.ClearRespToID()
+	return pmuo
+}
+
+// SetRetry sets the "retry" field.
+func (pmuo *PubsubMessageUpdateOne) SetRetry(b bool) *PubsubMessageUpdateOne {
+	pmuo.mutation.SetRetry(b)
+	return pmuo
+}
+
+// SetNillableRetry sets the "retry" field if the given value is not nil.
+func (pmuo *PubsubMessageUpdateOne) SetNillableRetry(b *bool) *PubsubMessageUpdateOne {
+	if b != nil {
+		pmuo.SetRetry(*b)
+	}
+	return pmuo
+}
+
+// ClearRetry clears the value of the "retry" field.
+func (pmuo *PubsubMessageUpdateOne) ClearRetry() *PubsubMessageUpdateOne {
+	pmuo.mutation.ClearRetry()
 	return pmuo
 }
 
@@ -666,6 +719,19 @@ func (pmuo *PubsubMessageUpdateOne) sqlSave(ctx context.Context) (_node *PubsubM
 		_spec.Fields.Clear = append(_spec.Fields.Clear, &sqlgraph.FieldSpec{
 			Type:   field.TypeUUID,
 			Column: pubsubmessage.FieldRespToID,
+		})
+	}
+	if value, ok := pmuo.mutation.Retry(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeBool,
+			Value:  value,
+			Column: pubsubmessage.FieldRetry,
+		})
+	}
+	if pmuo.mutation.RetryCleared() {
+		_spec.Fields.Clear = append(_spec.Fields.Clear, &sqlgraph.FieldSpec{
+			Type:   field.TypeBool,
+			Column: pubsubmessage.FieldRetry,
 		})
 	}
 	_spec.Modifiers = pmuo.modifiers
