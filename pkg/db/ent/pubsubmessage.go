@@ -28,8 +28,6 @@ type PubsubMessage struct {
 	State string `json:"state,omitempty"`
 	// RespToID holds the value of the "resp_to_id" field.
 	RespToID uuid.UUID `json:"resp_to_id,omitempty"`
-	// Retry holds the value of the "retry" field.
-	Retry bool `json:"retry,omitempty"`
 }
 
 // scanValues returns the types for scanning values from sql.Rows.
@@ -37,8 +35,6 @@ func (*PubsubMessage) scanValues(columns []string) ([]interface{}, error) {
 	values := make([]interface{}, len(columns))
 	for i := range columns {
 		switch columns[i] {
-		case pubsubmessage.FieldRetry:
-			values[i] = new(sql.NullBool)
 		case pubsubmessage.FieldCreatedAt, pubsubmessage.FieldUpdatedAt, pubsubmessage.FieldDeletedAt:
 			values[i] = new(sql.NullInt64)
 		case pubsubmessage.FieldMessageID, pubsubmessage.FieldState:
@@ -102,12 +98,6 @@ func (pm *PubsubMessage) assignValues(columns []string, values []interface{}) er
 			} else if value != nil {
 				pm.RespToID = *value
 			}
-		case pubsubmessage.FieldRetry:
-			if value, ok := values[i].(*sql.NullBool); !ok {
-				return fmt.Errorf("unexpected type %T for field retry", values[i])
-			} else if value.Valid {
-				pm.Retry = value.Bool
-			}
 		}
 	}
 	return nil
@@ -153,9 +143,6 @@ func (pm *PubsubMessage) String() string {
 	builder.WriteString(", ")
 	builder.WriteString("resp_to_id=")
 	builder.WriteString(fmt.Sprintf("%v", pm.RespToID))
-	builder.WriteString(", ")
-	builder.WriteString("retry=")
-	builder.WriteString(fmt.Sprintf("%v", pm.Retry))
 	builder.WriteByte(')')
 	return builder.String()
 }

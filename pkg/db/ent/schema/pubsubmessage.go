@@ -29,21 +29,17 @@ func (PubsubMessage) Fields() []ent.Field {
 		field.
 			String("message_id").
 			Optional().
-			Default(msgpb.MessageID_DefaultMessageID.String()),
+			Default(msgpb.MsgID_DefaultMsgID.String()),
 		field.
 			String("state").
 			Optional().
-			Default(msgpb.MessageState_Processing.String()),
+			Default(msgpb.MsgState_DefaultMsgState.String()),
 		field.
 			UUID("resp_to_id", uuid.UUID{}).
 			Optional().
 			Default(func() uuid.UUID {
 				return uuid.UUID{}
 			}),
-		field.
-			Bool("retry").
-			Optional().
-			Default(false),
 	}
 }
 

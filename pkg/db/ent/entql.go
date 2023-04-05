@@ -286,7 +286,6 @@ var schemaGraph = func() *sqlgraph.Schema {
 			pubsubmessage.FieldMessageID: {Type: field.TypeString, Column: pubsubmessage.FieldMessageID},
 			pubsubmessage.FieldState:     {Type: field.TypeString, Column: pubsubmessage.FieldState},
 			pubsubmessage.FieldRespToID:  {Type: field.TypeUUID, Column: pubsubmessage.FieldRespToID},
-			pubsubmessage.FieldRetry:     {Type: field.TypeBool, Column: pubsubmessage.FieldRetry},
 		},
 	}
 	graph.Nodes[11] = &sqlgraph.Node{
@@ -1355,11 +1354,6 @@ func (f *PubsubMessageFilter) WhereState(p entql.StringP) {
 // WhereRespToID applies the entql [16]byte predicate on the resp_to_id field.
 func (f *PubsubMessageFilter) WhereRespToID(p entql.ValueP) {
 	f.Where(p.Field(pubsubmessage.FieldRespToID))
-}
-
-// WhereRetry applies the entql bool predicate on the retry field.
-func (f *PubsubMessageFilter) WhereRetry(p entql.BoolP) {
-	f.Where(p.Field(pubsubmessage.FieldRetry))
 }
 
 // addPredicate implements the predicateAdder interface.

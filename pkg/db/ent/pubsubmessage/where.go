@@ -121,13 +121,6 @@ func RespToID(v uuid.UUID) predicate.PubsubMessage {
 	})
 }
 
-// Retry applies equality check predicate on the "retry" field. It's identical to RetryEQ.
-func Retry(v bool) predicate.PubsubMessage {
-	return predicate.PubsubMessage(func(s *sql.Selector) {
-		s.Where(sql.EQ(s.C(FieldRetry), v))
-	})
-}
-
 // CreatedAtEQ applies the EQ predicate on the "created_at" field.
 func CreatedAtEQ(v uint32) predicate.PubsubMessage {
 	return predicate.PubsubMessage(func(s *sql.Selector) {
@@ -621,34 +614,6 @@ func RespToIDIsNil() predicate.PubsubMessage {
 func RespToIDNotNil() predicate.PubsubMessage {
 	return predicate.PubsubMessage(func(s *sql.Selector) {
 		s.Where(sql.NotNull(s.C(FieldRespToID)))
-	})
-}
-
-// RetryEQ applies the EQ predicate on the "retry" field.
-func RetryEQ(v bool) predicate.PubsubMessage {
-	return predicate.PubsubMessage(func(s *sql.Selector) {
-		s.Where(sql.EQ(s.C(FieldRetry), v))
-	})
-}
-
-// RetryNEQ applies the NEQ predicate on the "retry" field.
-func RetryNEQ(v bool) predicate.PubsubMessage {
-	return predicate.PubsubMessage(func(s *sql.Selector) {
-		s.Where(sql.NEQ(s.C(FieldRetry), v))
-	})
-}
-
-// RetryIsNil applies the IsNil predicate on the "retry" field.
-func RetryIsNil() predicate.PubsubMessage {
-	return predicate.PubsubMessage(func(s *sql.Selector) {
-		s.Where(sql.IsNull(s.C(FieldRetry)))
-	})
-}
-
-// RetryNotNil applies the NotNil predicate on the "retry" field.
-func RetryNotNil() predicate.PubsubMessage {
-	return predicate.PubsubMessage(func(s *sql.Selector) {
-		s.Where(sql.NotNull(s.C(FieldRetry)))
 	})
 }
 

@@ -107,20 +107,6 @@ func (pmc *PubsubMessageCreate) SetNillableRespToID(u *uuid.UUID) *PubsubMessage
 	return pmc
 }
 
-// SetRetry sets the "retry" field.
-func (pmc *PubsubMessageCreate) SetRetry(b bool) *PubsubMessageCreate {
-	pmc.mutation.SetRetry(b)
-	return pmc
-}
-
-// SetNillableRetry sets the "retry" field if the given value is not nil.
-func (pmc *PubsubMessageCreate) SetNillableRetry(b *bool) *PubsubMessageCreate {
-	if b != nil {
-		pmc.SetRetry(*b)
-	}
-	return pmc
-}
-
 // SetID sets the "id" field.
 func (pmc *PubsubMessageCreate) SetID(u uuid.UUID) *PubsubMessageCreate {
 	pmc.mutation.SetID(u)
@@ -242,10 +228,6 @@ func (pmc *PubsubMessageCreate) defaults() error {
 		v := pubsubmessage.DefaultRespToID()
 		pmc.mutation.SetRespToID(v)
 	}
-	if _, ok := pmc.mutation.Retry(); !ok {
-		v := pubsubmessage.DefaultRetry
-		pmc.mutation.SetRetry(v)
-	}
 	return nil
 }
 
@@ -344,14 +326,6 @@ func (pmc *PubsubMessageCreate) createSpec() (*PubsubMessage, *sqlgraph.CreateSp
 			Column: pubsubmessage.FieldRespToID,
 		})
 		_node.RespToID = value
-	}
-	if value, ok := pmc.mutation.Retry(); ok {
-		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
-			Type:   field.TypeBool,
-			Value:  value,
-			Column: pubsubmessage.FieldRetry,
-		})
-		_node.Retry = value
 	}
 	return _node, _spec
 }
@@ -512,24 +486,6 @@ func (u *PubsubMessageUpsert) UpdateRespToID() *PubsubMessageUpsert {
 // ClearRespToID clears the value of the "resp_to_id" field.
 func (u *PubsubMessageUpsert) ClearRespToID() *PubsubMessageUpsert {
 	u.SetNull(pubsubmessage.FieldRespToID)
-	return u
-}
-
-// SetRetry sets the "retry" field.
-func (u *PubsubMessageUpsert) SetRetry(v bool) *PubsubMessageUpsert {
-	u.Set(pubsubmessage.FieldRetry, v)
-	return u
-}
-
-// UpdateRetry sets the "retry" field to the value that was provided on create.
-func (u *PubsubMessageUpsert) UpdateRetry() *PubsubMessageUpsert {
-	u.SetExcluded(pubsubmessage.FieldRetry)
-	return u
-}
-
-// ClearRetry clears the value of the "retry" field.
-func (u *PubsubMessageUpsert) ClearRetry() *PubsubMessageUpsert {
-	u.SetNull(pubsubmessage.FieldRetry)
 	return u
 }
 
@@ -706,27 +662,6 @@ func (u *PubsubMessageUpsertOne) UpdateRespToID() *PubsubMessageUpsertOne {
 func (u *PubsubMessageUpsertOne) ClearRespToID() *PubsubMessageUpsertOne {
 	return u.Update(func(s *PubsubMessageUpsert) {
 		s.ClearRespToID()
-	})
-}
-
-// SetRetry sets the "retry" field.
-func (u *PubsubMessageUpsertOne) SetRetry(v bool) *PubsubMessageUpsertOne {
-	return u.Update(func(s *PubsubMessageUpsert) {
-		s.SetRetry(v)
-	})
-}
-
-// UpdateRetry sets the "retry" field to the value that was provided on create.
-func (u *PubsubMessageUpsertOne) UpdateRetry() *PubsubMessageUpsertOne {
-	return u.Update(func(s *PubsubMessageUpsert) {
-		s.UpdateRetry()
-	})
-}
-
-// ClearRetry clears the value of the "retry" field.
-func (u *PubsubMessageUpsertOne) ClearRetry() *PubsubMessageUpsertOne {
-	return u.Update(func(s *PubsubMessageUpsert) {
-		s.ClearRetry()
 	})
 }
 
@@ -1069,27 +1004,6 @@ func (u *PubsubMessageUpsertBulk) UpdateRespToID() *PubsubMessageUpsertBulk {
 func (u *PubsubMessageUpsertBulk) ClearRespToID() *PubsubMessageUpsertBulk {
 	return u.Update(func(s *PubsubMessageUpsert) {
 		s.ClearRespToID()
-	})
-}
-
-// SetRetry sets the "retry" field.
-func (u *PubsubMessageUpsertBulk) SetRetry(v bool) *PubsubMessageUpsertBulk {
-	return u.Update(func(s *PubsubMessageUpsert) {
-		s.SetRetry(v)
-	})
-}
-
-// UpdateRetry sets the "retry" field to the value that was provided on create.
-func (u *PubsubMessageUpsertBulk) UpdateRetry() *PubsubMessageUpsertBulk {
-	return u.Update(func(s *PubsubMessageUpsert) {
-		s.UpdateRetry()
-	})
-}
-
-// ClearRetry clears the value of the "retry" field.
-func (u *PubsubMessageUpsertBulk) ClearRetry() *PubsubMessageUpsertBulk {
-	return u.Update(func(s *PubsubMessageUpsert) {
-		s.ClearRetry()
 	})
 }
 
