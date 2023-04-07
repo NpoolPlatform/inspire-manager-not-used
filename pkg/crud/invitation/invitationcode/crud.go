@@ -441,6 +441,11 @@ func Delete(ctx context.Context, id uuid.UUID) (*ent.InvitationCode, error) {
 		info, err = cli.InvitationCode.UpdateOneID(id).
 			SetDeletedAt(uint32(time.Now().Unix())).
 			Save(_ctx)
+		if err != nil {
+			if ent.IsNotFound(err) {
+				return nil
+			}
+		}
 		return err
 	})
 	if err != nil {
