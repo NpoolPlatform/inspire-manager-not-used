@@ -181,3 +181,19 @@ func CountInvitationCodes(ctx context.Context, conds *npool.Conds) (uint32, erro
 	}
 	return infos.(uint32), nil
 }
+
+func DeleteInvitationCode(ctx context.Context, id string) (*npool.InvitationCode, error) {
+	info, err := withCRUD(ctx, func(_ctx context.Context, cli npool.ManagerClient) (cruder.Any, error) {
+		resp, err := cli.DeleteInvitationCode(ctx, &npool.DeleteInvitationCodeRequest{
+			ID: id,
+		})
+		if err != nil {
+			return nil, fmt.Errorf("fail delete invitationcode: %v", err)
+		}
+		return resp.Info, nil
+	})
+	if err != nil {
+		return nil, fmt.Errorf("fail delete invitationcode: %v", err)
+	}
+	return info.(*npool.InvitationCode), nil
+}
