@@ -427,44 +427,8 @@ func (s *Server) DeleteInvitationCode(
 		}
 	}()
 
-	if _, err := uuid.Parse(in.GetInfo().GetID()); err != nil {
-		return &npool.DeleteInvitationCodeResponse{}, status.Error(codes.InvalidArgument, err.Error())
-	}
-
-	span = commontracer.TraceInvoker(span, "invitationcode", "crud", "Delete")
-
-	info, err := crud.Delete(ctx, uuid.MustParse(in.GetInfo().GetID()))
-	if err != nil {
-		logger.Sugar().Errorf("fail delete invitationcode: %v", err)
-		return &npool.DeleteInvitationCodeResponse{}, status.Error(codes.Internal, err.Error())
-	}
-
-	return &npool.DeleteInvitationCodeResponse{
-		Info: converter.Ent2Grpc(info),
-	}, nil
-}
-
-func (s *Server) DeleteInvitationCodeByID(
-	ctx context.Context,
-	in *npool.DeleteInvitationCodeByIDRequest,
-) (
-	*npool.DeleteInvitationCodeByIDResponse,
-	error,
-) {
-	var err error
-
-	_, span := otel.Tracer(servicename.ServiceDomain).Start(ctx, "DeleteInvitationCodeByID")
-	defer span.End()
-
-	defer func() {
-		if err != nil {
-			span.SetStatus(scodes.Error, err.Error())
-			span.RecordError(err)
-		}
-	}()
-
 	if _, err := uuid.Parse(in.GetID()); err != nil {
-		return &npool.DeleteInvitationCodeByIDResponse{}, status.Error(codes.InvalidArgument, err.Error())
+		return &npool.DeleteInvitationCodeResponse{}, status.Error(codes.InvalidArgument, err.Error())
 	}
 
 	span = commontracer.TraceInvoker(span, "invitationcode", "crud", "Delete")
@@ -472,10 +436,10 @@ func (s *Server) DeleteInvitationCodeByID(
 	info, err := crud.Delete(ctx, uuid.MustParse(in.GetID()))
 	if err != nil {
 		logger.Sugar().Errorf("fail delete invitationcode: %v", err)
-		return &npool.DeleteInvitationCodeByIDResponse{}, status.Error(codes.Internal, err.Error())
+		return &npool.DeleteInvitationCodeResponse{}, status.Error(codes.Internal, err.Error())
 	}
 
-	return &npool.DeleteInvitationCodeByIDResponse{
+	return &npool.DeleteInvitationCodeResponse{
 		Info: converter.Ent2Grpc(info),
 	}, nil
 }
