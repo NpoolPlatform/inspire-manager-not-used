@@ -28,6 +28,10 @@ type PubsubMessage struct {
 	State string `json:"state,omitempty"`
 	// RespToID holds the value of the "resp_to_id" field.
 	RespToID uuid.UUID `json:"resp_to_id,omitempty"`
+	// UndoID holds the value of the "undo_id" field.
+	UndoID uuid.UUID `json:"undo_id,omitempty"`
+	// Arguments holds the value of the "arguments" field.
+	Arguments string `json:"arguments,omitempty"`
 }
 
 // scanValues returns the types for scanning values from sql.Rows.
@@ -37,9 +41,9 @@ func (*PubsubMessage) scanValues(columns []string) ([]interface{}, error) {
 		switch columns[i] {
 		case pubsubmessage.FieldCreatedAt, pubsubmessage.FieldUpdatedAt, pubsubmessage.FieldDeletedAt:
 			values[i] = new(sql.NullInt64)
-		case pubsubmessage.FieldMessageID, pubsubmessage.FieldState:
+		case pubsubmessage.FieldMessageID, pubsubmessage.FieldState, pubsubmessage.FieldArguments:
 			values[i] = new(sql.NullString)
-		case pubsubmessage.FieldID, pubsubmessage.FieldRespToID:
+		case pubsubmessage.FieldID, pubsubmessage.FieldRespToID, pubsubmessage.FieldUndoID:
 			values[i] = new(uuid.UUID)
 		default:
 			return nil, fmt.Errorf("unexpected column %q for type PubsubMessage", columns[i])
@@ -98,6 +102,18 @@ func (pm *PubsubMessage) assignValues(columns []string, values []interface{}) er
 			} else if value != nil {
 				pm.RespToID = *value
 			}
+		case pubsubmessage.FieldUndoID:
+			if value, ok := values[i].(*uuid.UUID); !ok {
+				return fmt.Errorf("unexpected type %T for field undo_id", values[i])
+			} else if value != nil {
+				pm.UndoID = *value
+			}
+		case pubsubmessage.FieldArguments:
+			if value, ok := values[i].(*sql.NullString); !ok {
+				return fmt.Errorf("unexpected type %T for field arguments", values[i])
+			} else if value.Valid {
+				pm.Arguments = value.String
+			}
 		}
 	}
 	return nil
@@ -143,6 +159,12 @@ func (pm *PubsubMessage) String() string {
 	builder.WriteString(", ")
 	builder.WriteString("resp_to_id=")
 	builder.WriteString(fmt.Sprintf("%v", pm.RespToID))
+	builder.WriteString(", ")
+	builder.WriteString("undo_id=")
+	builder.WriteString(fmt.Sprintf("%v", pm.UndoID))
+	builder.WriteString(", ")
+	builder.WriteString("arguments=")
+	builder.WriteString(pm.Arguments)
 	builder.WriteByte(')')
 	return builder.String()
 }

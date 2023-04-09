@@ -144,6 +144,46 @@ func (pmu *PubsubMessageUpdate) ClearRespToID() *PubsubMessageUpdate {
 	return pmu
 }
 
+// SetUndoID sets the "undo_id" field.
+func (pmu *PubsubMessageUpdate) SetUndoID(u uuid.UUID) *PubsubMessageUpdate {
+	pmu.mutation.SetUndoID(u)
+	return pmu
+}
+
+// SetNillableUndoID sets the "undo_id" field if the given value is not nil.
+func (pmu *PubsubMessageUpdate) SetNillableUndoID(u *uuid.UUID) *PubsubMessageUpdate {
+	if u != nil {
+		pmu.SetUndoID(*u)
+	}
+	return pmu
+}
+
+// ClearUndoID clears the value of the "undo_id" field.
+func (pmu *PubsubMessageUpdate) ClearUndoID() *PubsubMessageUpdate {
+	pmu.mutation.ClearUndoID()
+	return pmu
+}
+
+// SetArguments sets the "arguments" field.
+func (pmu *PubsubMessageUpdate) SetArguments(s string) *PubsubMessageUpdate {
+	pmu.mutation.SetArguments(s)
+	return pmu
+}
+
+// SetNillableArguments sets the "arguments" field if the given value is not nil.
+func (pmu *PubsubMessageUpdate) SetNillableArguments(s *string) *PubsubMessageUpdate {
+	if s != nil {
+		pmu.SetArguments(*s)
+	}
+	return pmu
+}
+
+// ClearArguments clears the value of the "arguments" field.
+func (pmu *PubsubMessageUpdate) ClearArguments() *PubsubMessageUpdate {
+	pmu.mutation.ClearArguments()
+	return pmu
+}
+
 // Mutation returns the PubsubMessageMutation object of the builder.
 func (pmu *PubsubMessageUpdate) Mutation() *PubsubMessageMutation {
 	return pmu.mutation
@@ -323,6 +363,32 @@ func (pmu *PubsubMessageUpdate) sqlSave(ctx context.Context) (n int, err error) 
 			Column: pubsubmessage.FieldRespToID,
 		})
 	}
+	if value, ok := pmu.mutation.UndoID(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeUUID,
+			Value:  value,
+			Column: pubsubmessage.FieldUndoID,
+		})
+	}
+	if pmu.mutation.UndoIDCleared() {
+		_spec.Fields.Clear = append(_spec.Fields.Clear, &sqlgraph.FieldSpec{
+			Type:   field.TypeUUID,
+			Column: pubsubmessage.FieldUndoID,
+		})
+	}
+	if value, ok := pmu.mutation.Arguments(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeString,
+			Value:  value,
+			Column: pubsubmessage.FieldArguments,
+		})
+	}
+	if pmu.mutation.ArgumentsCleared() {
+		_spec.Fields.Clear = append(_spec.Fields.Clear, &sqlgraph.FieldSpec{
+			Type:   field.TypeString,
+			Column: pubsubmessage.FieldArguments,
+		})
+	}
 	_spec.Modifiers = pmu.modifiers
 	if n, err = sqlgraph.UpdateNodes(ctx, pmu.driver, _spec); err != nil {
 		if _, ok := err.(*sqlgraph.NotFoundError); ok {
@@ -456,6 +522,46 @@ func (pmuo *PubsubMessageUpdateOne) SetNillableRespToID(u *uuid.UUID) *PubsubMes
 // ClearRespToID clears the value of the "resp_to_id" field.
 func (pmuo *PubsubMessageUpdateOne) ClearRespToID() *PubsubMessageUpdateOne {
 	pmuo.mutation.ClearRespToID()
+	return pmuo
+}
+
+// SetUndoID sets the "undo_id" field.
+func (pmuo *PubsubMessageUpdateOne) SetUndoID(u uuid.UUID) *PubsubMessageUpdateOne {
+	pmuo.mutation.SetUndoID(u)
+	return pmuo
+}
+
+// SetNillableUndoID sets the "undo_id" field if the given value is not nil.
+func (pmuo *PubsubMessageUpdateOne) SetNillableUndoID(u *uuid.UUID) *PubsubMessageUpdateOne {
+	if u != nil {
+		pmuo.SetUndoID(*u)
+	}
+	return pmuo
+}
+
+// ClearUndoID clears the value of the "undo_id" field.
+func (pmuo *PubsubMessageUpdateOne) ClearUndoID() *PubsubMessageUpdateOne {
+	pmuo.mutation.ClearUndoID()
+	return pmuo
+}
+
+// SetArguments sets the "arguments" field.
+func (pmuo *PubsubMessageUpdateOne) SetArguments(s string) *PubsubMessageUpdateOne {
+	pmuo.mutation.SetArguments(s)
+	return pmuo
+}
+
+// SetNillableArguments sets the "arguments" field if the given value is not nil.
+func (pmuo *PubsubMessageUpdateOne) SetNillableArguments(s *string) *PubsubMessageUpdateOne {
+	if s != nil {
+		pmuo.SetArguments(*s)
+	}
+	return pmuo
+}
+
+// ClearArguments clears the value of the "arguments" field.
+func (pmuo *PubsubMessageUpdateOne) ClearArguments() *PubsubMessageUpdateOne {
+	pmuo.mutation.ClearArguments()
 	return pmuo
 }
 
@@ -666,6 +772,32 @@ func (pmuo *PubsubMessageUpdateOne) sqlSave(ctx context.Context) (_node *PubsubM
 		_spec.Fields.Clear = append(_spec.Fields.Clear, &sqlgraph.FieldSpec{
 			Type:   field.TypeUUID,
 			Column: pubsubmessage.FieldRespToID,
+		})
+	}
+	if value, ok := pmuo.mutation.UndoID(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeUUID,
+			Value:  value,
+			Column: pubsubmessage.FieldUndoID,
+		})
+	}
+	if pmuo.mutation.UndoIDCleared() {
+		_spec.Fields.Clear = append(_spec.Fields.Clear, &sqlgraph.FieldSpec{
+			Type:   field.TypeUUID,
+			Column: pubsubmessage.FieldUndoID,
+		})
+	}
+	if value, ok := pmuo.mutation.Arguments(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeString,
+			Value:  value,
+			Column: pubsubmessage.FieldArguments,
+		})
+	}
+	if pmuo.mutation.ArgumentsCleared() {
+		_spec.Fields.Clear = append(_spec.Fields.Clear, &sqlgraph.FieldSpec{
+			Type:   field.TypeString,
+			Column: pubsubmessage.FieldArguments,
 		})
 	}
 	_spec.Modifiers = pmuo.modifiers

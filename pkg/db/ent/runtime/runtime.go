@@ -674,6 +674,14 @@ func init() {
 	pubsubmessageDescRespToID := pubsubmessageFields[3].Descriptor()
 	// pubsubmessage.DefaultRespToID holds the default value on creation for the resp_to_id field.
 	pubsubmessage.DefaultRespToID = pubsubmessageDescRespToID.Default.(func() uuid.UUID)
+	// pubsubmessageDescUndoID is the schema descriptor for undo_id field.
+	pubsubmessageDescUndoID := pubsubmessageFields[4].Descriptor()
+	// pubsubmessage.DefaultUndoID holds the default value on creation for the undo_id field.
+	pubsubmessage.DefaultUndoID = pubsubmessageDescUndoID.Default.(func() uuid.UUID)
+	// pubsubmessageDescArguments is the schema descriptor for arguments field.
+	pubsubmessageDescArguments := pubsubmessageFields[5].Descriptor()
+	// pubsubmessage.DefaultArguments holds the default value on creation for the arguments field.
+	pubsubmessage.DefaultArguments = pubsubmessageDescArguments.Default.(string)
 	registrationMixin := schema.Registration{}.Mixin()
 	registration.Policy = privacy.NewPolicies(registrationMixin[0], schema.Registration{})
 	registration.Hooks[0] = func(next ent.Mutator) ent.Mutator {

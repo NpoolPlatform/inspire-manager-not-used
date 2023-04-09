@@ -286,6 +286,8 @@ var schemaGraph = func() *sqlgraph.Schema {
 			pubsubmessage.FieldMessageID: {Type: field.TypeString, Column: pubsubmessage.FieldMessageID},
 			pubsubmessage.FieldState:     {Type: field.TypeString, Column: pubsubmessage.FieldState},
 			pubsubmessage.FieldRespToID:  {Type: field.TypeUUID, Column: pubsubmessage.FieldRespToID},
+			pubsubmessage.FieldUndoID:    {Type: field.TypeUUID, Column: pubsubmessage.FieldUndoID},
+			pubsubmessage.FieldArguments: {Type: field.TypeString, Column: pubsubmessage.FieldArguments},
 		},
 	}
 	graph.Nodes[11] = &sqlgraph.Node{
@@ -1354,6 +1356,16 @@ func (f *PubsubMessageFilter) WhereState(p entql.StringP) {
 // WhereRespToID applies the entql [16]byte predicate on the resp_to_id field.
 func (f *PubsubMessageFilter) WhereRespToID(p entql.ValueP) {
 	f.Where(p.Field(pubsubmessage.FieldRespToID))
+}
+
+// WhereUndoID applies the entql [16]byte predicate on the undo_id field.
+func (f *PubsubMessageFilter) WhereUndoID(p entql.ValueP) {
+	f.Where(p.Field(pubsubmessage.FieldUndoID))
+}
+
+// WhereArguments applies the entql string predicate on the arguments field.
+func (f *PubsubMessageFilter) WhereArguments(p entql.StringP) {
+	f.Where(p.Field(pubsubmessage.FieldArguments))
 }
 
 // addPredicate implements the predicateAdder interface.

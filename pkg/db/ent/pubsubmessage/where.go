@@ -121,6 +121,20 @@ func RespToID(v uuid.UUID) predicate.PubsubMessage {
 	})
 }
 
+// UndoID applies equality check predicate on the "undo_id" field. It's identical to UndoIDEQ.
+func UndoID(v uuid.UUID) predicate.PubsubMessage {
+	return predicate.PubsubMessage(func(s *sql.Selector) {
+		s.Where(sql.EQ(s.C(FieldUndoID), v))
+	})
+}
+
+// Arguments applies equality check predicate on the "arguments" field. It's identical to ArgumentsEQ.
+func Arguments(v string) predicate.PubsubMessage {
+	return predicate.PubsubMessage(func(s *sql.Selector) {
+		s.Where(sql.EQ(s.C(FieldArguments), v))
+	})
+}
+
 // CreatedAtEQ applies the EQ predicate on the "created_at" field.
 func CreatedAtEQ(v uint32) predicate.PubsubMessage {
 	return predicate.PubsubMessage(func(s *sql.Selector) {
@@ -614,6 +628,197 @@ func RespToIDIsNil() predicate.PubsubMessage {
 func RespToIDNotNil() predicate.PubsubMessage {
 	return predicate.PubsubMessage(func(s *sql.Selector) {
 		s.Where(sql.NotNull(s.C(FieldRespToID)))
+	})
+}
+
+// UndoIDEQ applies the EQ predicate on the "undo_id" field.
+func UndoIDEQ(v uuid.UUID) predicate.PubsubMessage {
+	return predicate.PubsubMessage(func(s *sql.Selector) {
+		s.Where(sql.EQ(s.C(FieldUndoID), v))
+	})
+}
+
+// UndoIDNEQ applies the NEQ predicate on the "undo_id" field.
+func UndoIDNEQ(v uuid.UUID) predicate.PubsubMessage {
+	return predicate.PubsubMessage(func(s *sql.Selector) {
+		s.Where(sql.NEQ(s.C(FieldUndoID), v))
+	})
+}
+
+// UndoIDIn applies the In predicate on the "undo_id" field.
+func UndoIDIn(vs ...uuid.UUID) predicate.PubsubMessage {
+	v := make([]interface{}, len(vs))
+	for i := range v {
+		v[i] = vs[i]
+	}
+	return predicate.PubsubMessage(func(s *sql.Selector) {
+		s.Where(sql.In(s.C(FieldUndoID), v...))
+	})
+}
+
+// UndoIDNotIn applies the NotIn predicate on the "undo_id" field.
+func UndoIDNotIn(vs ...uuid.UUID) predicate.PubsubMessage {
+	v := make([]interface{}, len(vs))
+	for i := range v {
+		v[i] = vs[i]
+	}
+	return predicate.PubsubMessage(func(s *sql.Selector) {
+		s.Where(sql.NotIn(s.C(FieldUndoID), v...))
+	})
+}
+
+// UndoIDGT applies the GT predicate on the "undo_id" field.
+func UndoIDGT(v uuid.UUID) predicate.PubsubMessage {
+	return predicate.PubsubMessage(func(s *sql.Selector) {
+		s.Where(sql.GT(s.C(FieldUndoID), v))
+	})
+}
+
+// UndoIDGTE applies the GTE predicate on the "undo_id" field.
+func UndoIDGTE(v uuid.UUID) predicate.PubsubMessage {
+	return predicate.PubsubMessage(func(s *sql.Selector) {
+		s.Where(sql.GTE(s.C(FieldUndoID), v))
+	})
+}
+
+// UndoIDLT applies the LT predicate on the "undo_id" field.
+func UndoIDLT(v uuid.UUID) predicate.PubsubMessage {
+	return predicate.PubsubMessage(func(s *sql.Selector) {
+		s.Where(sql.LT(s.C(FieldUndoID), v))
+	})
+}
+
+// UndoIDLTE applies the LTE predicate on the "undo_id" field.
+func UndoIDLTE(v uuid.UUID) predicate.PubsubMessage {
+	return predicate.PubsubMessage(func(s *sql.Selector) {
+		s.Where(sql.LTE(s.C(FieldUndoID), v))
+	})
+}
+
+// UndoIDIsNil applies the IsNil predicate on the "undo_id" field.
+func UndoIDIsNil() predicate.PubsubMessage {
+	return predicate.PubsubMessage(func(s *sql.Selector) {
+		s.Where(sql.IsNull(s.C(FieldUndoID)))
+	})
+}
+
+// UndoIDNotNil applies the NotNil predicate on the "undo_id" field.
+func UndoIDNotNil() predicate.PubsubMessage {
+	return predicate.PubsubMessage(func(s *sql.Selector) {
+		s.Where(sql.NotNull(s.C(FieldUndoID)))
+	})
+}
+
+// ArgumentsEQ applies the EQ predicate on the "arguments" field.
+func ArgumentsEQ(v string) predicate.PubsubMessage {
+	return predicate.PubsubMessage(func(s *sql.Selector) {
+		s.Where(sql.EQ(s.C(FieldArguments), v))
+	})
+}
+
+// ArgumentsNEQ applies the NEQ predicate on the "arguments" field.
+func ArgumentsNEQ(v string) predicate.PubsubMessage {
+	return predicate.PubsubMessage(func(s *sql.Selector) {
+		s.Where(sql.NEQ(s.C(FieldArguments), v))
+	})
+}
+
+// ArgumentsIn applies the In predicate on the "arguments" field.
+func ArgumentsIn(vs ...string) predicate.PubsubMessage {
+	v := make([]interface{}, len(vs))
+	for i := range v {
+		v[i] = vs[i]
+	}
+	return predicate.PubsubMessage(func(s *sql.Selector) {
+		s.Where(sql.In(s.C(FieldArguments), v...))
+	})
+}
+
+// ArgumentsNotIn applies the NotIn predicate on the "arguments" field.
+func ArgumentsNotIn(vs ...string) predicate.PubsubMessage {
+	v := make([]interface{}, len(vs))
+	for i := range v {
+		v[i] = vs[i]
+	}
+	return predicate.PubsubMessage(func(s *sql.Selector) {
+		s.Where(sql.NotIn(s.C(FieldArguments), v...))
+	})
+}
+
+// ArgumentsGT applies the GT predicate on the "arguments" field.
+func ArgumentsGT(v string) predicate.PubsubMessage {
+	return predicate.PubsubMessage(func(s *sql.Selector) {
+		s.Where(sql.GT(s.C(FieldArguments), v))
+	})
+}
+
+// ArgumentsGTE applies the GTE predicate on the "arguments" field.
+func ArgumentsGTE(v string) predicate.PubsubMessage {
+	return predicate.PubsubMessage(func(s *sql.Selector) {
+		s.Where(sql.GTE(s.C(FieldArguments), v))
+	})
+}
+
+// ArgumentsLT applies the LT predicate on the "arguments" field.
+func ArgumentsLT(v string) predicate.PubsubMessage {
+	return predicate.PubsubMessage(func(s *sql.Selector) {
+		s.Where(sql.LT(s.C(FieldArguments), v))
+	})
+}
+
+// ArgumentsLTE applies the LTE predicate on the "arguments" field.
+func ArgumentsLTE(v string) predicate.PubsubMessage {
+	return predicate.PubsubMessage(func(s *sql.Selector) {
+		s.Where(sql.LTE(s.C(FieldArguments), v))
+	})
+}
+
+// ArgumentsContains applies the Contains predicate on the "arguments" field.
+func ArgumentsContains(v string) predicate.PubsubMessage {
+	return predicate.PubsubMessage(func(s *sql.Selector) {
+		s.Where(sql.Contains(s.C(FieldArguments), v))
+	})
+}
+
+// ArgumentsHasPrefix applies the HasPrefix predicate on the "arguments" field.
+func ArgumentsHasPrefix(v string) predicate.PubsubMessage {
+	return predicate.PubsubMessage(func(s *sql.Selector) {
+		s.Where(sql.HasPrefix(s.C(FieldArguments), v))
+	})
+}
+
+// ArgumentsHasSuffix applies the HasSuffix predicate on the "arguments" field.
+func ArgumentsHasSuffix(v string) predicate.PubsubMessage {
+	return predicate.PubsubMessage(func(s *sql.Selector) {
+		s.Where(sql.HasSuffix(s.C(FieldArguments), v))
+	})
+}
+
+// ArgumentsIsNil applies the IsNil predicate on the "arguments" field.
+func ArgumentsIsNil() predicate.PubsubMessage {
+	return predicate.PubsubMessage(func(s *sql.Selector) {
+		s.Where(sql.IsNull(s.C(FieldArguments)))
+	})
+}
+
+// ArgumentsNotNil applies the NotNil predicate on the "arguments" field.
+func ArgumentsNotNil() predicate.PubsubMessage {
+	return predicate.PubsubMessage(func(s *sql.Selector) {
+		s.Where(sql.NotNull(s.C(FieldArguments)))
+	})
+}
+
+// ArgumentsEqualFold applies the EqualFold predicate on the "arguments" field.
+func ArgumentsEqualFold(v string) predicate.PubsubMessage {
+	return predicate.PubsubMessage(func(s *sql.Selector) {
+		s.Where(sql.EqualFold(s.C(FieldArguments), v))
+	})
+}
+
+// ArgumentsContainsFold applies the ContainsFold predicate on the "arguments" field.
+func ArgumentsContainsFold(v string) predicate.PubsubMessage {
+	return predicate.PubsubMessage(func(s *sql.Selector) {
+		s.Where(sql.ContainsFold(s.C(FieldArguments), v))
 	})
 }
 

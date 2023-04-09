@@ -107,6 +107,34 @@ func (pmc *PubsubMessageCreate) SetNillableRespToID(u *uuid.UUID) *PubsubMessage
 	return pmc
 }
 
+// SetUndoID sets the "undo_id" field.
+func (pmc *PubsubMessageCreate) SetUndoID(u uuid.UUID) *PubsubMessageCreate {
+	pmc.mutation.SetUndoID(u)
+	return pmc
+}
+
+// SetNillableUndoID sets the "undo_id" field if the given value is not nil.
+func (pmc *PubsubMessageCreate) SetNillableUndoID(u *uuid.UUID) *PubsubMessageCreate {
+	if u != nil {
+		pmc.SetUndoID(*u)
+	}
+	return pmc
+}
+
+// SetArguments sets the "arguments" field.
+func (pmc *PubsubMessageCreate) SetArguments(s string) *PubsubMessageCreate {
+	pmc.mutation.SetArguments(s)
+	return pmc
+}
+
+// SetNillableArguments sets the "arguments" field if the given value is not nil.
+func (pmc *PubsubMessageCreate) SetNillableArguments(s *string) *PubsubMessageCreate {
+	if s != nil {
+		pmc.SetArguments(*s)
+	}
+	return pmc
+}
+
 // SetID sets the "id" field.
 func (pmc *PubsubMessageCreate) SetID(u uuid.UUID) *PubsubMessageCreate {
 	pmc.mutation.SetID(u)
@@ -228,6 +256,17 @@ func (pmc *PubsubMessageCreate) defaults() error {
 		v := pubsubmessage.DefaultRespToID()
 		pmc.mutation.SetRespToID(v)
 	}
+	if _, ok := pmc.mutation.UndoID(); !ok {
+		if pubsubmessage.DefaultUndoID == nil {
+			return fmt.Errorf("ent: uninitialized pubsubmessage.DefaultUndoID (forgotten import ent/runtime?)")
+		}
+		v := pubsubmessage.DefaultUndoID()
+		pmc.mutation.SetUndoID(v)
+	}
+	if _, ok := pmc.mutation.Arguments(); !ok {
+		v := pubsubmessage.DefaultArguments
+		pmc.mutation.SetArguments(v)
+	}
 	return nil
 }
 
@@ -326,6 +365,22 @@ func (pmc *PubsubMessageCreate) createSpec() (*PubsubMessage, *sqlgraph.CreateSp
 			Column: pubsubmessage.FieldRespToID,
 		})
 		_node.RespToID = value
+	}
+	if value, ok := pmc.mutation.UndoID(); ok {
+		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
+			Type:   field.TypeUUID,
+			Value:  value,
+			Column: pubsubmessage.FieldUndoID,
+		})
+		_node.UndoID = value
+	}
+	if value, ok := pmc.mutation.Arguments(); ok {
+		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
+			Type:   field.TypeString,
+			Value:  value,
+			Column: pubsubmessage.FieldArguments,
+		})
+		_node.Arguments = value
 	}
 	return _node, _spec
 }
@@ -486,6 +541,42 @@ func (u *PubsubMessageUpsert) UpdateRespToID() *PubsubMessageUpsert {
 // ClearRespToID clears the value of the "resp_to_id" field.
 func (u *PubsubMessageUpsert) ClearRespToID() *PubsubMessageUpsert {
 	u.SetNull(pubsubmessage.FieldRespToID)
+	return u
+}
+
+// SetUndoID sets the "undo_id" field.
+func (u *PubsubMessageUpsert) SetUndoID(v uuid.UUID) *PubsubMessageUpsert {
+	u.Set(pubsubmessage.FieldUndoID, v)
+	return u
+}
+
+// UpdateUndoID sets the "undo_id" field to the value that was provided on create.
+func (u *PubsubMessageUpsert) UpdateUndoID() *PubsubMessageUpsert {
+	u.SetExcluded(pubsubmessage.FieldUndoID)
+	return u
+}
+
+// ClearUndoID clears the value of the "undo_id" field.
+func (u *PubsubMessageUpsert) ClearUndoID() *PubsubMessageUpsert {
+	u.SetNull(pubsubmessage.FieldUndoID)
+	return u
+}
+
+// SetArguments sets the "arguments" field.
+func (u *PubsubMessageUpsert) SetArguments(v string) *PubsubMessageUpsert {
+	u.Set(pubsubmessage.FieldArguments, v)
+	return u
+}
+
+// UpdateArguments sets the "arguments" field to the value that was provided on create.
+func (u *PubsubMessageUpsert) UpdateArguments() *PubsubMessageUpsert {
+	u.SetExcluded(pubsubmessage.FieldArguments)
+	return u
+}
+
+// ClearArguments clears the value of the "arguments" field.
+func (u *PubsubMessageUpsert) ClearArguments() *PubsubMessageUpsert {
+	u.SetNull(pubsubmessage.FieldArguments)
 	return u
 }
 
@@ -662,6 +753,48 @@ func (u *PubsubMessageUpsertOne) UpdateRespToID() *PubsubMessageUpsertOne {
 func (u *PubsubMessageUpsertOne) ClearRespToID() *PubsubMessageUpsertOne {
 	return u.Update(func(s *PubsubMessageUpsert) {
 		s.ClearRespToID()
+	})
+}
+
+// SetUndoID sets the "undo_id" field.
+func (u *PubsubMessageUpsertOne) SetUndoID(v uuid.UUID) *PubsubMessageUpsertOne {
+	return u.Update(func(s *PubsubMessageUpsert) {
+		s.SetUndoID(v)
+	})
+}
+
+// UpdateUndoID sets the "undo_id" field to the value that was provided on create.
+func (u *PubsubMessageUpsertOne) UpdateUndoID() *PubsubMessageUpsertOne {
+	return u.Update(func(s *PubsubMessageUpsert) {
+		s.UpdateUndoID()
+	})
+}
+
+// ClearUndoID clears the value of the "undo_id" field.
+func (u *PubsubMessageUpsertOne) ClearUndoID() *PubsubMessageUpsertOne {
+	return u.Update(func(s *PubsubMessageUpsert) {
+		s.ClearUndoID()
+	})
+}
+
+// SetArguments sets the "arguments" field.
+func (u *PubsubMessageUpsertOne) SetArguments(v string) *PubsubMessageUpsertOne {
+	return u.Update(func(s *PubsubMessageUpsert) {
+		s.SetArguments(v)
+	})
+}
+
+// UpdateArguments sets the "arguments" field to the value that was provided on create.
+func (u *PubsubMessageUpsertOne) UpdateArguments() *PubsubMessageUpsertOne {
+	return u.Update(func(s *PubsubMessageUpsert) {
+		s.UpdateArguments()
+	})
+}
+
+// ClearArguments clears the value of the "arguments" field.
+func (u *PubsubMessageUpsertOne) ClearArguments() *PubsubMessageUpsertOne {
+	return u.Update(func(s *PubsubMessageUpsert) {
+		s.ClearArguments()
 	})
 }
 
@@ -1004,6 +1137,48 @@ func (u *PubsubMessageUpsertBulk) UpdateRespToID() *PubsubMessageUpsertBulk {
 func (u *PubsubMessageUpsertBulk) ClearRespToID() *PubsubMessageUpsertBulk {
 	return u.Update(func(s *PubsubMessageUpsert) {
 		s.ClearRespToID()
+	})
+}
+
+// SetUndoID sets the "undo_id" field.
+func (u *PubsubMessageUpsertBulk) SetUndoID(v uuid.UUID) *PubsubMessageUpsertBulk {
+	return u.Update(func(s *PubsubMessageUpsert) {
+		s.SetUndoID(v)
+	})
+}
+
+// UpdateUndoID sets the "undo_id" field to the value that was provided on create.
+func (u *PubsubMessageUpsertBulk) UpdateUndoID() *PubsubMessageUpsertBulk {
+	return u.Update(func(s *PubsubMessageUpsert) {
+		s.UpdateUndoID()
+	})
+}
+
+// ClearUndoID clears the value of the "undo_id" field.
+func (u *PubsubMessageUpsertBulk) ClearUndoID() *PubsubMessageUpsertBulk {
+	return u.Update(func(s *PubsubMessageUpsert) {
+		s.ClearUndoID()
+	})
+}
+
+// SetArguments sets the "arguments" field.
+func (u *PubsubMessageUpsertBulk) SetArguments(v string) *PubsubMessageUpsertBulk {
+	return u.Update(func(s *PubsubMessageUpsert) {
+		s.SetArguments(v)
+	})
+}
+
+// UpdateArguments sets the "arguments" field to the value that was provided on create.
+func (u *PubsubMessageUpsertBulk) UpdateArguments() *PubsubMessageUpsertBulk {
+	return u.Update(func(s *PubsubMessageUpsert) {
+		s.UpdateArguments()
+	})
+}
+
+// ClearArguments clears the value of the "arguments" field.
+func (u *PubsubMessageUpsertBulk) ClearArguments() *PubsubMessageUpsertBulk {
+	return u.Update(func(s *PubsubMessageUpsert) {
+		s.ClearArguments()
 	})
 }
 

@@ -11863,6 +11863,8 @@ type PubsubMessageMutation struct {
 	message_id    *string
 	state         *string
 	resp_to_id    *uuid.UUID
+	undo_id       *uuid.UUID
+	arguments     *string
 	clearedFields map[string]struct{}
 	done          bool
 	oldValue      func(context.Context) (*PubsubMessage, error)
@@ -12288,6 +12290,104 @@ func (m *PubsubMessageMutation) ResetRespToID() {
 	delete(m.clearedFields, pubsubmessage.FieldRespToID)
 }
 
+// SetUndoID sets the "undo_id" field.
+func (m *PubsubMessageMutation) SetUndoID(u uuid.UUID) {
+	m.undo_id = &u
+}
+
+// UndoID returns the value of the "undo_id" field in the mutation.
+func (m *PubsubMessageMutation) UndoID() (r uuid.UUID, exists bool) {
+	v := m.undo_id
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldUndoID returns the old "undo_id" field's value of the PubsubMessage entity.
+// If the PubsubMessage object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *PubsubMessageMutation) OldUndoID(ctx context.Context) (v uuid.UUID, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldUndoID is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldUndoID requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldUndoID: %w", err)
+	}
+	return oldValue.UndoID, nil
+}
+
+// ClearUndoID clears the value of the "undo_id" field.
+func (m *PubsubMessageMutation) ClearUndoID() {
+	m.undo_id = nil
+	m.clearedFields[pubsubmessage.FieldUndoID] = struct{}{}
+}
+
+// UndoIDCleared returns if the "undo_id" field was cleared in this mutation.
+func (m *PubsubMessageMutation) UndoIDCleared() bool {
+	_, ok := m.clearedFields[pubsubmessage.FieldUndoID]
+	return ok
+}
+
+// ResetUndoID resets all changes to the "undo_id" field.
+func (m *PubsubMessageMutation) ResetUndoID() {
+	m.undo_id = nil
+	delete(m.clearedFields, pubsubmessage.FieldUndoID)
+}
+
+// SetArguments sets the "arguments" field.
+func (m *PubsubMessageMutation) SetArguments(s string) {
+	m.arguments = &s
+}
+
+// Arguments returns the value of the "arguments" field in the mutation.
+func (m *PubsubMessageMutation) Arguments() (r string, exists bool) {
+	v := m.arguments
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldArguments returns the old "arguments" field's value of the PubsubMessage entity.
+// If the PubsubMessage object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *PubsubMessageMutation) OldArguments(ctx context.Context) (v string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldArguments is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldArguments requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldArguments: %w", err)
+	}
+	return oldValue.Arguments, nil
+}
+
+// ClearArguments clears the value of the "arguments" field.
+func (m *PubsubMessageMutation) ClearArguments() {
+	m.arguments = nil
+	m.clearedFields[pubsubmessage.FieldArguments] = struct{}{}
+}
+
+// ArgumentsCleared returns if the "arguments" field was cleared in this mutation.
+func (m *PubsubMessageMutation) ArgumentsCleared() bool {
+	_, ok := m.clearedFields[pubsubmessage.FieldArguments]
+	return ok
+}
+
+// ResetArguments resets all changes to the "arguments" field.
+func (m *PubsubMessageMutation) ResetArguments() {
+	m.arguments = nil
+	delete(m.clearedFields, pubsubmessage.FieldArguments)
+}
+
 // Where appends a list predicates to the PubsubMessageMutation builder.
 func (m *PubsubMessageMutation) Where(ps ...predicate.PubsubMessage) {
 	m.predicates = append(m.predicates, ps...)
@@ -12307,7 +12407,7 @@ func (m *PubsubMessageMutation) Type() string {
 // order to get all numeric fields that were incremented/decremented, call
 // AddedFields().
 func (m *PubsubMessageMutation) Fields() []string {
-	fields := make([]string, 0, 6)
+	fields := make([]string, 0, 8)
 	if m.created_at != nil {
 		fields = append(fields, pubsubmessage.FieldCreatedAt)
 	}
@@ -12325,6 +12425,12 @@ func (m *PubsubMessageMutation) Fields() []string {
 	}
 	if m.resp_to_id != nil {
 		fields = append(fields, pubsubmessage.FieldRespToID)
+	}
+	if m.undo_id != nil {
+		fields = append(fields, pubsubmessage.FieldUndoID)
+	}
+	if m.arguments != nil {
+		fields = append(fields, pubsubmessage.FieldArguments)
 	}
 	return fields
 }
@@ -12346,6 +12452,10 @@ func (m *PubsubMessageMutation) Field(name string) (ent.Value, bool) {
 		return m.State()
 	case pubsubmessage.FieldRespToID:
 		return m.RespToID()
+	case pubsubmessage.FieldUndoID:
+		return m.UndoID()
+	case pubsubmessage.FieldArguments:
+		return m.Arguments()
 	}
 	return nil, false
 }
@@ -12367,6 +12477,10 @@ func (m *PubsubMessageMutation) OldField(ctx context.Context, name string) (ent.
 		return m.OldState(ctx)
 	case pubsubmessage.FieldRespToID:
 		return m.OldRespToID(ctx)
+	case pubsubmessage.FieldUndoID:
+		return m.OldUndoID(ctx)
+	case pubsubmessage.FieldArguments:
+		return m.OldArguments(ctx)
 	}
 	return nil, fmt.Errorf("unknown PubsubMessage field %s", name)
 }
@@ -12417,6 +12531,20 @@ func (m *PubsubMessageMutation) SetField(name string, value ent.Value) error {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
 		m.SetRespToID(v)
+		return nil
+	case pubsubmessage.FieldUndoID:
+		v, ok := value.(uuid.UUID)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetUndoID(v)
+		return nil
+	case pubsubmessage.FieldArguments:
+		v, ok := value.(string)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetArguments(v)
 		return nil
 	}
 	return fmt.Errorf("unknown PubsubMessage field %s", name)
@@ -12496,6 +12624,12 @@ func (m *PubsubMessageMutation) ClearedFields() []string {
 	if m.FieldCleared(pubsubmessage.FieldRespToID) {
 		fields = append(fields, pubsubmessage.FieldRespToID)
 	}
+	if m.FieldCleared(pubsubmessage.FieldUndoID) {
+		fields = append(fields, pubsubmessage.FieldUndoID)
+	}
+	if m.FieldCleared(pubsubmessage.FieldArguments) {
+		fields = append(fields, pubsubmessage.FieldArguments)
+	}
 	return fields
 }
 
@@ -12518,6 +12652,12 @@ func (m *PubsubMessageMutation) ClearField(name string) error {
 		return nil
 	case pubsubmessage.FieldRespToID:
 		m.ClearRespToID()
+		return nil
+	case pubsubmessage.FieldUndoID:
+		m.ClearUndoID()
+		return nil
+	case pubsubmessage.FieldArguments:
+		m.ClearArguments()
 		return nil
 	}
 	return fmt.Errorf("unknown PubsubMessage nullable field %s", name)
@@ -12544,6 +12684,12 @@ func (m *PubsubMessageMutation) ResetField(name string) error {
 		return nil
 	case pubsubmessage.FieldRespToID:
 		m.ResetRespToID()
+		return nil
+	case pubsubmessage.FieldUndoID:
+		m.ResetUndoID()
+		return nil
+	case pubsubmessage.FieldArguments:
+		m.ResetArguments()
 		return nil
 	}
 	return fmt.Errorf("unknown PubsubMessage field %s", name)

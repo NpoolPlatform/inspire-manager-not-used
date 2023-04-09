@@ -40,6 +40,16 @@ func (PubsubMessage) Fields() []ent.Field {
 			Default(func() uuid.UUID {
 				return uuid.UUID{}
 			}),
+		field.
+			UUID("undo_id", uuid.UUID{}).
+			Optional().
+			Default(func() uuid.UUID {
+				return uuid.UUID{}
+			}),
+		field.
+			String("arguments").
+			Optional().
+			Default(""),
 	}
 }
 
@@ -51,5 +61,6 @@ func (PubsubMessage) Edges() []ent.Edge {
 func (PubsubMessage) Indexes() []ent.Index {
 	return []ent.Index{
 		index.Fields("state", "resp_to_id"),
+		index.Fields("state", "undo_id"),
 	}
 }
