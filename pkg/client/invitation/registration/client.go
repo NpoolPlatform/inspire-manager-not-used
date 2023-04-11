@@ -167,7 +167,7 @@ func ExistRegistrationConds(ctx context.Context, conds *npool.Conds) (bool, erro
 }
 
 func CountRegistrations(ctx context.Context, conds *npool.Conds) (uint32, error) {
-	infos, err := withCRUD(ctx, func(_ctx context.Context, cli npool.ManagerClient) (cruder.Any, error) {
+	info, err := withCRUD(ctx, func(_ctx context.Context, cli npool.ManagerClient) (cruder.Any, error) {
 		resp, err := cli.CountRegistrations(ctx, &npool.CountRegistrationsRequest{
 			Conds: conds,
 		})
@@ -179,5 +179,21 @@ func CountRegistrations(ctx context.Context, conds *npool.Conds) (uint32, error)
 	if err != nil {
 		return 0, fmt.Errorf("fail count registration: %v", err)
 	}
-	return infos.(uint32), nil
+	return info.(uint32), nil
+}
+
+func DeleteRegistration(ctx context.Context, id string) (*npool.Registration, error) {
+	info, err := withCRUD(ctx, func(_ctx context.Context, cli npool.ManagerClient) (cruder.Any, error) {
+		resp, err := cli.DeleteRegistration(ctx, &npool.DeleteRegistrationRequest{
+			ID: id,
+		})
+		if err != nil {
+			return nil, fmt.Errorf("fail delete registration: %v", err)
+		}
+		return resp.GetInfo(), nil
+	})
+	if err != nil {
+		return nil, fmt.Errorf("fail delete registration: %v", err)
+	}
+	return info.(*npool.Registration), nil
 }
