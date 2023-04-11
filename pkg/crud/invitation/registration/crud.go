@@ -442,6 +442,9 @@ func Delete(ctx context.Context, id uuid.UUID) (*ent.Registration, error) {
 		info, err = cli.Registration.UpdateOneID(id).
 			SetDeletedAt(uint32(time.Now().Unix())).
 			Save(_ctx)
+		if ent.IsNotFound(err) {
+			return nil
+		}
 		return err
 	})
 	if err != nil {
