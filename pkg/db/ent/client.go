@@ -21,6 +21,7 @@ import (
 	"github.com/NpoolPlatform/inspire-manager/pkg/db/ent/goodorderpercent"
 	"github.com/NpoolPlatform/inspire-manager/pkg/db/ent/goodordervaluepercent"
 	"github.com/NpoolPlatform/inspire-manager/pkg/db/ent/invitationcode"
+	"github.com/NpoolPlatform/inspire-manager/pkg/db/ent/pubsubmessage"
 	"github.com/NpoolPlatform/inspire-manager/pkg/db/ent/registration"
 
 	"entgo.io/ent/dialect"
@@ -52,6 +53,8 @@ type Client struct {
 	GoodOrderValuePercent *GoodOrderValuePercentClient
 	// InvitationCode is the client for interacting with the InvitationCode builders.
 	InvitationCode *InvitationCodeClient
+	// PubsubMessage is the client for interacting with the PubsubMessage builders.
+	PubsubMessage *PubsubMessageClient
 	// Registration is the client for interacting with the Registration builders.
 	Registration *RegistrationClient
 }
@@ -77,6 +80,7 @@ func (c *Client) init() {
 	c.GoodOrderPercent = NewGoodOrderPercentClient(c.config)
 	c.GoodOrderValuePercent = NewGoodOrderValuePercentClient(c.config)
 	c.InvitationCode = NewInvitationCodeClient(c.config)
+	c.PubsubMessage = NewPubsubMessageClient(c.config)
 	c.Registration = NewRegistrationClient(c.config)
 }
 
@@ -121,6 +125,7 @@ func (c *Client) Tx(ctx context.Context) (*Tx, error) {
 		GoodOrderPercent:      NewGoodOrderPercentClient(cfg),
 		GoodOrderValuePercent: NewGoodOrderValuePercentClient(cfg),
 		InvitationCode:        NewInvitationCodeClient(cfg),
+		PubsubMessage:         NewPubsubMessageClient(cfg),
 		Registration:          NewRegistrationClient(cfg),
 	}, nil
 }
@@ -151,6 +156,7 @@ func (c *Client) BeginTx(ctx context.Context, opts *sql.TxOptions) (*Tx, error) 
 		GoodOrderPercent:      NewGoodOrderPercentClient(cfg),
 		GoodOrderValuePercent: NewGoodOrderValuePercentClient(cfg),
 		InvitationCode:        NewInvitationCodeClient(cfg),
+		PubsubMessage:         NewPubsubMessageClient(cfg),
 		Registration:          NewRegistrationClient(cfg),
 	}, nil
 }
@@ -191,6 +197,7 @@ func (c *Client) Use(hooks ...Hook) {
 	c.GoodOrderPercent.Use(hooks...)
 	c.GoodOrderValuePercent.Use(hooks...)
 	c.InvitationCode.Use(hooks...)
+	c.PubsubMessage.Use(hooks...)
 	c.Registration.Use(hooks...)
 }
 
@@ -1102,6 +1109,97 @@ func (c *InvitationCodeClient) GetX(ctx context.Context, id uuid.UUID) *Invitati
 func (c *InvitationCodeClient) Hooks() []Hook {
 	hooks := c.hooks.InvitationCode
 	return append(hooks[:len(hooks):len(hooks)], invitationcode.Hooks[:]...)
+}
+
+// PubsubMessageClient is a client for the PubsubMessage schema.
+type PubsubMessageClient struct {
+	config
+}
+
+// NewPubsubMessageClient returns a client for the PubsubMessage from the given config.
+func NewPubsubMessageClient(c config) *PubsubMessageClient {
+	return &PubsubMessageClient{config: c}
+}
+
+// Use adds a list of mutation hooks to the hooks stack.
+// A call to `Use(f, g, h)` equals to `pubsubmessage.Hooks(f(g(h())))`.
+func (c *PubsubMessageClient) Use(hooks ...Hook) {
+	c.hooks.PubsubMessage = append(c.hooks.PubsubMessage, hooks...)
+}
+
+// Create returns a builder for creating a PubsubMessage entity.
+func (c *PubsubMessageClient) Create() *PubsubMessageCreate {
+	mutation := newPubsubMessageMutation(c.config, OpCreate)
+	return &PubsubMessageCreate{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// CreateBulk returns a builder for creating a bulk of PubsubMessage entities.
+func (c *PubsubMessageClient) CreateBulk(builders ...*PubsubMessageCreate) *PubsubMessageCreateBulk {
+	return &PubsubMessageCreateBulk{config: c.config, builders: builders}
+}
+
+// Update returns an update builder for PubsubMessage.
+func (c *PubsubMessageClient) Update() *PubsubMessageUpdate {
+	mutation := newPubsubMessageMutation(c.config, OpUpdate)
+	return &PubsubMessageUpdate{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// UpdateOne returns an update builder for the given entity.
+func (c *PubsubMessageClient) UpdateOne(pm *PubsubMessage) *PubsubMessageUpdateOne {
+	mutation := newPubsubMessageMutation(c.config, OpUpdateOne, withPubsubMessage(pm))
+	return &PubsubMessageUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// UpdateOneID returns an update builder for the given id.
+func (c *PubsubMessageClient) UpdateOneID(id uuid.UUID) *PubsubMessageUpdateOne {
+	mutation := newPubsubMessageMutation(c.config, OpUpdateOne, withPubsubMessageID(id))
+	return &PubsubMessageUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// Delete returns a delete builder for PubsubMessage.
+func (c *PubsubMessageClient) Delete() *PubsubMessageDelete {
+	mutation := newPubsubMessageMutation(c.config, OpDelete)
+	return &PubsubMessageDelete{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// DeleteOne returns a builder for deleting the given entity.
+func (c *PubsubMessageClient) DeleteOne(pm *PubsubMessage) *PubsubMessageDeleteOne {
+	return c.DeleteOneID(pm.ID)
+}
+
+// DeleteOne returns a builder for deleting the given entity by its id.
+func (c *PubsubMessageClient) DeleteOneID(id uuid.UUID) *PubsubMessageDeleteOne {
+	builder := c.Delete().Where(pubsubmessage.ID(id))
+	builder.mutation.id = &id
+	builder.mutation.op = OpDeleteOne
+	return &PubsubMessageDeleteOne{builder}
+}
+
+// Query returns a query builder for PubsubMessage.
+func (c *PubsubMessageClient) Query() *PubsubMessageQuery {
+	return &PubsubMessageQuery{
+		config: c.config,
+	}
+}
+
+// Get returns a PubsubMessage entity by its id.
+func (c *PubsubMessageClient) Get(ctx context.Context, id uuid.UUID) (*PubsubMessage, error) {
+	return c.Query().Where(pubsubmessage.ID(id)).Only(ctx)
+}
+
+// GetX is like Get, but panics if an error occurs.
+func (c *PubsubMessageClient) GetX(ctx context.Context, id uuid.UUID) *PubsubMessage {
+	obj, err := c.Get(ctx, id)
+	if err != nil {
+		panic(err)
+	}
+	return obj
+}
+
+// Hooks returns the client hooks.
+func (c *PubsubMessageClient) Hooks() []Hook {
+	hooks := c.hooks.PubsubMessage
+	return append(hooks[:len(hooks):len(hooks)], pubsubmessage.Hooks[:]...)
 }
 
 // RegistrationClient is a client for the Registration schema.

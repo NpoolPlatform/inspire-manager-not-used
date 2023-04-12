@@ -10,7 +10,7 @@ import (
 	commontracer "github.com/NpoolPlatform/inspire-manager/pkg/tracer"
 	tracer "github.com/NpoolPlatform/inspire-manager/pkg/tracer/invitation/invitationcode"
 
-	constant "github.com/NpoolPlatform/inspire-manager/pkg/message/const"
+	"github.com/NpoolPlatform/inspire-manager/pkg/servicename"
 
 	"go.opentelemetry.io/otel"
 	scodes "go.opentelemetry.io/otel/codes"
@@ -58,7 +58,7 @@ func (s *Server) CreateInvitationCode(
 ) {
 	var err error
 
-	_, span := otel.Tracer(constant.ServiceName).Start(ctx, "CreateInvitationCode")
+	_, span := otel.Tracer(servicename.ServiceDomain).Start(ctx, "CreateInvitationCode")
 	defer span.End()
 
 	defer func() {
@@ -140,7 +140,7 @@ func (s *Server) UpdateInvitationCode(
 ) {
 	var err error
 
-	_, span := otel.Tracer(constant.ServiceName).Start(ctx, "UpdateInvitationCode")
+	_, span := otel.Tracer(servicename.ServiceDomain).Start(ctx, "UpdateInvitationCode")
 	defer span.End()
 
 	defer func() {
@@ -172,7 +172,7 @@ func (s *Server) UpdateInvitationCode(
 func (s *Server) GetInvitationCode(ctx context.Context, in *npool.GetInvitationCodeRequest) (*npool.GetInvitationCodeResponse, error) {
 	var err error
 
-	_, span := otel.Tracer(constant.ServiceName).Start(ctx, "GetInvitationCode")
+	_, span := otel.Tracer(servicename.ServiceDomain).Start(ctx, "GetInvitationCode")
 	defer span.End()
 
 	defer func() {
@@ -239,7 +239,7 @@ func (s *Server) GetInvitationCodeOnly(
 ) {
 	var err error
 
-	_, span := otel.Tracer(constant.ServiceName).Start(ctx, "GetInvitationCodeOnly")
+	_, span := otel.Tracer(servicename.ServiceDomain).Start(ctx, "GetInvitationCodeOnly")
 	defer span.End()
 
 	defer func() {
@@ -270,7 +270,7 @@ func (s *Server) GetInvitationCodeOnly(
 func (s *Server) GetInvitationCodes(ctx context.Context, in *npool.GetInvitationCodesRequest) (*npool.GetInvitationCodesResponse, error) {
 	var err error
 
-	_, span := otel.Tracer(constant.ServiceName).Start(ctx, "GetInvitationCodes")
+	_, span := otel.Tracer(servicename.ServiceDomain).Start(ctx, "GetInvitationCodes")
 	defer span.End()
 
 	defer func() {
@@ -309,7 +309,7 @@ func (s *Server) ExistInvitationCode(
 ) {
 	var err error
 
-	_, span := otel.Tracer(constant.ServiceName).Start(ctx, "ExistInvitationCode")
+	_, span := otel.Tracer(servicename.ServiceDomain).Start(ctx, "ExistInvitationCode")
 	defer span.End()
 
 	defer func() {
@@ -343,7 +343,7 @@ func (s *Server) ExistInvitationCodeConds(ctx context.Context,
 	in *npool.ExistInvitationCodeCondsRequest) (*npool.ExistInvitationCodeCondsResponse, error) {
 	var err error
 
-	_, span := otel.Tracer(constant.ServiceName).Start(ctx, "ExistInvitationCodeConds")
+	_, span := otel.Tracer(servicename.ServiceDomain).Start(ctx, "ExistInvitationCodeConds")
 	defer span.End()
 
 	defer func() {
@@ -380,7 +380,7 @@ func (s *Server) CountInvitationCodes(
 ) {
 	var err error
 
-	_, span := otel.Tracer(constant.ServiceName).Start(ctx, "CountInvitationCodes")
+	_, span := otel.Tracer(servicename.ServiceDomain).Start(ctx, "CountInvitationCodes")
 	defer span.End()
 
 	defer func() {
@@ -405,5 +405,41 @@ func (s *Server) CountInvitationCodes(
 
 	return &npool.CountInvitationCodesResponse{
 		Info: total,
+	}, nil
+}
+
+func (s *Server) DeleteInvitationCode(
+	ctx context.Context,
+	in *npool.DeleteInvitationCodeRequest,
+) (
+	*npool.DeleteInvitationCodeResponse,
+	error,
+) {
+	var err error
+
+	_, span := otel.Tracer(servicename.ServiceDomain).Start(ctx, "DeleteInvitationCode")
+	defer span.End()
+
+	defer func() {
+		if err != nil {
+			span.SetStatus(scodes.Error, err.Error())
+			span.RecordError(err)
+		}
+	}()
+
+	if _, err := uuid.Parse(in.GetID()); err != nil {
+		return &npool.DeleteInvitationCodeResponse{}, status.Error(codes.InvalidArgument, err.Error())
+	}
+
+	span = commontracer.TraceInvoker(span, "invitationcode", "crud", "Delete")
+
+	info, err := crud.Delete(ctx, uuid.MustParse(in.GetID()))
+	if err != nil {
+		logger.Sugar().Errorf("fail delete invitationcode: %v", err)
+		return &npool.DeleteInvitationCodeResponse{}, status.Error(codes.Internal, err.Error())
+	}
+
+	return &npool.DeleteInvitationCodeResponse{
+		Info: converter.Ent2Grpc(info),
 	}, nil
 }

@@ -9,7 +9,7 @@ import (
 	commontracer "github.com/NpoolPlatform/inspire-manager/pkg/tracer"
 	tracer "github.com/NpoolPlatform/inspire-manager/pkg/tracer/coupon/fixamount"
 
-	constant "github.com/NpoolPlatform/inspire-manager/pkg/message/const"
+	"github.com/NpoolPlatform/inspire-manager/pkg/servicename"
 
 	"go.opentelemetry.io/otel"
 	scodes "go.opentelemetry.io/otel/codes"
@@ -25,7 +25,7 @@ import (
 func (s *Server) CreateFixAmount(ctx context.Context, in *npool.CreateFixAmountRequest) (*npool.CreateFixAmountResponse, error) {
 	var err error
 
-	_, span := otel.Tracer(constant.ServiceName).Start(ctx, "CreateFixAmount")
+	_, span := otel.Tracer(servicename.ServiceDomain).Start(ctx, "CreateFixAmount")
 	defer span.End()
 
 	defer func() {
@@ -58,7 +58,7 @@ func (s *Server) CreateFixAmount(ctx context.Context, in *npool.CreateFixAmountR
 func (s *Server) CreateFixAmounts(ctx context.Context, in *npool.CreateFixAmountsRequest) (*npool.CreateFixAmountsResponse, error) {
 	var err error
 
-	_, span := otel.Tracer(constant.ServiceName).Start(ctx, "CreateFixAmounts")
+	_, span := otel.Tracer(servicename.ServiceDomain).Start(ctx, "CreateFixAmounts")
 	defer span.End()
 
 	defer func() {
@@ -95,7 +95,7 @@ func (s *Server) UpdateFixAmount(
 ) {
 	var err error
 
-	_, span := otel.Tracer(constant.ServiceName).Start(ctx, "UpdateFixAmounts")
+	_, span := otel.Tracer(servicename.ServiceDomain).Start(ctx, "UpdateFixAmounts")
 	defer span.End()
 
 	defer func() {
@@ -122,7 +122,7 @@ func (s *Server) UpdateFixAmount(
 func (s *Server) GetFixAmount(ctx context.Context, in *npool.GetFixAmountRequest) (*npool.GetFixAmountResponse, error) {
 	var err error
 
-	_, span := otel.Tracer(constant.ServiceName).Start(ctx, "GetFixAmount")
+	_, span := otel.Tracer(servicename.ServiceDomain).Start(ctx, "GetFixAmount")
 	defer span.End()
 
 	defer func() {
@@ -155,7 +155,7 @@ func (s *Server) GetFixAmount(ctx context.Context, in *npool.GetFixAmountRequest
 func (s *Server) GetFixAmountOnly(ctx context.Context, in *npool.GetFixAmountOnlyRequest) (*npool.GetFixAmountOnlyResponse, error) {
 	var err error
 
-	_, span := otel.Tracer(constant.ServiceName).Start(ctx, "GetFixAmountOnly")
+	_, span := otel.Tracer(servicename.ServiceDomain).Start(ctx, "GetFixAmountOnly")
 	defer span.End()
 
 	defer func() {
@@ -182,7 +182,7 @@ func (s *Server) GetFixAmountOnly(ctx context.Context, in *npool.GetFixAmountOnl
 func (s *Server) GetFixAmounts(ctx context.Context, in *npool.GetFixAmountsRequest) (*npool.GetFixAmountsResponse, error) {
 	var err error
 
-	_, span := otel.Tracer(constant.ServiceName).Start(ctx, "GetFixAmounts")
+	_, span := otel.Tracer(servicename.ServiceDomain).Start(ctx, "GetFixAmounts")
 	defer span.End()
 
 	defer func() {
@@ -211,7 +211,7 @@ func (s *Server) GetFixAmounts(ctx context.Context, in *npool.GetFixAmountsReque
 func (s *Server) ExistFixAmount(ctx context.Context, in *npool.ExistFixAmountRequest) (*npool.ExistFixAmountResponse, error) {
 	var err error
 
-	_, span := otel.Tracer(constant.ServiceName).Start(ctx, "ExistFixAmount")
+	_, span := otel.Tracer(servicename.ServiceDomain).Start(ctx, "ExistFixAmount")
 	defer span.End()
 
 	defer func() {
@@ -245,7 +245,7 @@ func (s *Server) ExistFixAmountConds(ctx context.Context,
 	in *npool.ExistFixAmountCondsRequest) (*npool.ExistFixAmountCondsResponse, error) {
 	var err error
 
-	_, span := otel.Tracer(constant.ServiceName).Start(ctx, "ExistFixAmountConds")
+	_, span := otel.Tracer(servicename.ServiceDomain).Start(ctx, "ExistFixAmountConds")
 	defer span.End()
 
 	defer func() {
@@ -272,7 +272,7 @@ func (s *Server) ExistFixAmountConds(ctx context.Context,
 func (s *Server) CountFixAmounts(ctx context.Context, in *npool.CountFixAmountsRequest) (*npool.CountFixAmountsResponse, error) {
 	var err error
 
-	_, span := otel.Tracer(constant.ServiceName).Start(ctx, "CountFixAmounts")
+	_, span := otel.Tracer(servicename.ServiceDomain).Start(ctx, "CountFixAmounts")
 	defer span.End()
 
 	defer func() {
@@ -299,7 +299,7 @@ func (s *Server) CountFixAmounts(ctx context.Context, in *npool.CountFixAmountsR
 func (s *Server) DeleteFixAmount(ctx context.Context, in *npool.DeleteFixAmountRequest) (*npool.DeleteFixAmountResponse, error) {
 	var err error
 
-	_, span := otel.Tracer(constant.ServiceName).Start(ctx, "CreateFixAmounts")
+	_, span := otel.Tracer(servicename.ServiceDomain).Start(ctx, "CreateFixAmounts")
 	defer span.End()
 
 	defer func() {

@@ -10,7 +10,7 @@ import (
 	commontracer "github.com/NpoolPlatform/inspire-manager/pkg/tracer"
 	tracer "github.com/NpoolPlatform/inspire-manager/pkg/tracer/invitation/registration"
 
-	constant "github.com/NpoolPlatform/inspire-manager/pkg/message/const"
+	"github.com/NpoolPlatform/inspire-manager/pkg/servicename"
 
 	"go.opentelemetry.io/otel"
 	scodes "go.opentelemetry.io/otel/codes"
@@ -57,7 +57,7 @@ func (s *Server) CreateRegistration(
 ) {
 	var err error
 
-	_, span := otel.Tracer(constant.ServiceName).Start(ctx, "CreateRegistration")
+	_, span := otel.Tracer(servicename.ServiceDomain).Start(ctx, "CreateRegistration")
 	defer span.End()
 
 	defer func() {
@@ -106,7 +106,7 @@ func (s *Server) UpdateRegistration(
 ) {
 	var err error
 
-	_, span := otel.Tracer(constant.ServiceName).Start(ctx, "UpdateRegistration")
+	_, span := otel.Tracer(servicename.ServiceDomain).Start(ctx, "UpdateRegistration")
 	defer span.End()
 
 	defer func() {
@@ -138,7 +138,7 @@ func (s *Server) UpdateRegistration(
 func (s *Server) GetRegistration(ctx context.Context, in *npool.GetRegistrationRequest) (*npool.GetRegistrationResponse, error) {
 	var err error
 
-	_, span := otel.Tracer(constant.ServiceName).Start(ctx, "GetRegistration")
+	_, span := otel.Tracer(servicename.ServiceDomain).Start(ctx, "GetRegistration")
 	defer span.End()
 
 	defer func() {
@@ -212,7 +212,7 @@ func (s *Server) GetRegistrationOnly(
 ) {
 	var err error
 
-	_, span := otel.Tracer(constant.ServiceName).Start(ctx, "GetRegistrationOnly")
+	_, span := otel.Tracer(servicename.ServiceDomain).Start(ctx, "GetRegistrationOnly")
 	defer span.End()
 
 	defer func() {
@@ -243,7 +243,7 @@ func (s *Server) GetRegistrationOnly(
 func (s *Server) GetRegistrations(ctx context.Context, in *npool.GetRegistrationsRequest) (*npool.GetRegistrationsResponse, error) {
 	var err error
 
-	_, span := otel.Tracer(constant.ServiceName).Start(ctx, "GetRegistrations")
+	_, span := otel.Tracer(servicename.ServiceDomain).Start(ctx, "GetRegistrations")
 	defer span.End()
 
 	defer func() {
@@ -282,7 +282,7 @@ func (s *Server) ExistRegistration(
 ) {
 	var err error
 
-	_, span := otel.Tracer(constant.ServiceName).Start(ctx, "ExistRegistration")
+	_, span := otel.Tracer(servicename.ServiceDomain).Start(ctx, "ExistRegistration")
 	defer span.End()
 
 	defer func() {
@@ -316,7 +316,7 @@ func (s *Server) ExistRegistrationConds(ctx context.Context,
 	in *npool.ExistRegistrationCondsRequest) (*npool.ExistRegistrationCondsResponse, error) {
 	var err error
 
-	_, span := otel.Tracer(constant.ServiceName).Start(ctx, "ExistRegistrationConds")
+	_, span := otel.Tracer(servicename.ServiceDomain).Start(ctx, "ExistRegistrationConds")
 	defer span.End()
 
 	defer func() {
@@ -353,7 +353,7 @@ func (s *Server) CountRegistrations(
 ) {
 	var err error
 
-	_, span := otel.Tracer(constant.ServiceName).Start(ctx, "CountRegistrations")
+	_, span := otel.Tracer(servicename.ServiceDomain).Start(ctx, "CountRegistrations")
 	defer span.End()
 
 	defer func() {
@@ -378,5 +378,41 @@ func (s *Server) CountRegistrations(
 
 	return &npool.CountRegistrationsResponse{
 		Info: total,
+	}, nil
+}
+
+func (s *Server) DeleteRegistration(
+	ctx context.Context,
+	in *npool.DeleteRegistrationRequest,
+) (
+	*npool.DeleteRegistrationResponse,
+	error,
+) {
+	var err error
+
+	_, span := otel.Tracer(servicename.ServiceDomain).Start(ctx, "DeleteRegistration")
+	defer span.End()
+
+	defer func() {
+		if err != nil {
+			span.SetStatus(scodes.Error, err.Error())
+			span.RecordError(err)
+		}
+	}()
+
+	if _, err := uuid.Parse(in.GetID()); err != nil {
+		return &npool.DeleteRegistrationResponse{}, status.Error(codes.InvalidArgument, err.Error())
+	}
+
+	span = commontracer.TraceInvoker(span, "registration", "crud", "Delete")
+
+	info, err := crud.Delete(ctx, uuid.MustParse(in.GetID()))
+	if err != nil {
+		logger.Sugar().Errorf("fail count registrations: %v", err)
+		return &npool.DeleteRegistrationResponse{}, status.Error(codes.Internal, err.Error())
+	}
+
+	return &npool.DeleteRegistrationResponse{
+		Info: converter.Ent2Grpc(info),
 	}, nil
 }

@@ -248,6 +248,7 @@ func deleteA(t *testing.T) {
 	info, err := Delete(context.Background(), entity.ID)
 	if assert.Nil(t, err) {
 		entity.DeletedAt = info.DeletedAt
+		entity.UpdatedAt = info.UpdatedAt
 		assert.Equal(t, info.String(), entity.String())
 	}
 }

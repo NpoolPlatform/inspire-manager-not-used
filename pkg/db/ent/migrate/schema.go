@@ -177,7 +177,7 @@ var (
 		{Name: "user_id", Type: field.TypeUUID, Nullable: true},
 		{Name: "good_id", Type: field.TypeUUID, Nullable: true},
 		{Name: "percent", Type: field.TypeOther, Nullable: true, SchemaType: map[string]string{"mysql": "decimal(37,18)"}},
-		{Name: "start_at", Type: field.TypeUint32, Nullable: true, Default: 1680073199},
+		{Name: "start_at", Type: field.TypeUint32, Nullable: true, Default: 1681015918},
 		{Name: "end_at", Type: field.TypeUint32, Nullable: true, Default: 0},
 	}
 	// GoodOrderPercentsTable holds the schema information for the "good_order_percents" table.
@@ -196,7 +196,7 @@ var (
 		{Name: "user_id", Type: field.TypeUUID, Nullable: true},
 		{Name: "good_id", Type: field.TypeUUID, Nullable: true},
 		{Name: "percent", Type: field.TypeOther, Nullable: true, SchemaType: map[string]string{"mysql": "decimal(37,18)"}},
-		{Name: "start_at", Type: field.TypeUint32, Nullable: true, Default: 1680073199},
+		{Name: "start_at", Type: field.TypeUint32, Nullable: true, Default: 1681015918},
 		{Name: "end_at", Type: field.TypeUint32, Nullable: true, Default: 0},
 	}
 	// GoodOrderValuePercentsTable holds the schema information for the "good_order_value_percents" table.
@@ -221,6 +221,36 @@ var (
 		Name:       "invitation_codes",
 		Columns:    InvitationCodesColumns,
 		PrimaryKey: []*schema.Column{InvitationCodesColumns[0]},
+	}
+	// PubsubMessagesColumns holds the columns for the "pubsub_messages" table.
+	PubsubMessagesColumns = []*schema.Column{
+		{Name: "id", Type: field.TypeUUID, Unique: true},
+		{Name: "created_at", Type: field.TypeUint32},
+		{Name: "updated_at", Type: field.TypeUint32},
+		{Name: "deleted_at", Type: field.TypeUint32},
+		{Name: "message_id", Type: field.TypeString, Nullable: true, Default: "DefaultMsgID"},
+		{Name: "state", Type: field.TypeString, Nullable: true, Default: "DefaultMsgState"},
+		{Name: "resp_to_id", Type: field.TypeUUID, Nullable: true},
+		{Name: "undo_id", Type: field.TypeUUID, Nullable: true},
+		{Name: "arguments", Type: field.TypeString, Nullable: true, Default: ""},
+	}
+	// PubsubMessagesTable holds the schema information for the "pubsub_messages" table.
+	PubsubMessagesTable = &schema.Table{
+		Name:       "pubsub_messages",
+		Columns:    PubsubMessagesColumns,
+		PrimaryKey: []*schema.Column{PubsubMessagesColumns[0]},
+		Indexes: []*schema.Index{
+			{
+				Name:    "pubsubmessage_state_resp_to_id",
+				Unique:  false,
+				Columns: []*schema.Column{PubsubMessagesColumns[5], PubsubMessagesColumns[6]},
+			},
+			{
+				Name:    "pubsubmessage_state_undo_id",
+				Unique:  false,
+				Columns: []*schema.Column{PubsubMessagesColumns[5], PubsubMessagesColumns[7]},
+			},
+		},
 	}
 	// RegistrationsColumns holds the columns for the "registrations" table.
 	RegistrationsColumns = []*schema.Column{
@@ -250,6 +280,7 @@ var (
 		GoodOrderPercentsTable,
 		GoodOrderValuePercentsTable,
 		InvitationCodesTable,
+		PubsubMessagesTable,
 		RegistrationsTable,
 	}
 )

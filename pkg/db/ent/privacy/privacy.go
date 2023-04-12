@@ -390,6 +390,30 @@ func (f InvitationCodeMutationRuleFunc) EvalMutation(ctx context.Context, m ent.
 	return Denyf("ent/privacy: unexpected mutation type %T, expect *ent.InvitationCodeMutation", m)
 }
 
+// The PubsubMessageQueryRuleFunc type is an adapter to allow the use of ordinary
+// functions as a query rule.
+type PubsubMessageQueryRuleFunc func(context.Context, *ent.PubsubMessageQuery) error
+
+// EvalQuery return f(ctx, q).
+func (f PubsubMessageQueryRuleFunc) EvalQuery(ctx context.Context, q ent.Query) error {
+	if q, ok := q.(*ent.PubsubMessageQuery); ok {
+		return f(ctx, q)
+	}
+	return Denyf("ent/privacy: unexpected query type %T, expect *ent.PubsubMessageQuery", q)
+}
+
+// The PubsubMessageMutationRuleFunc type is an adapter to allow the use of ordinary
+// functions as a mutation rule.
+type PubsubMessageMutationRuleFunc func(context.Context, *ent.PubsubMessageMutation) error
+
+// EvalMutation calls f(ctx, m).
+func (f PubsubMessageMutationRuleFunc) EvalMutation(ctx context.Context, m ent.Mutation) error {
+	if m, ok := m.(*ent.PubsubMessageMutation); ok {
+		return f(ctx, m)
+	}
+	return Denyf("ent/privacy: unexpected mutation type %T, expect *ent.PubsubMessageMutation", m)
+}
+
 // The RegistrationQueryRuleFunc type is an adapter to allow the use of ordinary
 // functions as a query rule.
 type RegistrationQueryRuleFunc func(context.Context, *ent.RegistrationQuery) error
@@ -469,6 +493,8 @@ func queryFilter(q ent.Query) (Filter, error) {
 		return q.Filter(), nil
 	case *ent.InvitationCodeQuery:
 		return q.Filter(), nil
+	case *ent.PubsubMessageQuery:
+		return q.Filter(), nil
 	case *ent.RegistrationQuery:
 		return q.Filter(), nil
 	default:
@@ -497,6 +523,8 @@ func mutationFilter(m ent.Mutation) (Filter, error) {
 	case *ent.GoodOrderValuePercentMutation:
 		return m.Filter(), nil
 	case *ent.InvitationCodeMutation:
+		return m.Filter(), nil
+	case *ent.PubsubMessageMutation:
 		return m.Filter(), nil
 	case *ent.RegistrationMutation:
 		return m.Filter(), nil

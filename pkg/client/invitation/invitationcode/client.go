@@ -11,7 +11,7 @@ import (
 	"github.com/NpoolPlatform/libent-cruder/pkg/cruder"
 	npool "github.com/NpoolPlatform/message/npool/inspire/mgr/v1/invitation/invitationcode"
 
-	constant "github.com/NpoolPlatform/inspire-manager/pkg/message/const"
+	"github.com/NpoolPlatform/inspire-manager/pkg/servicename"
 )
 
 var timeout = 10 * time.Second
@@ -22,7 +22,7 @@ func withCRUD(ctx context.Context, handler handler) (cruder.Any, error) {
 	_ctx, cancel := context.WithTimeout(ctx, timeout)
 	defer cancel()
 
-	conn, err := grpc2.GetGRPCConn(constant.ServiceName, grpc2.GRPCTAG)
+	conn, err := grpc2.GetGRPCConn(servicename.ServiceDomain, grpc2.GRPCTAG)
 	if err != nil {
 		return nil, fmt.Errorf("fail get invitationcode connection: %v", err)
 	}
@@ -180,4 +180,20 @@ func CountInvitationCodes(ctx context.Context, conds *npool.Conds) (uint32, erro
 		return 0, fmt.Errorf("fail count invitationcode: %v", err)
 	}
 	return infos.(uint32), nil
+}
+
+func DeleteInvitationCode(ctx context.Context, id string) (*npool.InvitationCode, error) {
+	info, err := withCRUD(ctx, func(_ctx context.Context, cli npool.ManagerClient) (cruder.Any, error) {
+		resp, err := cli.DeleteInvitationCode(ctx, &npool.DeleteInvitationCodeRequest{
+			ID: id,
+		})
+		if err != nil {
+			return nil, fmt.Errorf("fail delete invitationcode: %v", err)
+		}
+		return resp.Info, nil
+	})
+	if err != nil {
+		return nil, fmt.Errorf("fail delete invitationcode: %v", err)
+	}
+	return info.(*npool.InvitationCode), nil
 }

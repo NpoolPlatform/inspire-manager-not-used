@@ -9,7 +9,7 @@ import (
 	commontracer "github.com/NpoolPlatform/inspire-manager/pkg/tracer"
 	tracer "github.com/NpoolPlatform/inspire-manager/pkg/tracer/archivement/detail"
 
-	constant "github.com/NpoolPlatform/inspire-manager/pkg/message/const"
+	"github.com/NpoolPlatform/inspire-manager/pkg/servicename"
 
 	"go.opentelemetry.io/otel"
 	scodes "go.opentelemetry.io/otel/codes"
@@ -25,7 +25,7 @@ import (
 func (s *Server) CreateDetail(ctx context.Context, in *npool.CreateDetailRequest) (*npool.CreateDetailResponse, error) {
 	var err error
 
-	_, span := otel.Tracer(constant.ServiceName).Start(ctx, "CreateDetail")
+	_, span := otel.Tracer(servicename.ServiceDomain).Start(ctx, "CreateDetail")
 	defer span.End()
 
 	defer func() {
@@ -58,7 +58,7 @@ func (s *Server) CreateDetail(ctx context.Context, in *npool.CreateDetailRequest
 func (s *Server) CreateDetails(ctx context.Context, in *npool.CreateDetailsRequest) (*npool.CreateDetailsResponse, error) {
 	var err error
 
-	_, span := otel.Tracer(constant.ServiceName).Start(ctx, "CreateDetails")
+	_, span := otel.Tracer(servicename.ServiceDomain).Start(ctx, "CreateDetails")
 	defer span.End()
 
 	defer func() {
@@ -94,7 +94,7 @@ func (s *Server) CreateDetails(ctx context.Context, in *npool.CreateDetailsReque
 func (s *Server) GetDetail(ctx context.Context, in *npool.GetDetailRequest) (*npool.GetDetailResponse, error) {
 	var err error
 
-	_, span := otel.Tracer(constant.ServiceName).Start(ctx, "GetDetail")
+	_, span := otel.Tracer(servicename.ServiceDomain).Start(ctx, "GetDetail")
 	defer span.End()
 
 	defer func() {
@@ -127,7 +127,7 @@ func (s *Server) GetDetail(ctx context.Context, in *npool.GetDetailRequest) (*np
 func (s *Server) GetDetailOnly(ctx context.Context, in *npool.GetDetailOnlyRequest) (*npool.GetDetailOnlyResponse, error) {
 	var err error
 
-	_, span := otel.Tracer(constant.ServiceName).Start(ctx, "GetDetailOnly")
+	_, span := otel.Tracer(servicename.ServiceDomain).Start(ctx, "GetDetailOnly")
 	defer span.End()
 
 	defer func() {
@@ -154,7 +154,7 @@ func (s *Server) GetDetailOnly(ctx context.Context, in *npool.GetDetailOnlyReque
 func (s *Server) GetDetails(ctx context.Context, in *npool.GetDetailsRequest) (*npool.GetDetailsResponse, error) {
 	var err error
 
-	_, span := otel.Tracer(constant.ServiceName).Start(ctx, "GetDetails")
+	_, span := otel.Tracer(servicename.ServiceDomain).Start(ctx, "GetDetails")
 	defer span.End()
 
 	defer func() {
@@ -183,7 +183,7 @@ func (s *Server) GetDetails(ctx context.Context, in *npool.GetDetailsRequest) (*
 func (s *Server) ExistDetail(ctx context.Context, in *npool.ExistDetailRequest) (*npool.ExistDetailResponse, error) {
 	var err error
 
-	_, span := otel.Tracer(constant.ServiceName).Start(ctx, "ExistDetail")
+	_, span := otel.Tracer(servicename.ServiceDomain).Start(ctx, "ExistDetail")
 	defer span.End()
 
 	defer func() {
@@ -217,7 +217,7 @@ func (s *Server) ExistDetailConds(ctx context.Context,
 	in *npool.ExistDetailCondsRequest) (*npool.ExistDetailCondsResponse, error) {
 	var err error
 
-	_, span := otel.Tracer(constant.ServiceName).Start(ctx, "ExistDetailConds")
+	_, span := otel.Tracer(servicename.ServiceDomain).Start(ctx, "ExistDetailConds")
 	defer span.End()
 
 	defer func() {
@@ -244,7 +244,7 @@ func (s *Server) ExistDetailConds(ctx context.Context,
 func (s *Server) CountDetails(ctx context.Context, in *npool.CountDetailsRequest) (*npool.CountDetailsResponse, error) {
 	var err error
 
-	_, span := otel.Tracer(constant.ServiceName).Start(ctx, "CountDetails")
+	_, span := otel.Tracer(servicename.ServiceDomain).Start(ctx, "CountDetails")
 	defer span.End()
 
 	defer func() {
